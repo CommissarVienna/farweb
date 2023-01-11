@@ -8,7 +8,6 @@ data/**/*
 teste.bat
 info.json
 /code/global.dm
-/config/**/*
 /statistics
 /deletions
 /data/**/*
