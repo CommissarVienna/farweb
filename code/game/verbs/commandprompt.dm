@@ -8,7 +8,7 @@ client/verb/prompt_command()
 	var/chosenoption = input("Input a command.","[src.key]")
 	if(!chosenoption)
 		return
-	if(inputlist.Find(chosenoption) && (src.client in admins))
+	if(inputlist.Find(chosenoption) && (usr.client in admins))
 		to_chat(src, "Command Used : <b>[chosenoption]</b>")
 		switch(chosenoption)
 			if("setspouse")

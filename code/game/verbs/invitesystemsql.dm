@@ -17,7 +17,7 @@ client/proc/invite_ckey()
 		world.log << queryInvites.ErrorMsg()
 		return
 	while(queryInvites.NextRow())
-		if(text2num(queryInvites.item[1]) >= MAX_COMRADE_INVITES && !usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
+		if(text2num(queryInvites.item[1]) >= MAX_COMRADE_INVITES && !usr.client.holder && !(usr.client in admins))
 			to_chat(usr, "<span class='highlighttext'>You've spent all your invites.</span>")
 			queryInvites.Close()
 			return
