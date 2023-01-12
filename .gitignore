@@ -3,14 +3,11 @@
 *.rsc
 *.dmb
 *.lk
-code/global.dm
 data/**/*
 teste.bat
 info.json
-/code/global.dm
 /statistics
 /deletions
-/data/**/*
 /tools/
 /nodejs/
 /.vscode/settings.json
