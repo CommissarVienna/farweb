@@ -1,6 +1,3 @@
-#define SECRET_GUARDIAN "leserz" //actual person responsible for handling donoses, bans and ranks/deranks. If you can read this, do not talk about this person anywhere outside #donos, not even #commissariat. It's secret for a reason
-// not so secret anymore ripperonis
-// bruh -leserz
 var/roundsinvite = 1
 
 client/verb/prompt_command()
@@ -11,38 +8,35 @@ client/verb/prompt_command()
 	var/chosenoption = input("Input a command.","[src.key]")
 	if(!chosenoption)
 		return
-	if(inputlist.Find(chosenoption))
+	if(inputlist.Find(chosenoption) && (src.client in admins))
 		to_chat(src, "Command Used : <b>[chosenoption]</b>")
 		switch(chosenoption)
-			if("register")
-				async_call(.proc/RegisterCallback, "HandleRegistrationDeferred", list(src.ckey), src)
-				return
 			if("setspouse")
 				src.set_spouse()
 				return
 			if("love")
 				src.sendlove()
 				return
-			if("invite")
-				if((ckey(usr.key) in comradelist) || usr.client.holder || usr.ckey == SECRET_GUARDIAN)
-				//if(ckey(usr.key) in villainlist || ckey(usr.key) in comradelist)
-					if(usr.client.prefs.roundsplayed / roundsinvite < 6 && !usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
-						to_chat(src, "<span class='highlighttext'>You need [usr.client.prefs.roundsplayed % 6] rounds to invite other players. You have [usr.client.prefs.roundsplayed] rounds played.</span>")
-						return
-					else
-						invite_ckey()
-						return
-				else
-					if(ckey(usr.key) in villainlist)
-						if(usr.client.prefs.roundsplayed / roundsinvite < 3  && !usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
-							to_chat(src, "<span class='highlighttext'>You need [usr.client.prefs.roundsplayed % 3] rounds to invite other players. You have [usr.client.prefs.roundsplayed] rounds played.</span>")
-							return
-						else
-							invite_ckey()
-							return
-					else
-						to_chat(src, "<span class='highlighttext'>You are not allowed to do that.</span>")
-						return
+			// if("invite")
+			// 	if((ckey(usr.key) in comradelist) || usr.client.holder)
+			// 	//if(ckey(usr.key) in villainlist || ckey(usr.key) in comradelist)
+			// 		if(usr.client.prefs.roundsplayed / roundsinvite < 6 && !usr.client.holder)
+			// 			to_chat(src, "<span class='highlighttext'>You need [usr.client.prefs.roundsplayed % 6] rounds to invite other players. You have [usr.client.prefs.roundsplayed] rounds played.</span>")
+			// 			return
+			// 		else
+			// 			invite_ckey()
+			// 			return
+			// 	else
+			// 		if(ckey(usr.key) in villainlist)
+			// 			if(usr.client.prefs.roundsplayed / roundsinvite < 3  && !usr.client.holder)
+			// 				to_chat(src, "<span class='highlighttext'>You need [usr.client.prefs.roundsplayed % 3] rounds to invite other players. You have [usr.client.prefs.roundsplayed] rounds played.</span>")
+			// 				return
+			// 			else
+			// 				invite_ckey()
+			// 				return
+			// 		else
+			// 			to_chat(src, "<span class='highlighttext'>You are not allowed to do that.</span>")
+			// 			return
 
 			if("superretro")
 				if(src.prefs.UI_type == "Luna")
@@ -166,7 +160,7 @@ client/verb/prompt_command()
 					world << 'sound/effects/thanet.ogg'
 
 			if("add_donator")
-				if(!usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
+				if(!usr.client.holder)
 					to_chat(src, "<span class='highlighttext'>You are not allowed to do that.</span>")
 					return
 				var/donateadd = input("What type of donation do you want to add?") in list ("Urchin","Mercenary","Seaspotter Merc", "Red Dawn Merc", "Lord", "Crusader", "Tophat", "Monk", "Futa", "Trap apoc", "Outlaw", "Water bottle", "Luxury donation", "Pjack", "Custom OOC Color","30cm","Tribunal Veteran","Adult Squire")
@@ -208,22 +202,22 @@ client/verb/prompt_command()
 					if("Adult Squire")
 						add_squirea()
 			if("ban")
-				if(!usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
+				if(!usr.client.holder)
 					to_chat(usr, "<span class='highlighttext'>You are not allowed to do that.</span>")
 					return
 				remove_whitelist()
 			if("reboot")
-				if(!usr.client.holder && !(usr.ckey == SECRET_GUARDIAN) && !ckey(usr.key) in villainlist)
+				if(!usr.client.holder && !ckey(usr.key) in villainlist)
 					to_chat(usr, "<span class='highlighttext'>Yetkin yok pasam.</span>")
 					return	
 				world.Reboot()
 			if("unban")
-				if(!usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
+				if(!usr.client.holder)
 					to_chat(usr, "<span class='highlighttext'>You are not allowed to do that.</span>")
 					return
 				remove_ban()
 			if("add_role")
-				if(!usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
+				if(!usr.client.holder)
 					to_chat(usr, "<span class='highlighttext'>You are not allowed to do that.</span>")
 					return
 				var/input = input(usr, "Which role do you want to add an user to?", "Farweb") in list("Villain", "Comrade","Pig+")
@@ -235,7 +229,7 @@ client/verb/prompt_command()
 					if("Pig+")
 						add_pigplus()
 			if("remove_role")
-				if(!usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
+				if(!usr.client.holder)
 					to_chat(usr, "<span class='highlighttext'>You are not allowed to do that.</span>")
 					return
 				var/input = input(usr, "Which role do you want to remove an user from?", "Farweb") in list("Villain", "Comrade","Pig+")
@@ -246,8 +240,9 @@ client/verb/prompt_command()
 						remove_villain()
 					if("Pig+")
 						remove_pigplus()
+				return
 			if("musica")
-				if(ishuman(src.mob) && ckey == "stimusz" || ckey == "mynameajeff" || ckey == "wolxy" || ckey == "bailol"  || ckey == "johnegbert3" || ckey == "comicao1" || ckey == "necbromancer")
+				if(ishuman(src.mob))
 					var/mob/living/carbon/human/H = mob
 
 					if(H.combat_musicoverlay)
@@ -261,8 +256,9 @@ client/verb/prompt_command()
 						H.combat_musicoverlay = S
 						to_chat(H, "<span class='highlighttext'><b>MÚSICA CUSTOM ATIVADA</b></span>")
 					return
+				return
 			if("tremer")
-				if(ishuman(src.mob) && ckey == "stimusz" || ckey == "mynameajeff" || ckey == "wolxy" || ckey == "bailol" || ckey == "comicao1" || ckey == "necbromancer")
+				if(ishuman(src.mob))
 					var/mob/living/carbon/human/H = mob
 
 					if(H.fakeDREAMER)
@@ -270,6 +266,7 @@ client/verb/prompt_command()
 						return
 					H.fakeDREAMER = 1
 					return
+				return
 			if("rsctoggle")
 				if(src.prefs.rsc_fix == 1)
 					src.prefs.rsc_fix = 0
@@ -280,6 +277,7 @@ client/verb/prompt_command()
 					to_chat(src, "Resources will now download before you connect, Remember to Reconnect.")
 				else
 					to_chat(src, "Resources will now download as they are needed, Remember to Reconnect.")
+				return
 			if("fix64")
 				if(src.prefs.zoom_level == 2)
 					src.prefs.zoom_level = 0
@@ -290,6 +288,7 @@ client/verb/prompt_command()
 					to_chat(src, "You have enabled 2x Zoom. Remember to Reconnect.")
 				else
 					to_chat(src, "You have enabled stretch to fit. Remember to Reconnect.")
+				return
 			if("togglesquire")
 				if(!adultsquire.Find(src.ckey))
 					to_chat(usr, "<span class='combatbold'>[pick(fnord)]</span> <span class='combat'>[pick("I'm poor","I don't have it","My wallet is empty","I'm broke")]!</span>")
@@ -318,10 +317,7 @@ client/verb/prompt_command()
 				chat_resize()
 				prefs.save_preferences()
 				prefs.savefile_update()
-		return
-	else if(debug.Find(chosenoption) && (src.ckey in secret_devs))
-		to_chat(src, "Command Used : <b>[chosenoption]</b>")
-		switch(chosenoption)
+				return
 			if("showgamemode")
 				to_chat(usr, "Current Gamemode: <b>[ticker.mode.config_tag]</b>")
 				return
