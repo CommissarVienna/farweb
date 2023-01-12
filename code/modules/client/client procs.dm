@@ -166,10 +166,6 @@ var/global/max_players = 90
 		del(src)
 		return
 
-	if(clients.len >= max_players && !holder)
-		src << link("https://nopm.xyz/resources/pool_overpop.png")
-		qdel(src)
-		return
 	if(!JoinDate)
 		var/list/http[] = world.Export("http://www.byond.com/members/[src.ckey]?format=text")
 		var/Joined = 0000-00-00
@@ -179,9 +175,9 @@ var/global/max_players = 90
 			Joined = copytext(String, JoinPos, JoinPos+10)
 			src.JoinDate = Joined
 
-	if(/*!ckeywhitelistweb.Find(src.ckey) ||*/ src.ckey != "leserz")
-		notInvited()
-		return
+	// if(!ckeywhitelistweb.Find(src.ckey))
+	// 	notInvited()
+	// 	return
 	// Change the way they should download resources.
 	//src.preload_rsc = "https://www.dropbox.com/s/kfe9yimm9oi2ooj/MACACHKA.zip?dl=1"
 	statpanel_loaded = FALSE
