@@ -7,7 +7,7 @@
 	temperature = 20
 
 /obj/canister
-	icon = 'icons/life/canister.dmi'
+	icon = 'canister.dmi'
 	icon_state = "air_canister"
 
 /obj/canister/New()

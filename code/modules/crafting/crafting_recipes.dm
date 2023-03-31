@@ -434,7 +434,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	nostructure = FALSE
 
 /datum/craft_recipe/tanning/leather_pants
-	name = "Leather Suit"
+	name = "Leather pants"
 	id = "leather_pants"
 	skillRequired = SKILL_TAN
 	skill_value = 5

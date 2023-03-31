@@ -1,23 +1,46 @@
-//Defines are in _defines_gurps.dm
+//DEFINES ESTAO EM _defines.dm
+/*------------------------- GURPS ROLLS E MATH -----------------------
+| Sistema de GURPS fudido de teste que usa as regras do GURPS
+*-------------------------------------------------------------------*/
 
 /mob/living/proc/Roll3d6display(var/gurps, var/rollamount)
 	if(src?.client?.DisplayingRolls)
 		var/FailureText = ""
 		var/crit = ""
 		switch(gurps)
-			if(GP_FAIL)
+			if(GP_FAILED)
 				FailureText = "Failure!"
 			if(GP_CRITFAIL)
 				FailureText = "Critical Failure!"
 				crit = "☠️"
-			if(GP_SUCC)
+			if(GP_SUCCESS)
 				FailureText = "Success!"
-			if(GP_CRITSUCC)
+			if(GP_CRITSUCCESS)
 				FailureText = "Critical Success!"
 				crit = "💡"
 		to_chat(src, "<i><span class='jogtowalk'>[crit]🎲[rollamount] [FailureText]</span></i>")
 
-//default human roll mods, applied to every skill roll.
+//VERBO DE DEBUG LEMBRA DE COMENTAR ISSO QUANDO TER PARTY
+/*
+/mob/living/carbon/human/verb/Roll3d6()
+	var/dice = roll3d6(src.my_stats.st, src.my_stats.dx, src.my_skills.melee) // USA UMA VAR PRA PEGAR A CHANCE DO ROLL
+	var/rolled = dice[GP_RESULT]
+	var/margin = dice[GP_MARGIN]
+	var/roll = dice[GP_DICE]
+	to_chat(src, "<span class='jogtowalk'>Rolled 3d6 [src.my_stats.st]ST [src.my_stats.dx]DX [src.my_skills.melee]MELEE</span>")
+	switch(rolled) // SWITCH PRA AÇÃO DE CADA ROLL, USA || CASO NÃO TENHA DIFERENÇA
+		if(GP_SUCCESS)
+			to_chat(src, "<font color='green'>Success</font>") //sucesso - mae de vini engravidada
+		if(GP_FAILED)
+			to_chat(src, "<font color='red'>Fail</font>") // falha - mae de vini tomou pilula
+		if(GP_CRITFAIL)
+			to_chat(src, "<font color='red'>Critical Fail</font>") // falha critica - vini nasceu (deformado)
+		if(GP_CRITSUCCESS)
+			to_chat(src, "<font color='green'>Critical Success</font>") // sucesso critico - vini morreu (abortado)
+	to_chat(src, "MARGIN :[margin]")
+	to_chat(src, "DICE :[roll]")
+*/
+
 proc/human_roll_mods(var/mob/living/carbon/human/H)
 	var/BaseMath = 0
 	if(H.handcuffed)
@@ -25,87 +48,98 @@ proc/human_roll_mods(var/mob/living/carbon/human/H)
 	if(H.legcuffed)
 		BaseMath -= rand(0,2)
 	if(H.combat_mode)
-		BaseMath += rand(1,3)
+		BaseMath += rand(0,2)
 	if(H.stunned)
 		BaseMath -= rand(4,2)
+	if(H.weight_state)
+		switch(H.weight_state)
+			if(WEIGHT_LIGHT)
+				BaseMath -= rand(-0.5,0)
+			if(WEIGHT_MEDIUM)
+				BaseMath -= rand(-1,0)
+			if(WEIGHT_HEAVY)
+				BaseMath -= rand(-1.5,0)
 	switch(H.nutrition)
 		if(400 to 550)
-			BaseMath += pick(0,1)
+			BaseMath += rand(0,1)
 		if(220 to 275)
-			BaseMath += pick(-1,0)
+			BaseMath += rand(-0.5,0)
 		if(150 to 220)
-			BaseMath += pick(-1,0)
+			BaseMath += rand(-1,0)
 		if(100 to 150)
-			BaseMath += pick(-2,-0)
+			BaseMath += rand(-1.5,-1)
 		if(1 to 100)
-			BaseMath += pick(-3,-2)
+			BaseMath += rand(-2.5,-1.5)
 		if(-INFINITY to 1)
-			BaseMath += pick(-4, -3)
+			BaseMath += rand(-4, -3)
 	switch(H.hidratacao)
 		if(THIRST_LEVEL_THIRSTY to THIRST_LEVEL_MEDIUM)
-			BaseMath += pick(-1,0)
+			BaseMath += rand(-0.5,0)
 		if(150 to THIRST_LEVEL_THIRSTY)
-			BaseMath += rand(-2,0)
+			BaseMath += rand(-1,0)
 		if(150 to THIRST_LEVEL_DEHYDRATED)
-			BaseMath += rand(-3,-1)
+			BaseMath += rand(-1.5,-1)
 		if(THIRST_LEVEL_DEHYDRATED to -INFINITY)
-			BaseMath += rand(-4,-2)
+			BaseMath += rand(-2.5,-1.5)
 	switch(H.happiness)
 		if(MOOD_LEVEL_HAPPY1 to INFINITY)
-			BaseMath += pick(0,1)
+			BaseMath += rand(0,1)
 		if(MOOD_LEVEL_SAD2 to MOOD_LEVEL_SAD1)
-			BaseMath += pick(-1,0)
+			BaseMath += rand(-0.5,0)
 		if(MOOD_LEVEL_SAD3 to MOOD_LEVEL_SAD2)
-			BaseMath += pick(-2,1)
+			BaseMath += rand(-1,0)
 		if(MOOD_LEVEL_SAD4 to MOOD_LEVEL_SAD3)
-			BaseMath += pick(-3,-2)
+			BaseMath += rand(-1.5,-1)
 		if(-5000000 to MOOD_LEVEL_SAD4)
-			BaseMath += pick(-4,-3)
+			BaseMath += rand(-2.5,-1.5)
 
 	return BaseMath
 
-proc/roll3d6(var/mob/living/carbon/human/H, var/base, var/mod, var/hide_roll = FALSE, var/using_stat = FALSE)
+proc/roll3d6(var/mob/living/carbon/human/H, var/skill, var/mod, var/hide_roll = FALSE, var/using_stat = FALSE)
 	if(!H)
 		throw EXCEPTION("roll3d6 called without human!")
 		return
 
-	var/BaseMath = 0 //target that is being rolled against.
+	var/BaseMath = 0
 	if(!using_stat) //hack. But I didn't want to copy the proc for a slight change.
-		var/datum/skill/S = get_skill_data(base,H.my_skills) //grab our skill
-		var/skill_value = get_skill_value(base,H.my_skills) //grab our value
-		if(!S.spec) //if our skill is not a specialization, our default is a stat.
-			if(!S.no_default || skill_value > 0)
-				var/default
-				default = H.my_stats.get_stat(S.base_stat)
-				skill_value += default
-				skill_value += S.base_mod
-			//	to_chat(world,"STAT:[default] STAT_MOD:[S.base_mod]")
-		else//our skill is a specialization, which means our default is another skill
-			var/base_value
-			if(!S.no_default || skill_value > 0)
-				base_value = get_skill_value(S.base_stat,H.my_skills)//use the default value
-				skill_value += base_value
-				skill_value += S.base_mod
-			//	to_chat(world,"SKILL:[base_value] SKILL_MOD:[S.base_mod]")
-				if(S.combat_skill) // if our skill is a combat skill. We also get its defaults default.
-					var/datum/skill/combat_default = get_skill_data(S.base_stat,H.my_skills)
-					var/default2 = H.my_stats.get_stat(combat_default.base_stat)
-					skill_value += default2
-				//	to_chat(world,"SKILL:[default2]")
+		var/datum/skill/S = get_skill_data(skill,H.my_skills)
+		var/skill_value = get_skill_value(skill,H.my_skills)
+		var/using_base = FALSE
+		if(!S.spec)
+			if(!S.base_stat == SKILL_NONE)
+				if(skill_value < (H.my_stats.get_stat(S.base_stat) + S.base_mod))
+					skill_value = clamp(H.my_stats.get_stat(S.base_stat), 1, 20)
+					skill_value += S.base_mod
+					using_base = TRUE
+		else
+			if(!S.base_stat == SKILL_NONE)
+				if(S.combat_skill && skill_value > 0)
+					skill_value = clamp(get_skill_value(S.base_stat,H.my_skills),1,20)
+					if(skill_value < 0)
+						skill_value += S.base_mod
+				else if(skill_value < (get_skill_value(S.base_stat,H.my_skills) + S.base_mod))
+					skill_value = clamp(get_skill_value(S.base_stat,H.my_skills),1,20)
+					skill_value += S.base_mod
+					using_base = TRUE
 
-		BaseMath += skill_value //add our skill value to our roll target.
-		BaseMath += human_roll_mods(H) //get human roll mods
-	else //we're just using a stat. No skill modifiers needed
-		BaseMath += base // add the stat to our roll target.
+		if(S.multiply && using_base)
+			skill_value = skill_value * 2
+		BaseMath += skill_value
+	else
+		BaseMath += skill
 
-	if(mod) //add the modifer if we got sent one
+	BaseMath += human_roll_mods(H)
+	if(mod)
 		BaseMath += mod
-	BaseMath = round(BaseMath)
+
+	BaseMath = clamp(BaseMath,3,18)
 
 	var/result
 	var/CritSuccAmount = 4
-	var/CritFailAmount = 17
+	var/CritFailAmount = 18
 	var/dice = roll("3d6")
+	if(BaseMath <= 15)
+		CritFailAmount = 17
 	if(BaseMath >= 15)
 		CritSuccAmount = 5
 		if(BaseMath >= 16)
@@ -113,73 +147,34 @@ proc/roll3d6(var/mob/living/carbon/human/H, var/base, var/mod, var/hide_roll = F
 
 	if(dice >= CritFailAmount)
 		result = GP_CRITFAIL
-		if(BaseMath >= 15 && dice == 17)
-			result = GP_FAIL
 	else if(dice <= CritSuccAmount)
-		result = GP_CRITSUCC
+		result = GP_CRITSUCCESS
 	else
 		if(dice <= BaseMath)
-			result = GP_SUCC
+			result = GP_SUCCESS
 		else
-			result = GP_FAIL
+			result = GP_FAILED
 
 	if(dice - 10 >= BaseMath)
 		result = GP_CRITFAIL
 
-//	to_chat(world,"ROLL:[dice], BASEMATH:[BaseMath]")
-
 	if(!using_stat)
 		switch(result)
 			if(GP_CRITFAIL)
-				H.learn_skill(base, null, -2)
-			if(GP_FAIL)
-				H.learn_skill(base, null, -2)
-			if(GP_SUCC)
-				H.learn_skill(base, null, -2)
-			if(GP_CRITSUCC)
-				H.learn_skill(base, null, -2)
+				H.learn_skill(skill, null, -2)
+			if(GP_FAILED)
+				H.learn_skill(skill, null, -1)
+			if(GP_SUCCESS)
+				H.learn_skill(skill, null, -3)
+			if(GP_CRITSUCCESS)
+				H.learn_skill(skill, null, -2)
 
 	var/margin = round(BaseMath - dice)
 	if(H && !hide_roll)
 		H.Roll3d6display(result, dice)
-	var/return_list[4]
+	var/return_list[3]
 	return_list[GP_RESULT] = result
 	return_list[GP_MARGIN] = margin
 	return_list[GP_DICE] = dice
-	return_list[GP_CHANCE] = gurps_chance(BaseMath)
 
 	return return_list
-
-/proc/gurps_chance(var/target) //the chance of getting within target
-	var/message = "Success chance: "
-	switch(target)
-		if(16 to INFINITY)
-			message += "<B>\>95%</B>"
-		if(14 to 15)
-			message += "<B>\>90%</B>"
-		if(13)
-			message += "<B>\>80%</B>"
-		if(11 to 12)
-			message += "<B>\>65%</B>"
-		if(10)
-			message += "<B>50%</B>"
-		if(9 to 8)
-			message += "<B>\<35%</B>"
-		if(7)
-			message += "<B>\<20%</B>"
-		if(6)
-			message += "<B>\<10%</B>"
-		if(5 to -INFINITY)
-			message += "<B>\<5%</B>"
-	return message
-
-/proc/max_dice(var/dice) //returns the maximum roll of a given dice string. ex: "2d6" returns 12
-	var/mod = copytext(dice, findtext(dice, regex(@"(?=[\+\-]).")),0)
-	var/amt = copytext(dice, 1, findtext(dice, "d"))
-	var/dnum = copytext(dice, findtext(dice, "d")+1, findtext(dice, regex(@"[\+\-]")))
-	return text2num(amt) * text2num(dnum) + text2num(mod)
-
-/proc/min_dice(var/dice) //returns the minimum roll of a given dice string. ex: "2d6" returns 2
-	var/amt = copytext(dice, 1, findtext(dice, "d"))
-	var/mod = copytext(dice, findtext(dice, regex(@"(?=[\+\-]).")),0)
-	return text2num(amt) + text2num(mod)

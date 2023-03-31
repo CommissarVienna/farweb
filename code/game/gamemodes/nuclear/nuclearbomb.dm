@@ -114,7 +114,7 @@ var/bomb_set
 			usr.drop_item()
 			O.loc = src
 			src.auth = O
-			playsound(src.loc, 'sound/nuke/nuke_activator2.ogg', 60, 0, -1)
+			playsound(src.loc, 'nuke_activator2.ogg', 60, 0, -1)
 			src.add_fingerprint(user)
 			return
 
@@ -376,7 +376,7 @@ obj/machinery/nuclearbomb/proc/nukehack_win(mob/user as mob)
 					src.anchored = !( src.anchored )
 					if(src.anchored)
 						visible_message("\red With a steely snap, bolts slide out of [src] and anchor it to the flooring.")
-						playsound(src.loc, 'sound/nuke/nuke_activator.ogg', 60, 0, -1)
+						playsound(src.loc, 'nuke_activator.ogg', 60, 0, -1)
 					else
 						visible_message("\red The anchoring bolts slide back into the depths of [src].")
 
@@ -411,10 +411,10 @@ obj/machinery/nuclearbomb/proc/nukehack_win(mob/user as mob)
 	src.safety = 1
 	if(!src.lighthack)
 		src.icon_state = "nuke2"
-	playsound(src.loc, 'sound/nuke/nuke_active.ogg', 60, 0, -1)
+	playsound(src.loc, 'nuke_active.ogg', 60, 0, -1)
 	if (ticker && ticker.mode)
 		ticker.mode.explosion_in_progress = 1
-		playsound(src,'sound/effects/nukee.ogg',100,0,5)
+		playsound(src,'nukee.ogg',100,0,5)
 	sleep(5)
 
 	enter_allowed = 0

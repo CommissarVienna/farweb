@@ -50,6 +50,32 @@
 	new /obj/item/clothing/under/soviet(src)
 
 
+/obj/structure/closet/gimmick/tacticool
+	name = "tacticool gear closet"
+	desc = "It's a storage unit for Tacticool gear."
+	icon_state = "syndicate1"
+	icon_closed = "syndicate1"
+	icon_opened = "syndicate1open"
+
+/obj/structure/closet/gimmick/tacticool/New()
+	..()
+	sleep(2)
+	new /obj/item/clothing/glasses/Reyepatch(src)
+	new /obj/item/clothing/glasses/sunglasses(src)
+	new /obj/item/clothing/gloves/swat(src)
+	new /obj/item/clothing/gloves/swat(src)
+	new /obj/item/clothing/head/helmet/swat(src)
+	new /obj/item/clothing/head/helmet/swat(src)
+	new /obj/item/clothing/mask/gas(src)
+	new /obj/item/clothing/mask/gas(src)
+	new /obj/item/clothing/shoes/lw/swat(src)
+	new /obj/item/clothing/shoes/lw/swat(src)
+	new /obj/item/clothing/suit/armor/swat(src)
+	new /obj/item/clothing/suit/armor/swat(src)
+	new /obj/item/clothing/under/syndicate/tacticool(src)
+	new /obj/item/clothing/under/syndicate/tacticool(src)
+
+
 /obj/structure/closet/thunderdome
 	name = "\improper Thunderdome closet"
 	desc = "Everything you need!"

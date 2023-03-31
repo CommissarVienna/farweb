@@ -120,7 +120,7 @@
 /obj/effect/syringe_gun_dummy
 	name = ""
 	desc = ""
-	icon = 'icons/obj/icons/obj/chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "null"
 	anchored = 1
 	density = 0

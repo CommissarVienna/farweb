@@ -24,7 +24,7 @@
 		return
 
 	if(istype(src?.species, /datum/species/human/alien))
-		playsound(src.loc, 'sound/webbers/alien_seeks.ogg', 100, 0)
+		playsound(src.loc, 'alien_seeks.ogg', 100, 0)
 		return
 
 	if(emote_cooldown > 0)
@@ -62,7 +62,7 @@
 				call_sound_emote("praise")
 				for(var/mob/living/carbon/human/H in view(7, src))
 					if(H.religion == "Gray Church")
-						H.seen_heresy.Add(ref(src))
+						src.seen_me_doing_heresy.Add(H)
 				m_type = 2
 			else if(religion == "Allah")
 				message = "<span class='examinebold'>[src]</span> <span class='examine'>calls for Allah!</span>"
@@ -771,9 +771,9 @@
 			if(isChild(src))
 				return
 			if(src.mutilated_genitals)
-				return to_chat(src, "<span class='combatbold'>[pick(fnord)]</span><span class='combat'> I can't.</span>")
+				return to_chat(src, "<span class='combatbold'>[pick(nao_consigoen)]</span><span class='combat'> I can't.</span>")
 			if(src.wear_suit)
-				return to_chat(src, "<span class='combatbold'>[pick(fnord)]</span><span class='combat'> I have clothes on.</span>")
+				return to_chat(src, "<span class='combatbold'>[pick(nao_consigoen)]</span><span class='combat'> I have clothes on.</span>")
 			if(src.has_penis())
 				if(src.erpcooldown == 0)
 					if(src.potenzia > 0)
@@ -859,7 +859,7 @@
 				return
 			if (src.gender == "male" && !isChild())
 				if(src.religion == "Thanati" && istype(src.wear_suit, /obj/item/clothing/suit/storage/thanati/thanati))
-					playsound(src.loc, pick('sound/voice/thanati/thpain1.ogg', 'sound/voice/thanati/thpain2.ogg','sound/voice/thanati/thpain3.ogg'), 100, 0)
+					playsound(src.loc, pick('thpain1.ogg', 'thpain2.ogg','thpain3.ogg'), 100, 0)
 					return
 				else
 					if(src.voicetype == "hobo")
@@ -883,15 +883,15 @@
 			else if(isChild())
 				playsound(src.loc, pick('sound/voice/torture/kid_torture_scream1.ogg', 'sound/voice/torture/kid_torture_scream2.ogg'), 90, 0)
 		if("stop")
-			playsound(src.loc, 'sound/voice/emostop.ogg', 70, 0)
+			playsound(src.loc, 'emostop.ogg', 70, 0)
 			return
 
 		if("burp")
-			playsound(src.loc, 'sound/voice/burp.ogg', 70, 1)
+			playsound(src.loc, 'burp.ogg', 70, 1)
 			return
 
 		if("puke")
-			playsound(src.loc, 'sound/voice/vomit.ogg', 70, 0)
+			playsound(src.loc, 'vomit.ogg', 70, 0)
 			return
 		if("masturbate")
 			var/jackoff = pick(flist("honk/sound/new/ACTIONS/PENIS/HANDJOB/"))
@@ -905,56 +905,56 @@
 
 		if("clearthroat")
 			if (src.gender == MALE)
-				playsound(src.loc, 'sound/voice/throatclear_male.ogg', 100, 0)
+				playsound(src.loc, 'throatclear_male.ogg', 100, 0)
 			else
-				playsound(src.loc, pick('sound/voice/throatclear_female.ogg'), 100, 0)
+				playsound(src.loc, pick('throatclear_female.ogg'), 100, 0)
 			return
 
 		if("agonyscream")
 			if(ismonster(src))
 				return
 			if(src.religion == "Thanati" && istype(src.wear_suit, /obj/item/clothing/suit/storage/thanati/thanati))
-				playsound(src.loc, pick('sound/voice/thanati/thpain1.ogg', 'sound/voice/thanati/thpain2.ogg','sound/voice/thanati/thpain3.ogg'), 100, 0)
+				playsound(src.loc, pick('thpain1.ogg', 'thpain2.ogg','thpain3.ogg'), 100, 0)
 				return
 			else
 				if (src.gender == "male" && !isChild())
-					playsound(src.loc, pick('sound/voice/pain/agony/male/agony_male1.ogg', 'sound/voice/pain/agony/male/agony_male2.ogg', 'sound/voice/pain/agony/male/agony_male3.ogg', 'sound/voice/pain/agony/male/agony_male4.ogg','sound/voice/pain/agony/male/agony_male5.ogg','sound/voice/pain/agony/male/agony_male6.ogg','sound/voice/pain/agony/male/agony_male7.ogg','sound/voice/pain/agony/male/agony_male8.ogg','sound/voice/pain/agony/male/agony_male9.ogg','sound/voice/pain/agony/male/agony_male10.ogg','sound/voice/pain/agony/male/agony_male11.ogg','sound/voice/pain/agony/male/agony_male12.ogg','sound/voice/pain/agony/male/agony_male13.ogg'), 80, 0)
+					playsound(src.loc, pick('sound/voice/pain/agony/male/agony_male1.ogg', 'sound/voice/pain/agony/male/agony_male2.ogg', 'sound/voice/pain/agony/male/agony_male3.ogg', 'sound/voice/pain/agony/male/agony_male4.ogg','sound/voice/pain/agony/male/agony_male5.ogg','sound/voice/pain/agony/male/agony_male6.ogg','sound/voice/pain/agony/male/agony_male7.ogg','sound/voice/pain/agony/male/agony_male8.ogg','sound/voice/pain/agony/male/agony_male9.ogg','sound/voice/pain/agony/male/agony_male10.ogg','sound/voice/pain/agony/male/agony_male11.ogg','sound/voice/pain/agony/male/agony_male12.ogg','sound/voice/pain/agony/male/agony_male13.ogg'), 80, 1)
 					return
 				if(isChild())
-					playsound(src.loc, pick('sound/voice/child_pain1.ogg', 'sound/voice/child_pain2.ogg'), 90, 0)
+					playsound(src.loc, pick('sound/voice/child_pain1.ogg', 'sound/voice/child_pain2.ogg'), 90, 1)
 					return
 				else
-					playsound(src.loc, pick('sound/voice/pain/agony/female/woman_pain1.ogg', 'sound/voice/pain/agony/female/woman_pain2.ogg', 'sound/voice/pain/agony/female/woman_pain3.ogg', 'sound/voice/pain/agony/female/woman_pain4.ogg', 'sound/voice/pain/agony/female/woman_pain5.ogg'), 80, 0)
+					playsound(src.loc, pick('sound/voice/pain/agony/female/woman_pain1.ogg', 'sound/voice/pain/agony/female/woman_pain2.ogg', 'sound/voice/pain/agony/female/woman_pain3.ogg', 'sound/voice/pain/agony/female/woman_pain4.ogg', 'sound/voice/pain/agony/female/woman_pain5.ogg'), 80, 1)
 					return
 
 		if("agonydeath")
 			if(ismonster(src))
 				return
 			if(src.religion == "Thanati" && istype(src.wear_suit, /obj/item/clothing/suit/storage/thanati/thanati))
-				playsound(src.loc, pick('sound/voice/thanati/thanatideath1.ogg', 'sound/voice/thanati/thanatideath2.ogg','sound/voice/thanati/thanatideath3.ogg'), 100, 0)
+				playsound(src.loc, pick('thanatideath1.ogg', 'thanatideath2.ogg','thanatideath3.ogg'), 100, 1)
 				return
 			else
 				if (src.gender == "male" && !isChild())
-					playsound(src.loc, pick('sound/voice/pain/agony/male/death_male1.ogg', 'sound/voice/pain/agony/male/death_male2.ogg','sound/voice/pain/agony/male/death_male3.ogg'), 80, 0)
+					playsound(src.loc, pick('sound/voice/pain/agony/male/death_male1.ogg', 'sound/voice/pain/agony/male/death_male2.ogg','sound/voice/pain/agony/male/death_male3.ogg'), 80, 1)
 					return
 				if(isChild())
-					playsound(src.loc, pick('sound/voice/pain/agony/male/death_male1.ogg', 'sound/voice/pain/agony/male/death_male1.ogg', 'sound/voice/pain/agony/male/death_male1.ogg'), 80, 0)
+					playsound(src.loc, pick('sound/voice/pain/agony/male/death_male1.ogg', 'sound/voice/pain/agony/male/death_male1.ogg', 'sound/voice/pain/agony/male/death_male1.ogg'), 80, 1)
 					return
 				else
-					playsound(src.loc, pick('sound/voice/pain/agony/female/death_female1.ogg', 'sound/voice/pain/agony/female/death_female2.ogg', 'sound/voice/pain/agony/female/death_female3.ogg'), 80, 0)
+					playsound(src.loc, pick('sound/voice/pain/agony/female/death_female1.ogg', 'sound/voice/pain/agony/female/death_female2.ogg', 'sound/voice/pain/agony/female/death_female3.ogg'), 80, 1)
 					return
 
 		if("agonymoan")
 			if(ismonster(src))
 				return
 			if (src.gender == "male" && !isChild())
-				playsound(src.loc, pick('sound/voice/pain/agony/male/male_moan_1.ogg', 'sound/voice/pain/agony/male/male_moan_2.ogg','sound/voice/pain/agony/male/male_moan_3.ogg', 'sound/voice/pain/agony/male/male_moan_4.ogg', 'sound/voice/pain/agony/male/male_moan_5.ogg'), 80, 0)
+				playsound(src.loc, pick('sound/voice/pain/agony/male/male_moan_1.ogg', 'sound/voice/pain/agony/male/male_moan_2.ogg','sound/voice/pain/agony/male/male_moan_3.ogg', 'sound/voice/pain/agony/male/male_moan_4.ogg', 'sound/voice/pain/agony/male/male_moan_5.ogg'), 80, 1)
 				return
 			if(isChild())
-				playsound(src.loc, pick('sound/voice/pain/agony/male/child_moan1.ogg'), 80, 0)
+				playsound(src.loc, pick('sound/voice/pain/agony/male/child_moan1.ogg'), 80, 1)
 				return
 			else
-				playsound(src.loc, pick('sound/voice/pain/agony/female/female_moan_wounded.ogg', 'sound/voice/pain/agony/female/female_moan_wounded2.ogg', 'sound/voice/pain/agony/female/female_moan_wounded3.ogg', 'sound/voice/pain/agony/female/female_moan_wounded4.ogg', 'sound/voice/pain/agony/female/female_moan_wounded5.ogg', 'sound/voice/pain/agony/female/female_moan_wounded6.ogg', 'sound/voice/pain/agony/female/female_moan_wounded7.ogg', 'sound/voice/pain/agony/female/female_moan_wounded8.ogg'), 80, 0)
+				playsound(src.loc, pick('sound/voice/pain/agony/female/female_moan_wounded.ogg', 'sound/voice/pain/agony/female/female_moan_wounded2.ogg', 'sound/voice/pain/agony/female/female_moan_wounded3.ogg', 'sound/voice/pain/agony/female/female_moan_wounded4.ogg', 'sound/voice/pain/agony/female/female_moan_wounded5.ogg', 'sound/voice/pain/agony/female/female_moan_wounded6.ogg', 'sound/voice/pain/agony/female/female_moan_wounded7.ogg', 'sound/voice/pain/agony/female/female_moan_wounded8.ogg'), 80, 1)
 				return
 
 		if("cry")
@@ -972,26 +972,26 @@
 			if(ismonster(src))
 				return
 			if (src.gender == "male" && !isChild())
-				playsound(src.loc, pick('sound/effects/man_pain1.ogg', 'sound/effects/man_pain2.ogg', 'sound/effects/man_pain3.ogg'), 90, 0)
+				playsound(src.loc, pick('sound/effects/man_pain1.ogg', 'sound/effects/man_pain2.ogg', 'sound/effects/man_pain3.ogg'), 90, 1)
 				return
 			if(isChild())
-				playsound(src.loc, pick('sound/voice/child_pain1.ogg', 'sound/voice/child_pain2.ogg'), 90, 0)
+				playsound(src.loc, pick('sound/voice/child_pain1.ogg', 'sound/voice/child_pain2.ogg'), 90, 1)
 				return
 			else
-				playsound(src.loc, pick('sound/voice/pain/agony/female/woman_pain1.ogg', 'sound/voice/pain/agony/female/woman_pain2.ogg', 'sound/voice/pain/agony/female/woman_pain3.ogg', 'sound/voice/pain/agony/female/woman_pain4.ogg', 'sound/voice/pain/agony/female/woman_pain5.ogg'), 90, 0)
+				playsound(src.loc, pick('sound/voice/pain/agony/female/woman_pain1.ogg', 'sound/voice/pain/agony/female/woman_pain2.ogg', 'sound/voice/pain/agony/female/woman_pain3.ogg', 'sound/voice/pain/agony/female/woman_pain4.ogg', 'sound/voice/pain/agony/female/woman_pain5.ogg'), 90, 1)
 				return
 
 		if("moandeath")
 			if(ismonster(src))
 				return
 			if (src.gender == "male" && !isChild())
-				playsound(src.loc, pick('sound/voice/pain/agony/both/painb.ogg', 'sound/voice/pain/agony/both/painb2.ogg','sound/voice/pain/agony/both/painb3.ogg', 'sound/voice/pain/agony/both/painb4.ogg', 'sound/voice/pain/agony/both/painb5.ogg', 'sound/voice/pain/agony/both/painb6.ogg', 'sound/voice/pain/agony/both/painb7.ogg'), 90, 0)
+				playsound(src.loc, pick('sound/voice/pain/agony/both/painb.ogg', 'sound/voice/pain/agony/both/painb2.ogg','sound/voice/pain/agony/both/painb3.ogg', 'sound/voice/pain/agony/both/painb4.ogg', 'sound/voice/pain/agony/both/painb5.ogg', 'sound/voice/pain/agony/both/painb6.ogg', 'sound/voice/pain/agony/both/painb7.ogg'), 90, 1)
 				return
 			if(isChild())
-				playsound(src.loc, pick('sound/voice/pain/agony/both/painb.ogg', 'sound/voice/pain/agony/both/painb2.ogg','sound/voice/pain/agony/both/painb3.ogg', 'sound/voice/pain/agony/both/painb4.ogg', 'sound/voice/pain/agony/both/painb5.ogg', 'sound/voice/pain/agony/both/painb6.ogg', 'sound/voice/pain/agony/both/painb7.ogg'), 90, 0)
+				playsound(src.loc, pick('sound/voice/pain/agony/both/painb.ogg', 'sound/voice/pain/agony/both/painb2.ogg','sound/voice/pain/agony/both/painb3.ogg', 'sound/voice/pain/agony/both/painb4.ogg', 'sound/voice/pain/agony/both/painb5.ogg', 'sound/voice/pain/agony/both/painb6.ogg', 'sound/voice/pain/agony/both/painb7.ogg'), 90, 1)
 				return
 			else
-				playsound(src.loc, pick('sound/voice/pain/agony/both/painb.ogg', 'sound/voice/pain/agony/both/painb2.ogg','sound/voice/pain/agony/both/painb3.ogg', 'sound/voice/pain/agony/both/painb4.ogg', 'sound/voice/pain/agony/both/painb5.ogg', 'sound/voice/pain/agony/both/painb6.ogg', 'sound/voice/pain/agony/both/painb7.ogg'), 90, 0)
+				playsound(src.loc, pick('sound/voice/pain/agony/both/painb.ogg', 'sound/voice/pain/agony/both/painb2.ogg','sound/voice/pain/agony/both/painb3.ogg', 'sound/voice/pain/agony/both/painb4.ogg', 'sound/voice/pain/agony/both/painb5.ogg', 'sound/voice/pain/agony/both/painb6.ogg', 'sound/voice/pain/agony/both/painb7.ogg'), 90, 1)
 				return
 
 		if("praise")
@@ -1013,13 +1013,14 @@
 					if(prob(15))
 						to_chat(src, "<span class='dreamershitbutitsactuallypassivebutitactuallyisbigandbold'>The Lord hears you!</span>")
 						src.mind.lord_hears_you += 1
-						src.my_stats.add_mod("lord_hears", stat_list(ST = 1), time = 30 SECONDS, override = TRUE, override_timer = TRUE)
+						src.my_stats.st += 1
 						spawn(30 SECONDS)
+							src.my_stats.st -= 1
 							src.mind.lord_hears_you -= 1
 
 				for(var/mob/M in view(src, world.view))
 					M << speech_bubble
-				playsound(src.loc, pick('sound/voice/thanati/Cultiste message 1.ogg','sound/voice/thanati/Cultiste message 2.ogg','sound/voice/thanati/Cultiste message 3.ogg','sound/voice/thanati/Cultiste message 4.ogg','sound/voice/thanati/Cultiste message 5.ogg','sound/voice/thanati/Cultiste message 6.ogg','sound/voice/thanati/Cultiste message 7.ogg','sound/voice/thanati/Cultiste message 8.ogg','sound/voice/thanati/Cultiste message 9.ogg'), 100, 1)
+				playsound(src.loc, pick('Cultiste message 1.ogg','Cultiste message 2.ogg','Cultiste message 3.ogg','Cultiste message 4.ogg','Cultiste message 5.ogg','Cultiste message 6.ogg','Cultiste message 7.ogg','Cultiste message 8.ogg','Cultiste message 9.ogg'), 100, 1)
 				spawn(30) del(speech_bubble)
 				return
 			else if (src.religion == "Allah")
@@ -1030,8 +1031,9 @@
 					if(prob(15))
 						to_chat(src, "<span class='dreamershitbutitsactuallypassivebutitactuallyisbigandbold'>Allah hears you!</span>")
 						src.mind.lord_hears_you += 1
-						src.my_stats.add_mod("allah_hears", stat_list(ST = 1), time = 30 SECONDS, override = TRUE, override_timer = TRUE)
+						src.my_stats.st += 1
 						spawn(30 SECONDS)
+							src.my_stats.st -= 1
 							src.mind.lord_hears_you -= 1
 
 				for(var/mob/M in view(src, world.view))
@@ -1057,7 +1059,7 @@
 
 		if("laugh")
 			if (src.gender == "male" && !isChild())
-				if(src.my_stats.get_stat(STAT_IN) <= 5)
+				if(src.my_stats.it <= 5)
 					playsound(src.loc, pick('sound/voice/smeshinka.ogg', 'sound/voice/smeshinka2.ogg'), 90, 0, -1)
 				else
 					if(src.gender == "male" && isChild())
@@ -1088,7 +1090,7 @@
 							playsound(src.loc, pick('sound/voice/malelaugh/bum_laugh1.ogg','sound/voice/malelaugh/bum_laugh2.ogg'), 90, 0)
 							return
 						if(src.voicetype == "midget")
-							playsound(src.loc, pick('sound/voice/jester/midgetlaugh.ogg','sound/voice/jester/midgetlaugh2.ogg','sound/voice/jester/midgetlaugh3.ogg','sound/voice/jester/midgetlaugh4.ogg','sound/voice/jester/midgetlaugh5.ogg','sound/voice/jester/midgetlaugh6.ogg','sound/voice/jester/midgetlaugh7.ogg'), 90, 0)
+							playsound(src.loc, pick('midgetlaugh.ogg','midgetlaugh2.ogg','midgetlaugh3.ogg','midgetlaugh4.ogg','midgetlaugh5.ogg','midgetlaugh6.ogg','midgetlaugh7.ogg'), 90, 0)
 							return
 						else
 							playsound(src.loc, pick('sound/voice/malelaugh/leg_laugh1.ogg','sound/voice/malelaugh/leg_laugh2.ogg','sound/voice/malelaugh/leg_laugh3.ogg','sound/voice/malelaugh/leg_laugh4.ogg','sound/voice/malelaugh/leg_laugh5.ogg','sound/voice/malelaugh/leg_laugh6.ogg','sound/voice/malelaugh/leg_laugh7.ogg','sound/voice/malelaugh/leg_laugh8.ogg','sound/voice/malelaugh/leg_laugh9.ogg'), 90, 0)
@@ -1125,7 +1127,7 @@
 				playsound(src.loc, pick('sound/webbers/cough_female.ogg', 'sound/webbers/cough_female2.ogg'), 100, 1)
 
 		if("fart")
-			playsound(playsound(src.loc, pick('sound/voice/fart.ogg','sound/voice/fart2.ogg'), 90, 0))
+			playsound(playsound(src.loc, pick('fart.ogg','fart2.ogg'), 90, 0))
 
 		if("elaugh")
 			playsound(src.loc, 'sound/voice/elaugh.ogg', 90, 0)
@@ -1251,20 +1253,16 @@
 	emote("praise")
 
 /mob/living/carbon/human/proc/getWords()
-	set desc = "Remember the Words"
-	set category = "thanati"
+	set category = "IC"
 	if(src.religion == "Thanati")
 		to_chat(src, "<span class='baron'>Your corrupt word: [src.mind.thanati_corrupt], [src.mind.thanati_word_random] (The Circle of [src.mind.thanati_type]).</span>\n")
 
 /mob/living/carbon/human/proc/praisethelord()
-	set desc = "Call to the Lord!"
-	set category = "thanati"
+	set category = "IC"
 	if(src.religion == "Thanati")
 		emote("praise")
 
 /mob/living/carbon/human/proc/getBrothers()
-	set desc = "Remember the Associates"
-	set category = "thanati"
 	if(src.religion == "Thanati")
 		var/brothers_message = "Your brothers and sisters in faith:<br>"
 		for(var/mob/living/carbon/human/H in mob_list)

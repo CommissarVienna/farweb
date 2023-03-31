@@ -58,6 +58,12 @@
 /obj/item/weapon/reagent_containers/food/snacks/organ/brain/removed(var/mob/living/target,var/mob/living/user)
 
 	..()
+
+	var/mob/living/simple_animal/borer/borer = target.has_brain_worms()
+
+	if(borer)
+		borer.detatch() //Should remove borer if the brain is removed - RR
+
 	var/mob/living/carbon/human/H = target
 	var/obj/item/weapon/reagent_containers/food/snacks/organ/brain/B = src
 	if(istype(B) && istype(H))

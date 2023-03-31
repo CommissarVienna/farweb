@@ -44,7 +44,7 @@ var/brquote = pick("Odeio este lugar e faria qualquer coisa para sair daqui, que
 			to_chat(N, "⠀<span class='passivebold'>[capitalize(usr.key)] joined the game.</span>")
 	var/list/locinfo = client?.get_loc_info()
 	update_Login_details()	//handles setting lastKnownIP and computer_id for use by the ban systems as well as checking for multikeying
-	winset(src, null, "mainwindow.title='[vessel_name()]'")//Making it so window is named what it's named.
+	winset(src, null, "mainwindow.title='Farweb'")//Making it so window is named what it's named.
 	if(join_motd)
 		if(guardianlist.Find(ckey(src.client.key)))
 			to_chat(src, "Welcome, <span class='graytextbold'>[capitalize(usr.ckey)]</span>! Your reliability level: <span class='guardianlobby'>Guardian</span>")
@@ -94,7 +94,6 @@ var/brquote = pick("Odeio este lugar e faria qualquer coisa para sair daqui, que
 		loc = pick(watch_locations)
 */
 	new_player_panel()
-	src << output(list2params(list(0)), "outputwindow.browser:ChangeTheme")
 	spawn(40)
 		if(client)
 			client.playtitlemusic()

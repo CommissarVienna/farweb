@@ -139,10 +139,10 @@ var/global/sent_syndicate_strike_team = 0
 	equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/infantry(src), slot_shoes)
 	equip_to_slot_or_del(new /obj/item/weapon/shield/generator/wrist(src), slot_wrist_l)
 	src.client.color = null
-	src.my_stats.change_stat(STAT_ST , 2)
-	src.my_stats.change_stat(STAT_DX , 1)
-	src.my_stats.change_stat(STAT_HT , 2)
-	src.my_stats.change_stat(STAT_IN , 2)
+	src.my_stats.st = 13
+	src.my_stats.dx = rand(10,11)
+	src.my_stats.ht = rand(12,14)
+	src.my_stats.pr = rand(14,16)
 	src.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(13,15))
 	src.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(13,15))
 	src.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(12,13))

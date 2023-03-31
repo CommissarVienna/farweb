@@ -36,8 +36,7 @@
 
 /mob/living/carbon/human/proc/dreamer()
 	set name = "Wonders"
-	set desc = "Wonders"
-	set category = "gpc"
+	set category = "The Dreamer"
 
 	usr << browse(dreamRecipes(), "window=dreamercreation;size=300x650;can_close=1;can_resize=0;border=0;titlebar=1")
 

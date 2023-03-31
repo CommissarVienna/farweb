@@ -2,7 +2,6 @@
 	name = "trap door"
 	desc = "WATCHA WATCHA WATCHA OOOOOOOOOO!!"
 	icon = 'icons/life/autodoor.dmi'
-	plane = 0
 
 /obj/machinery/door/airlock/orbital/gates/magma/trap_door/RightClick()
 	return 0

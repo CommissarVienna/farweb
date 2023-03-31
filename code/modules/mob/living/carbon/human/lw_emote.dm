@@ -45,7 +45,7 @@
 	if(emote_cooldown > 0)
 		return
 	if(src.wear_mask && src.wear_mask.flags & MASKCOVERSMOUTH)
-		to_chat(src, "<span class='combat'>[pick(fnord)] my mask is in the way!</span>")
+		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] my mask is in the way!</span>")
 		return
 	emote_cooldown += 3
 	var/mob/living/carbon/human/H = usr
@@ -66,7 +66,8 @@
 			if(H?.mind?.succubus)
 				if(!src.check_event(H.real_name))
 					to_chat(src, "<span class='horriblestate' style='font-size: 200%;'><b><i>I NEED TO FUCK [H]!</i></b></span>")
-					src.my_stats.add_mod("succubus\ref[H]", stat_list(ST = -3, DX = -3), override = TRUE) //ref since multiple can kiss you.
+					src.my_stats.st -= 3
+					src.my_stats.dx -= 3
 				H.succubus_mood(src)
 			if(H.gender == FEMALE)
 				if(src.gender == MALE || src.gender == FEMALE && src.has_penis() || src.isFemboy())

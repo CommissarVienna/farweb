@@ -100,10 +100,10 @@ var/const/BLOOD_VOLUME_SURVIVE = 50
 						pale = 1
 						update_body()
 						var/word = pick("dizzy","woosey","faint")
-						to_chat(src, "<span class='redtext'>You feel [word]</span>")
+						to_chat(src, "\red You feel [word]")
 					if(prob(1))
 						var/word = pick("dizzy","woosey","faint")
-						to_chat(src,"<span class='redtext'>You feel [word]</span>")
+						to_chat(src,"\red You feel [word]")
 					if(oxyloss < 20)
 						oxyloss += 3
 			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
@@ -118,7 +118,7 @@ var/const/BLOOD_VOLUME_SURVIVE = 50
 					if(prob(15))
 						Paralyse(rand(1,2))
 						var/word = pick("dizzy","woosey","faint")
-						to_chat(src,"<span class='redtext'>You feel extremely [word]</span>")
+						to_chat(src,"\red You feel extremely [word]")
 			if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
 				if(isVampire)
 					if(!pale)

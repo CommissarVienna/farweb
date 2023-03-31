@@ -145,8 +145,8 @@
 	force_wielded = 18.0
 	force_unwielded = 13.0
 	edge = 0
-	drop_sound = 'sound/weapons/knife_drop.ogg'
-	drawsound = 'sound/weapons/knife_equip.ogg'
+	drop_sound = 'knife_drop.ogg'
+	drawsound = 'knife_equip.ogg'
 	item_worth = 5
 	hitsound= "slash"
 	speciality = SKILL_KNIFE
@@ -307,8 +307,8 @@
 	sharp = 1
 	edge = 0
 	penetrating = TRUE
-	drop_sound = 'sound/weapons/knife_drop.ogg'
-	drawsound = 'sound/weapons/dagger_draw.ogg'
+	drop_sound = 'knife_drop.ogg'
+	drawsound = 'dagger_draw.ogg'
 	item_worth = 7
 	hitsound= "stab"
 	sheathicondagger = "dagger_sheath1"
@@ -321,8 +321,8 @@
 	item_state = "dagger"
 	force = 15
 	throwforce = 16
-	drop_sound = 'sound/weapons/knife_drop.ogg'
-	drawsound = 'sound/weapons/dagger_draw.ogg'
+	drop_sound = 'knife_drop.ogg'
+	drawsound = 'dagger_draw.ogg'
 	item_worth = 14
 	hitsound= "blade"
 
@@ -333,8 +333,8 @@
 	item_state = "dagger"
 	force = 10
 	throwforce = 15
-	drop_sound = 'sound/weapons/knife_drop.ogg'
-	drawsound = 'sound/weapons/dagger_draw.ogg'
+	drop_sound = 'knife_drop.ogg'
+	drawsound = 'dagger_draw.ogg'
 	item_worth = 5
 	hitsound= "stab"
 
@@ -345,7 +345,7 @@
 	item_state = "wstake"
 	force = 15
 	throwforce = 10
-	drop_sound = 'sound/items/wooden_drop.ogg'
+	drop_sound = 'wooden_drop.ogg'
 	hitsound= "stab"
 	sharp = 0
 	edge = 1
@@ -357,8 +357,8 @@
 	item_state = "dagger"
 	force = 35
 	throwforce = 36
-	drop_sound = 'sound/weapons/knife_drop.ogg'
-	drawsound = 'sound/weapons/dagger_draw.ogg'
+	drop_sound = 'knife_drop.ogg'
+	drawsound = 'dagger_draw.ogg'
 	item_worth = 224
 	hitsound= "blade"
 
@@ -369,8 +369,8 @@
 	item_state = "dagger"
 	force = 35
 	throwforce = 45
-	drop_sound = 'sound/weapons/knife_drop.ogg'
-	drawsound = 'sound/weapons/dagger_draw.ogg'
+	drop_sound = 'knife_drop.ogg'
+	drawsound = 'dagger_draw.ogg'
 	item_worth = 224
 	hitsound= "blade"
 
@@ -385,8 +385,8 @@
 	icon_state = "pknife"
 	force = 13.0
 	throwforce = 10.0
-	drop_sound = 'sound/weapons/knife_drop.ogg'
-	drawsound = 'sound/weapons/knife_equip.ogg'
+	drop_sound = 'knife_drop.ogg'
+	drawsound = 'knife_equip.ogg'
 	speciality = SKILL_KNIFE
 
 /obj/item/weapon/kitchen/utensil/pknife/attack(target as mob, mob/living/user as mob)
@@ -416,8 +416,8 @@
 	m_amt = 12000
 	origin_tech = "materials=1"
 	attack_verb = list("slashed", "sliced", "torn", "ripped", "diced", "cut")
-	drop_sound = 'sound/weapons/knife_drop.ogg'
-	drawsound = 'sound/weapons/knife_equip.ogg'
+	drop_sound = 'knife_drop.ogg'
+	drawsound = 'knife_equip.ogg'
 	item_worth = 5
 	hitsound= "blade"
 

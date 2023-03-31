@@ -6,9 +6,15 @@
 
 /mob/living/carbon/human/monster/skeleton/New()
 	..()
-	makeSkeleton(TRUE)
+	makeSkeleton()
 	src.zone_sel = new /obj/screen/zone_sel( null )
 	potenzia = rand(16, 25)
+	my_stats.initst = rand(13,15)
+	my_stats.initht = rand(1,2)
+	my_stats.initdx = rand(10,14)
+	my_stats.st = my_stats.initst
+	my_stats.ht = my_stats.initht
+	my_stats.dx = my_stats.initdx
 	my_skills.CHANGE_SKILL(SKILL_MELEE, rand(6,7))
 	sleep(10)
 	if(!mind)
@@ -28,15 +34,18 @@
 
 /mob/living/carbon/human/monster/skeleton/ancestor/New()
 	..()
-	makeSkeleton(TRUE)
+	makeSkeleton()
 	real_name = "Ancestor"
 	name = "Ancestor"
 
 	src.zone_sel = new /obj/screen/zone_sel( null )
 	potenzia = rand(16, 25)
-	my_stats.change_stat(STAT_ST, 10)
-	my_stats.change_stat(STAT_HT, 10)
-	my_stats.change_stat(STAT_DX, 10)
+	my_stats.initst = rand(18,19)
+	my_stats.initht = rand(18,30)
+	my_stats.initdx = rand(15,18)
+	my_stats.st = my_stats.initst
+	my_stats.ht = my_stats.initht
+	my_stats.dx = my_stats.initdx
 	var/pickit = pick("spear","sabre","rapier","copper")
 	switch(pickit)
 		if("sabre")

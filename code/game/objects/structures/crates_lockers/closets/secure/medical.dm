@@ -50,6 +50,57 @@
 		return
 
 
+
+/obj/structure/closet/secure_closet/medical3
+	name = "Medical Doctor's Locker"
+	req_access = list(access_surgery)
+	icon_state = "securemed1"
+	icon_closed = "securemed"
+	icon_locked = "securemed1"
+	icon_opened = "securemedopen"
+	icon_broken = "securemedbroken"
+	icon_off = "securemedoff"
+
+	New()
+		..()
+		sleep(2)
+		if(prob(50))
+			new /obj/item/weapon/storage/backpack/medic(src)
+		else
+			new /obj/item/weapon/storage/backpack/satchel_med(src)
+		new /obj/item/clothing/under/rank/nursesuit (src)
+		new /obj/item/clothing/head/nursehat (src)
+		switch(pick("blue", "green", "purple"))
+			if ("blue")
+				new /obj/item/clothing/under/rank/medical/blue(src)
+				new /obj/item/clothing/head/surgery/blue(src)
+			if ("green")
+				new /obj/item/clothing/under/rank/medical/green(src)
+				new /obj/item/clothing/head/surgery/green(src)
+			if ("purple")
+				new /obj/item/clothing/under/rank/medical/purple(src)
+				new /obj/item/clothing/head/surgery/purple(src)
+		switch(pick("blue", "green", "purple"))
+			if ("blue")
+				new /obj/item/clothing/under/rank/medical/blue(src)
+				new /obj/item/clothing/head/surgery/blue(src)
+			if ("green")
+				new /obj/item/clothing/under/rank/medical/green(src)
+				new /obj/item/clothing/head/surgery/green(src)
+			if ("purple")
+				new /obj/item/clothing/under/rank/medical/purple(src)
+				new /obj/item/clothing/head/surgery/purple(src)
+		new /obj/item/clothing/under/rank/medical(src)
+		new /obj/item/clothing/under/rank/nurse(src)
+		new /obj/item/clothing/under/rank/orderly(src)
+		new /obj/item/clothing/suit/storage/labcoat(src)
+		new /obj/item/clothing/suit/storage/fr_jacket(src)
+		new /obj/item/clothing/shoes/lw/brown(src)
+//		new /obj/item/weapon/cartridge/medical(src)
+		new /obj/item/device/radio/headset/headset_med(src)
+		new /obj/item/weapon/storage/belt/medical(src)
+		return
+
 /obj/structure/closet/secure_closet/medical4
 	name = "Blood Freezer"
 	desc = "Contains blood packs used for transfusion."
@@ -79,6 +130,47 @@
 		return
 
 
+
+/obj/structure/closet/secure_closet/CMO
+	name = "Chief Medical Officer's Locker"
+	req_access = list(access_cmo)
+	icon_state = "cmosecure1"
+	icon_closed = "cmosecure"
+	icon_locked = "cmosecure1"
+	icon_opened = "cmosecureopen"
+	icon_broken = "cmosecurebroken"
+	icon_off = "cmosecureoff"
+
+	New()
+		..()
+		sleep(2)
+		if(prob(50))
+			new /obj/item/weapon/storage/backpack/medic(src)
+		else
+			new /obj/item/weapon/storage/backpack/satchel_med(src)
+		new /obj/item/clothing/suit/bio_suit/cmo(src)
+		new /obj/item/clothing/head/bio_hood/cmo(src)
+		new /obj/item/clothing/shoes/lw/brown(src)
+		switch(pick("blue", "green", "purple"))
+			if ("blue")
+				new /obj/item/clothing/under/rank/medical/blue(src)
+				new /obj/item/clothing/head/surgery/blue(src)
+			if ("green")
+				new /obj/item/clothing/under/rank/medical/green(src)
+				new /obj/item/clothing/head/surgery/green(src)
+			if ("purple")
+				new /obj/item/clothing/under/rank/medical/purple(src)
+				new /obj/item/clothing/head/surgery/purple(src)
+		new /obj/item/clothing/under/rank/chief_medical_officer(src)
+		new /obj/item/clothing/suit/storage/labcoat/cmo(src)
+		new /obj/item/weapon/cartridge/cmo(src)
+		new /obj/item/clothing/gloves/latex(src)
+		new /obj/item/clothing/shoes/lw/brown	(src)
+		new /obj/item/device/radio/headset/heads/cmo(src)
+		new /obj/item/weapon/storage/belt/medical(src)
+		new /obj/item/device/flash(src)
+		new /obj/item/weapon/reagent_containers/hypospray(src)
+		return
 
 
 

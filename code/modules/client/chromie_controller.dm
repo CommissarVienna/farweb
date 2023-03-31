@@ -46,14 +46,14 @@ var/global/list/hiden_obols = list()
 				return
 		if("SilencePigs")
 			to_chat(world, "<p style='font-size:22px'><span class='passivebold'>[src.key] grants us Silence of the Pigs!</span></p>")
-			world << 'sound/pigdeath.ogg'
+			world << 'pigdeath.ogg'
 			silenceofpigs = TRUE
 			return
 		if("Trapokalipsis")
 			trapokalipsis = TRUE
 			to_chat(world, "<p style='font-size:22px'><span class='passivebold'>[src.key] grants us Trapokalipsis!</span></p>")
 			trapapoc = ckeywhitelistweb.Copy()
-			world << 'sound/effects/ladyend.ogg'
+			world << 'ladyend.ogg'
 		if("ForceAspect")
 			var/mob/new_player/N = user
 			var/events_pick = subtypesof(/datum/round_event)

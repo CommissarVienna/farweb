@@ -102,7 +102,7 @@
 /datum/organ/internal/proc/take_damage(amount, var/silent=0)
 	damage += amount * damagelevel
 
-	if(owner.my_stats.get_stat(STAT_HT))
+	if(owner.my_stats.ht)
 		damage = damage
 	owner.custom_pain("<span class='bname'>OOOOH MY [capitalize(name)]!</span>", 1)
 /*	if (!silent)

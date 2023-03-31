@@ -198,7 +198,7 @@
 		src.sound2()
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-		playsound(W.loc, pick('sound/effects/fence_hit1.ogg','sound/effects/fence_hit2.ogg','sound/effects/fence_hit3.ogg'), 25, 1, -1)
+		playsound(W.loc, pick('fence_hit1.ogg','fence_hit2.ogg','fence_hit3.ogg'), 25, 1, -1)
 		user.adjustStaminaLoss(rand(2,8))
 		animate(src, pixel_y=rand(-5,5), pixel_x=rand(-5,5), time = 1)
 		spawn(5)
@@ -206,11 +206,11 @@
 		user.learn_skill(W.speciality, src, 0, TRUE)
 		return
 	else
-		to_chat(user, "[pick(fnord)] I can't learn anything with [W]")
+		to_chat(user, "[pick(nao_consigoen)] I can't learn anything with [W]")
 		return
 
 /obj/structure/lifeweb/statue/dummy/comicursed
-	icon = 'icons/dummyBig.dmi'
+	icon = 'dummyBig.dmi'
 	icon_state = ""
 
 /obj/machinery/chem_master/holy_altar/proc/darken()
@@ -272,16 +272,16 @@
 /obj/item/weapon/sonic_screwdriver/afterattack(atom/A, mob/user as mob, proximity) //i could've just done a for() i'm a retard holy fck
 	if(!proximity) return
 	if(istype(A, /obj/machinery/door/airlock))
-		playsound(src.loc, 'sound/webbers/sscrew.ogg', 100, 0)
+		playsound(src.loc, 'sscrew.ogg', 100, 0)
 		playsound(src.loc, "sparks", 100, 1)
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(5, 1,src)
 		s.start()
 		if(do_after(user, 20))
-			playsound(src.loc, 'sound/webbers/sscrew.ogg', 100, 0)
+			playsound(src.loc, 'sscrew.ogg', 100, 0)
 			playsound(src.loc, "sparks", 100, 1)
 			if(do_after(user, 20))
-				playsound(src.loc, 'sound/webbers/sscrew.ogg', 100, 0)
+				playsound(src.loc, 'sscrew.ogg', 100, 0)
 				playsound(src.loc, "sparks", 100, 1)
 				var/obj/machinery/door/airlock/AA = A
 				AA.locked = 0
@@ -314,7 +314,7 @@
 			src.visible_message("\red <B>Processing...</B>", 1)
 			if(S.taintedblood)
 				src.visible_message("\red <B>Tainted Blood detected!</B>", 1)
-				playsound(src.loc, 'sound/lfwbsounds/thanati_key.ogg', 30, 0)
+				playsound(src.loc, 'thanati_key.ogg', 30, 0)
 				S.filledblood = FALSE
 				S.icon_state = "bsnatcher0"
 			else
@@ -419,7 +419,6 @@
 		switch(alert("Do you REALLY want to sign?", "Sign certificate", "Yes", "No"))
 			if("Yes")
 				if(user.job == "Inquisitor") return
-				if(user.job == "Practicus") return
 				if(user.real_name == signedby) return
 				playsound(src.loc, 'sound/lfwbsounds/sign_this.ogg', 50, 1)
 				visible_message("<span class='passiveboldsmaller'>[user]</span> <span class='passivesmaller'>signs the [src]!</span>")
@@ -427,12 +426,10 @@
 				signedby = user.real_name
 				for(var/mob/living/carbon/human/H in view(7))
 					if(H.job == "Inquisitor")
-						if(Inquisitor_Type == "Month's Inquisitor" && user.signed_avowal == FALSE)
+						if(Inquisitor_Type == "Month's Inquisitor")
 							H.gainWP(1,1)
-							user.signed_avowal = TRUE
-						if(Inquisitor_Type == "Corrupt" && user.signed_avowal == FALSE)
+						if(Inquisitor_Type == "Corrupt")
 							H?.client?.ChromieWinorLoose(H.client, 1)
-							user.signed_avowal = TRUE
 				user.add_event("damned", /datum/happiness_event/damned)
 			if("No")
 				return
@@ -483,14 +480,14 @@
 	else
 		on = 0
 		icon_state = "heartbeatoff"
-	playsound(user, pick('sound/webbers/confirm1.ogg', 'sound/webbers/confirm2.ogg', 'sound/webbers/confirm3.ogg', 'sound/webbers/confirm5.ogg', 'sound/webbers/confirm7.ogg', 'sound/webbers/confirm8.ogg', 'sound/webbers/confirm9.ogg'), 100)
+	playsound(user, pick('confirm1.ogg', 'confirm2.ogg', 'confirm3.ogg', 'confirm5.ogg', 'confirm7.ogg', 'confirm8.ogg', 'confirm9.ogg'), 100)
 
 
 /obj/item/weapon/heart_beater/attack(mob/living/carbon/human/M as mob, mob/living/carbon/human/user as mob)
-	playsound(src, 'sound/webbers/device_on.ogg', 100)
+	playsound(src, 'device_on.ogg', 100)
 	if(do_after(user,30))
 		if(ismonster(M) || iszombie(M) || M?.isVampire || M?.mind?.changeling || M.stat == 2 || M.death_door)
 			to_chat(user, "[icon2html(src, usr)]<span class='passivebold'>NO HEARTBEAT DETECTED.</span>")
 		else
 			to_chat(user, "[icon2html(src, usr)]<span class='passivebold'>HEARTBEAT DETECTED.</span>")
-		playsound(src, 'sound/machines/twobeep.ogg', 100)
+		playsound(src, 'twobeep.ogg', 100)

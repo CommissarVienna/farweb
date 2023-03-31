@@ -111,9 +111,9 @@ proc/do_surgery(mob/living/carbon/human/M, mob/living/carbon/human/user, obj/ite
 				if(do_after(user, rand(S.min_duration, S.max_duration)))
 					var/list/roll_result = roll3d6(user,SKILL_SURG, S.difficulty * -1, FALSE)
 					switch(roll_result[GP_RESULT])
-						if(GP_SUCC, GP_CRITSUCC)
+						if(GP_SUCCESS, GP_CRITSUCCESS)
 							S.end_step(user, M, user.zone_sel.selecting, tool)		//finish successfully
-						if(GP_FAIL, GP_CRITFAIL)
+						if(GP_FAILED, GP_CRITFAIL)
 							S.fail_step(user, M, user.zone_sel.selecting, tool)
 				else if (tool in user.contents && user.Adjacent(M))			//or
 					S.fail_step(user, M, user.zone_sel.selecting, tool)		//malpractice~

@@ -19,7 +19,7 @@
 	attacktext = "punches"
 	destroy_surroundings = 0
 	search_objects = 0
-	attack_sound = 'sound/voice/fam_att.ogg'
+	attack_sound = 'fam_att.ogg'
 	faction = "creature"
 	speed = 25
 	a_intent = "harm"

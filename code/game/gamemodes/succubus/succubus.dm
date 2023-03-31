@@ -8,7 +8,6 @@
 	uplink_welcome = "Syndicate Uplink Console:"
 	uplink_uses = 10
 	has_starring = TRUE
-	required_enemies = 2
 
 	var/const/waittime_l = 600 //lower bound on time before intercept arrives (in tenths of seconds)
 	var/const/waittime_h = 1800
@@ -19,14 +18,9 @@
 
 /datum/game_mode/succubus/post_setup()
 	var/list/candidatelist = list()
-	var/list/possible_suckers = get_players_for_antag()
-
-	while(possible_suckers.len)
-		var/datum/mind/sucker_mind = pick(possible_suckers)
-		if(ishuman(sucker_mind.current) && sucker_mind.current.gender == FEMALE && sucker_mind.current:species.name != "Child" && !sucker_mind.current:outsider && !sucker_mind.current:has_penis())
-			candidatelist += sucker_mind
-		possible_suckers.Remove(sucker_mind)
-
+	for(var/mob/living/carbon/human/H in mob_list)
+		if(H.client && H.gender == FEMALE && H.species.name != "Child" && !H.outsider && !H.has_penis())
+			candidatelist.Add(H)
 	candidatelist = shuffle(candidatelist)
 	var/mob/living/carbon/human/SUC
 	var/mob/living/carbon/human/SUC1
@@ -54,9 +48,9 @@
 /mob/proc/make_succubi()
 	if(!mind)				return
 	if(!mind.succubus)	mind.succubus = new /datum/succubus()
-	add_verb(list(/mob/living/carbon/human/proc/teleportSlaves,
-	/mob/living/carbon/human/proc/killSlave,
-	/mob/living/carbon/human/proc/punishSlave))
+	verbs += /mob/living/carbon/human/proc/teleportSlaves
+	verbs += /mob/living/carbon/human/proc/killSlave
+	verbs += /mob/living/carbon/human/proc/punishSlave
 	var/mob/living/carbon/human/H = src
 	if(ishuman(src))
 		H.my_skills.CHANGE_SKILL(SKILL_PARTY, 17)

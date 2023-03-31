@@ -41,7 +41,7 @@
 		var/datum/organ/external/affected = target.get_organ(target_zone)
 		user.visible_message("\blue [user] has patched the damaged vein in [target]'s [affected.display_name] with \the [tool].", \
 			"\blue You have patched the damaged vein in [target]'s [affected.display_name] with \the [tool].")
-		playsound(user.loc, 'sound/effects/sewing.ogg', 50, 1, -3)
+		playsound(user.loc, 'sewing.ogg', 50, 1, -3)
 		for(var/datum/wound/W in affected.wounds) if(W.internal)
 			affected.wounds -= W
 			affected.update_damages()

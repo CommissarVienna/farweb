@@ -247,6 +247,9 @@ its easier to just keep the beam vertical.
 	//This reformat names to get a/an properly working on item descriptions when they are bloody
 	var/f_name = "[src.name]."
 	var/x_name = "a"
+	var/obj/item/device/flashlight/FL = locate() in usr
+	if (FL && FL.on && usr.stat != DEAD)
+		FL.afterattack(src,usr)
 	if(src.blood_DNA && !istype(src, /obj/effect/decal))
 		if(gender == PLURAL)
 			x_name = "some "
@@ -261,7 +264,7 @@ its easier to just keep the beam vertical.
 	if(desc)
 		if(ishuman(usr))
 			var/mob/living/carbon/human/H = usr
-			if(H.my_stats.get_stat(STAT_IN) <= 5)
+			if(H.my_stats.it <= 5)
 				var/randtext = pick("Yoh!","Doh!","Haha")
 				to_chat(usr, "<span class='statustext'>That's [x_name] [f_name]</span>, [randtext]")
 			else
@@ -269,7 +272,7 @@ its easier to just keep the beam vertical.
 	else
 		if(ishuman(usr))
 			var/mob/living/carbon/human/H = usr
-			if(H.my_stats.get_stat(STAT_IN) <= 5)
+			if(H.my_stats.it <= 5)
 				var/randtext = pick("Yoh!","Doh!","Haha")
 				to_chat(usr, "<span class='statustext'>That's [x_name] [f_name]</span>, [randtext]")
 			else
@@ -513,7 +516,7 @@ its easier to just keep the beam vertical.
 		return
 
 	if(user.legcuffed)
-		to_chat(user, "<span class='combatbold'>[pick(fnord)] I'm stuck!</span>")
+		to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)] I'm stuck!</span>")
 		return
 	if(user.handcuffed)
 		if(isliving(src))
@@ -521,7 +524,7 @@ its easier to just keep the beam vertical.
 			if(!L.lying)
 				var/list/kickRollCuff = roll3d6(user,SKILL_UNARM,null)
 				switch(kickRollCuff[GP_RESULT])
-					if(GP_FAIL)
+					if(GP_FAILED)
 						user.visible_message("<span class='danger'>[user.name] loses \his balance while trying to kick \the [src].</span>", \
 									"<span class='warning'> You lost your balance.</span>")
 						user.Weaken(3)
@@ -613,12 +616,12 @@ its easier to just keep the beam vertical.
 //	playsound(user, "sound/effects/jump_[user.gender == MALE ? "male" : "female"].ogg", 25)
 	var/jump_safe = get_dist(user, target)
 	if(user.species.name == "Zombie")
-		playsound(user, pick('sound/voice/zombie_lounge.ogg','sound/voice/zombie_lounge2.ogg','sound/voice/zombie_lounge3.ogg','sound/voice/zombie_lounge4.ogg'), 25)
+		playsound(user, pick('zombie_lounge.ogg','zombie_lounge2.ogg','zombie_lounge3.ogg','zombie_lounge4.ogg'), 25)
 		user.canmove = 0
 		spawn(10)
 			user.canmove = 1
 	if(user.species.name == "Alien")
-		playsound(user, pick('sound/webbers/alien_jump.ogg'), 50)
+		playsound(user, pick('alien_jump.ogg'), 50)
 	else
 		if(!april_fools)
 			if(user.acrobat)
@@ -633,7 +636,7 @@ its easier to just keep the beam vertical.
 					else
 						playsound(user, 'sound/effects/jump_female.ogg', 100, 0, -5)
 		else
-			playsound(user, 'sound/SHITTYJOKE/worms_jump.ogg', 25)
+			playsound(user, 'worms_jump.ogg', 25)
 			user.say("Hop!")
 	user.jumping = TRUE
 	user.sound2()
@@ -656,7 +659,7 @@ its easier to just keep the beam vertical.
 			user.adjustStaminaLoss(rand(5,10))
 			user:weakened = max(user:weakened,4)
 	if(user.carryingweight >= user.maxweight)
-		if(user.my_stats.get_stat(STAT_DX) >= rand(13,15))
+		if(user.my_stats.dx >= rand(13,15))
 			user.throw_at(target, 2, 0.5, user)
 			user.adjustStaminaLoss(rand(10,20))
 			user:weakened = max(user:weakened,3)
@@ -667,7 +670,7 @@ its easier to just keep the beam vertical.
 			user:weakened = max(user:weakened,4)
 			to_chat(user, "TOO HEAVY!")
 	else
-		if(user.my_stats.get_stat(STAT_DX) >= 20 || user.check_perk(/datum/perk/ref/jumper) || user.acrobat)
+		if(user.my_stats.dx >= 20 || user.check_perk(/datum/perk/ref/jumper) || user.acrobat)
 			if(user.acrobat)
 				user.FusRoDah(5)
 				user.throw_at(target, 4, 0.5, user)
@@ -682,7 +685,7 @@ its easier to just keep the beam vertical.
 
 /obj/screen/text/atm
 
-var/list/fonts = list('code/chatpanel/browserassets/rsc/gothic.ttf', 'code/chatpanel/browserassets/rsc/hando.ttf', 'code/chatpanel/browserassets/rsc/type.ttf')
+var/list/fonts = list('gothic.ttf', 'hando.ttf', 'type.ttf')
 
 /client/MouseEntered(var/atom/a)
 	if(mob && ishuman(mob))
@@ -703,9 +706,6 @@ var/list/fonts = list('code/chatpanel/browserassets/rsc/gothic.ttf', 'code/chatp
 				H.facedir(direction)
 				H.facing_dir = direction
 		var/colorofText = "#999897"
-		var/display_name = a.name
-		if(ishuman(a) && a:isStealth())
-			display_name = "R a t"
 		if(istype(a, /turf))
 			colorofText = "#999897"
 		if(istype(a, /obj))
@@ -717,7 +717,7 @@ var/list/fonts = list('code/chatpanel/browserassets/rsc/gothic.ttf', 'code/chatp
 		if(a.mouse_opacity)  // i spread this out to make it more "readable"
 			H.hovertext.maptext = "<center><br><br><br><span style=\"\
 			color: [colorofText]; \
-			\"><font size= '3' face='AlundraText'>[uppertext(display_name)]\
+			\"><font face='Deutsch Gothic'>[a.name]\
 			</font></span></center>"
 		else
 			H.hovertext.maptext = ""  // ui is blank, sad!

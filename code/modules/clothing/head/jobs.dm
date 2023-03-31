@@ -1,14 +1,5 @@
 
 //Bartender
-
-/obj/item/clothing/head/furhat
-	name = "fur hat"
-	desc = ""
-	icon_state = "hatfur"
-	item_state = "hatfur"
-	flags = FPRINT | TABLEPASS
-	cold_protection = HEAD
-
 /obj/item/clothing/head/chefhat
 	name = "chef's hat"
 	desc = "It's a hat used by chefs to keep hair out of your food. Judging by the food in the mess, they don't work."
@@ -16,6 +7,22 @@
 	item_state = "chef"
 	flags = FPRINT | TABLEPASS
 	siemens_coefficient = 0.9
+
+/obj/item/clothing/head/treasurerhat
+	name = "treasurer's hat"
+	desc = ""
+	icon_state = "treasurer"
+	item_state = "treasurer"
+	flags = FPRINT | TABLEPASS
+	siemens_coefficient = 0.9
+
+/obj/item/clothing/head/furhat
+	name = "fur hat"
+	desc = ""
+	icon_state = "furhat"
+	item_state = "furhat"
+	flags = FPRINT | TABLEPASS
+	cold_protection = HEAD
 
 /obj/item/clothing/head/obard
 	name = "noble's hat"
@@ -75,10 +82,10 @@
 
 /obj/item/clothing/head/misero
 	name = "dirty hat"
-	icon_state = "sny"
+	icon_state = "misero"
 	desc = "Yo!"
 	flags = FPRINT|TABLEPASS
-	item_state = "sny"
+	item_state = "misero"
 	siemens_coefficient = 0.9
 
 /obj/item/weapon/rag
@@ -115,10 +122,10 @@
 
 /obj/item/clothing/head/inquisihat
 	name = "Inquisitor hat"
-	icon_state = "inqhat"
+	icon_state = "inquisihat"
 	desc = "Nobody expects the inquisition."
 	flags = FPRINT|TABLEPASS
-	item_state = "inqhat"
+	item_state = "inquisihat"
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/head/inqcap
@@ -140,10 +147,10 @@
 
 /obj/item/clothing/head/inkvdhat
 	name = "INKVD hat"
-	icon_state = "witchhunter"
+	icon_state = "inkvdhat"
 	desc = "Nobody expects the inquisition."
 	flags = FPRINT|TABLEPASS
-	item_state = "witchhunter"
+	item_state = "inkvdhat"
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/head/hood
@@ -174,10 +181,10 @@
 
 /obj/item/clothing/head/blackbag
 	name = "blackbag"
-	icon_state = "bag"
+	icon_state = "blackbag"
 	desc = "Nobody expects the black bag."
-	flags = FPRINT|TABLEPASS|HIDEFACE|BLOCKHAIR|HEADCOVERSEYES|HEADCOVERSMOUTH
-	item_state = "kbag"
+	flags = FPRINT|TABLEPASS|HIDEFACE
+	item_state = "blackbag"
 	siemens_coefficient = 0.9
 	wrist_use = TRUE
 
@@ -187,34 +194,11 @@
 		var/mob/living/carbon/human/H = A
 		if(H.head)
 			var/obj/item/HAT = H.head
-			if(istype(HAT, /obj/item/clothing/head/helmet))
-				return
-			else
+			if(!istype(HAT, /obj/item/clothing/head/helmet))
 				H.drop_from_inventory(HAT)
 		user.drop_from_inventory(user.get_active_hand())
 		H.equip_to_slot_or_del(src, slot_head)
-		H.update_icons()
-		H.emote("torturescream",1, null, 0)
-		H.handle_regular_hud_updates()
 	return
-
-
-/obj/item/clothing/head/blackbag/equipped(mob/M,var/slot)
-	if(!ishuman(M))
-		return
-
-	var/mob/living/carbon/human/H = M
-	if(slot == slot_head)
-		H.eye_closed = TRUE
-		H.blinded = 100
-		H.client?.screen += global_hud?.blind
-		H.handle_regular_hud_updates()
-
-	else
-		H.client?.screen -= global_hud?.blind
-		H.eye_closed = FALSE
-		H.blinded = initial(H.blinded)
-		H.handle_regular_hud_updates()
 
 
 /obj/item/clothing/head/misero/afterattack(atom/A as turf, mob/living/carbon/human/user as mob, proximity)
@@ -246,10 +230,10 @@ var/obj/item/fortCrown = null
 
 /obj/item/clothing/head/lordcrown
 	name = "cave crown"
-	icon_state = "cavecrown"
+	icon_state = "lordCrown"
 	desc = "A crown of teeth and bone."
 	flags = FPRINT|TABLEPASS
-	item_state = "cavecrown"
+	item_state = "lordCrown"
 	siemens_coefficient = 0.9
 	item_worth = 500
 
@@ -258,12 +242,23 @@ var/obj/item/fortCrown = null
 	..()
 /obj/item/clothing/head/expedleader
 	name = "Expedition Leader hat"
-	icon_state = "captain"
+	icon_state = "caphat"
 	desc = "It's good being the leader."
 	flags = FPRINT|TABLEPASS
-	item_state = "captain"
+	item_state = "captaincap"
 	siemens_coefficient = 0.9
 	item_worth = 50
+
+//Captain: This probably shouldn't be space-worthy
+/obj/item/clothing/head/helmet/cap
+	name = "captain's cap"
+	desc = "You fear to wear it for the negligence it brings."
+	icon_state = "capcap"
+	flags = FPRINT|TABLEPASS
+	flags_inv = 0
+	cold_protection = HEAD
+	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
+	siemens_coefficient = 0.9
 
 //Chaplain
 /obj/item/clothing/head/chaplain_hood
@@ -310,8 +305,8 @@ var/obj/item/fortCrown = null
 /obj/item/clothing/head/peasant
 	name = "peasant hood"
 	desc = "A simple hood worn by peasants"
-	icon_state = "pea1sant"
-	item_state = "pea1sant"
+	icon_state = "peasant"
+	item_state = "peasant"
 	flags = FPRINT | TABLEPASS
 
 /obj/item/clothing/head/armingcap
@@ -335,6 +330,13 @@ var/obj/item/fortCrown = null
 /obj/item/clothing/head/plebhood/leper
 	icon_state = "leper"
 
+//Mime
+/obj/item/clothing/head/beret
+	name = "beret"
+	desc = "A beret, an artists favorite headwear."
+	icon_state = "beret"
+	flags = FPRINT | TABLEPASS
+	siemens_coefficient = 0.9
 
 /obj/item/clothing/head/cap
 	name = "flat cap"
@@ -343,3 +345,34 @@ var/obj/item/fortCrown = null
 	flags = FPRINT | TABLEPASS
 	siemens_coefficient = 0.9
 	body_parts_covered = HEAD
+
+//Security
+/obj/item/clothing/head/beret/sec
+	name = "security beret"
+	desc = "A beret with the security insignia emblazoned on it. For officers that are more inclined towards style than safety."
+	icon_state = "beret_badge"
+	flags = FPRINT | TABLEPASS
+/obj/item/clothing/head/beret/eng
+	name = "engineering beret"
+	desc = "A beret with the engineering insignia emblazoned on it. For engineers that are more inclined towards style than safety."
+	icon_state = "e_beret_badge"
+	flags = FPRINT | TABLEPASS
+
+//Medical
+/obj/item/clothing/head/surgery
+	name = "surgical cap"
+	desc = "A cap surgeons wear during operations. Keeps their hair from tickling your internal organs."
+	icon_state = "surgcap_blue"
+	flags = FPRINT | TABLEPASS | BLOCKHEADHAIR
+
+/obj/item/clothing/head/surgery/purple
+	desc = "A cap surgeons wear during operations. Keeps their hair from tickling your internal organs. This one is deep purple."
+	icon_state = "surgcap_purple"
+
+/obj/item/clothing/head/surgery/blue
+	desc = "A cap surgeons wear during operations. Keeps their hair from tickling your internal organs. This one is baby blue."
+	icon_state = "surgcap_blue"
+
+/obj/item/clothing/head/surgery/green
+	desc = "A cap surgeons wear during operations. Keeps their hair from tickling your internal organs. This one is dark green."
+	icon_state = "surgcap_green"

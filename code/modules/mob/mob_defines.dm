@@ -120,7 +120,6 @@
 	var/list/languages = list()         // For speaking/listening.
 	var/list/habilities = list()         // For species-derived or admin-given powers.
 	var/list/speak_emote = list("says") // Verbs used when speaking. Defaults to 'say' if speak_emote is null.
-	var/list/CuckedBy = list ()
 	var/emote_type = 1		// Define emote default type, 1 for seen emotes, 2 for heard emotes
 	var/tentaclesexposed = FALSE // chang shit
 	//CHURCH SHIT
@@ -276,4 +275,3 @@
 	var/pain_dropped = FALSE
 	var/altista = FALSE
 	var/follow_mouse = FALSE // Makes the humans direction turn towards the mouse
-	var/list/default_buttons = list()

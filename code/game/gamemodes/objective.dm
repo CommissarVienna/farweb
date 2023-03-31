@@ -552,12 +552,89 @@ datum/objective/steal
 						found_amount++
 					return found_amount>=target
 
+			if("a functional AI")
+				for(var/obj/item/device/aicard/C in all_items) //Check for ai card
+					for(var/mob/living/silicon/ai/M in C)
+						if(istype(M, /mob/living/silicon/ai) && M.stat != 2) //See if any AI's are alive inside that card.
+							return 1
+
+				for(var/obj/item/clothing/suit/space/space_ninja/S in all_items) //Let an AI downloaded into a space ninja suit count
+					if(S.AI && S.AI.stat != 2)
+						return 1
+				for(var/mob/living/silicon/ai/ai in world)
+					if(istype(ai.loc, /turf))
+						var/area/check_area = get_area(ai)
+						if(istype(check_area, /area/shuttle/escape/centcom))
+							return 1
+						if(istype(check_area, /area/shuttle/escape_pod1/centcom))
+							return 1
+						if(istype(check_area, /area/shuttle/escape_pod2/centcom))
+							return 1
+						if(istype(check_area, /area/shuttle/escape_pod3/centcom))
+							return 1
+						if(istype(check_area, /area/shuttle/escape_pod5/centcom))
+							return 1
 			else
 
 				for(var/obj/I in all_items) //Check for items
 					if(istype(I, steal_target))
 						return 1
 		return 0
+
+
+
+datum/objective/download
+	proc/gen_amount_goal()
+		target_amount = rand(10,20)
+		explanation_text = "Download [target_amount] research levels."
+		return target_amount
+
+
+	check_completion()
+		if(!ishuman(owner.current))
+			return 0
+		if(!owner.current || owner.current.stat == 2)
+			return 0
+		if(!(istype(owner.current:wear_suit, /obj/item/clothing/suit/space/space_ninja)&&owner.current:wear_suit:s_initialized))
+			return 0
+		var/current_amount
+		var/obj/item/clothing/suit/space/space_ninja/S = owner.current:wear_suit
+		if(!S.stored_research.len)
+			return 0
+		else
+			for(var/datum/tech/current_data in S.stored_research)
+				if(current_data.level>1)	current_amount+=(current_data.level-1)
+		if(current_amount<target_amount)	return 0
+		return 1
+
+
+
+datum/objective/capture
+	proc/gen_amount_goal()
+		target_amount = rand(5,10)
+		explanation_text = "Accumulate [target_amount] capture points."
+		return target_amount
+
+
+	check_completion()//Basically runs through all the mobs in the area to determine how much they are worth.
+		var/captured_amount = 0
+		var/area/centcom/holding/A = locate()
+		for(var/mob/living/carbon/human/M in A) // Humans (and subtypes).
+			var/worth = M.species.rarity_value
+			if(M.stat==2)//Dead folks are worth less.
+				worth*=0.5
+				continue
+			captured_amount += worth
+		for(var/mob/living/carbon/monkey/M in A)//Monkeys are almost worthless, you failure.
+			captured_amount+=0.1
+		for(var/mob/living/carbon/alien/larva/M in A)//Larva are important for research.
+			if(M.stat==2)
+				captured_amount+=0.5
+				continue
+			captured_amount+=1
+		if(captured_amount<target_amount)
+			return 0
+		return 1
 
 
 
@@ -673,3 +750,177 @@ datum/objective/plinio
 
 /*-------ENDOF CULTIST------*/
 */
+
+//Vox heist objectives.
+
+datum/objective/heist
+	proc/choose_target()
+		return
+
+datum/objective/heist/kidnap
+	choose_target()
+		var/list/roles = list("Chief Engineer","Research Director","Roboticist","Chemist","Vessel Engineer")
+		var/list/possible_targets = list()
+		var/list/priority_targets = list()
+
+		for(var/datum/mind/possible_target in ticker.minds)
+			if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2) && (possible_target.assigned_role != "MODE"))
+				possible_targets += possible_target
+				for(var/role in roles)
+					if(possible_target.assigned_role == role)
+						priority_targets += possible_target
+						continue
+
+		if(priority_targets.len > 0)
+			target = pick(priority_targets)
+		else if(possible_targets.len > 0)
+			target = pick(possible_targets)
+
+		if(target && target.current)
+			explanation_text = "The Shoal has a need for [target.current.real_name], the [target.assigned_role]. Take them alive."
+		else
+			explanation_text = "Free Objective"
+		return target
+
+	check_completion()
+		if(target && target.current)
+			if (target.current.stat == 2)
+				return 0 // They're dead. Fail.
+			//if (!target.current.restrained())
+			//	return 0 // They're loose. Close but no cigar.
+
+			var/area/shuttle/vox/station/A = locate()
+			for(var/mob/living/carbon/human/M in A)
+				if(target.current == M)
+					return 1 //They're restrained on the shuttle. Success.
+		else
+			return 0
+
+datum/objective/heist/loot
+
+	choose_target()
+		var/loot = "an object"
+		switch(rand(1,8))
+			if(1)
+				target = /obj/structure/particle_accelerator
+				target_amount = 6
+				loot = "a complete particle accelerator"
+			if(2)
+				target = /obj/machinery/the_singularitygen
+				target_amount = 1
+				loot = "a gravitational generator"
+			if(3)
+				target = /obj/machinery/power/emitter
+				target_amount = 4
+				loot = "four emitters"
+			if(4)
+				target = /obj/machinery/nuclearbomb
+				target_amount = 1
+				loot = "a nuclear bomb"
+			if(5)
+				target = /obj/item/weapon/gun
+				target_amount = 6
+				loot = "six guns"
+			if(6)
+				target = /obj/item/weapon/gun/energy
+				target_amount = 4
+				loot = "four energy guns"
+			if(7)
+				target = /obj/item/weapon/gun/energy/taser/leet/laser
+				target_amount = 2
+				loot = "two laser guns"
+		explanation_text = "We are lacking in hardware. Steal [loot]."
+
+	check_completion()
+
+		var/total_amount = 0
+
+		for(var/obj/O in locate(/area/shuttle/vox/station))
+			if(istype(O,target)) total_amount++
+			for(var/obj/I in O.contents)
+				if(istype(I,target)) total_amount++
+			if(total_amount >= target_amount) return 1
+
+		var/datum/game_mode/heist/H = ticker.mode
+		for(var/datum/mind/raider in H.raiders)
+			if(raider.current)
+				for(var/obj/O in raider.current.get_contents())
+					if(istype(O,target)) total_amount++
+					if(total_amount >= target_amount) return 1
+
+		return 0
+
+datum/objective/heist/salvage
+
+	choose_target()
+		switch(rand(1,8))
+			if(1)
+				target = "metal"
+				target_amount = 300
+			if(2)
+				target = "glass"
+				target_amount = 200
+			if(3)
+				target = "plasteel"
+				target_amount = 100
+			if(4)
+				target = "plasma"
+				target_amount = 100
+			if(5)
+				target = "silver"
+				target_amount = 50
+			if(6)
+				target = "gold"
+				target_amount = 20
+			if(7)
+				target = "uranium"
+				target_amount = 20
+			if(8)
+				target = "diamond"
+				target_amount = 20
+
+		explanation_text = "Ransack the [vessel_type] and escape with [target_amount] [target]."
+
+	check_completion()
+
+		var/total_amount = 0
+
+		for(var/obj/item/O in locate(/area/shuttle/vox/station))
+
+			var/obj/item/stack/sheet/S
+			if(istype(O,/obj/item/stack/sheet))
+				if(O.name == target)
+					S = O
+					total_amount += S.amount
+			for(var/obj/I in O.contents)
+				if(istype(I,/obj/item/stack/sheet))
+					if(I.name == target)
+						S = I
+						total_amount += S.amount
+
+		var/datum/game_mode/heist/H = ticker.mode
+		for(var/datum/mind/raider in H.raiders)
+			if(raider.current)
+				for(var/obj/item/O in raider.current.get_contents())
+					if(istype(O,/obj/item/stack/sheet))
+						if(O.name == target)
+							var/obj/item/stack/sheet/S = O
+							total_amount += S.amount
+
+		if(total_amount >= target_amount) return 1
+		return 0
+
+
+datum/objective/heist/inviolate_crew
+	explanation_text = "Do not leave any Vox behind, alive or dead."
+
+	check_completion()
+		var/datum/game_mode/heist/H = ticker.mode
+		if(H.is_raider_crew_safe()) return 1
+		return 0
+
+datum/objective/heist/inviolate_death
+	explanation_text = "Follow the Inviolate. Minimise death and loss of resources."
+	check_completion()
+		if(vox_kills>5) return 0
+		return 1

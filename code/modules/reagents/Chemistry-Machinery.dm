@@ -612,7 +612,7 @@
 		return
 	var/mob/living/carbon/human/H = user
 	if(!H.check_perk(/datum/perk/chemical))
-		to_chat(usr, "<span class='combatbold'>[pick(fnord)] How do I use this?</span>")
+		to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)] How do I use this?</span>")
 		return
 	user.set_machine(src)
 	if(!(user.client in has_sprites))

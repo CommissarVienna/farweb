@@ -40,11 +40,11 @@
 	icon_state = "bedcons"
 
 /obj/structure/stool/bed/couple1
-	icon = 'icons/obj/bigbed.dmi'
+	icon = 'bigbed.dmi'
 	icon_state = "bed"
 
 /obj/structure/stool/bed/couple2
-	icon = 'icons/obj/bigbed.dmi'
+	icon = 'bigbed.dmi'
 	icon_state = "bed2"
 	pixel_y = -13
 
@@ -174,7 +174,7 @@
 			buckled_mob.loc = src.loc
 		else
 			buckled_mob = null
-	playsound(src.loc, 'sound/misc/rollermove.ogg', 50, 1)
+	playsound(src.loc, 'rollermove.ogg', 50, 1)
 
 /obj/structure/stool/bed/roller/buckle_mob(mob/M as mob, mob/user as mob)
 	if ( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.restrained() || user.stat || M.buckled || istype(usr, /mob/living/silicon/pai) )

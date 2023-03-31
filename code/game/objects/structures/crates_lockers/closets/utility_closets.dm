@@ -169,6 +169,7 @@
 	..()
 	sleep(2)
 	new /obj/item/clothing/suit/bomb_suit( src )
+	new /obj/item/clothing/under/color/black( src )
 	new /obj/item/clothing/shoes/lw/black( src )
 	new /obj/item/clothing/head/bomb_hood( src )
 

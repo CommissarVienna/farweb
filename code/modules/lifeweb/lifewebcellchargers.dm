@@ -4,7 +4,7 @@ var/list/affectedItems = list()
 
 /obj/machinery/web_recharger
 	name = "battery charger"
-	icon = 'icons/obj/LW2.dmi'
+	icon = 'LW2.dmi'
 	icon_state = "battery_station"
 	anchored = 1
 	use_power = 1
@@ -87,9 +87,9 @@ obj/item/weapon/cell/web/empty/New()
     ..()
     charging = new /obj/item/weapon/cell/web(src)
     //var/powered = TRUE
-    overlays += icon('icons/obj/LW2.dmi', "bbattery")
+    overlays += icon('LW2.dmi', "bbattery")
 
-    powerOverlay = image('icons/obj/LW2.dmi', icon_state="battery_station_overlay")
+    powerOverlay = image('LW2.dmi', icon_state="battery_station_overlay")
     overlays += powerOverlay
     for(var/area/A in world)
         if(A.name == active_area)
@@ -111,7 +111,7 @@ obj/item/weapon/cell/web/empty/New()
                 newIconState = "ob75"
             if(76 to INFINITY)
                 newIconState = "ob100"
-    powerOverlay = image('icons/obj/LW2.dmi', icon_state=newIconState)
+    powerOverlay = image('LW2.dmi', icon_state=newIconState)
     overlays += powerOverlay
 
 /obj/machinery/light/New()

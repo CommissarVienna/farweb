@@ -1,7 +1,6 @@
 /mob/living/carbon/human/verb/quick_equip()
 	set name = "quick-equip"
 	set hidden = 1
-	return //This is broken for now.
 
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
@@ -57,11 +56,11 @@
 		if(slot_glasses)
 			return has_organ("head")
 		if(slot_gloves)
-			return has_organ("l_hand") || has_organ("r_hand")
+			return has_organ("l_hand") && has_organ("r_hand")
 		if(slot_head)
 			return has_organ("head")
 		if(slot_shoes)
-			return has_organ("r_foot") || has_organ("l_foot")
+			return has_organ("r_foot") && has_organ("l_foot")
 		if(slot_wear_suit)
 			return has_organ("chest")
 		if(slot_w_uniform)
@@ -113,14 +112,12 @@
 		glasses = null
 		success = 1
 		update_inv_glasses()
-		handle_regular_hud_updates()
 	else if (W == head)
 		head = null
 		if((W.flags & BLOCKHAIR) || (W.flags & BLOCKHEADHAIR))
 			update_hair(0)	//rebuild hair
 		success = 1
 		update_inv_head()
-		handle_regular_hud_updates()
 	else if (W == l_ear)
 		l_ear = null
 		success = 1
@@ -293,7 +290,6 @@
 			src.glasses = W
 			W.equipped(src, slot)
 			update_inv_glasses(redraw_mob)
-			handle_regular_hud_updates()
 		if(slot_gloves)
 			src.gloves = W
 			W.equipped(src, slot)
@@ -302,8 +298,9 @@
 			src.head = W
 			if((head.flags & BLOCKHAIR) || (head.flags & BLOCKHEADHAIR))
 				update_hair(redraw_mob)	//rebuild hair
+			if(istype(W,/obj/item/clothing/head/kitty))
+				W.update_icon(src)
 			W.equipped(src, slot)
-			handle_regular_hud_updates()
 			update_inv_head(redraw_mob)
 		if(slot_shoes)
 			src.shoes = W
@@ -773,7 +770,7 @@ It can still be worn/put on as normal.
 					var/mob/living/carbon/human/H = source
 					var/list/roll_result = roll3d6(H, SKILL_MEDIC, 0)
 					switch(roll_result[GP_RESULT])
-						if(GP_CRITSUCC)
+						if(GP_CRITSUCCESS)
 							target.adjustOxyLoss(target.getOxyLoss())
 							target.updatehealth()
 							var/datum/organ/internal/heart/HE = locate() in target.internal_organs
@@ -789,7 +786,7 @@ It can still be worn/put on as normal.
 								if(target.pulse == PULSE_NONE && !HE.stopped_working && HE.damage < HE.min_bruised_damage)
 									target.pulse = PULSE_SLOW
 									target.stat = 1
-						if(GP_SUCC)
+						if(GP_SUCCESS)
 							var/suff = min(target.getOxyLoss(), rand(12,20)) //Pre-merge level, less healing, more prevention of dieing.
 							target.adjustOxyLoss(-suff)
 							target.updatehealth()
@@ -811,7 +808,7 @@ It can still be worn/put on as normal.
 							for(var/mob/O in viewers(source, null))
 								O.show_message("<span class='passivebold'>[source]</span> <span class='passive'>performs CPR on [target]!</span>", 1)
 							to_chat(target, "<span class='passive'>You feel a breath of fresh air enter your lungs.</span>")
-						if(GP_FAIL)
+						if(GP_FAILED)
 							for(var/mob/O in viewers(source, null))
 								O.show_message("<span class='combatbold'>[source]</span> <span class='combat'>performs CPR on [target]!</span>", 1)
 						if(GP_CRITFAIL)

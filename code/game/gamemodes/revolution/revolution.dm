@@ -54,7 +54,7 @@ var/plinioposters = 0
 	if(config.protect_roles_from_antagonist)
 		restricted_jobs += protected_jobs
 
-	var/list/datum/mind/possible_headrevs = get_players_for_antag()
+	var/list/datum/mind/possible_headrevs = get_players_for_role(BE_REV)
 
 	var/head_check = 0
 	for(var/mob/new_player/player in player_list)
@@ -94,7 +94,7 @@ var/plinioposters = 0
 	//	equip_traitor(rev_mind.current, 1) //changing how revs get assigned their uplink so they can get PDA uplinks. --NEO
 	//	Removing revolutionary uplinks.	-Pete
 		equip_revolutionary(rev_mind.current)
-		rev_mind.current.add_verb(/mob/living/carbon/human/proc/RevConvert)
+		rev_mind.current.verbs += /mob/living/carbon/human/proc/RevConvert
 		update_rev_icons_added(rev_mind)
 
 	for(var/datum/mind/rev_mind in head_revolutionaries)
@@ -223,8 +223,7 @@ var/plinioposters = 0
 
 /mob/living/carbon/human/proc/RevConvert()
 	set name = "RevConvert"
-	set desc = "Convert a Citizen"
-	set category = "gpc"
+	set category = "IC"
 	var/list/Possible = list()
 	if(src.stat)
 		return
@@ -513,7 +512,7 @@ var/plinioposters = 0
 /datum/game_mode/revolution/proc/NEGROSSALGAKA(){
 	for(var/mob/living/carbon/human/H in mob_list){
 		if(!H.client){continue}
-		sound_to(H, 'sound/music/plotvictory.ogg')
+		sound_to(H, 'plotvictory.ogg')
 		var/obj/structure/sign/signnew/web/plineosalgado/tela/P = new
 		H.client.screen.Add(P)
 		P.screen_loc = "CENTER"

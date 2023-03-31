@@ -8,6 +8,14 @@
 				new /obj/item/weapon/card/id/syndicate(src)
 				return
 
+			if("screwed")
+				new /obj/effect/spawner/newbomb/timer/syndicate(src)
+				new /obj/effect/spawner/newbomb/timer/syndicate(src)
+				new /obj/item/device/powersink(src)
+				new /obj/item/clothing/suit/space/syndicate(src)
+				new /obj/item/clothing/head/helmet/space/syndicate(src)
+				return
+
 			if("guns")
 				new /obj/item/weapon/gun/projectile(src)
 				new /obj/item/ammo_magazine/box/a357(src)
@@ -84,6 +92,15 @@
 	var/obj/item/weapon/implanter/O = new(src)
 	O.imp = new /obj/item/weapon/implant/uplink(O)
 	O.update()
+	return
+
+/obj/item/weapon/storage/box/syndie_kit/space
+	name = "boxed space suit and helmet"
+
+/obj/item/weapon/storage/box/syndie_kit/space/New()
+	..()
+	new /obj/item/clothing/suit/space/syndicate(src)
+	new /obj/item/clothing/head/helmet/space/syndicate(src)
 	return
 
 /obj/item/weapon/storage/box/syndie_kit/chemical

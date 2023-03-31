@@ -151,13 +151,13 @@
 			var/list/roll = roll3d6(H,SKILL_RANGE, ModiFier)
 			var/result = roll[GP_RESULT]
 			switch(result)
-				if(GP_FAIL)
+				if(GP_FAILED)
 					ERRADO = TRUE
 				if(GP_CRITFAIL)
 					ERRADO = TRUE
-				if(GP_SUCC)
+				if(GP_SUCCESS)
 					ERRADO = FALSE
-				if(GP_CRITSUCC)
+				if(GP_CRITSUCCESS)
 					ERRADO = FALSE
 			if(istype(WW, /obj/item/weapon/gun/projectile/shotgun/princess/nevermiss))
 				ModiFier += 200
@@ -195,7 +195,7 @@
 				to_chat(M, "<span class='hitbold'>You've been shot in the [parse_zone(def_zone)] by the</span> <span class='hitbold'>[src.name]!</span>")
 			else if(forcedodge != -1)
 				var/moreTXT = ""
-				var/HT = HH.my_stats.get_stat(STAT_HT)
+				var/HT = HH.my_stats.ht
 				var/datum/organ/external/E = HH.organs_by_name[def_zone]
 				var/datum/organ/internal/I = pick(E?.internal_organs)
 				if(lethal)

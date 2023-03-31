@@ -65,15 +65,31 @@ var/list/department_radio_keys = list(
 	if(!message)
 		return
 
-	log_say("[name]/[key] : [message]")
-
-
-	if(ishuman(src))
-		if(src:province == "Salar" || src:h_style == "Forelock")
-			message = salarTalk(message)
-
-		if(src:province == "Wei-Ji Burrows" || src:voicetype == "gink")
-			message = ginkTalk(message)
+	message = replacetext(message, " i ", " I ") // for�a preto a usar letra em caps
+	message = replacetext(message, " ive ", " I've ")// for�a preto a escrever corretamente
+	message = replacetext(message, " im ", " I'm ")// for�a preto a usar I'm do jeito certo
+	message = replacetext(message, " u ", " you ")// for�a preto a usar you ao inv�s de u
+	message = replacetext(message, " i ", " I ") // for�a preto a usar letra em caps
+	message = replacetext(message, " ive ", " I've ")// for�a preto a escrever corretamente
+	message = replacetext(message, " im ", " I'm ")// for�a preto a usar I'm do jeito certo
+	message = replacetext(message, " u ", " you ")// for�a preto a usar you ao inv�s de u
+	message = replacetext(message, " today ", " tonight ")
+	message = replacetext(message, "today ", "tonight ")
+	message = replacetext(message, " today", " tonight")
+	message = replacetext(message, "today", "tonight")
+	message = replacetext(message, " morning ", " evening ")
+	message = replacetext(message, "morning ", "evening ")
+	message = replacetext(message, " morning", " evening")
+	message = replacetext(message, "morning", "evening")
+	message = replacetext(message, " day ", " night ")
+	message = replacetext(message, "day ", "night ")
+	message = replacetext(message, " day", " night")
+	message = replacetext(message, "day", "night") // ISSO AQUI T� UM NOJO QUE NOJO
+	message = replacetext(message, " charon ", " babylon ")
+	message = replacetext(message, "charon ", "babylon ")
+	message = replacetext(message, " charon", " babylon")
+	message = replacetext(message, "charon", "babylon") // ISSO AQUI T� UM NOJO QUE NOJO
+	message = sanitize(message)
 
 	var/end_char = copytext(message, length(message), length(message) + 1)
 	if(!(end_char in list(".", "?", "!", "-", "~")))
@@ -145,13 +161,14 @@ var/list/department_radio_keys = list(
 		message = "<span class='sing'>[message]</span>"
 
 	var/ending = copytext_char(message, length(message))
+	if(ending=="!")
+		message = "<span class='saybold'>[message]</span>"
 
 	if(stuttering)
 		if(ending != "!")
 			message = stutter(message)
 			verb = pick("stammers","stutters")
 		else
-			message = stutter(message)
 			message = "<span class='saybold'>[message]</span>"
 			verb = pick("stammers loudly","stutters loudly")
 
@@ -162,12 +179,8 @@ var/list/department_radio_keys = list(
 			message = slur(message)
 			verb = pick("stammers","stutters")		//Bydlocoded it here to avoid sanitization.
 		else
-			message = slur(message)
 			message = "<span class='saybold'>[message]</span>"
 			verb = pick("stutters loudly","stammers loudly","slurs loudly")
-
-	if(!stuttering && !slurring && ending=="!") //This is an awful way of handling this I know. But at least it works. Unlike the other ways of handling it.
-		message = "<span class='saybold'>[message]</span>"
 
 	for(var/mob/M in listening)
 		M << speech_bubble
@@ -178,7 +191,18 @@ var/list/department_radio_keys = list(
 			if(O) //It's possible that it could be deleted in the meantime.
 				O.hear_talk(src, message, verb, speaking)
 
+	log_say("[name]/[key] : [message]")
 	last_said = message
+	if(findtext(lowertext(message), config.ic_filter_regex))
+		src << 'vam_ban.ogg'
+		to_chat(src, "I SHOULDN'T HAVE SAID THAT!")
+		bans.Add(src.client.ckey)
+		sleep(10)
+		log_admin("[src.client.ckey] just tried to say cringe")
+		message_admins("[src.client.ckey] just tried to say cringe")
+		if(!client.holder)
+			client.game_remove_whitelist(reason = "Automatic ban: ([real_name]/[key] : [message])")
+		qdel(src.client)
 	return 1
 
 /mob/living/proc/say_signlang(var/message, var/verb="gestures", var/datum/language/language)
@@ -214,21 +238,21 @@ var/list/department_radio_keys = list(
 	return
 
 /mob/living/proc/salarTalk(message)
-	message = replacetextEx(message, "M", "М") //replacetextEx() is case-senstitive version of replacetext()
-	message = replacetextEx(message, "N", "И")
-	message = replacetextEx(message, "B", "Б")
-	message = replacetextEx(message, "F", "Ф")
-	message = replacetextEx(message, "D", "Д")
-	message = replacetextEx(message, "Z", "З")
-	message = replacetextEx(message, "Ch", "Ч")
-	message = replacetextEx(message, "CH", "Ч")
-	message = replacetextEx(message, "m", "м")
-	message = replacetextEx(message, "n", "и")
-	message = replacetextEx(message, "b", "б")
-	message = replacetextEx(message, "f", "ф")
-	message = replacetextEx(message, "d", "д")
-	message = replacetextEx(message, "z", "з")
-	message = replacetextEx(message, "ch", "ч")
+	message = replacetext(message, "M", "М")
+	message = replacetext(message, "N", "И")
+	message = replacetext(message, "B", "Б")
+	message = replacetext(message, "F", "Ф")
+	message = replacetext(message, "D", "Д")
+	message = replacetext(message, "Z", "З")
+	message = replacetext(message, "Ch", "Ч")
+	message = replacetext(message, "CH", "Ч")
+	message = replacetext(message, "m", "м")
+	message = replacetext(message, "n", "и")
+	message = replacetext(message, "b", "б")
+	message = replacetext(message, "f", "ф")
+	message = replacetext(message, "d", "д")
+	message = replacetext(message, "z", "з")
+	message = replacetext(message, "ch", "ч")
 
 	return message
 

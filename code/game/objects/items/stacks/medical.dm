@@ -111,7 +111,7 @@
 
 /obj/item/clothing/mask/sleeve
 	name=  "sleeves"
-	icon_state = "clo"
+	icon_state = "clothbandaid"
 	var/soaked = FALSE
 	var/dirty = 0
 	var/heal_brute = 5
@@ -134,7 +134,7 @@
 	if(!proximity) return
 	if(istype(A, /turf) && src in user)
 		if(!soaked)
-			to_chat(user,"<span class='combat'>[pick(fnord)] it's  dry!</span>")
+			to_chat(user,"<span class='combat'>[pick(nao_consigoen)] it's  dry!</span>")
 			return
 		user.visible_message("[user] starts to wipe down [A] with [src]!")
 		var/cleancheck

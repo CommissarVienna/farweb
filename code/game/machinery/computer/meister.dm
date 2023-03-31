@@ -21,14 +21,14 @@
 	switch(href_list["choice"])
 		if("nullify")
 			if(money_account == treasuryworth)
-				to_chat(usr, "<span class='combatbold'>[pick(fnord)] I can't do this to Baron's ring!</span>")
+				to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)] I can't do this to Baron's ring!</span>")
 				return
 			to_chat(usr, "[src.name] has been nullified ([src.rank])")
 			log_game("[usr.real_name]([usr.key]) has nullified [src.name]'s funds.")
 			money_account.set_money(0)
 		if("addfund")
 			if(money_account == treasuryworth)
-				to_chat(usr, "<span class='combatbold'>[pick(fnord)] I can't do this to Baron's ring!</span>")
+				to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)] I can't do this to Baron's ring!</span>")
 				return
 			var/manyobols = input("How many obols in copper are they going to receive? [treasuryworth.get_money()] obols in Treasury!", "MEISTERY") as null|num
 			if(manyobols <= 0)
@@ -56,21 +56,21 @@
 				if(ID.rank != choice)	continue
 				else
 					wagelist.Add(ID)
-			playsound(src.loc, 'sound/webbers/console_interact7.ogg', 60, 0)
+			playsound(src.loc, 'console_interact7.ogg', 60, 0)
 			to_chat(usr, "[manyobols] sent!")
 			log_game("[usr.real_name]([usr.key]) has paid all [choice] a wage of [manyobols].")
 			for(var/obj/item/weapon/card/id/ID in wagelist)
 				ID.receivePayment(manyobols)
 		if ("recovercrown")
 			if(!fortCrown)
-				to_chat(usr, "<span class='combatbold'>[pick(fnord)] The crown does not exist!</span>")
+				to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)] The crown does not exist!</span>")
 				return
 			if(istype(fortCrown.loc, /mob/living))
-				to_chat(usr, "<span class='combatbold'>[pick(fnord)] Someone is wearing the crown!</span>")
+				to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)] Someone is wearing the crown!</span>")
 				return
 			log_game("[usr.real_name]([usr.key]) has recovered the crown.")
 			to_chat(usr, "<span class='passive'>Success</span>")
-			playsound(src.loc, 'sound/webbers/console_interact7.ogg', 60, 0)
+			playsound(src.loc, 'console_interact7.ogg', 60, 0)
 			fortCrown.loc = src.loc
 		if ("alarmoff")
 			for(var/obj/machinery/emergency_room/E in emergency_rooms)
@@ -81,7 +81,7 @@
 					processing_objects.Remove(E)
 			log_game("[usr.real_name]([usr.key]) has disabled the alarms.")
 			to_chat(usr, "<span class='passive'>Success</span>")
-			playsound(src.loc, 'sound/webbers/console_interact7.ogg', 60, 0)
+			playsound(src.loc, 'console_interact7.ogg', 60, 0)
 
 /obj/machinery/computer/meister/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/spacecash))

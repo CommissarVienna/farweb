@@ -53,7 +53,7 @@
 	update_icon()
 
 /obj/structure/lfwindow/stonewindow
-	icon = 'icons/turf/stone_walls.dmi'
+	icon = 'stone_walls.dmi'
 	icon_state = "fort3"
 	icon_open = "fort3"
 	icon_closed = "fortclosed"
@@ -63,7 +63,7 @@
 
 /obj/structure/lfwindow/stoneopen
 	name = "stone window"
-	icon = 'icons/turf/stone_walls.dmi'
+	icon = 'stone_walls.dmi'
 	icon_state = "fort1"
 	icon_open = "fort1"
 	icon_closed = "fortclosed"

@@ -34,7 +34,7 @@ obj/structure/trash/charon
 /obj/structure/trash/charon/attack_hand(mob/user as mob)
 	user.setClickCooldown(DEFAULT_SLOW_COOLDOWN)
 	user.visible_message("<span class='passivebold'>[user] [pick("watches porn!", "smashes the keyboard!", "types in!", "licks the keyboard!")]</span>")
-	playsound(user, pick('sound/webbers/confirm1.ogg', 'sound/webbers/confirm2.ogg', 'sound/webbers/confirm3.ogg', 'sound/webbers/confirm5.ogg', 'sound/webbers/confirm7.ogg', 'sound/webbers/confirm8.ogg', 'sound/webbers/confirm9.ogg'), 100)
+	playsound(user, pick('confirm1.ogg', 'confirm2.ogg', 'confirm3.ogg', 'confirm5.ogg', 'confirm7.ogg', 'confirm8.ogg', 'confirm9.ogg'), 100)
 
 obj/structure/trash/vidcam
 	name = "video camera"

@@ -1,24 +1,13 @@
-/mob/living/proc/succumb()
-	set category = "dead"
-	set name = "Die"
-	set desc = "Die"
+/mob/living/verb/succumb()
 	set hidden = 1
 	if ((src.health < 0 && src.health > -95.0))
-		src.death()
+		src.adjustOxyLoss(src.health + 200)
+		src.health = 100 - src.getOxyLoss() - src.getToxLoss() - src.getFireLoss() - src.getBruteLoss()
+		to_chat(src, "<span class='passive'>You have given up life and succumbed to death.</span>")
 
 /mob/living/Destroy()
 	living_mob_list -= src
 	..()
-
-//Does a special attack if combat mode is on, and they have an item.
-/mob/living/RightClick(var/mob/living/user)
-	if(user.Adjacent(src))
-		var/obj/item/I = user.get_active_hand()
-		if(!I)
-			return
-		if(!user.combat_mode)
-			return
-		I.attack(src, user, user.zone_sel.selecting, TRUE)
 
 /mob/living/proc/updatehealth()
 	if(status_flags & GODMODE)
@@ -409,7 +398,7 @@
 	if (buckled && istype(buckled, /obj/structure/stool/bed/chair/wheelchair))
 		buckled.dir = src.dir
 		buckled.forceMove(src.loc)
-		playsound(buckled.loc, 'sound/misc/rollermove.ogg', 75, 1)
+		playsound(buckled.loc, 'rollermove.ogg', 75, 1)
 
 	if (restrained())
 		stop_pulling()
@@ -522,7 +511,7 @@
 		if(ishuman(src))
 			stamina_loss = 100
 			var/mob/living/carbon/human/H = src
-			var/list/ROLL = roll3d6(src, H.my_stats.get_stat(STAT_HT),null,TRUE,TRUE)
+			var/list/ROLL = roll3d6(src, H.my_stats.ht,null,TRUE,TRUE)
 			switch(ROLL[GP_RESULT])
 				if(GP_CRITFAIL)
 					var/datum/organ/internal/heart/HE = locate() in H.internal_organs
@@ -537,14 +526,7 @@
 					playsound(src.loc, pick('sound/voice/tired.ogg'), 90, 0, -1)
 				else
 					playsound(src.loc, pick('sound/voice/femtired1.ogg','sound/voice/femtired2.ogg','sound/voice/femtired3.ogg','sound/voice/femtired4.ogg'), 90, 0, -1)
-	if(ishuman(src))
-		var/mob/living/carbon/human/H = src
-		if(H.clinged_turf)
-			to_chat(H, "<span class='combatbold'>Your arms give out and you let go of \the [H.clinged_turf]!</span>")
-			H.clinged_turf = null
-			if(istype(H.loc, /turf/simulated/floor/open))
-				var/turf/simulated/floor/open/T = H.loc
-				T.Entered(H)
+
 
 /mob/living/verb/resist()
 	set name = "Resist"
@@ -563,6 +545,37 @@
 		qdel(H)
 		return
 
+	//Resisting control by an alien mind.
+	if(istype(src.loc,/mob/living/simple_animal/borer))
+		var/mob/living/simple_animal/borer/B = src.loc
+		var/mob/living/captive_brain/H = src
+
+		H << "\red <B>You begin doggedly resisting the parasite's control (this will take approximately sixty seconds).</B>"
+		B.host << "\red <B>You feel the captive mind of [src] begin to resist your control.</B>"
+
+		spawn(rand(350,450)+B.host.brainloss)
+
+			if(!B || !B.controlling)
+				return
+
+			B.host.adjustBrainLoss(rand(5,10))
+			H << "\red <B>With an immense exertion of will, you regain control of your body!</B>"
+			B.host << "\red <B>You feel control of the host brain ripped from your grasp, and retract your probosci before the wild neural impulses can damage you.</b>"
+			B.controlling = 0
+
+			B.ckey = B.host.ckey
+			B.host.ckey = H.ckey
+
+			H.ckey = null
+			H.name = "host brain"
+			H.real_name = "host brain"
+
+			verbs -= /mob/living/carbon/proc/release_control
+			verbs -= /mob/living/carbon/proc/punish_host
+			verbs -= /mob/living/carbon/proc/spawn_larvae
+
+			return
+
 	//resisting grabs (as if it helps anyone...)
 	if ((!( L.stat ) && L.canmove && !( L.restrained() )))
 		var/resisting = 0
@@ -579,11 +592,11 @@
 				var/mob/living/carbon/human/H = G.assailant
 				var/mob/living/carbon/human/HH = G.affecting
 
-				if(H.my_stats.get_stat(STAT_ST) - HH.my_stats.get_stat(STAT_ST) >= 3)
+				if(H.my_stats.st - HH.my_stats.st >= 3)
 					to_chat(HH, "You can't!")
 					return
 
-				var/diff = (H.my_stats.get_stat(STAT_ST) + H.my_skills.GET_SKILL(SKILL_MELEE)) - (HH.my_stats.get_stat(STAT_ST) + HH.my_skills.GET_SKILL(SKILL_MELEE))
+				var/diff = (H.my_stats.st + H.my_skills.GET_SKILL(SKILL_MELEE)) - (HH.my_stats.st + HH.my_skills.GET_SKILL(SKILL_MELEE))
 
 				var/modifier = 6
 				if(HH.meanwhile_combat_intent == "defend")
@@ -710,7 +723,7 @@
 				ExtinguishMob()
 			return
 
-		if(CM.handcuffed && !(CM.stat || CM.stunned || CM.weakened || istype(CM.buckled,/obj/structure/stool/bed/chair/comfy/torture) || CM.paralysis || CM.sleeping || (CM.status_flags & FAKEDEATH)) && (CM.last_special <= world.time))
+		if(CM.handcuffed && !(CM.stat || CM.stunned || CM.weakened || CM.buckled || CM.paralysis || CM.sleeping || (CM.status_flags & FAKEDEATH)) && (CM.last_special <= world.time))
 			CM.next_move = world.time + 100
 			CM.last_special = world.time + 100
 
@@ -725,7 +738,7 @@
 					can_break_cuffs = TRUE
 				if(istype(H.species, /datum/species/human/alien))
 					can_break_cuffs = TRUE
-				if(H.my_stats.get_stat(STAT_ST) >= 20)
+				if(H.my_stats.st >= 20)
 					can_break_cuffs = TRUE
 
 			if(can_break_cuffs) //Don't want to do a lot of logic gating here.

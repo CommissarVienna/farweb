@@ -53,10 +53,12 @@
 		return
 	if(first_life)
 		first_life = FALSE
+		valueAddIT = rand(1,2)
+		valueAddDX = -rand(1,2)
 		if(M.special == "weedstrong")
-			M.my_stats.add_mod("maconha", stat_list(ST = 2, HT = 1, DX = -2, IN = 3), time = 900)
+			M.add_stats(2, 1, -2, 3)
 		else
-			M.my_stats.add_mod("maconha", stat_list(ST = 1, DX = -2, IN = 2), time = 900)
+			M.add_stats(1, 0, -2, 2)
 
 
 
@@ -82,6 +84,10 @@
 	var/mob/living/carbon/human/M = holder?.my_atom
 	if(!istype(M))
 		return
+	if(M.special == "weedstrong")
+		M.reset_stats(strength=1, health=1, dexterity=1, inteligence=1)
+	else
+		M.reset_stats(strength=1, health=1, dexterity=1, inteligence=1)
 	M.enmaconhado = 0
 	for(var/obj/ripple_controller/R in M?.client?.screen)
 		var/filter = R.get_filter("negors")

@@ -147,9 +147,6 @@ datum/preferences
 	var/graphicsSetting = 0
 	var/fullscreenSetting = 1
 	var/blurSetting = 0
-	var/font_size = 100
-	var/be_antag = FALSE
-	var/image_rotate = FALSE
 
 /datum/preferences/New(client/C)
 	b_type = pick(4;"O-", 36;"O+", 3;"A-", 28;"A+", 1;"B-", 20;"B+", 1;"AB-", 5;"AB+")
@@ -211,7 +208,7 @@ datum/preferences
 		dat += "</td>"
 
 		dat += "<td valign=top rowspan=2>"
-		dat += "<br><center><b></b><br><a href='byond://?_src_=prefs;preference=imgrotate'><img src=[image_rotate ? "previewicon2.png" : "previewicon.png"] height=64 width=64 align='right'></a><big>"
+		dat += "<br><center><b></b><br><img src=previewicon.png height=64 width=64 align='right'></a><big>"
 		dat += "<td width=220>"
 		dat += "<table><tr><td><b>Blood Type:</b> <a href='byond://?src=\ref[user];preference=b_type;task=input'>[b_type]</a><br><b>Skin Color:</b> <a href='?_src_=prefs;preference=s_tone;task=input'>[-s_tone + 35]/255</a><br></td>"
 		dat += "</tr></table>"
@@ -232,13 +229,9 @@ datum/preferences
 		dat += "</tr></table></b></a></td></tr>"
 		dat += "<tr>"
 		dat += "<td>"
-		if(gender != MALE) //have to do this here or it looks strange.
-			dat += "<br>"
-		dat += "<b>Be Antagonist:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=antag'><b>[be_antag ? "Yes" : "No"]</b></a><br>"
-		if(gender == MALE)
-			dat += "<b>Be Fat:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=fatness'><b>[fat ? "Yes" : "No"]</b></a><br>"
+		dat += "<b>Be Fat:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=fatness'><b>[fat ? "Yes" : "No"]</b></a><br>"
 		//REMOVER ESSE DEPOIS
-	//	dat += "<br>"
+		dat += "<br>"
 		dat += "<b>Vice:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=vice;task=input'><b>[vice]</b></a><br>"
 		dat += "<b>Sign:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=zodiac;task=input'><b>[zodiac]</b></a><br>"
 		dat += "<b>Faith:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=religion'><b>[religion == LEGAL_RELIGION ? "Gray Church" : "Heresy"]</b></a><br>"
@@ -677,6 +670,82 @@ datum/preferences
 					N.client.prefs.ShowChoices(N)
 					N.ready = TRUE
 
+		else if(href_list["preference"] == "flavor_text")
+			switch(href_list["task"])
+				if("open")
+					SetFlavorText(user)
+					return
+				if("done")
+					user << browse(null, "window=flavor_text")
+					ShowChoices(user)
+					return
+				if("general")
+					var/msg = sanitize_uni(input(usr,"Give a general description of your character. This will be shown regardless of clothing, and may include OOC notes and preferences.","Flavor Text",html_decode(flavor_texts[href_list["task"]])) as message)
+					if(msg != null)
+						msg = copytext(msg, 1, MAX_MESSAGE_LEN)
+						msg = html_encode(msg)
+					flavor_texts[href_list["task"]] = msg
+				else
+					var/msg = sanitize_uni(input(usr,"Set the flavor text for your [href_list["task"]].","Flavor Text",html_decode(flavor_texts[href_list["task"]])) as message)
+					if(msg != null)
+						msg = copytext(msg, 1, MAX_MESSAGE_LEN)
+						msg = html_encode(msg)
+					flavor_texts[href_list["task"]] = msg
+			SetFlavorText(user)
+			return
+
+		else if(href_list["preference"] == "records")
+			if(text2num(href_list["record"]) >= 1)
+				SetRecords(user)
+				return
+			else
+				user << browse(null, "window=records")
+			if(href_list["task"] == "med_record")
+				var/medmsg = input(usr,"Set your medical notes here.","Medical Records",html_decode(med_record)) as message
+
+				if(medmsg != null)
+					medmsg = copytext(medmsg, 1, MAX_PAPER_MESSAGE_LEN)
+					medmsg = html_encode(medmsg)
+
+					med_record = medmsg
+					SetRecords(user)
+
+			if(href_list["task"] == "sec_record")
+				var/secmsg = input(usr,"Set your security notes here.","Security Records",html_decode(sec_record)) as message
+
+				if(secmsg != null)
+					secmsg = copytext(secmsg, 1, MAX_PAPER_MESSAGE_LEN)
+					secmsg = html_encode(secmsg)
+
+					sec_record = secmsg
+					SetRecords(user)
+			if(href_list["task"] == "gen_record")
+				var/genmsg = input(usr,"Set your employment notes here.","Employment Records",html_decode(gen_record)) as message
+
+				if(genmsg != null)
+					genmsg = copytext(genmsg, 1, MAX_PAPER_MESSAGE_LEN)
+					genmsg = html_encode(genmsg)
+
+					gen_record = genmsg
+					SetRecords(user)
+
+		else if (href_list["preference"] == "antagoptions")
+			if(text2num(href_list["active"]) == 0)
+				SetAntagoptions(user)
+				return
+			if (href_list["antagtask"] == "uplinktype")
+				if (uplinklocation == "PDA")
+					uplinklocation = "Headset"
+				else if(uplinklocation == "Headset")
+					uplinklocation = "None"
+				else
+					uplinklocation = "PDA"
+				SetAntagoptions(user)
+			if (href_list["antagtask"] == "done")
+				user << browse(null, "window=antagoptions")
+				ShowChoices(user)
+			return 1
+
 		switch(href_list["task"])
 			if("random")
 				switch(href_list["preference"])
@@ -720,7 +789,7 @@ datum/preferences
 						if(new_name)
 							real_name = new_name
 						else
-							to_chat(user, "<span class='combat'>Invalid name!</span>")
+							to_chat(user, "<font color='red'>Invalid name. Your name should be at least 2 and at most [MAX_NAME_LEN] characters long. It may only contain the characters A-Z, a-z, -, ' and .</font>")
 
 					if("age")
 						var/new_age = input(user, "Choose your character's age:\n([AGE_MIN]-[AGE_MAX])", "Character Preference") as num|null
@@ -858,6 +927,18 @@ datum/preferences
 								to_chat(user, "<b>Ruler:</b> <i>St. Barmalew </i>")
 								to_chat(user, "Furious fighters for justice, in innocent times they weave silk of lightweight flirt and pleasant manners.Noctuae like to solve conflicts and give advices. They find calm happiness in arts, aesthetics and peace. Rude people, unfairness and cruelty make them disgusted. Their eternal problem is indecisiveness: they have to weight every little detail before they make their choice, which could bring others to white heat. They hate to hurt people, and will try to hide any unpleasant truth.")
 
+					if("underwear")
+						var/list/underwear_options
+						if(gender == MALE)
+							underwear_options = underwear_m
+						else
+							underwear_options = underwear_f
+
+						var/new_underwear = input(user, "Choose your character's underwear:", "Character Preference")  as null|anything in underwear_options
+						if(new_underwear)
+							underwear = underwear_options.Find(new_underwear)
+						ShowChoices(user)
+
 					if("eyes")
 						var/new_eyes = input(user, "Choose your character's eye colour:", "Character Preference") as color|null
 						if(new_eyes)
@@ -876,7 +957,26 @@ datum/preferences
 						var/new_ooccolor = input(user, "Choose your OOC colour:", "Game Preference") as color|null
 						if(new_ooccolor)
 							ooccolor = new_ooccolor
-/*
+
+					if("bag")
+						var/new_backbag = input(user, "Choose your character's style of bag:", "Character Preference")  as null|anything in backbaglist
+						if(new_backbag)
+							backbag = backbaglist.Find(new_backbag)
+
+					if("nt_relation")
+						var/new_relation = input(user, "Choose your relation to NT. Note that this represents what others can find out about your character by researching your background, not what your character actually thinks.", "Character Preference")  as null|anything in list("Loyal", "Supportive", "Neutral", "Skeptical", "Opposed")
+						if(new_relation)
+							nanotrasen_relation = new_relation
+
+					if("disabilities")
+						if(text2num(href_list["disabilities"]) >= -1)
+							if(text2num(href_list["disabilities"]) >= 0)
+								disabilities ^= (1<<text2num(href_list["disabilities"])) //MAGIC
+							SetDisabilities(user)
+							return
+						else
+							user << browse(null, "window=disabil")
+
 					if("limbs")
 						var/limb_name = input(user, "Which limb do you want to change?") as null|anything in list("Left Leg","Right Leg","Left Arm","Right Arm","Left Foot","Right Foot","Left Hand","Right Hand")
 						if(!limb_name) return
@@ -952,7 +1052,7 @@ datum/preferences
 					if("skin_style")
 						var/skin_style_name = input(user, "Select a new skin style") as null|anything in list("default1", "default2", "default3")
 						if(!skin_style_name) return
-*/
+
 			else
 				switch(href_list["preference"])
 					if("gender")
@@ -968,13 +1068,6 @@ datum/preferences
 
 					if("fatness")
 						fat = !fat
-					if("antag")
-						be_antag = !be_antag
-
-					if("imgrotate")
-						image_rotate = !image_rotate
-						ShowChoices(user)
-
 
 					if("religion")
 						if(religion == LEGAL_RELIGION)
@@ -1070,7 +1163,7 @@ datum/preferences
 									Enemies = "Not everyone likes the new order, because it always was better before."
 							if(baron_tipos != "Self-Indulgence (None)")
 								to_chat(user, "\n<div class='firstdivmood'><div class='moodbox'><span class='bname'><p style='font-size:20px'>[Title]</p></span>[toChatBegin]</span>\n<span class='bname'>Enemies:</span>\n [Enemies]</div></div>")
-							user << 'sound/lfwbsounds/special_toggle.ogg'
+							user << 'special_toggle.ogg'
 
 					if("province")
 						//var/inquisidor_tipos = input(user, "Escolha o seu tipo de Inquisidor.") as null|anything in list("Velhos Tempos", "| O Fanatico |", "o Conhecedor o", "() Lobo Solitario ()", "- Respeitado -", "Ω \[Beberrao] Ω", "* Perspicaz *", " / Informado \\ ", "@ Espadachim @", "→ Investigador ←", "§ Lider §", "○ Corrupto ○")
@@ -1240,12 +1333,9 @@ datum/preferences
 		character.f_style = f_style
 		character.d_style = d_style
 
-		if(character.age > 21 && prob(85))
-			character.body_hair = TRUE
 		character.applyVice(vice)
-		if(character.job == "Migrant")
-			character.province = MigProvince
-			character.applyProvince()
+		character.province = MigProvince
+		character.applyProvince()
 		if(vice == "Random")
 			if(prob(60))
 				vice = pick(VicesList)
@@ -1257,7 +1347,7 @@ datum/preferences
 		switch(character.zodiac)
 			if("Vulpes")
 				if(prob(25))
-					character.my_stats.change_stat(STAT_DX , 1)
+					character.my_stats.dx += 1
 			if("Gryllus")
 				if(prob(25))
 					character.my_skills.ADD_SKILL(SKILL_PARTY, rand(1,2))
@@ -1274,7 +1364,7 @@ datum/preferences
 					character.add_event("nobleblood", /datum/happiness_event/noble_blood)
 			if("Centaurus")
 				if(prob(25))
-					character.my_stats.change_stat(STAT_HT , 1)
+					character.my_stats.ht += 1
 			if("Noctua")
 				if(prob(25))
 					character.add_perk(/datum/perk/likeart)
@@ -1287,8 +1377,8 @@ datum/preferences
 			if(lobbyspecie != "Adult")
 				character.set_species("Child")
 				character.species.handle_post_spawn(character)
-				character.my_stats.change_stat(STAT_ST , rand(-3,-5))
-				character.my_stats.change_stat(STAT_HT , rand(-3,-5))
+				character.my_stats.st -= rand(3,5)
+				character.my_stats.ht -= rand(3,5)
 				character.vice = null
 		if(character.job == "Jester")
 			if(lobbyspecie == "Adult")
@@ -1337,8 +1427,8 @@ datum/preferences
 			character.my_skills.CHANGE_SKILL(SKILL_MUSIC, rand(13,15))
 		if(singer.Find(character.ckey))
 			character.add_perk(/datum/perk/singer)
-			character.add_verb(list(/mob/living/carbon/human/proc/remembersong,
-			/mob/living/carbon/human/proc/sing))
+			character.verbs += /mob/living/carbon/human/proc/remembersong
+			character.verbs += /mob/living/carbon/human/proc/sing
 		//Debugging report to track down a bug, which randomly assigned the plural gender to people.
 		if(character.gender in list(PLURAL, NEUTER))
 			if(isliving(src)) //Ghosts get neuter by default
@@ -1346,7 +1436,7 @@ datum/preferences
 				character.gender = MALE
 
 		if(fat)
-			if(character.species.name != "Child" && character.gender != FEMALE)
+			if(character.species.name != "Child")
 				character.mutations += FAT
 
 	proc/open_load_dialog(mob/user)
@@ -1520,13 +1610,7 @@ client/verb/addEffects()
 	set category = "OOC"
 	for(var/obj/I in src?.usingPlanes)
 		if(istype(I, /obj/blur_planemaster)) continue
-		if(istype(I, /obj/lighting_plane))
-			var/filterA = I.get_filter("car")
-			if(filterA)
-				I?.remove_filter("car")
-			else
-				I.add_filter("car", 2, list("type" = "bloom", threshold = "#943a3a", size=2, offset=2))
-			continue
+		if(istype(I, /obj/lighting_plane)) continue
 		var/filter = I.get_filter("cur")
 		if(filter)
 			I?.remove_filter("cur")

@@ -1,3 +1,19 @@
+/mob/living/carbon/human/proc/add_stats(var/strength, var/health, var/dexterity, var/inteligence)
+	src.my_stats.st = src.my_stats.st+strength
+	src.my_stats.ht = src.my_stats.ht+health
+	src.my_stats.dx = src.my_stats.dx+dexterity
+	src.my_stats.it = src.my_stats.it+inteligence
+	src.check_kg()
+
+/mob/living/carbon/human/proc/reset_stats(var/strength, var/health, var/dexterity, var/inteligence)
+	if(strength)
+		src.my_stats.st = src.my_stats.initst
+	if(health)
+		src.my_stats.ht = src.my_stats.initht
+	if(dexterity)
+		src.my_stats.dx = src.my_stats.initdx
+	if(inteligence)
+		src.my_stats.it = src.my_stats.initit
 
 /datum/reagent/dylovene
 	name = "Dylovene"
@@ -89,7 +105,7 @@
 	reaction_mob(var/mob/living/carbon/human/M as mob)
 		if(!M.reagents.has_reagent("gelabine"))
 			..()
-		M.my_stats.add_mod("dentrine", stat_list(DX = -3), time = 900)
+		M.add_stats(0, 0, -3, 0)
 		M.so_high()
 	on_mob_life(var/mob/living/carbon/human/M as mob)
 		M.reagents.add_reagent("tramadol", 1)
@@ -112,7 +128,7 @@
 			M.viceneed = 0
 		if(!M.reagents.has_reagent("gelabine"))
 			..()
-		M.my_stats.add_mod("heroin", stat_list(DX = -4), time = 900)
+		M.add_stats(0, 0, -4, 0)
 		M.so_high()
 		M << 'sound/webbers/hhh.ogg'
 		M.add_event("heroin", /datum/happiness_event/misc/argh)
@@ -158,6 +174,7 @@
 	var/mob/living/carbon/human/M = holder?.my_atom
 	if(!istype(M))
 		return
+	M.reset_stats(dexterity=1)
 	for(var/obj/screen_controller/S in M?.client?.screen)
 		S.remove_filter("cor")
 		S.transform = null
@@ -167,6 +184,7 @@
 	var/mob/living/carbon/human/M = holder?.my_atom
 	if(!istype(M))
 		return
+	M.reset_stats(dexterity=1)
 	for(var/obj/screen_controller/S in M?.client?.screen)
 		S.remove_filter("cor")
 		S.transform = null
@@ -186,8 +204,6 @@
 		org.painLW = 0
 	if(prob(55))
 		M.adjustBruteLoss(-1*REM)
-	if(!M.reagents.has_reagent("gelabine"))
-		M.my_stats.add_mod("oxycodone", stat_list(HT = -8), time = 5 MINUTES)
 	..()
 	return
 
@@ -314,16 +330,20 @@
 	reaction_mob(var/mob/living/carbon/human/M, var/method=INGEST, var/volume, var/target_zone)
 		if(M.vice == "Addict (Buffout)")
 			M.viceneed = 0
-		M.my_stats.add_mod("buffout", stat_list(ST = 4), time = 10 MINUTES)
-		if(!M.reagents.has_reagent("gelabine"))
-			M.my_stats.add_mod("buffout_IN", stat_list(IN = -4))
 		..()
+		if(volume >= 50)
+			return M.add_stats(4, 0, 0, 0)
+		if(volume >= 25)
+			return M.add_stats(3, 0, 0, 0)
+		if(volume >= 15)
+			return M.add_stats(2, 0, 0, 0)
 
 /datum/reagent/buffout/on_remove(data)
 	..()
 	var/mob/living/carbon/human/M = holder?.my_atom
 	if(!istype(M))
 		return
+	M.reset_stats(strength=1)
 
 /datum/reagent/mice
 	name = "Mice"
@@ -378,10 +398,13 @@
 	if(M.mind)
 		M.mind.learning_modif += 5
 		M.mind.teaching_modif += 5
-	M.my_stats.add_mod("mentats", stat_list(IN = 10), time = 10 MINUTES)
-	if(!M.reagents.has_reagent("gelabine"))
-		M.my_stats.add_mod("mentats_DX", stat_list(DX = -5))
 	..()
+	if(volume >= 50)
+		return M.add_stats(0, 0, 4, 4)
+	if(volume >= 25)
+		return M.add_stats(0, 0, 3, 3)
+	if(volume >= 15)
+		return M.add_stats(0, 0, 2, 2)
 
 /datum/reagent/mentats/overdose_process(var/mob/living/carbon/human/M as mob)
 	var/datum/organ/internal/brain/H = M.internal_organs_by_name["heart"]
@@ -405,6 +428,7 @@
 	if(M.mind)
 		M.mind.learning_modif -= 5
 		M.mind.teaching_modif -= 5
+	M.reset_stats(dexterity=1, inteligence=1)
 
 /datum/reagent/dob
 	name = "DOB"
@@ -415,7 +439,7 @@
 	on_mob_life(var/mob/living/carbon/human/M as mob)
 		if(M.vice == "Addict (Halucinogens)")
 			M.viceneed = 0
-		M << sound('sound/music/gabbro.ogg', repeat = 1, wait = 1, volume = 80, channel = 30)
+		M << sound('gabbro.ogg', repeat = 1, wait = 1, volume = 80, channel = 30)
 		M.overlay_fullscreen("dob", /obj/screen/fullscreen/DOB, 1)
 		M.canmove = FALSE
 		M.resting = TRUE
@@ -440,7 +464,7 @@
 	reagent_state = LIQUID
 	color = "#C8A5DC" // rgb: 200, 165, 220
 	on_mob_life(var/mob/living/carbon/human/M as mob)
-		M << sound('sound/music/white_waking_1.ogg', repeat = 1, wait = 1, volume = 75, channel = 30)
+		M << sound('white_waking_1.ogg', repeat = 1, wait = 1, volume = 75, channel = 30)
 		M.water(3,1,300,1)
 		..()
 		return
@@ -558,6 +582,7 @@
 	var/mob/living/carbon/human/M = holder?.my_atom
 	if(!istype(M))
 		return
+	M.my_stats.pr += 4
 	if(M.client && music)
 		music.file = null
 		M.client << music
@@ -631,7 +656,7 @@
 	if(first_life)
 		first_life = FALSE
 		//gotta get a grip
-		M.my_stats.add_mod("changa", stat_list(ST = 8, HT = -2, DX = -5, IN = 1), time = 1800) //holy shit this drug fucks your stats. Why would you ever take it?
+		M.add_stats(8, -2, -5, 1)
 		if(M.client)
 			music = sound('sound/music/fahkeet.ogg', TRUE, 0, volume = 80)
 			M.client << music

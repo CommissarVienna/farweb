@@ -187,7 +187,6 @@ obj/machinery/door/airlock/orbital/gates/ex/healthcheck()
 	autoclose = 0
 	opacity = 0
 	layer = 2
-	plane = 0
 	density = 0
 	icon = 'icons/life/escotilha.dmi'
 	icon_state = "door_closed"
@@ -206,7 +205,7 @@ obj/machinery/door/airlock/orbital/gates/ex/healthcheck()
 			if(istype(M, /mob/living/carbon/human))
 				M.icon = 'icons/life/burnmotherfucker.dmi'
 				M.icon_state = "fire_s"
-				playsound(M.loc, 'sound/effects/flesh_burning.ogg', 80, 1)
+				playsound(M.loc, 'flesh_burning.ogg', 80, 1)
 				M.emote("agonyscream")
 				new/obj/effect/decal/cleanable/ash
 				M.dust()
@@ -231,7 +230,7 @@ obj/machinery/door/airlock/orbital/gates/ex/healthcheck()
 		if(istype(M, /mob/living/carbon/human))
 			M.icon = 'icons/life/burnmotherfucker.dmi'
 			M.icon_state = "fire_s"
-			playsound(M.loc, 'sound/effects/flesh_burning.ogg', 80, 1)
+			playsound(M.loc, 'flesh_burning.ogg', 80, 1)
 			M.emote("agonyscream")
 			new/obj/effect/decal/cleanable/ash
 			M.dust()
@@ -252,7 +251,7 @@ obj/machinery/door/airlock/orbital/gates/ex/healthcheck()
 		if(istype(M, /mob/living/carbon/human))
 			if(!M.jumping)
 				M.icon = 'icons/life/burnmotherfucker.dmi'
-				playsound(M.loc, 'sound/effects/flesh_burning.ogg', 80, 1)
+				playsound(M.loc, 'flesh_burning.ogg', 80, 1)
 				M.icon_state = "fire_s"
 				M.emote("agonyscream")
 				spawn(10)

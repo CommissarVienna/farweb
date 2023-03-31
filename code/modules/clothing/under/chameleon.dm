@@ -11,7 +11,6 @@
 
 	New()
 		..()
-/*
 		for(var/U in typesof(/obj/item/clothing/under/color)-(/obj/item/clothing/under/color))
 			var/obj/item/clothing/under/V = new U
 			src.clothing_choices += V
@@ -20,7 +19,7 @@
 			var/obj/item/clothing/under/V = new U
 			src.clothing_choices += V
 		return
-*/
+
 
 	attackby(obj/item/clothing/under/U as obj, mob/user as mob)
 		..()

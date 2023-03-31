@@ -61,7 +61,7 @@ var/list/allClothing = list()
 	name = "Helpless Fortress"
 	id = "helpless"
 
-	event_message = "No one in the fortress knows how to fight."
+	event_message = "Noone in the fortress knows how to fight."
 
 /datum/round_event/helpchildren
 	name = "Helpless Fortress?"
@@ -340,21 +340,15 @@ var/list/allClothing = list()
 	roundstartdisplay = 0
 	event_message = "There is a great lover!"
 
-/datum/round_event/crusade
-	name = "The Final Crusade"
-	id = "crusade"
-
-	event_message = "Men from all around Evergreen mass at Firethorn in preperation for a Crusade!"
-
 /datum/round_event/goldenfortress/apply_event()
 	treasuryworth.add_money(50000)
 
 /datum/round_event/wargirl/apply_event()
 	for(var/mob/living/carbon/human/H in player_list)
 		if(H.job == "Successor")
-			H.my_stats.change_stat(STAT_ST , 2)
-			H.my_stats.change_stat(STAT_HT , 3)
-			H.my_stats.change_stat(STAT_DX , 3)
+			H.my_stats.st += 2
+			H.my_stats.ht += 3
+			H.my_stats.dx += 3
 			H.my_skills.ADD_SKILL(SKILL_MELEE, 17)
 			H.my_skills.ADD_SKILL(SKILL_RANGE, 9)
 			H.equip_to_slot_or_del(new /obj/item/sheath/sabre(H), slot_belt)
@@ -445,12 +439,12 @@ var/list/allClothing = list()
 /datum/round_event/gifted/apply_event()
 	for(var/mob/living/carbon/human/H in player_list)
 		if(H.outsider == 0 && H.my_stats)
-			H.my_stats.change_stat(STAT_IN , 3)
+			H.my_stats.it = rand(3,4)
 
 /datum/round_event/privatesecurity/apply_event()
 	for(var/mob/living/carbon/human/H in player_list)
 		if(H.job == "Grayhound")
-			H.my_stats.change_stat(STAT_ST , 3)
+			H.my_stats.st += 3
 			H.my_skills.ADD_SKILL(SKILL_MELEE, 2)
 			H.my_skills.ADD_SKILL(SKILL_RANGE, 4)
 			if(H.w_uniform)
@@ -486,14 +480,14 @@ var/list/allClothing = list()
 	for(var/mob/living/carbon/human/H in mob_list)
 		if(H.outsider == 0)
 			if(H.job == "Esculap")
-				H.combat_music = 'sound/music/haruspex-combat.ogg'
+				H.combat_music = 'haruspex-combat.ogg'
 				H.my_skills.ADD_SKILL(SKILL_MELEE, rand(3,5))
 				H.my_skills.ADD_SKILL(SKILL_RANGE, 3)
-				H.my_stats.change_stat(STAT_ST , 2)
-				H.my_stats.change_stat(STAT_DX , 3)
-				H.my_stats.change_stat(STAT_HT , 3)
+				H.my_stats.st += 2
+				H.my_stats.dx += 3
+				H.my_stats.ht += 3
 			else
-				H << sound(pick('sound/music/pathologic.ogg','sound/music/haruspex.ogg'), repeat = 0, wait = 0, volume = H?.client?.prefs?.ambi_volume, channel = 12)
+				H << sound(pick('pathologic.ogg','haruspex.ogg'), repeat = 0, wait = 0, volume = H?.client?.prefs?.ambi_volume, channel = 12)
 				if(prob(75))
 					H.contract_disease(new /datum/disease/fluspanish,1,0)
 
@@ -553,7 +547,7 @@ var/list/allClothing = list()
 
 /datum/round_event/size_matters/apply_event()
 	for(var/mob/living/carbon/human/H in mob_list)
-		H.my_stats.set_stat(STAT_ST , H.potenzia)
+		H.my_stats.st = H.potenzia
 
 /datum/round_event/deadlyforce/apply_event()
 	for(var/mob/living/carbon/human/H in mob_list)
@@ -565,8 +559,8 @@ var/list/allClothing = list()
 /datum/round_event/child/apply_event()
 	for(var/mob/living/carbon/human/H in mob_list)
 		if(H.age < 18 && H.outsider == 0)
-			H.my_stats.change_stat(STAT_ST , 4)
-			H.my_stats.change_stat(STAT_IN , 3)
+			H.my_stats.st += rand(4, 5)
+			H.my_stats.it = 3
 /*
 /datum/round_event/black/apply_event()
 	for(var/mob/living/carbon/human/H in world)
@@ -585,8 +579,8 @@ var/list/allClothing = list()
 	for(var/mob/living/carbon/human/H in mob_list)
 		spawn(1)
 			if(!H.outsider)
-				H.my_stats.change_stat(STAT_ST , -4)
-				H.my_stats.change_stat(STAT_HT , -4)
+				H.my_stats.st -= 4
+				H.my_stats.ht -= 4
 
 
 /datum/round_event/helpless/apply_event()
@@ -626,16 +620,15 @@ var/list/allClothing = list()
 			if(H.wear_suit)
 				qdel(H.wear_suit)
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/squire(H), slot_wear_suit)
-			var/datum/job/squire/S = new /datum/job/squire
-			H.my_stats.job_stats(S)
-			qdel(S)
+			H.my_skills.job_stats("Squire")
+			H.my_stats.job_stats("Squire")
 
 /datum/round_event/bumdanger/apply_event()
 	for(var/mob/living/carbon/human/H in mob_list)
 		if(H.job == "Bum" || istype(H, /mob/living/carbon/human/bumbot))
-			H.my_stats.change_stat(STAT_ST , 8)
-			H.my_stats.change_stat(STAT_DX , 8)
-			H.my_stats.change_stat(STAT_HT , 8)
+			H.my_stats.st += 8
+			H.my_stats.dx += 8
+			H.my_stats.ht += 8
 			H.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(13,16))
 			H.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(13,16))
 
@@ -695,7 +688,7 @@ var/list/allClothing = list()
 
 /datum/round_event/washingmachine/apply_event()
 	for(var/obj/item/clothing/C in allClothing)
-		var/mob/living/carbon/human/wearsMe = null
+		var/mob/living/carbon/human/wearsMe = null            
 		if(istype(C.loc, /mob/living/carbon/human))
 			wearsMe = C.loc
 		var/area/A = get_area(C)
@@ -711,7 +704,7 @@ var/list/allClothing = list()
 			continue
 		if(istype(C, /obj/item/clothing/head/caphat))
 			continue
-		else
+		else            
 			qdel(C)
 	spawn(5 SECONDS)
 		for(var/mob/living/carbon/human/bumbot/B in mob_list)

@@ -1,30 +1,3 @@
-//Defines for echo list index positions.
-//ECHO_DIRECT and ECHO_ROOM are the only two that actually appear to do anything, and represent the dry and wet channels of the environment effects, respectively.
-//The rest of the defines are there primarily for the sake of completeness. It might be worth testing on EAX-enabled hardware, and on future BYOND versions (I've tested with 511, 512, and 513)
-#define ECHO_DIRECT 1
-#define ECHO_DIRECTHF 2
-#define ECHO_ROOM 3
-#define ECHO_ROOMHF 4
-#define ECHO_OBSTRUCTION 5
-#define ECHO_OBSTRUCTIONLFRATIO 6
-#define ECHO_OCCLUSION 7
-#define ECHO_OCCLUSIONLFRATIO 8
-#define ECHO_OCCLUSIONROOMRATIO 9
-#define ECHO_OCCLUSIONDIRECTRATIO 10
-#define ECHO_EXCLUSION 11
-#define ECHO_EXCLUSIONLFRATIO 12
-#define ECHO_OUTSIDEVOLUMEHF 13
-#define ECHO_DOPPLERFACTOR 14
-#define ECHO_ROLLOFFFACTOR 15
-#define ECHO_ROOMROLLOFFFACTOR 16
-#define ECHO_AIRABSORPTIONFACTOR 17
-#define ECHO_FLAGS 18
-
-//Defines for controlling how zsound sounds.
-#define ZSOUND_DRYLOSS_PER_Z -2000 //Affects what happens to the dry channel as the sound travels through z-levels
-#define ZSOUND_DISTANCE_PER_Z 2 //Affects the distance added to the sound per z-level travelled
-
-//Sound environment defines. Reverb preset for sounds played in an area, see sound datum reference for more.
 #define GENERIC 0
 #define PADDED_CELL 1
 #define ROOM 2
@@ -62,61 +35,61 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
-/proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff, is_global, frequency, is_ambiance = 0,  ignore_walls = TRUE, zrange = 2, override_env, envdry, envwet, channel=0, wait=0,repeat=0)
+/proc/playsound(var/atom/source, soundin, vol as num, vary, extrarange as num, falloff, var/is_global, var/frequency, var/wait=0, var/repeat=0, var/channel = 0)
+
+	soundin = get_sfx(soundin) // same sound for everyone
+
 	if(isarea(source))
 		error("[source] is an area and is trying to make the sound: [soundin]")
 		return
 
-	soundin = get_sfx(soundin) // same sound for everyone
-	frequency = vary && isnull(frequency) ? get_rand_frequency() : frequency // Same frequency for everybody
-
+	frequency = isnull(frequency) ? get_rand_frequency() : frequency // Same frequency for everybody
 	var/turf/turf_source = get_turf(source)
-	var/maxdistance = (world.view + extrarange) * 2
 
  	// Looping through the player list has the added bonus of working for mobs inside containers
-	var/list/listeners = player_list
-	if(!ignore_walls) //these sounds don't carry through walls
-		listeners = listeners & hearers(maxdistance, turf_source)
-
-	for(var/P in listeners)
+	for (var/P in player_list)
 		var/mob/M = P
 		if(!M || !M.client)
 			continue
-		if(get_dist(M, turf_source) <= maxdistance)
+		if(get_dist(M, turf_source) <= (world.view + extrarange) * 2)
 			var/turf/T = get_turf(M)
-			if(T && (T.z == turf_source.z || (zrange && abs(T.z - turf_source.z) <= zrange)))
-				M.playsound_local(turf_source, soundin, vol, vary, frequency, falloff, is_global, extrarange, override_env, envdry, envwet, channel, wait, repeat)
+			if(T && T.z == turf_source.z)
+				M.playsound_local(turf_source, soundin, vol, vary, frequency, falloff, is_global)
+			var/z_dist = abs(T.z - turf_source.z)//Playing sound on a z-level above or below you.
+			if(T && z_dist <= 1)
+				M.playsound_local(turf_source, soundin, vol/(1+z_dist), vary, frequency, falloff, is_global, channel, wait, repeat)
 
 var/const/FALLOFF_SOUNDS = 0.5
 
-/mob/proc/playsound_local(var/turf/turf_source, soundin, vol as num, vary, frequency, falloff, is_global, extrarange, override_env, envdry, envwet, channel=0, wait=0, repeat=0)
-	if(!src.client || ear_deaf > 0) return
+
+/mob/proc/playsound_local(var/turf/turf_source, soundin, vol as num, vary, frequency, falloff, is_global, channel=0, wait=0, repeat=0)
+	if(!src.client || ear_deaf > 0)	return
 	var/sound/S = soundin
 	if(!istype(S))
 		soundin = get_sfx(soundin)
 		S = sound(soundin)
 		S.wait = wait //No queue
 		S.repeat = repeat
-		if(channel)
-			S.channel = channel
-		else
-			S.channel = 0 //any channel
+		S.channel = 0 //Any channel
 		S.volume = vol
 		S.environment = -1
-		if(frequency)
-			S.frequency = frequency
-		else if (vary)
-			S.frequency = get_rand_frequency()
+		if (vary)
+			if(frequency)
+				S.frequency = frequency
+			else
+				S.frequency = get_rand_frequency()
 
 	//sound volume falloff with pressure
 	var/pressure_factor = 1.0
-	var/turf/T = get_turf(src)
-	// 3D sounds, the technology is here!
+
 	if(isturf(turf_source))
+		// 3D sounds, the technology is here!
+		var/turf/T = get_turf(src)
+
 		//sound volume falloff with distance
 		var/distance = get_dist(T, turf_source)
 
-		S.volume -= max(distance - (world.view + extrarange), 0) * 2 //multiplicative falloff to add on top of natural audio falloff.
+		S.volume -= max(distance - world.view, 0) * 2 //multiplicative falloff to add on top of natural audio falloff.
 
 		var/datum/gas_mixture/hearer_env = T.return_air()
 		var/datum/gas_mixture/source_env = turf_source.return_air()
@@ -135,18 +108,15 @@ var/const/FALLOFF_SOUNDS = 0.5
 		S.volume *= pressure_factor
 
 		if (S.volume <= 0)
-			return //no volume means no sound
+			return	//no volume means no sound
 
 		var/dx = turf_source.x - T.x // Hearing from the right/left
 		S.x = dx
 		var/dz = turf_source.y - T.y // Hearing from infront/behind
 		S.z = dz
-		var/dy = (turf_source.z - T.z) * ZSOUND_DISTANCE_PER_Z // Hearing from above/below. There is ceiling in 2d spessmans.
-		S.y = (dy < 0) ? dy - 1 : dy + 1 //We want to make sure there's *always* at least one extra unit of distance. This helps normalize sound that's emitting from the turf you're on.
+		// The y value is for above your head, but there is no ceiling in 2d spessmens.
+		S.y = 1
 		S.falloff = (falloff ? falloff : FALLOFF_SOUNDS)
-
-		if(!override_env)
-			envdry = abs(turf_source.z - T.z) * ZSOUND_DRYLOSS_PER_Z
 
 	if(!is_global)
 
@@ -173,12 +143,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			var/area/A = get_area(src)
 			S.environment = A.sound_env
 
-	var/list/echo_list = new(18)
-	echo_list[ECHO_DIRECT] = envdry
-	echo_list[ECHO_ROOM] = envwet
-	S.echo = echo_list
-
-	sound_to(src, S)
+	src << S
 
 
 /client/proc/playtitlemusic()
@@ -197,7 +162,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("explosion") soundin = pick('sound/effects/Explosion1.ogg','sound/effects/Explosion2.ogg','sound/effects/Explosion3.ogg','sound/effects/Explosion4.ogg','sound/effects/Explosion5.ogg','sound/effects/Explosion6.ogg')
 			if ("sparks") soundin = pick('sound/effects/electr1.ogg','sound/effects/electr2.ogg','sound/effects/electr3.ogg')
 			if ("rustle") soundin = pick('sound/effects/rustle1.ogg','sound/effects/rustle2.ogg','sound/effects/rustle3.ogg','sound/effects/rustle4.ogg','sound/effects/rustle5.ogg')
-			if ("punch") soundin = pick('sound/weapons/npc_kill_melee_01.ogg','sound/weapons/npc_kill_melee_02.ogg','sound/weapons/npc_kill_melee_03.ogg')
+			if ("punch") soundin = pick('sound/weapons/npc_kill_melee_01.ogg','sound/weapons/npc_kill_melee_02.ogg','npc_kill_melee_03.ogg')
 			if ("footsteps_metal") soundin = pick('sound/effects/player/boots_run_metal_1.ogg','sound/effects/player/boots_run_metal_2.ogg','sound/effects/player/boots_run_metal_3.ogg','sound/effects/player/boots_run_metal_4.ogg')
 			if ("footsteps_carpet") soundin = pick('sound/effects/player/cr_step1.ogg','sound/effects/player/cr_step2.ogg','sound/effects/player/cr_step3.ogg','sound/effects/player/cr_step4.ogg')
 			if ("footsteps_wood") soundin = pick('sound/effects/player/wf_step1.ogg','sound/effects/player/wf_step2.ogg','sound/effects/player/wf_step3.ogg','sound/effects/player/wf_step4.ogg')
@@ -207,7 +172,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("hiss") soundin = pick('sound/voice/hiss1.ogg','sound/voice/hiss2.ogg','sound/voice/hiss3.ogg','sound/voice/hiss4.ogg')
 			if ("pageturn") soundin = pick('sound/effects/pageturn1.ogg', 'sound/effects/pageturn2.ogg','sound/effects/pageturn3.ogg')
 			if ("footsteps_water") soundin = pick('sound/effects/footsteps/step_water1.ogg','sound/effects/footsteps/step_water2.ogg','sound/effects/footsteps/step_water3.ogg','sound/effects/footsteps/step_water4.ogg')
-			if ("swimwater") soundin = pick('sound/effects/water_med1.ogg','sound/effects/water_med2.ogg')
+			if ("swimwater") soundin = pick('water_med1.ogg','water_med2.ogg')
 			if ("gunshot") soundin = pick('sound/weapons/Gunshot.ogg', 'sound/weapons/Gunshot2.ogg', 'sound/weapons/Gunshot3.ogg', 'sound/weapons/Gunshot4.ogg')
 			if ("bodyfall") soundin = pick('sound/effects/bodyfall1.ogg', 'sound/effects/bodyfall2.ogg')
 			if ("erikafootsteps") soundin = pick('sound/effects/footsteps/FTMET1.ogg', 'sound/effects/footsteps/FTMET2.ogg', 'sound/effects/footsteps/FTMET3.ogg', 'sound/effects/footsteps/FTMET4.ogg')
@@ -236,7 +201,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("crowbar_hit") soundin = pick('sound/lfwbcombatuse/crowbarhit.ogg', 'sound/lfwbcombatuse/crowbarhit2.ogg')
 			if ("crowbar_swing") soundin = pick('sound/lfwbcombatuse/swing_crowbar.ogg', 'sound/lfwbcombatuse/swing_crowbar2.ogg', 'sound/lfwbcombatuse/swing_crowbar3.ogg')
 			if ("neoclassic") soundin = pick('sound/lfwbsounds/nrevolver.ogg', 'sound/lfwbsounds/nrevolver2.ogg')
-			if ("kpfw") soundin = pick('sound/lfwbsounds/pulse_rifle_01_shot_loopmono_01.ogg', 'sound/lfwbsounds/pulse_rifle_01_shot_loopmono_02.ogg', 'sound/lfwbsounds/pulse_rifle_01_shot_loopmono_03.ogg', 'sound/lfwbsounds/pulse_rifle_01_shot_loopmono_04.ogg')
+			if ("kpfw") soundin = pick('pulse_rifle_01_shot_loopmono_01.ogg', 'pulse_rifle_01_shot_loopmono_02.ogg', 'pulse_rifle_01_shot_loopmono_03.ogg', 'pulse_rifle_01_shot_loopmono_04.ogg')
 			if ("kabal") soundin = pick('sound/weapons/guns/kabal_fire1.ogg', 'sound/weapons/guns/kabal_fire2.ogg')
 			if ("thanatikabal") soundin = pick('sound/weapons/guns/thanatikabal.ogg')
 			if ("axeswing") soundin = pick('sound/weapons/wpn_swing_axe_01.ogg', 'sound/weapons/wpn_swing_axe_02.ogg')

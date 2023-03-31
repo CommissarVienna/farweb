@@ -201,6 +201,7 @@ proc/increment_ert_chance()
 	//Replaced with new ERT uniform
 	equip_to_slot_or_del(new /obj/item/clothing/under/rank/centcom_officer(src), slot_w_uniform)
 	equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/swat(src), slot_shoes)
+	equip_to_slot_or_del(new /obj/item/clothing/gloves/swat(src), slot_gloves)
 	equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses(src), slot_glasses)
 	equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel(src), slot_back)
 /*

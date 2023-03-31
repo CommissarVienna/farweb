@@ -44,7 +44,7 @@ var/global/list/image/splatter_cache=list()
 			for(var/obj/effect/decal/cleanable/blood/B in src.loc)
 				if(B != src)
 					if (B.blood_DNA)
-						blood_DNA |= B.blood_DNA?.Copy()
+						blood_DNA |= B.blood_DNA.Copy()
 					qdel(B)
 	spawn(DRYING_TIME * (amount+1))
 		dry()
@@ -58,34 +58,25 @@ var/global/list/image/splatter_cache=list()
 	if(amount < 1)
 		return
 
-	var/datum/organ/external/l_foot = perp.get_organ(BP_L_FOOT)
-	var/datum/organ/external/r_foot = perp.get_organ(BP_R_FOOT)
-	var/hasfeet = 1
-	if((!l_foot || l_foot.is_broken()) && (!r_foot || r_foot.is_broken()))
-		hasfeet = 0
-
 	if(prob(probtoturnfootblood))
 
-		var/obj/item/clothing/shoes/S = perp.shoes
-		if(S)//Adding blood to shoes
-			S.blood_color = basecolor
-			S.track_blood = max(amount,perp.shoes:track_blood)
-			if(!S.blood_overlay)
-				S.generate_blood_overlay()
-			if(!S.blood_DNA)
-				S.blood_DNA = list()
-				S.blood_overlay.color = basecolor
-				S.overlays += perp.shoes.blood_overlay
-			S?.blood_DNA |= blood_DNA?.Copy()
+		if(perp.shoes)//Adding blood to shoes
+			perp.shoes.blood_color = basecolor
+			perp.shoes:track_blood = max(amount,perp.shoes:track_blood)
+			if(!perp.shoes.blood_overlay)
+				perp.shoes.generate_blood_overlay()
+			if(!perp.shoes.blood_DNA)
+				perp.shoes.blood_DNA = list()
+				perp.shoes.blood_overlay.color = basecolor
+				perp.shoes.overlays += perp.shoes.blood_overlay
+			perp.shoes.blood_DNA |= blood_DNA.Copy()
 
-		else if(hasfeet)//Or feet
+		else//Or feet
 			perp.feet_blood_color = basecolor
 			perp.track_blood = max(amount,perp.track_blood)
 			if(!perp.feet_blood_DNA)
 				perp.feet_blood_DNA = list()
-			if(!blood_DNA)
-				blood_DNA = list()
-			perp?.feet_blood_DNA |= blood_DNA?.Copy()
+			perp.feet_blood_DNA |= blood_DNA?.Copy()
 
 		perp.update_inv_shoes(1)
 		amount--
@@ -107,7 +98,7 @@ var/global/list/image/splatter_cache=list()
 		user << "<span class='notice'>You get some of \the [src] on your hands.</span>"
 		if (!user.blood_DNA)
 			user.blood_DNA = list()
-		user.blood_DNA |= blood_DNA?.Copy()
+		user.blood_DNA |= blood_DNA.Copy()
 		user.bloody_hands += taken
 		user.hand_blood_color = basecolor
 		user.update_inv_gloves(1)

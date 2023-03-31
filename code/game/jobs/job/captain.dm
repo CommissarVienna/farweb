@@ -6,7 +6,6 @@ var/fortHand = null
 	flag = CAPTAIN
 	department_head = list("Centcom")
 	department_flag = ENGSEC
-	stats_mods = list(STAT_ST = 2, STAT_DX = 1, STAT_HT = 1, STAT_IN = 1)
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
@@ -75,7 +74,6 @@ var/fortHand = null
 	flag = HAND
 	department_head = list("Centcom")
 	department_flag = ENGSEC
-	stats_mods = list(STAT_ST = 2, STAT_DX = 1, STAT_HT = 1, STAT_IN = 1)
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
@@ -119,7 +117,6 @@ var/fortHand = null
 	flag = HEIR
 	department_head = list("Captain")
 	department_flag = ENGSEC
-	stats_mods = list(STAT_ST = 1, STAT_DX = 0, STAT_HT = 0, STAT_IN = 1)
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
@@ -164,7 +161,6 @@ var/fortHand = null
 	flag = SUCCESSOR
 	department_head = list("Captain")
 	department_flag = ENGSEC
-	stats_mods = list(STAT_ST = -1, STAT_DX = 1, STAT_HT = -1, STAT_IN = 1)
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
@@ -213,7 +209,6 @@ var/fortHand = null
 	flag = BARONESS
 	department_head = list("Captain")
 	department_flag = ENGSEC
-	stats_mods = list(STAT_ST = -1, STAT_DX = 0, STAT_HT = 0, STAT_IN = 2)
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
@@ -271,7 +266,6 @@ var/fortHand = null
 	flag = BGUARD
 	department_head = list("Captain")
 	department_flag = ENGSEC
-	stats_mods = list(STAT_ST = 2, STAT_DX = 2, STAT_HT = 1, STAT_IN = 0)
 	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
@@ -326,7 +320,6 @@ var/fortHand = null
 	flag = MAID
 	department_head = list("Captain")
 	department_flag = ENGSEC
-	stats_mods = list(STAT_ST = -1, STAT_DX = 1, STAT_HT = -1, STAT_IN = 0)
 	faction = "Station"
 	total_positions = 3
 	spawn_positions = 3
@@ -361,7 +354,6 @@ var/fortHand = null
 	flag = GUEST
 	department_head = list("Captain")
 	department_flag = MEDSCI
-	stats_mods = list(STAT_ST = 1, STAT_DX = 0, STAT_HT = 0, STAT_IN = 1)
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
@@ -411,7 +403,7 @@ var/fortHand = null
 			return 0
 		..()
 		H.set_species("Child")
-		H.equip_to_slot_or_del(new /obj/item/clothing/under/urchin(H), slot_w_uniform)
+		H.equip_to_slot_or_del(new /obj/item/clothing/under/child_jumpsuit(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/child/shoes(H), slot_shoes)
 		return 1
 */
@@ -422,7 +414,6 @@ var/fortHand = null
 	flag = SERVANT
 	department_head = list("Captain")
 	department_flag = CIVILIAN
-	stats_mods = list(STAT_ST = -3, STAT_DX = 2, STAT_HT = -3, STAT_IN = 0)
 	faction = "Station"
 	total_positions = 3
 	spawn_positions = 3
@@ -442,7 +433,7 @@ var/fortHand = null
 		..()
 		H.set_species("Child")
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/cheap(H), slot_wrist_r)
-		H.equip_to_slot_or_del(new /obj/item/clothing/under/urchin(H), slot_w_uniform)
+		H.equip_to_slot_or_del(new /obj/item/clothing/under/child_jumpsuit(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/child/miner(H), slot_shoes)
 		H.equip_to_slot_or_del(new /obj/item/weapon/rag(H), slot_r_store)
 		H.vice = null
@@ -456,7 +447,6 @@ var/fortHand = null
 	flag = HOP
 	department_head = list("Captain")
 	department_flag = CIVILIAN
-	stats_mods = list(STAT_ST = 0, STAT_DX = -2, STAT_HT = -1, STAT_IN = 6)
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
@@ -497,7 +487,6 @@ var/fortHand = null
 	titlebr = "Tesoureiro"
 	flag = MEISTERDISC
 	department_flag = ENGSEC
-	stats_mods = list(STAT_ST = -3, STAT_DX = 0, STAT_HT = -3, STAT_IN = 2)
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
@@ -516,7 +505,7 @@ var/fortHand = null
 			return 0
 		..()
 		if(H.isChild())
-			H.equip_to_slot_or_del(new /obj/item/clothing/under/urchin(H), slot_w_uniform)
+			H.equip_to_slot_or_del(new /obj/item/clothing/under/child_jumpsuit(H), slot_w_uniform)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/ushanka(H), slot_head)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/child/miner(H), slot_shoes)
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/disciple(H), slot_wear_suit)
@@ -529,6 +518,7 @@ var/fortHand = null
 			return 1
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/common(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/brown(H), slot_shoes)
+		H.equip_to_slot_or_del(new /obj/item/clothing/head/treasurerhat(H), slot_head)
 		H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/gold_breastplate(H), slot_wear_suit)
 		H.equip_to_slot_or_del(new /obj/item/daggerssheath/iron(H), slot_wrist_l)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/captain(H), slot_wrist_r)

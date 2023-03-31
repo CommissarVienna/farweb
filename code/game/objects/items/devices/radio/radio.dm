@@ -831,5 +831,5 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 
 /obj/item/device/radio/banana // So that it shows up as a banana in the chat log.
 	name = "Banana Phone"
-	icon = 'icons/obj/items.dmi'
+	icon = 'items.dmi'
 	icon_state = "banana" //needs a new icon.

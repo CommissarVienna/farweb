@@ -52,6 +52,30 @@
 	HELMET_TYPE = /obj/item/clothing/head/helmet/space
 	MASK_TYPE = /obj/item/clothing/mask/breath
 
+/obj/machinery/suit_storage_unit/engineering_unit
+	SUIT_TYPE = /obj/item/clothing/suit/space
+	HELMET_TYPE = /obj/item/clothing/head/helmet/space
+	MASK_TYPE = /obj/item/clothing/mask/breath
+	STORAGE_TYPE = /obj/item/clothing/shoes/magboots
+
+/obj/machinery/suit_storage_unit/ce_unit
+	SUIT_TYPE = /obj/item/clothing/suit/space/rig/elite
+	HELMET_TYPE = /obj/item/clothing/head/helmet/space/rig/elite
+	MASK_TYPE = /obj/item/clothing/mask/breath
+	STORAGE_TYPE = /obj/item/clothing/shoes/magboots
+
+/obj/machinery/suit_storage_unit/mining_unit
+	SUIT_TYPE = /obj/item/clothing/suit/space
+	HELMET_TYPE = /obj/item/clothing/head/helmet/space
+	MASK_TYPE = /obj/item/clothing/mask/breath
+	STORAGE_TYPE = /obj/item/clothing/shoes/magboots
+
+/obj/machinery/suit_storage_unit/syndicate_unit
+	SUIT_TYPE = /obj/item/clothing/head/helmet/space/rig/syndi
+	HELMET_TYPE = /obj/item/clothing/suit/space/rig/syndi
+	MASK_TYPE = /obj/item/clothing/mask/gas/syndicate
+	STORAGE_TYPE = /obj/item/clothing/shoes/magboots
+
 /obj/machinery/suit_storage_unit/soulbreaker_unit
 	SUIT_TYPE = /obj/item/clothing/suit/armor/vest/security/soulbreaker
 	HELMET_TYPE = /obj/item/clothing/head/helmet/soulbreaker
@@ -68,6 +92,28 @@
 	HELMET_TYPE = /obj/item/clothing/head/helmet/lw/ordinator
 	MASK_TYPE = /obj/item/clothing/mask/breath
 	STORAGE_TYPE = /obj/item/weapon/tank/emergency_oxygen
+
+/obj/machinery/suit_storage_unit/medical_unit
+	SUIT_TYPE = /obj/item/clothing/suit/space/rig/medical
+	HELMET_TYPE = /obj/item/clothing/head/helmet/space/rig/medical
+	MASK_TYPE = /obj/item/clothing/mask/breath
+
+/obj/machinery/suit_storage_unit/atmos_unit
+	SUIT_TYPE = /obj/item/clothing/suit/space/rig/atmos
+	HELMET_TYPE = /obj/item/clothing/head/helmet/space/rig/atmos
+	MASK_TYPE = /obj/item/clothing/mask/breath
+
+/obj/machinery/suit_storage_unit/cap_unit
+	SUIT_TYPE = /obj/item/clothing/suit/armor/captain
+	HELMET_TYPE = /obj/item/clothing/head/helmet/space/capspace
+	MASK_TYPE = /obj/item/clothing/mask/gas
+	STORAGE_TYPE = /obj/item/weapon/tank/jetpack/oxygen
+
+/obj/machinery/suit_storage_unit/security_unit
+	SUIT_TYPE = /obj/item/clothing/suit/space/rig/security
+	HELMET_TYPE = /obj/item/clothing/head/helmet/space/rig/security
+	MASK_TYPE = /obj/item/clothing/mask/breath
+	STORAGE_TYPE = /obj/item/clothing/shoes/magboots
 
 /obj/machinery/suit_storage_unit/New()
 	src.update_icon()

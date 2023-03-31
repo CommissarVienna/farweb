@@ -38,12 +38,10 @@
 	if(ishuman(M))
 		if(usr.get_active_hand())
 			return
-		var/mob/living/carbon/human/H = M
-		if(!H.has_limbs)
-			to_chat(H, "<span class='combatbold'>[pick(fnord)] I don't have any limbs!</span>")
-			return
+
 		var/turf/T = get_step(M, turn(M.dir, 180))
-		if(T == src)
+		if(T == src && ishuman(M))
+			var/mob/living/carbon/human/H = M
 			H.isLeaning = 1
 			H.check_fov()
 			switch(H.dir)
@@ -56,122 +54,107 @@
 				if(EAST)
 					H.pixel_x = -11
 
-/turf/simulated/MouseDrop_T(mob/M as mob)
+		if(!climbable)
+			to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)] I can't even imagine climbing this!</span>")
+			return
+		else
+			var/mob/living/carbon/human/H = M
+			var/list/rolled = roll3d6(H,SKILL_CLIMB,null)
+			switch(rolled[GP_RESULT])
+				if(GP_FAILED, GP_CRITFAIL)
+					H.clinged_turf = null
+					to_chat(H, "You failed to cling to \the [H.clinged_turf]")
+					H.adjustStaminaLoss(rand(1,2))
+				if(GP_SUCCESS, GP_CRITSUCCESS)
+					H.clinged_turf = src
+					to_chat(H, "You cling to \the [H.clinged_turf]")
+					H.adjustStaminaLoss(rand(2,4))
+
+/turf/simulated/floor/MouseDrop_T(mob/M as mob)
 	..()
 	if(M != usr) return
 	if(!Adjacent(usr)) return
-	if(!ishuman(M))
-		return
-	var/mob/living/carbon/human/H = M
-	if(H.z != src.z)
-		return
-	if(H.stat || H.buckled || H.paralysis || H.stunned || H.sleeping || (H.status_flags & FAKEDEATH) || H.restrained() || H.grabbed_by.len >= 1 || (H.weakened > 5))
-		return
-	if(H.clinged_turf)
-		if(H.clinged_turf == src)
-			return
-		if(!H.clinged_turf.Adjacent(src))
-			return
-		var/turf/T = H.clinged_turf
-		for(var/atom/movable/A in src)
-			if(A.density)
-				to_chat(H, "<span class='combatbold'>[pick(fnord)] \the [A] is in the way!</span>")
-				return
-		for(var/atom/movable/A in H.loc)
-			if(A.density && !istype(A, /mob/living/carbon/human))
-				to_chat(H, "<span class='combatbold'>[pick(fnord)] \the [A] is in the way!</span>")
-				return
-		if(get_dir(src, T) in list(SOUTHWEST, SOUTHEAST, NORTHWEST, NORTHEAST) && !(get_dir(H, src) in list(NORTH, SOUTH, EAST, WEST)))
-			to_chat(H, "<span class='combatbold'>[pick(fnord)] There is nothing to latch onto!</span>")
-			return
-		if(istype(src, /turf/simulated/wall))
-			var/turf/simulated/wall/W = src
-			if(!W.climbable)
-				to_chat(usr, "<span class='combatbold'>[pick(fnord)] I can't even imagine climbing this!</span>")
-				return
-		var/list/rolled = roll3d6(H,SKILL_CLIMB,null)
-		switch(rolled[GP_RESULT]) // thuxcode + borgcode = seven layers of programming hell someone save me PLEASE
-			if(GP_CRITSUCC)
-				to_chat(H, "<span class='crithit'>CRITICAL SUCCESS!</span> <span class='hit'>Using your feet to propel yourself, you masterfully swing and latch onto \the [src] on your first try!</span>")
-				H.visible_message("<span class='passive'>[H] acrobatically climbs \the [src]!</span>")
-				H.clingmove(src)
-			if(GP_SUCC)
-				if(do_after(H, 12-H.my_skills.GET_SKILL(SKILL_CLIMB)))
-					to_chat(H, "<span class='passive'>You take a little while, but after some useless swinging, you sucessfully manage to climb.</span>")
-					H.adjustStaminaLoss(rand(5, 10))
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(H.clinged_turf)
+			var/turf/T = H.clinged_turf
+			if(do_after(H, 12-H.my_skills.GET_SKILL(SKILL_CLIMB)))
+				var/list/L = list(SOUTHEAST, SOUTHWEST, NORTHEAST,NORTHWEST)
+				var/dird = get_dir(H, T)
+				switch(dird)
+					if(EAST)
+						L = list(NORTHEAST, SOUTHEAST)
+					if(WEST)
+						L = list(NORTHWEST, SOUTHWEST)
+					if(SOUTH)
+						L = list(SOUTHEAST, SOUTHWEST)
+					if(NORTH)
+						L = list(NORTHEAST, NORTHWEST)
+
+				var/list/allowedTurfs = list() //THUX FEZ ESSA PORRA COM O TOBA E EU NAO VOU REFAZER
+				for(var/dir in L)
+					var/turf/TT = get_step(M, dir)
+					allowedTurfs += TT
+				if(src in allowedTurfs)
+					H.x = x
+					H.y = y
+					H.z = z
+					return
+				if(get_dist(src, T) <= 1)
 					H.clingmove(src)
-				else
-					to_chat(H, "<span class='combatbold'>You were interrupted while climbing!</span>")
-					H.adjustStaminaLoss(rand(10, 13))
-			if(GP_FAIL)
-				to_chat(H, "<span class='combatbold'>You swing around and grasp, but fail to reach \the [src]!</span>")
-				H.adjustStaminaLoss(rand(13, 15))
-			if(GP_CRITFAIL)
-				to_chat(H, "<span class='crithit'>CRITICAL FAILURE!</span> <span class='hit'>Your hands slip and you fall, hitting your head!</span>")
-				H.visible_message("<span class='combatbold'>[H] fails to climb \the [src], falling and hitting their head!</span>")
-				H.clinged_turf = null
-				H.adjustStaminaLoss(rand(15, 25))
-				playsound(H.loc, 'sound/weapons/bite.ogg', 70, 0)
-				H:weakened = max(H:weakened,4)
-				H.apply_damage(rand(15,25), BRUTE, "head")
-				H.sound2()
-				if(prob(80))
-					H.apply_effect(5, PARALYZE)
-					H.visible_message("<span class='combatglow'><b>[H]</b> has been knocked unconscious!</span>")
-					H.ear_damage += rand(0, 3)
-					H.ear_deaf = max(H.ear_deaf,6)
-				H.CU()
+
+/mob/living/carbon/human/proc/clingmove(var/atom/A)
+	var/direction
+	if(stat || buckled || paralysis || stunned || sleeping || (status_flags & FAKEDEATH) || restrained() || grabbed_by.len >= 1 || (weakened > 5))
+		return
+	if(!istype(src.loc, /turf/))
+		return
+	if(!A || !x || !y || !A.x || !A.y) return
+	if(src.get_active_hand())
+		if(r_hand)
+			return
+		if(l_hand)
+			return
+	if(scrambling)
+		return
+	if(!has_limbs)
+		to_chat(src, "<i>You can't even move yourself - you have no limbs!</i>")
+	var/dx = A.x - x
+	var/dy = A.y - y
+	if(!dx && !dy) return
+
+	if(abs(dx) < abs(dy))
+		if(dy > 0)	direction = NORTH
+		else		direction = SOUTH
 	else
-		if(istype(src, /turf/simulated/wall))
-			if(!get_dir(H, src) == H.dir)
+		if(dx > 0)	direction = EAST
+		else		direction = WEST
+	var/direction2 = get_dir(src, src.clinged_turf)
+	playsound(src.loc, 'sound/effects/climb.ogg', 40, 1)
+	src.adjustStaminaLoss(rand(4,8))
+	if(direction)
+		if(src.nutrition > 150)
+			scrambling = 1
+			Move(get_step(src,direction))
+			scrambling = 0
+			dir = 2
+			src.dir = direction2
+			return
+		if(istype(src, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = src
+			if(H.last_dam > 50)
+				scrambling = 1
+				Move(get_step(src,direction))
+				scrambling = 0
+				dir = 2
+				src.dir = direction2
 				return
-			var/turf/simulated/wall/W = src
-			if(!W.climbable)
-				to_chat(usr, "<span class='combatbold'>[pick(fnord)] I can't even imagine climbing this!</span>")
-				return
-			H.clinged_turf = src
-			H.adjustStaminaLoss(rand(4, 8))
-			to_chat(H, "<span class='passive'>You cling to the \the [src]</span>")
-
-
-
-
-
-/mob/living/carbon/human/proc/clingmove(var/atom/A) //not my proudest proc
-	if(istype(A, /turf/simulated/floor))
-		src.forceMove(locate(A.x, A.y, A.z))
-		src.clinged_turf = null
-		if(istype(A, /turf/simulated/floor/open))
-			var/turf/simulated/floor/open/O = A
-			for(var/direction in list(NORTH, SOUTH, EAST, WEST))
-				var/step = get_step(O, direction)
-				if(istype(step, /turf/simulated/wall))
-					var/turf/simulated/wall/W = step
-					if(W.climbable)
-						src.clinged_turf = step
-						to_chat(src, "<span class='passive'>You leap into open air, grabbing hold of the nearest wall.</span>")
-						return
-			to_chat(src, "<span class='combatbold'>You foolishly leap into open air!</span>")
-			O.Entered(src)
-	if(istype(A, /turf/simulated/wall))
-		for(var/direction in list(NORTH, SOUTH, EAST, WEST))
-			var/can_progress = TRUE
-			var/step = get_step(A, direction)
-			if(istype(step, /turf/simulated/wall))
-				continue
-			for(var/atom/movable/M in step)
-				if(M.density)
-					can_progress = FALSE
-					break
-			if(!can_progress)
-				continue
-			if(istype(step, /turf/simulated/floor) && (get_dist(src, step) <= 1) && (get_dist(src.clinged_turf, step) <= 1))
-				src.forceMove(step)
-				break
-		src.clinged_turf = A
-		to_chat(src, "<span class='passive'>You cling to \the [A] as you climb onto it.</span>")
-
-
+		else
+			scrambling = 1
+			Move(get_step(src,direction))
+			scrambling = 0
+			dir = 2
+			return
 
 /turf/simulated/wall/ChangeTurf(var/newtype)
 	for(var/obj/effect/E in src) if(E.name == "Wallrot") qdel(E)
@@ -465,8 +448,8 @@
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
 			H.adjustStaminaLoss(rand(4,6))
-			take_damage((H.my_stats.get_stat(STAT_ST)+H.my_stats.get_stat(STAT_HT))/6)
-		playsound(src, pick('sound/effects/wallhit.ogg','sound/effects/wallhit2.ogg','sound/effects/wallhit3.ogg'), 80, 1)
+			take_damage((H.my_stats.st+H.my_stats.ht)/6)
+		playsound(src, pick('wallhit.ogg','wallhit2.ogg','wallhit3.ogg'), 80, 1)
 		return
 
 /turf/simulated/wall/attack_hand(mob/living/carbon/human/user as mob)

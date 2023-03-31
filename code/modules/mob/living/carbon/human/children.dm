@@ -4,7 +4,7 @@
 	total_health = 80 //Kids are weaker than adults.
 	min_age = 10
 	max_age = 14
-	icobase = 'icons/mob/flesh/old/human_child_old.dmi'
+	icobase = 'icons/mob/human_races/child/r_child.dmi'
 	deform = 'icons/mob/human_races/child/r_def_child.dmi'
 
 /datum/species/human/child/handle_post_spawn(var/mob/living/carbon/human/H)
@@ -22,7 +22,7 @@
 	name = "scullion's uniform"
 	desc = "Fitted just for kids."
 	icon_state = "grey"
-	item_color = "grey"
+	item_color = "child_grey"
 	species_restricted = list("Child")
 
 /obj/item/clothing/under/urchin
@@ -59,7 +59,6 @@
 	icon_state = "yapron"
 	item_color = "yapron"
 	species_restricted = list("Child")
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS_TOGETHER
 
 /obj/item/clothing/suit/disciple
 	name = "meister's disciple garments"
@@ -67,7 +66,6 @@
 	icon_state = "disciple"
 	item_color = "disciple"
 	species_restricted = list("Child")
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS_TOGETHER
 
 /obj/item/clothing/suit/armor/vest/squire
 	name = "squire's armor"
@@ -77,17 +75,17 @@
 	species_restricted = list("Child")
 	armor = list(melee = 35, bullet = 15, laser = 50, energy = 10, bomb = 25, bio = 0, rad = 0)
 	weight = 12
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
 	armor_type = ARMOR_METAL
 	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
 
 /obj/item/clothing/suit/armor/vest/ycensor
 	name = "child censor armor"
-	desc = "Plate armor with a tabard representing Ravenheart's coat of arms."
+	desc = ""
 	icon_state = "ycensor"
 	item_color = "ycensor"
 	species_restricted = list("Child")
 	armor = list(melee = 70, bullet = 45, laser = 50, energy = 10, bomb = 25, bio = 0, rad = 0)
 	weight = 28
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
 	armor_type = ARMOR_METAL

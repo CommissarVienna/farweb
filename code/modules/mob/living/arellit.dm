@@ -51,18 +51,24 @@
 	..()
 	set_species("arellit")
 	src.zone_sel = new /obj/screen/zone_sel( null )
-	my_stats.set_stat(STAT_ST, rand(5,6))
-	my_stats.set_stat(STAT_HT, rand(9,13))
-	my_stats.set_stat(STAT_DX, rand(10,13))
+	my_stats.initst = rand(5,6)
+	my_stats.initht = rand(9,13)
+	my_stats.initdx = rand(10,13)
+	my_stats.st = my_stats.initst
+	my_stats.ht = my_stats.initht
+	my_stats.dx = my_stats.initdx
 	my_skills.CHANGE_SKILL(SKILL_MELEE, rand(1,3))
 
 /mob/living/carbon/human/monster/arellit/baby/New()
 	..()
 	set_species("arellitbaby")
 
-	my_stats.set_stat(STAT_ST, rand(1,4))
-	my_stats.set_stat(STAT_HT, rand(1,4))
-	my_stats.set_stat(STAT_DX, rand(1,4))
+	my_stats.initst = rand(1,4)
+	my_stats.initht = rand(1,4)
+	my_stats.initdx = rand(1,4)
+	my_stats.st = my_stats.initst
+	my_stats.ht = my_stats.initht
+	my_stats.dx = my_stats.initdx
 	my_skills.CHANGE_SKILL(SKILL_MELEE, rand(1,3))
 
 	spawn(3 MINUTES)
@@ -166,7 +172,7 @@
 
 	combat_mode = 0
 
-	if(stat)
+	if(stat == 2)
 		return 0
 	if(weakened || paralysis || handcuffed || !canmove)
 		return 0
@@ -314,7 +320,7 @@
 		if(isChild(A))
 			neededST = 7
 
-		if(neededST > src?.my_stats?.get_stat(STAT_ST) && !istype(src, /mob/living/carbon/human/monster/arellit/adult))
+		if(neededST > src?.my_stats?.st && !istype(src, /mob/living/carbon/human/monster/arellit/adult))
 			unbuckle()
 			playsound(A.loc, 'sound/effects/fallsmash.ogg', 50, 0)//Splat
 			A.apply_damage(10/2 + rand(-5,12), BRUTE, "l_leg")
@@ -380,7 +386,7 @@
 	var/list/roll = roll3d6(H, SKILL_RIDE, null,TRUE)
 	var/result = roll[GP_RESULT]
 	switch(result)
-		if(GP_SUCC, GP_CRITSUCC)
+		if(GP_SUCCESS, GP_CRITSUCCESS)
 			master = user
 			tamed = TRUE
 		else
@@ -448,7 +454,7 @@
 
 /datum/unarmed_attack/arelbite
 	attack_verb = list("hits","slash")
-	attack_sound = 'sound/weapons/bite.ogg'
+	attack_sound = 'bite.ogg'
 	miss_sound = 'sound/weapons/slashmiss.ogg'
 	damage = 10
 	sharp = 1

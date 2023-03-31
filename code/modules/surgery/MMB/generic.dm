@@ -26,7 +26,7 @@
 								new /obj/item/weapon/bone(src.loc)
 						else
 							if(affected.name == "chest" || affected.name == "groin" || affected.name == "vitals")
-								if(statcheck(user.my_stats.get_stat(STAT_ST), 10, 0))
+								if(statcheck(user.my_stats.st, 10, 0))
 									if(affected.open == 0)
 										if(istype(src) && !(src.species.flags & NO_BLOOD))
 											affected.status |= ORGAN_BLEEDING
@@ -46,7 +46,7 @@
 										visible_message("<span class='combatbold'>[user]</span><span class='combat'> makes an incision on [src].</span>")
 										return
 
-								if(statcheck(user.my_stats.get_stat(STAT_ST), 10, 0))
+								if(statcheck(user.my_stats.st, 10, 0))
 									if(affected.open == 1)
 										if(istype(src) && !(src.species.flags & NO_BLOOD))
 											affected.status |= ORGAN_BLEEDING
@@ -66,7 +66,7 @@
 										visible_message("<span class='combatbold'>[user]</span><span class='combat'> dissects [src].</span>")
 										return
 							else
-								if(statcheck(user.my_stats.get_stat(STAT_ST), 10, 0) && skillcheck(user.my_skills.GET_SKILL(SKILL_SURG), 50, 0, user))
+								if(statcheck(user.my_stats.st, 10, 0) && skillcheck(user.my_skills.GET_SKILL(SKILL_SURG), 50, 0, user))
 									visible_message("<span class='combatbold'>[user]</span><span class='combat'> cuts [src]!</span>")
 									affected.droplimb(1,1,0)
 								else if(skillcheck(user.my_skills.GET_SKILL(SKILL_SURG), 75, 0, user))

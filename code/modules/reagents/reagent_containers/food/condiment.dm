@@ -40,7 +40,7 @@
 				M << "\red I can't use that, I must drink it with my mouth."
 				return 0
 
-			playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(50,60), 0)
+			playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(50,60), 0)
 			return 1
 		else if( istype(M, /mob/living/carbon/human) )
 
@@ -59,7 +59,7 @@
 				spawn(5)
 					reagents.trans_to(M, 10)
 
-			playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(50,60), 0)
+			playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(50,60), 0)
 			return 1
 		return 0
 
@@ -199,7 +199,7 @@
 		reagents.add_reagent("cocaine", 10)
 		src.reagents.reaction(user, INGEST)
 		src.reagents.trans_to(user, 15)
-		playsound(user,pick('sound/webbers/sniff.ogg'), rand(50,60), 0)
+		playsound(user,pick('sniff.ogg'), rand(50,60), 0)
 		qdel(src)
 
 /obj/item/weapon/reagent_containers/food/snacks/salt/Crossed(AM as mob|obj)

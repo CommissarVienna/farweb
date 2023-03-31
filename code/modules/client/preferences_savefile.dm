@@ -72,7 +72,6 @@
 	S["rsc_fix"]			>> rsc_fix
 	S["zoom_level"]			>> zoom_level
 	S["toggle_squire"]		>> toggle_squire
-	S["font_size"]			>> font_size
 
 	//Sanitize
 	ooccolor		= sanitize_hexcolor(ooccolor, initial(ooccolor))
@@ -89,7 +88,6 @@
 	if(isnull(togglesize)) togglesize = 0
 	if(isnull(ambi_volume)) ambi_volume = 60
 	if(isnull(music_volume)) music_volume = 70
-	if(isnull(font_size)) font_size = 100
 	//if(isnull(toggle_nat)) toggle_nat = 0
 	//chromossomes	= sanitize_integer(chromossomes, initial(chromossomes))
 
@@ -128,7 +126,6 @@
 	S["rsc_preload"]		<< rsc_fix
 	S["zoom_level"]			<< zoom_level
 	S["toggle_squire"]		<< toggle_squire
-	S["font_size"]			<< max(0,font_size)
 
 	return 1
 

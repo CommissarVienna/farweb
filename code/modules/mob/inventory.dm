@@ -73,29 +73,11 @@
 	if(hand)	return put_in_r_hand(W)
 	else		return put_in_l_hand(W)
 
-/mob/proc/vamp_check(var/obj/item/W)
-	if(!ishuman(src))
-		return FALSE
-	var/mob/living/carbon/human/H = src
-	var/vamp_hand = H.l_hand ? "l_hand" : "r_hand" //I hate this so much.
-	if(H.isVampire)
-		if(W.silver && !H.gloves)
-			if(vamp_hand)
-				to_chat(H, pick("<span class='combatglow'><b>GET THIS OUT OF HERE!</b></span>", "<span class='combatglow'><b>ACCURSED SILVER!</b></span>", "<span class='combatglow'><b>IT BURNS! IT BURNS!</b></span>"))
-				H.drop_from_inventory(H.get_active_hand())
-				H.apply_damage(rand(5, 10), BRUTE, vamp_hand)
-				H.flash_pain()
-				H.rotate_plane(1)
-				return TRUE
-	return FALSE
-
 //Puts the item our active hand if possible. Failing that it tries our inactive hand. Returns 1 on success.
 //If both fail it drops it on the floor and returns 0.
 //This is probably the main one you need to know :)
 /mob/proc/put_in_hands(var/obj/item/W)
 	if(!W)		return 0
-	if(vamp_check(W))
-		return 0
 	if(put_in_active_hand(W))
 		update_inv_l_hand()
 		update_inv_r_hand()
@@ -112,7 +94,7 @@
 
 		W.dropped()
 		return 0
-	hud_used?.add_inventory_overlay()
+	hud_used.add_inventory_overlay()
 
 
 /mob/proc/drop_item_v()		//this is dumb.
@@ -216,6 +198,7 @@
 	if(sound)
 		if(!istype(Target, /obj/structure/rack))
 			make_item_drop_sound()
+	unwield_drop()
 	if(istype(src, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = src
 		var/obj/item/I = get_active_hand()
@@ -229,9 +212,30 @@
 /mob/proc/drop_item_vv(var/atom/Target, var/sound = 1)
 	if(sound)
 		make_item_drop_sound()
+	unwield_drop()
 	if(hand)
 		return drop_r_hand(Target)
 	else		return drop_l_hand(Target)
+
+
+/mob/proc/unwield_drop()
+	var/obj/item/I = get_active_hand()
+	var/obj/item/II = get_inactive_hand()
+	if(!I)
+		return
+	if(istype(I, /obj/item/weapon/twohanded/offhand))
+		if(I.wielded)
+			I.unwield(usr)
+			I.wielded = 0
+
+	if(!II)
+		return
+
+	if(istype(II, /obj/item/weapon/twohanded/offhand))
+		if(II.wielded)
+			II.unwield(usr)
+			II.wielded = 0
+
 
 /mob/proc/make_item_drop_sound()
 	var/obj/item/I = get_active_hand()

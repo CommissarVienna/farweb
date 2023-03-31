@@ -48,7 +48,7 @@
 	desc = " Fully automatic carbine. Uses 7.62 caliber rounds."
 	icon_state = "grinder"
 	item_state = "biggun"
-	wielded_underlay = TRUE
+	wielded_icon = "biggun-wielded"
 	w_class = 3.0
 	recoil = 1.25
 	slot_flags = SLOT_BACK
@@ -88,7 +88,7 @@
 
 /obj/item/weapon/gun/projectile/automatic/new_rifle/pulse_rifle
 	name = "Kpfw-6 Ausf"
-	desc = "An experimental automatic rifle that belongs in the past."
+	desc = "An experimental automatic rifle that belongs to the past."
 	icon_state = "kpfw"
 	item_state = "kpfw"
 	wielded_icon = "kpfw-wielded"
@@ -105,10 +105,10 @@
 
 /obj/item/weapon/gun/projectile/automatic/new_rifle/lakko
 	name = "CTT4&3 Autorifle"
-	desc = "An experimental rifle designed by old corporations for all purposes."
+	desc = "Experimental rifle designed by old corporations with all purposes."
 	icon_state = "lakko"
 	item_state = "biggun"
-	wielded_underlay = TRUE
+	wielded_icon = "biggun-wielded"
 	w_class = 3.0
 	recoil = 1.25
 	slot_flags = SLOT_BACK
@@ -144,8 +144,7 @@
 	desc = "Maranax pallex!"
 	icon_state = "kabal45"
 	item_state = "kabal45"
-	wielded_icon = TRUE
-	wielded_underlay = TRUE
+	wielded_icon = "kabal-wielded"
 	w_class = 3.0
 	recoil = 1.5
 	slot_flags = SLOT_BACK
@@ -168,7 +167,7 @@
 	w_class = 3.0
 	origin_tech = "combat=5;materials=2;syndicate=8"
 	mag_type = /obj/item/ammo_magazine/external/uzi380
-	fire_sound = 'sound/weapons/guns/fire/smg_fire.ogg'
+	fire_sound = 'smg_fire.ogg'
 	item_worth = 300
 	jam_chance = 15
 	recoil = 1.25
@@ -183,7 +182,7 @@
 	w_class = 3.0
 	slot_flags = SLOT_BACK
 	origin_tech = "combat=5;materials=2"
-	fire_sound = 'sound/weapons/Gunshot3.ogg'
+	fire_sound = 'Gunshot3.ogg'
 	mag_type = /obj/item/ammo_magazine/external/mag556
 	item_worth = 350
 	recoil = 1.35

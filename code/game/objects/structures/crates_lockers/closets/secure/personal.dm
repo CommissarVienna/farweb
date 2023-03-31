@@ -22,6 +22,7 @@
 	..()
 	spawn(4)
 		contents = list()
+		new /obj/item/clothing/under/color/white( src )
 		new /obj/item/clothing/shoes/lw/brown( src )
 	return
 

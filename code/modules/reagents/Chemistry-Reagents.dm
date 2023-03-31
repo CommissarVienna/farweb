@@ -275,8 +275,7 @@ datum/reagent/water
 
 	reaction_turf(var/turf/simulated/T, var/volume)
 		if (!istype(T)) return
-		//if(volume >= 3)
-			/*
+		if(volume >= 3)
 			if(T.wet >= 1) return
 			T.wet = 1
 			if(T.wet_overlay)
@@ -292,7 +291,7 @@ datum/reagent/water
 				if(T.wet_overlay)
 					T.overlays -= T.wet_overlay
 					T.wet_overlay = null
-*/
+
 		var/hotspot = (locate(/obj/fire) in T)
 		if(hotspot && !istype(T, /turf/space))
 			var/datum/gas_mixture/lowertemp = T.remove_air( T:air:total_moles )
@@ -326,7 +325,7 @@ datum/reagent/water
 			if(M.fire_stacks <= 0)
 				M.ExtinguishMob()
 			return
-/*
+
 datum/reagent/water/holywater
 	name = "Holy Water"
 	id = "holywater"
@@ -345,7 +344,7 @@ datum/reagent/water/holywater
 			HH.death()
 		holder.remove_reagent(src.id, 10 * REAGENTS_METABOLISM) //high metabolism to prevent extended uncult rolls.
 		return
-*/
+
 datum/reagent/lube
 	name = "Space Lube"
 	id = "lube"

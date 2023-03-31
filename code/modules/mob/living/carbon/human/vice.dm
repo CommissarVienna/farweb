@@ -61,7 +61,7 @@
 
 					if(prob(1))
 						to_chat(src, "<br><span class='graytextbold'>⠀+ I need to sate my desires. +</span><br>")
-
+			
 			if("Voyeur")
 				if(src.age > 17)
 					add_event("vice", /datum/happiness_event/vice/voyeur)
@@ -114,13 +114,17 @@
 		spawn(10)
 			reflectneed += rand(1,2)
 			clear_event("reflect")
+			src.verbs -= /mob/living/carbon/human/proc/reflectexperience
 
 	if(reflectneed > 750)
 		reflectneed = 750
+		src.verbs += /mob/living/carbon/human/proc/reflectexperience
+		spawn(80)
+			src.updatePig()
 
 	if(reflectneed >= 750)
 		add_event("reflect", /datum/happiness_event/reflect)
-		src.add_verb(/mob/living/carbon/human/proc/reflectexperience)
+		src.verbs += /mob/living/carbon/human/proc/reflectexperience
 		if(sleeping) return
 		if(prob(1))
 			to_chat(src, "<br><span class='graytextbold'>⠀+ I need to reflect my experience. +</span><br>")

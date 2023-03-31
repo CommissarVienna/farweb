@@ -5,16 +5,9 @@
 	var/poop_covering = 0
 	var/can_be_worn_by_child = 0 //Snowflake shit for kids.
 	var/child_exclusive = 0
-	drop_sound = 'sound/effects/drop_clothing.ogg'
+	drop_sound = 'drop_clothing.ogg'
 	item_worth = 5
 	var/armor_type = ARMOR_ROUPA
-	var/DR = 0 //damage resistance
-	var/PD = 0 //passive defense
-	var/impale_weak
-	var/obj/item/clothing/armor_layer
-	var/can_layer = FALSE
-	var/layerable = FALSE
-	var/simple_icon = FALSE
 
 //BS12: Species-restricted clothing check.
 /obj/item/clothing/mob_can_equip(M as mob, slot)
@@ -49,13 +42,6 @@
 					return 0
 
 	return ..()
-
-/obj/item/clothing/attack_hand(var/mob/user)
-	if(!user) return
-	if(armor_layer && loc == user)
-		remove_armor_layer(user)
-		return
-	..()
 
 //Ears: headsets, earmuffs and tiny objects
 /obj/item/clothing/ears
@@ -144,30 +130,35 @@
 
 /obj/item/clothing/ears/earring/gold
 	name = "ear ring"
-	desc = "An earring."
+	desc = "A luxurious golden earring"
 	icon = 'icons/life/earring.dmi'
 	icon_state = "gold_earring"
+	item_worth = 72
 	slot_flags = SLOT_EARS | SLOT_TWOEARS
 
 /obj/item/clothing/ears/earring/silver
 	name = "ear ring"
-	desc = "An earring."
+	desc = "A luxurious silver earring"
 	icon = 'icons/life/earring.dmi'
 	icon_state = "silver_earring"
+	item_worth = 52
 	slot_flags = SLOT_EARS | SLOT_TWOEARS
+	silver = TRUE
 
 /obj/item/clothing/ears/earring/copper
 	name = "ear ring"
-	desc = "An earring."
+	desc = "A copper earring"
 	icon = 'icons/life/earring.dmi'
 	icon_state = "copper_earring"
+	item_worth = 28
 	slot_flags = SLOT_EARS | SLOT_TWOEARS
 
 /obj/item/clothing/ears/earring/bone
 	name = "ear ring"
-	desc = "An earring."
+	desc = "An earring made of bone"
 	icon = 'icons/life/earring.dmi'
 	icon_state = "bone_earring"
+	item_worth = 22
 	slot_flags = SLOT_EARS | SLOT_TWOEARS
 
 //Glasses
@@ -233,23 +224,6 @@ BLIND     // can't see anything
 	icon = 'icons/obj/clothing/hats.dmi'
 	body_parts_covered = HEAD
 	slot_flags = SLOT_HEAD
-	layerable = TRUE
-
-/obj/item/clothing/head/add_armor_layer(var/obj/item/I, var/mob/user)
-	if(user:head != src)
-		return
-	var/image/stateover = image("icon" = I.icon, "icon_state" = "[I.icon_state]")
-	stateover.layer = FLOAT_LAYER
-	user.drop_item()
-	armor_layer = I
-	I.loc = src
-	overlays += stateover
-	to_chat(user,"You're now wearing \a [I] on your [src]!")
-	user:update_inv_head(1)
-
-/obj/item/clothing/head/remove_armor_layer(var/mob/user)
-	..()
-	user:update_inv_head(1)
 
 
 //Mask
@@ -286,111 +260,8 @@ BLIND     // can't see anything
 	allowed = list(/obj/item/weapon/tank/emergency_oxygen)
 	armor = list(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 10, bio = 0, rad = 0)
 	slot_flags = SLOT_OCLOTHING
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
 	var/blood_overlay_type = "suit"
 	siemens_coefficient = 0.9
-	//these are predefined since generating them over and over is pointless
-	var/global/list/icon/fat_icons = list(
-	'icons/mob/clothing/suit_parts_fat.dmi',
-	'icons/mob/clothing/suit_parts_fat_lower.dmi',
-	'icons/mob/clothing/suit_parts_fat_larm.dmi',
-	'icons/mob/clothing/suit_parts_fat_rarm.dmi')
-	var/global/list/icon/female_icons = list(
-	'icons/mob/clothing/suit_parts_female.dmi',
-	'icons/mob/clothing/suit_parts_female_lower.dmi',
-	'icons/mob/clothing/suit_parts_female_larm.dmi',
-	'icons/mob/clothing/suit_parts_female_rarm.dmi')
-	var/global/list/icon/male_icons = list(
-	'icons/mob/clothing/suit_parts_male.dmi',
-	'icons/mob/clothing/suit_parts_male_lower.dmi',
-	'icons/mob/clothing/suit_parts_male_larm.dmi',
-	'icons/mob/clothing/suit_parts_male_rarm.dmi')
-	var/hide_uniform_sleeves = FALSE
-
-/obj/item/clothing/suit/add_armor_layer(var/obj/item/I, var/mob/user)
-	if(user:wear_suit != src)
-		return
-	var/image/stateover = image("icon" = I.icon, "icon_state" = "[I.icon_state]")
-	stateover.layer = FLOAT_LAYER
-	user.drop_item()
-	armor_layer = I
-	I.loc = src
-	overlays += stateover
-	to_chat(user,"You're now wearing \a [I] on your [src]!")
-	user:update_inv_wear_suit(1)
-
-/obj/item/clothing/suit/remove_armor_layer(var/mob/user)
-	..()
-	user:update_inv_wear_suit(1)
-
-/obj/item/clothing/suit/proc/update_above(var/mob/living/carbon/human/H,var/lying = 0)
-	if(simple_icon)
-		return
-	var/s = lying ? "2" : ""
-	var/list/icon/parts = list() //body 1, lower 2, left 3, right 4
-	var/icon/suit = icon('icons/mob/human.dmi',"blank")
-	if(istype(H.species,/datum/species/human/child))
-		parts = male_icons
-	else if(FAT in H.mutations)
-		parts = fat_icons
-	else if(H.gender == FEMALE)
-		parts = female_icons
-	else
-		parts = male_icons
-	if(body_parts_covered & ARM_LEFT)
-		var/chunk = icon(parts[3],icon_state = "[icon_state][s]")
-		suit.Blend(chunk,ICON_OVERLAY)
-	if(body_parts_covered & ARM_RIGHT)
-		var/chunk = icon(parts[4],icon_state = "[icon_state][s]")
-		suit.Blend(chunk,ICON_OVERLAY)
-	if(armor_layer)
-		var/list/over = armor_layer:update_above(H)
-		suit.Blend(over,ICON_OVERLAY)
-	return suit
-
-
-/obj/item/clothing/suit/proc/update_worn_icon(var/mob/living/carbon/human/H,var/lying = 0)
-	var/s = lying ? "2" : ""
-	if(simple_icon)
-		var/icon/suit = icon('icons/mob/clothing/suit.dmi',"[icon_state][s]")
-		if(armor_layer)
-			suit.Blend(armor_layer:update_worn_icon(H),ICON_OVERLAY)
-		return list(suit)
-	var/list/icon/parts = list() //body 1, lower 2, left 3, right 4
-	var/icon/suit = icon('icons/mob/human.dmi',"blank")
-	if(istype(H.species,/datum/species/human/child))
-		parts = male_icons
-	else if(FAT in H.mutations)
-		parts = fat_icons
-	else if(H.gender == FEMALE)
-		parts = female_icons
-//		if(H.pregnant)
-	//	parts[1] = 'icons/mob/clothing/suit_parts_female_plus.dmi'
-	else
-		parts = male_icons
-	//body
-	var/body_chunk = icon(parts[1],icon_state = "[icon_state][s]")
-	suit.Blend(body_chunk,ICON_OVERLAY)
-	//legs
-	if(body_parts_covered & LEGS_TOGETHER && (body_parts_covered & LEG_LEFT || body_parts_covered & LEG_RIGHT))
-		var/chunk = icon(parts[2],icon_state = "[icon_state][s]")
-		suit.Blend(chunk,ICON_OVERLAY)
-	else
-		if(body_parts_covered & LEG_LEFT)
-			var/chunk = icon(parts[2],icon_state = "[icon_state]_l_leg[s]")
-			suit.Blend(chunk,ICON_OVERLAY)
-		if(body_parts_covered & LEG_RIGHT)
-			var/chunk = icon(parts[2],icon_state = "[icon_state]_r_leg[s]")
-			suit.Blend(chunk,ICON_OVERLAY)
-
-	if(armor_layer)
-		var/list/over = armor_layer:update_worn_icon(H)
-		suit.Blend(over,ICON_OVERLAY)
-
-	return suit
-
-/obj/item/clothing/proc/remove_part(var/part)
-	body_parts_covered  &= ~part
 
 //Under clothing
 /obj/item/clothing/under
@@ -403,119 +274,61 @@ BLIND     // can't see anything
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	var/has_sensor = 1//For the crew computer 2 = unable to change mode
 	var/sensor_mode = 0
-	/*
+		/*
 		1 = Report living/dead
 		2 = Report detailed damages
 		3 = Report location
-	*/
-	var/pants_down = FALSE //if the parts are up/down
+		*/
 	var/obj/item/clothing/tie/hastie = null
-	var/displays_id = 1
 	var/obj/item/medal/medal_attached = null
 	var/image/medal_overlay = null
-	//This is needed because innkeeper outfit and ravenhearter use suit icons files. Thanks Randy.
-	var/list/icon/fat_icons 	= list('icons/mob/clothing/new_clothes_fat.dmi')
-	var/list/icon/female_icons  = list('icons/mob/clothing/new_clothes_female.dmi')
-	var/list/icon/male_icons 	= list('icons/mob/clothing/new_clothes_male.dmi')
+	var/displays_id = 1
+	var/sleeves = 2
 
-/obj/item/clothing/under/clean_mmb(mob/living/carbon/human/user as mob)
-	var/target = null
-	switch(user.zone_sel.selecting)
-		if("l_leg")
-			target = LEG_LEFT
-		if("r_leg")
-			target = LEG_RIGHT
-		if("l_arm")
-			target = ARM_LEFT
-		if("r_arm")
-			target = ARM_RIGHT
-	if(target)
-		tear_sleeve(user, target)
+/obj/item/clothing/under/MiddleClick(mob/living/carbon/human/user as mob)
+	user.setClickCooldown(DEFAULT_SLOW_COOLDOWN)
+	if(sleeves > 0)
+		to_chat(user, "<span class='passive'>You begin to rip [src] sleeve.</span>")
+		if(do_after(user,30))
+			user.visible_message("<span class='passivebold'>[user]</span> <span class='passive'>rips a sleeve from</span> <span class='passive'>[src]</span><span class='passive'>!</span>")
+			sleeves -= 1
+			var/obj/item/clothing/mask/sleeve/S = new(user.loc)
+			S.colorize(src)
+			user.put_in_hands(S)
+			playsound(src.loc, 'sound/misc/cloth_rip.ogg', 80, 1)
+	else
+		to_chat(user, "<span class='passivebold'>There's no sleeves for me to rip!</span>")
 
-/obj/item/clothing/under/attack_hand(mob/user as mob)
+/obj/item/clothing/under/RightClick(mob/living/carbon/human/user as mob)
+	if(medal_attached)
+		unequip_medal(user)
 
-	if(pants_down)
-		to_chat(user,"<span class='redtext'>I Must pull my pants up first!</span>")
+/obj/item/clothing/under/attackby(obj/item/I, mob/user)
+	if(!hastie && istype(I, /obj/item/clothing/tie))
+		user.drop_item()
+		hastie = I
+		I.loc = src
+		user << "<span class='notice'>You attach [I] to [src].</span>"
+
+		if (istype(hastie,/obj/item/clothing/tie/holster))
+			verbs += /obj/item/clothing/under/proc/holster
+
+		if (istype(hastie,/obj/item/clothing/tie/storage))
+			verbs += /obj/item/clothing/under/proc/storage
+
+		if(istype(loc, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = loc
+			H.update_inv_w_uniform()
+
 		return
+	else if(!medal_attached && istype(I, /obj/item/medal))
+		user.transfer_equiped_item_to(I, src)
+		medal_attached = I
+		medal_overlay()
+		if(istype(loc, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = loc
+			H.update_inv_w_uniform()
 	..()
-
-/obj/item/clothing/under/MouseDrop(var/obj/over_object)
-	..()
-	if(!istype(src.loc,/mob) || src.loc:w_uniform != src)
-		return
-	if(over_object.name != "i_clothing"  || !istype(over_object, /obj/screen/inventory))
-		return
-	pull_pants(loc)
-
-/obj/item/clothing/under/dropped()//should only be called by someone stripping the wearer
-	..()
-	pants_down = FALSE
-
-/obj/item/clothing/under/proc/pull_pants(var/mob/owner, var/mob/user)
-	var/mob/living/carbon/human/H = user ? user : owner
-
-	if(!(body_parts_covered & LEG_LEFT || body_parts_covered & LEG_RIGHT))
-		to_chat(H,"<span class ='combat'>\the [src] lacks pants.</span>")
-		return
-
-	if(do_after(H, 1 SECONDS))
-		pants_down = !pants_down
-		owner:update_pants(1)
-		playsound(owner.loc, 'sound/effects/drop_clothing.ogg', 50, 1)
-		owner.visible_message("<span class = 'bluetext'><B>[H]</B></span> <span class='bluetext'>pulls [user ? "[owner]'s" : "their"] pants [pants_down ? "down" : "up"].</span>")
-
-
-
-
-/obj/item/clothing/under/proc/tear_sleeve(mob/living/carbon/human/user, zone_sel)
-	var/direction = "right"
-	var/sleeve_type = "sleeve"
-	if(zone_sel == LEG_LEFT || zone_sel == ARM_LEFT)
-		direction = "left"
-	if(zone_sel == LEG_LEFT || zone_sel == LEG_RIGHT)
-		sleeve_type = "leg"
-	if(pants_down && sleeve_type == "leg")
-		to_chat(user,"<span class='redtext'>I Must pull my pants up first!</span>")
-		return
-	if(!(body_parts_covered & zone_sel))
-		to_chat(user, "<span class = 'bluetext'><B>The [direction] [sleeve_type] is gone!</B></span>")
-		return
-
-	to_chat(user, "<span class='bluetext'>You begin to rip off [src]'s [direction] [sleeve_type].</span>")
-	if(do_after(user,30))
-		user.visible_message("<span class = 'bluetext'><B>[user]</B></span> <span class='bluetext'>rips the [direction] [sleeve_type] from</span> <span class='bluetext'>[src]</span><span class='bluetext'>!</span>")
-		body_parts_covered &= ~zone_sel
-		if(istype(src.loc,/mob) && src.loc:w_uniform == src)
-			if(sleeve_type == "sleeve")
-				loc:update_above(1)
-			else
-				loc:update_pants(1)
-		var/obj/item/clothing/mask/sleeve/S = new(user.loc)
-		S.colorize(src)
-		user.put_in_hands(S)
-		playsound(src.loc, 'sound/misc/cloth_rip.ogg', 80, 1)
-		return
-
-/obj/item/clothing/proc/add_armor_layer(obj/item/I, mob/user)
-	return
-
-
-/obj/item/clothing/attackby(obj/item/I, mob/user)
-	if(!can_layer)
-		return ..()
-	if(!istype(I,/obj/item/clothing) || !I:layerable)
-		return ..()
-	if(armor_layer)
-		return ..()
-	add_armor_layer(I,user)
-
-/obj/item/clothing/proc/remove_armor_layer(mob/user)
-	if(!layer || loc != user)
-		return
-	var/image/stateover = image("icon" = armor_layer.icon, "icon_state" = "[armor_layer.icon_state]")
-	overlays -= stateover
-	user.put_in_hands(armor_layer)
-	armor_layer = null
 
 /obj/item/clothing/under/proc/attachTie(obj/item/I, mob/user)
 	if(istype(I, /obj/item/clothing/tie))
@@ -539,9 +352,32 @@ BLIND     // can't see anything
 
 			if(istype(loc, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = loc
-				H.update_inv_w_uniform(0)
+				H.update_inv_w_uniform()
 
 			return
+
+/obj/item/clothing/under/proc/unequip_medal(var/mob/living/carbon/human/user)
+	if(!istype(user) || user.stat ||!medal_attached)
+		return
+	var/a_hand = user.get_active_hand()
+	var/o_hand = user.get_other_hand()
+	if(a_hand && o_hand)
+		to_chat(user, "<span class='combat'>My hands are full!</span>")
+	else if(a_hand)
+		user.put_in_inactive_hand(medal_attached)
+	else
+		user.put_in_active_hand(medal_attached)
+
+	overlays.Remove(medal_overlay)
+	medal_attached = null
+	user.update_inv_w_uniform()
+	return
+
+/obj/item/clothing/under/proc/medal_overlay()
+	if(medal_attached)
+		medal_overlay = image('icons/obj/clothing/amulets.dmi', src, "medal_overlay")
+		overlays += medal_overlay
+		return
 
 /obj/item/clothing/under/examine()
 	set src in view()
@@ -667,127 +503,6 @@ BLIND     // can't see anything
 
 	W.hold.loc = usr
 	W.hold.attack_hand(usr)
-
-/obj/item/clothing/under/proc/update_overclothes(var/mob/living/carbon/human/H)
-	return
-
-
-/obj/item/clothing/under/proc/add_color(var/icon/I)
-	return I
-
-/obj/item/clothing/under/proc/update_body(var/mob/living/carbon/human/H, var/lying = FALSE)
-	var/s = lying ? "l" : "s"
-	var/base = null
-	var/icon/body = icon('icons/mob/human.dmi',"blank")
-	if(istype(H.species,/datum/species/human/child))
-		base = male_icons[1]
-	else if(FAT in H.mutations)
-		base	= fat_icons[1]
-	else if(H.gender == FEMALE)
-		base	= female_icons[1]
-	//	if(H.pregnant)
-		//	base =  'icons/mob/clothing/under_female_plus.dmi'
-	else
-		base	= male_icons[1]
-	if(male_icons.len == 1)
-		var/chunk = icon(base,"[icon_state]_body_[s]")
-		body.Blend(chunk,ICON_OVERLAY)
-	else
-		var/num = s == "s" ? "" : "2" //painful
-		var/chunk = icon(base,"[icon_state][num]")
-		body.Blend(chunk,ICON_OVERLAY)
-	return body
-
-/obj/item/clothing/under/proc/update_sleeves(var/mob/living/carbon/human/H, var/lying = FALSE, var/list/dirs)
-	var/s = lying ? "l" : "s"
-	if(male_icons.len == 1)
-		var/base = null
-		var/icon/sleeves = icon('icons/mob/human.dmi',"blank")
-		if(istype(H.species,/datum/species/human/child))
-			base = male_icons[1]
-		else if(FAT in H.mutations)
-			base	= fat_icons[1]
-		else if(H.gender == FEMALE)
-			base	= female_icons[1]
-		else
-			base	= male_icons[1]
-		if((body_parts_covered & ARM_LEFT) && dirs["left"])
-			var/chunk = icon(base,icon_state = "[icon_state]_l_arm_[s]")
-			sleeves.Blend(chunk,ICON_OVERLAY)
-		if((body_parts_covered & ARM_RIGHT) && dirs["right"])
-			var/chunk = icon(base,icon_state = "[icon_state]_r_arm_[s]")
-			sleeves.Blend(chunk,ICON_OVERLAY)
-
-		return sleeves
-	else
-		//body 1, lower 2, left 3, right 4
-		var/list/parts
-		var/num = s == "s" ? "" : "2" //painful
-		var/icon/sleeves = icon('icons/mob/human.dmi',"blank")
-		if(istype(H.species,/datum/species/human/child))
-			parts = male_icons
-		else if(FAT in H.mutations)
-			parts	= fat_icons
-		else if(H.gender == FEMALE)
-			parts	= female_icons
-		else
-			parts	= male_icons
-		if((body_parts_covered & ARM_LEFT) && dirs["left"])
-			var/chunk = icon(parts[3],icon_state = "[icon_state][num]")
-			sleeves.Blend(chunk,ICON_OVERLAY)
-		if((body_parts_covered & ARM_RIGHT) && dirs["right"])
-			var/chunk = icon(parts[4],icon_state = "[icon_state][num]")
-			sleeves.Blend(chunk,ICON_OVERLAY)
-		return sleeves
-
-
-/obj/item/clothing/under/proc/update_pants(var/mob/living/carbon/human/H, var/lying = FALSE)
-	var/s = lying ? "l" : "s"
-	var/icon/pants = icon('icons/mob/human.dmi',"blank")
-	if(!pants_down)
-		if(male_icons.len == 1)
-			var/base = null
-			if(istype(H.species,/datum/species/human/child))
-				base = male_icons[1]
-			else if(FAT in H.mutations)
-				base	= fat_icons[1]
-			else if(H.gender == FEMALE)
-				base	= female_icons[1]
-			else
-				base	= male_icons[1]
-			if(body_parts_covered & LEG_LEFT)
-				var/chunk = icon(base,icon_state = "[icon_state]_l_leg_[s]")
-				pants.Blend(chunk,ICON_OVERLAY)
-			if(body_parts_covered & LEG_RIGHT)
-				var/chunk = icon(base,icon_state = "[icon_state]_r_leg_[s]")
-				pants.Blend(chunk,ICON_OVERLAY)
-			return pants
-		else
-			//body 1, lower 2, left 3, right 4
-			var/num = s == "s" ? "" : "2" //painful
-			var/list/parts
-			if(istype(H.species,/datum/species/human/child))
-				parts = male_icons
-			else if(FAT in H.mutations)
-				parts	= fat_icons
-			else if(H.gender == FEMALE)
-				parts	= female_icons
-			else
-				parts	= male_icons
-			if(body_parts_covered & LEG_LEFT)
-				var/chunk = icon(parts[2],icon_state = "[icon_state]_l_leg[num]")
-				pants.Blend(chunk,ICON_OVERLAY)
-			if(body_parts_covered & LEG_RIGHT)
-				var/chunk = icon(parts[2],icon_state = "[icon_state]_r_leg[num]")
-				pants.Blend(chunk,ICON_OVERLAY)
-	else
-		var/num = s == "s" ? "0" : "1" //painful
-		var/chunk = icon('icons/mob/clothing/pants_male.dmi',icon_state = "[icon_state][num]")
-		pants.Blend(chunk,ICON_OVERLAY)
-
-	return pants
-
-
 
 /obj/item/proc/negates_gravity()
 	return 0

@@ -18,7 +18,7 @@
 	..()
 	if(porcao_inicializado == FALSE)
 		porcao_inicializado = TRUE
-		src.updateStatPanel()
+		src.updatePig()
 
 /datum/controller/process/mob/doWork()
 	for(last_object in mob_list)

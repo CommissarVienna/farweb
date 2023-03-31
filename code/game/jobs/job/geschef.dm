@@ -4,7 +4,6 @@
 	flag = FACKID
 	department_flag = MEDSCI
 	faction = "Station"
-	stats_mods = list(STAT_ST = 0, STAT_DX = 0, STAT_HT = 0, STAT_IN = -1)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "Your parents."
@@ -22,7 +21,7 @@
 		..()
 		H.set_species("Child")
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/cheap(H), slot_wrist_r)
-		H.equip_to_slot_or_del(new /obj/item/clothing/under/urchin(H), slot_w_uniform)
+		H.equip_to_slot_or_del(new /obj/item/clothing/under/child_jumpsuit(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/clothing/suit/eye(H), slot_wear_suit)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/child/shoes(H), slot_shoes)
 		H.equip_to_slot_or_del(new /obj/item/clothing/head/cap(H), slot_head)

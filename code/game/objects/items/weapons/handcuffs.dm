@@ -53,7 +53,7 @@
 				return
 			return
 		if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
-			to_chat(usr, "<span class='combatbold'>[pick(fnord)] I don't have the dexterity to do this!</span>")
+			to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)] I don't have the dexterity to do this!</span>")
 			return
 		if (istype(C, /mob/living/carbon/human))
 			if(!C.handcuffed)

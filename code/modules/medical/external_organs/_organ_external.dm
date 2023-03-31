@@ -78,9 +78,6 @@
 	var/cripple_left = 0 //if it's cripple left, it's crippled.
 	var/tendon_prob = 0
 	var/attackTXT = ""
-	var/hand_layer = FALSE
-	var/above_layer = FALSE
-	var/no_draw = FALSE
 
 /datum/organ/external/New(var/datum/organ/external/P)
 	if(P)
@@ -94,11 +91,11 @@
 			   DAMAGE PROCS
 ****************************************************/
 /datum/organ/external/proc/create_pain_threshold()
-	if(isnull(pain_disability_threshold) && owner?.my_stats?.get_stat(STAT_HT))
-		pain_disability_threshold = (owner.my_stats.get_stat(STAT_HT)*5)
+	if(isnull(pain_disability_threshold) && owner?.my_stats?.ht)
+		pain_disability_threshold = (owner.my_stats.ht*5)
 
 /mob/living/carbon/human/proc/getNewDamage(var/brute = 1)
-	var/ht = abs(my_stats.get_stat(STAT_HT))
+	var/ht = abs(my_stats.ht)
 	var/newDamage = brute
 
 	if(ht <= 0)
@@ -135,8 +132,8 @@
 /datum/organ/external/proc/take_damage(brute, burn, sharp, edge, var/used_weapon = null, list/forbidden_limbs = list(), delimbexplosion = 0, armor, specialAttack)
 	if((brute <= 0) && (burn <= 0))
 		return 0
-	if(owner?.my_stats?.get_stat(STAT_HT))
-		var/HT = owner.my_stats.get_stat(STAT_HT)/10
+	if(owner?.my_stats?.ht)
+		var/HT = owner.my_stats.ht/10
 		brute = owner.getNewDamage(brute)
 		burn = burn/HT
 	//IF HITS THE FACE HIT THE HEAD BY HALF
@@ -154,17 +151,13 @@
 
 	var/amount = brute + burn
 	if(ishuman(owner) && !(owner.species && owner.species.flags & NO_PAIN) && !(owner.status_flags & STATUS_NO_PAIN))
-		if(brute)
-			if(sharp && !edge)
-				add_pain(brute*1.1)
-			if(!sharp && edge)
-				add_pain(brute*1.5)
-			if(!sharp && !edge)
-				add_pain(brute)
-			if(sharp && edge)
-				add_pain(brute*1.7)
-			if(burn)
-				add_pain(burn*2)
+		if(brute){
+			if(sharp && !edge){add_pain(brute*1.1)}
+			if(!sharp && edge){add_pain(brute*1.5)}
+			if(!sharp && !edge){add_pain(brute)}
+			if(sharp && edge){add_pain(brute*1.7)}
+		}
+		if(burn){add_pain(burn*2)}
 
 	if(brute_dam + brute >= max_damage + 15 && !sharp && !edge)
 		if(body_part != UPPER_TORSO && body_part != LOWER_TORSO && body_part != GROIN && body_part != HEAD && body_part != THROAT) // you cant explode someone neck for fucks sake
@@ -340,7 +333,7 @@
 			owner?.emote("agonydeath")
 			damagedOrgan.take_damage(rand(10,20))
 			owner.Stun(rand(1,3))
-			if(prob(60-owner.my_stats.get_stat(STAT_HT)))
+			if(prob(60-owner.my_stats.ht))
 				owner.vomit()
 
 	if(src.display_name == "mouth" ? prob(35) : src.display_name == "head" ? prob(50) : src.display_name == "face" ? prob(40) : prob(0))
@@ -357,7 +350,7 @@
 			if(prob(probSkull))
 				E.breakskull()
 				E.disfigure()
-				owner.my_stats.change_stat(STAT_IN , rand(-3,-5))
+				owner.my_stats.it -= rand(3,5)
 				dmgTXT += "<span class='combatbold'>The skull breaks with a sickening cracking sound!</span> "
 				if(!iszombie(src) && !ismonster(src))
 					for(var/mob/living/carbon/human/HHH in range(src,7))
@@ -790,7 +783,6 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(destspawn) return
 	if(override)
 		status |= ORGAN_DESTROYED
-	var/skellybones = isskeleton(owner)
 	if(status & ORGAN_DESTROYED)
 		if(body_part == UPPER_TORSO)
 			return
@@ -844,120 +836,55 @@ Note that amputating the affected organ does in fact remove the infection from t
 			spawn(10)
 				qdel(spark_system)
 
-		if(!gibbed && !ismonster(owner))
+		if(!gibbed && !istype(owner, /mob/living/carbon/human/monster))
 			switch(body_part)
 				if(HEAD)
 					if(!no_organ_item)
 						organ= new/obj/item/weapon/organ/head(owner.loc, owner)
 						//organ = H
-					owner.drop_from_inventory(owner.glasses)
-					owner.drop_from_inventory(owner.head)
-					owner.drop_from_inventory(owner.l_ear)
-					owner.drop_from_inventory(owner.r_ear)
-					owner.drop_from_inventory(owner.wear_mask)
+					owner.u_equip(owner.glasses)
+					owner.u_equip(owner.head)
+					owner.u_equip(owner.l_ear)
+					owner.u_equip(owner.r_ear)
+					owner.u_equip(owner.wear_mask)
 					owner.death(1)
 				if(ARM_RIGHT)
 					if(!no_organ_item)
-						if(skellybones)
-							organ = new/obj/item/weapon/bone(owner.loc, owner)
-						else
-							organ= new /obj/item/weapon/organ/r_arm(owner.loc, owner)
-					if(owner.wear_suit)
-						owner.wear_suit:remove_part(ARM_RIGHT)
-					if(owner.w_uniform)
-						owner.w_uniform:remove_part(ARM_RIGHT)
-					owner.update_inv_w_uniform(0)
-					owner.update_inv_wear_suit(1)
-					owner.drop_from_inventory(owner.r_hand)
+						organ= new /obj/item/weapon/organ/r_arm(owner.loc, owner)
+					owner.u_equip(owner.r_hand)
+					owner.u_equip(owner.gloves)
 				if(ARM_LEFT)
 					if(!no_organ_item)
-						if(skellybones)
-							organ = new/obj/item/weapon/bone(owner.loc, owner)
-						else
-							organ= new /obj/item/weapon/organ/l_arm(owner.loc, owner)
-					owner.drop_from_inventory(owner.l_hand)
-					owner.drop_from_inventory(owner.gloves)
-					if(owner.wear_suit)
-						owner.wear_suit:remove_part(ARM_LEFT)
-					if(owner.w_uniform)
-						owner.w_uniform:remove_part(ARM_LEFT)
-					owner.update_inv_w_uniform(0)
-					owner.update_inv_wear_suit(1)
-					owner.drop_from_inventory(owner.l_hand)
+						organ= new /obj/item/weapon/organ/l_arm(owner.loc, owner)
+					owner.u_equip(owner.l_hand)
+					owner.u_equip(owner.gloves)
 				if(LEG_RIGHT)
 					if(!no_organ_item)
-						if(skellybones)
-							organ = new/obj/item/weapon/bone(owner.loc, owner)
-						else
-							organ= new /obj/item/weapon/organ/l_leg(owner.loc, owner)
-					if(owner.wear_suit)
-						owner.wear_suit:remove_part(LEG_RIGHT)
-					if(owner.w_uniform)
-						owner.w_uniform:remove_part(LEG_RIGHT)
-					owner.update_inv_w_uniform(0)
-					owner.update_inv_wear_suit(1)
+						organ= new /obj/item/weapon/organ/r_leg(owner.loc, owner)
 				if(LEG_LEFT)
 					if(!no_organ_item)
-						if(skellybones)
-							organ = new/obj/item/weapon/bone(owner.loc, owner)
-						else
-							organ= new /obj/item/weapon/organ/l_leg(owner.loc, owner)
-					if(owner.wear_suit)
-						owner.wear_suit:remove_part(LEG_LEFT)
-					if(owner.w_uniform)
-						owner.w_uniform:remove_part(LEG_LEFT)
-					owner.update_inv_w_uniform(0)
-					owner.update_inv_wear_suit(1)
+						organ= new /obj/item/weapon/organ/l_leg(owner.loc, owner)
 
 				if(HAND_RIGHT)
-					if(!no_organ_item)
-						if(skellybones)
-							organ = new/obj/item/weapon/bone(owner.loc, owner)
-						else
-							organ= new /obj/item/weapon/organ/r_hand(owner.loc, owner)
-					owner.drop_from_inventory(owner.wrist_r)
-					if(!owner.organs_by_name["r_hand"])
-						owner.drop_from_inventory(owner.gloves)
-					owner.drop_from_inventory(owner.r_hand)
-					owner.update_inv_gloves()
+					owner.u_equip(owner.gloves)
+					owner.u_equip(owner.r_hand)
 				if(HAND_LEFT)
-					if(!no_organ_item)
-						if(skellybones)
-							organ = new/obj/item/weapon/bone(owner.loc, owner)
-						else
-							organ= new /obj/item/weapon/organ/r_hand(owner.loc, owner)
-					owner.drop_from_inventory(owner.wrist_l)
-					if(!owner.organs_by_name["l_hand"])
-						owner.drop_from_inventory(owner.gloves)
+					owner.u_equip(owner.gloves)
 					owner.u_equip(owner.l_hand)
-					owner.update_inv_gloves()
 				if(FOOT_RIGHT)
 					if(!no_organ_item)
-						if(skellybones)
-							organ = new/obj/item/weapon/bone(owner.loc, owner)
-						else
-							organ= new /obj/item/weapon/organ/r_foot(owner.loc, owner)
-					if(!owner.organs_by_name["l_foot"])
-						owner.drop_from_inventory(owner.shoes)
-					owner.update_inv_shoes()
+						organ= new /obj/item/weapon/organ/r_foot(owner.loc, owner)
+					owner.u_equip(owner.shoes)
 				if(FOOT_LEFT)
 					if(!no_organ_item)
-						if(skellybones)
-							organ = new/obj/item/weapon/bone(owner.loc, owner)
-						else
-							organ= new /obj/item/weapon/organ/l_foot(owner.loc, owner)
-					if(!owner.organs_by_name["r_foot"])
-						owner.drop_from_inventory(owner.shoes)
-					owner.update_inv_shoes()
+						organ= new /obj/item/weapon/organ/l_foot(owner.loc, owner)
+					owner.u_equip(owner.shoes)
 				if(MOUTH)
 					if(!no_organ_item)
-						if(skellybones)
-							organ = new/obj/item/weapon/bone(owner.loc, owner)
-						else
-							organ = new/obj/item/weapon/organ/jaw(owner.loc)
-					owner.drop_from_inventory(owner.wear_mask)
+						organ = new/obj/item/weapon/organ/jaw(owner.loc)
+					owner.u_equip(owner.wear_mask)
 				if(FACE)
-					owner.drop_from_inventory(owner.glasses)
+					owner.u_equip(owner.glasses)
 
 			if(!amputated)
 				owner.visible_message("<span class='graytextbold'> [capitalize(owner.name)]'s [display_name] flies off in bloody arc!</span> ")
@@ -982,7 +909,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 				location.add_blood(owner)
 			return
 
-		else if(!ismonster(owner))//This is if their limb is gibbed.
+		else if(!istype(owner, /mob/living/carbon/human/monster))//This is if their limb is gibbed.
 			switch(body_part)
 				if(HEAD)
 					owner.u_equip(owner.glasses)
@@ -995,56 +922,13 @@ Note that amputating the affected organ does in fact remove the infection from t
 					owner.death(1)
 					owner.ghostize(1)
 				if(HAND_RIGHT)
-					owner.update_inv_gloves()
-					if(!owner.organs_by_name["l_hand"])
-						owner.u_equip(owner.gloves)
-					owner.u_equip(owner.r_hand)
-					owner.u_equip(owner.wrist_r)
-				if(ARM_RIGHT)
-					if(owner.wear_suit)
-						owner.wear_suit:remove_part(ARM_RIGHT)
-					if(owner.w_uniform)
-						owner.w_uniform:remove_part(ARM_RIGHT)
-					owner.update_inv_w_uniform(0)
-					owner.update_inv_wear_suit(1)
-				if(ARM_LEFT)
-					owner.drop_from_inventory(owner.l_hand)
-					owner.drop_from_inventory(owner.gloves)
-					if(owner.wear_suit)
-						owner.wear_suit:remove_part(ARM_LEFT)
-					if(owner.w_uniform)
-						owner.w_uniform:remove_part(ARM_LEFT)
-					owner.update_inv_w_uniform(0)
-					owner.update_inv_wear_suit(1)
-					owner.drop_from_inventory(owner.l_hand)
-				if(LEG_RIGHT)
-					if(owner.wear_suit)
-						owner.wear_suit:remove_part(LEG_RIGHT)
-					if(owner.w_uniform)
-						owner.w_uniform:remove_part(LEG_RIGHT)
-					owner.update_inv_w_uniform(0)
-					owner.update_inv_wear_suit(1)
-				if(LEG_LEFT)
-					if(owner.wear_suit)
-						owner.wear_suit:remove_part(LEG_RIGHT)
-					if(owner.w_uniform)
-						owner.w_uniform:remove_part(LEG_LEFT)
-					owner.update_inv_w_uniform(0)
-					owner.update_inv_wear_suit(1)
+					owner.u_equip(owner.gloves)
 				if(HAND_LEFT)
-					owner.update_inv_gloves()
-					if(!owner.organs_by_name["r_hand"])
-						owner.u_equip(owner.gloves)
-					owner.u_equip(owner.l_hand)
-					owner.u_equip(owner.wrist_l)
+					owner.u_equip(owner.gloves)
 				if(FOOT_RIGHT)
-					owner.update_inv_shoes()
-					if(!owner.organs_by_name["l_foot"])
-						owner.u_equip(owner.shoes)
+					owner.u_equip(owner.shoes)
 				if(FOOT_LEFT)
-					owner.update_inv_shoes()
-					if(!owner.organs_by_name["r_foot"])
-						owner.u_equip(owner.shoes)
+					owner.u_equip(owner.shoes)
 
 
 
@@ -1209,39 +1093,25 @@ Note that amputating the affected organ does in fact remove the infection from t
 			return 1
 	return 0
 
-
-/datum/organ/external/get_icon(var/icon/race_icon, var/icon/deform_icon,gender="", var/fat, var/lfwblocked = 0, var/lying = 0)
-	if(!(istype(owner.species, /datum/species/human)) && !(istype(owner.species, /datum/species/human/zombie)) && !(istype(owner.species, /datum/species/skinless)))
+/datum/organ/external/get_icon(var/icon/race_icon, var/icon/deform_icon,gender="", var/fat, var/lfwblocked = 0)
+	if(!(istype(owner.species, /datum/species/human)) && !(istype(owner.species, /datum/species/human/zombie)))
 		gender=""
 		fat = 0
-	if(istype(owner.species,/datum/species/human/child)) //race_icon will already be the child set.
-		gender = "c"
-	else if(fat)
-		if(!istype(owner.species,/datum/species/skinless))
-			race_icon = 'icons/mob/flesh/old/human_fat_old.dmi'
-		gender = ""
-	else if(gender == "f" && !istype(owner.species,/datum/species/skinless))
-		if(owner.age >= 60)
-			race_icon = 'icons/mob/flesh/old/human_old.dmi'
-	//	else if(owner.pregnant)
-	//		race_icon = 'icons/mob/flesh/old/human_old.dmi'
 /*
 	if(!istype(src, /datum/organ/external/chest) && fat)
 		fat = 0
 		gender=""
 */
-	var/ls = lying ? "_l" : "_s"
 	if (status & ORGAN_ROBOT && !(owner.species && owner.species.flags & IS_SYNTHETIC))
-		return new /icon('icons/mob/human_races/robotic.dmi', "[icon_name][gender ? "_[gender]" : ""][ls]")
+		return new /icon('icons/mob/human_races/robotic.dmi', "[icon_name][gender ? "_[gender]" : ""]")
 
 	if (status & ORGAN_MUTATED)
-		return new /icon(deform_icon, "[icon_name][gender ? "_[gender]" : ""][ls]")
+		return new /icon(deform_icon, "[icon_name][gender ? "_[gender]" : ""][fat ? "_fat" : ""]")
 
 	if (lfwblocked)
-		return new /icon(race_icon, "[icon_name][gender ? "_[gender]" : ""][lfwblockedicon ? "_c" : ""]")
+		return new /icon(race_icon, "[icon_name][gender ? "_[gender]" : ""][fat ? "_fat" : ""][lfwblockedicon ? "_c" : ""]")
 
-	return new /icon(race_icon, "[icon_name][gender ? "_[gender]" : ""][ls]")
-
+	return new /icon(race_icon, "[icon_name][gender ? "_[gender]" : ""][fat ? "_fat" : ""]")
 
 
 /datum/organ/external/proc/is_usable()
@@ -1302,21 +1172,6 @@ Note that amputating the affected organ does in fact remove the infection from t
 	owner.update_icons()
 	owner.update_embedhit()
 	W.add_blood(owner)
-	if(owner?.isVampire && W.silver)
-		owner.Weaken(6)
-		/*owner.apply_damage(damage*1.5, BRUTE, affecting)*/
-		owner.flash_pain()
-		owner.rotate_plane(1)
-		if(prob(40))
-			owner.vessel.remove_reagent("blood",25)
-		if(prob(50))
-			owner.emote("SCREECHES in pain!")
-			playsound(owner.loc, pick('sound/effects/vamphit1.ogg', 'sound/effects/vamphit2.ogg', 'sound/effects/vamphit3.ogg'), 75, 0, -1)
-			if(!owner.ExposedFang)
-				playsound(owner.loc, ('sound/effects/fangs1.ogg'), 50, 0, -1)
-				owner.visible_message("<span class='combatbold'>[owner]</span> <span class='combat'>exposes fangs!</span>")
-				owner.ExposedFang = TRUE
-				owner.update_body()
 	if(ismob(W.loc))
 		var/mob/living/H = W.loc
 		H.drop_item()

@@ -352,11 +352,9 @@
 		M:client.moving = 1
 	var/turf/T = locate(M.x, M.y, targetZ())
 	if(!T) return;
-	M.forceMove(locate(src.x, src.y, targetZ()))
+	M.Move(locate(src.x, src.y, targetZ()))
 	if(isliving(M))
 		var/mob/living/L = M
-		if(L.pulling)
-			L.pulling.forceMove(locate(src.x, src.y, targetZ()))
 		if(L.client)
 			if(istype(src, /obj/multiz/stairs/active/bottom))
 				to_chat(L,"<i>You climb down the stairs.</i>")

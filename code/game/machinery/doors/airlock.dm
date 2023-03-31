@@ -1367,7 +1367,7 @@ About the new airlock wires panel:
 		else if(locked)
 			user << "\blue The airlock's bolts prevent it from being forced."
 
-		else if(statcheck(H.my_stats.get_stat(STAT_ST), 20, 1, user, message = "Gah, I'm not strong enough to open the door. Maybe if I try again."))//Gotta be strong to get that there door open.
+		else if(statcheck(H.my_stats.st, 20, 1, user, message = "Gah, I'm not strong enough to open the door. Maybe if I try again."))//Gotta be strong to get that there door open.
 
 		else if( !welded && !operating )
 			if(density)

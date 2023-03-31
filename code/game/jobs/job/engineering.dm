@@ -5,7 +5,6 @@
 	department_head = list("Baron")
 	department_flag = ENGSEC
 	faction = "Station"
-	stats_mods = list(STAT_ST = 2, STAT_DX = -1, STAT_HT = 2, STAT_IN = -2)
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "the Baron"
@@ -47,7 +46,6 @@
 	department_head = list("Baron")
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = 2, STAT_DX = 0, STAT_HT = 2, STAT_IN = 2)
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "the Baron"
@@ -68,7 +66,6 @@
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/janitor(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/boots(H), slot_shoes)
 		H.equip_to_slot_or_del(new /obj/item/daggerssheath(H), slot_wrist_l)
-		H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/vest/goodhood/morticiancloak(H), slot_wear_suit)
 		H.equip_to_slot_or_del(new /obj/item/weapon/chisel(H), slot_r_store)
 		H.equip_to_slot_or_del(new /obj/item/weapon/spacecash/c10(H), slot_l_store)
 		H.add_perk(/datum/perk/ref/strongback)

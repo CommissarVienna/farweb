@@ -130,7 +130,7 @@
 
 /obj/item/sleepingbag
 	name = "sleeping bag"
-	icon = 'icons/obj/personal.dmi'
+	icon = 'personal.dmi'
 	desc = "A folded, reusable bag."
 	icon_state = "sleeping_bag"
 	item_state = "sleeping_bag"
@@ -144,7 +144,7 @@
 
 /obj/structure/stool/bed/sleepingbag
 	name = "sleeping bag"
-	icon = 'icons/obj/personal.dmi'
+	icon = 'personal.dmi'
 	desc = "For prime comfort during tough moments."
 	icon_state = "sleeping_bag0"
 	var/item_path = /obj/item/sleepingbag
@@ -162,7 +162,7 @@
 
 /obj/structure/stool/bed/sleepingbag/buckle_mob(mob/living/carbon/human/M as mob, mob/user as mob)
 	if(M.shoes)
-		to_chat(user, "<span class='combatbold'>[pick(fnord)] can't use \the [src] with shoes on!</span>")
+		to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)] can't use \the [src] with shoes on!</span>")
 		return
 	..()
 	return

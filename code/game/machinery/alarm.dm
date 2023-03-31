@@ -1207,7 +1207,7 @@ table tr:first-child th:first-child { border: none;}
 			var/obj/LightTest = locate(/obj/effect/alertlighting/atmoslight) in E.loc
 			if(isnull(LightTest))
 				var/obj/effect/alertlighting/atmoslight/F = new/obj/effect/alertlighting/atmoslight(E.loc)
-				var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blueold")
+				var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
 				world << imagelight
 			if((!E.arePowerSystemsOn()) || (E.stat & NOPOWER)) continue
 			if(!E.density)
@@ -1266,7 +1266,7 @@ table tr:first-child th:first-child { border: none;}
 					var/obj/LightTest = locate(/obj/effect/alertlighting/atmoslight) in T
 					if(isnull(LightTest))
 						var/obj/effect/alertlighting/atmoslight/F = new/obj/effect/alertlighting/atmoslight(T)
-						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blueold")
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
 						world << imagelight
 			RA.activate_air_doors(manual*5)
 

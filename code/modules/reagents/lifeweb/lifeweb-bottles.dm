@@ -4,6 +4,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/gallium
 	name = "gallium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "gallium"
 
 	New()
@@ -13,6 +14,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/cesium
 	name = "cesium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "cesium"
 
 	New()
@@ -22,6 +24,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/thorium
 	name = "thorium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "thorium"
 
 	New()
@@ -31,6 +34,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/californium
 	name = "californium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "californium"
 
 	New()
@@ -40,6 +44,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/rellurium
 	name = "rellurium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "rellurium"
 
 	New()
@@ -49,6 +54,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/tantalum
 	name = "tantalum bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "tantalum"
 
 	New()
@@ -58,6 +64,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/lithium
 	name = "lithium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "lithium"
 
 	New()
@@ -67,6 +74,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/morphite
 	name = "morphite bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "morphite"
 
 	New()
@@ -76,6 +84,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/iridium
 	name = "iridium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "iridium"
 
 	New()
@@ -85,6 +94,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/thaesium
 	name = "thaesium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "thaesium"
 
 	New()
@@ -94,6 +104,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/selenium
 	name = "selenium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "selenium"
 
 	New()
@@ -103,6 +114,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/europium
 	name = "europium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "europium"
 
 	New()
@@ -112,6 +124,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/hassium
 	name = "hassium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "hassium"
 
 	New()
@@ -121,6 +134,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/lutetium
 	name = "lutetium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "lutetium"
 
 	New()
@@ -130,6 +144,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/barium
 	name = "barium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "barium"
 
 	New()
@@ -139,6 +154,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/technetium
 	name = "technetium bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "technetium"
 
 	New()
@@ -148,6 +164,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/molybdenum
 	name = "molybdenum bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "molybdenum"
 
 	New()
@@ -159,6 +176,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/inaprovaline
 	name = "inaprovaline bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "inap"
 
 	New()
@@ -169,6 +187,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/widowtear
 	name = "poison bottle"
 	desc = "A small bottle."
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle7"
 
 	New()

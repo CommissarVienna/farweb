@@ -24,7 +24,7 @@
 
 /obj/item/device/radio/headset/bracelet/talk_into(mob/living/M as mob)
 	if(M.paralysis || M.stunned)
-		to_chat(M, "<span class = 'combatbold'[pick(fnord)]</span><span class='combat'> I can't move my arm!</span>")
+		to_chat(M, "<span class = 'combatbold'[pick(nao_consigoen)]</span><span class='combat'> I can't move my arm!</span>")
 		return
 	..()
 

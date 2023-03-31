@@ -123,9 +123,8 @@
 //Absorbs the victim's DNA making them uncloneable. Requires a strong grip on the victim.
 //Doesn't cost anything as it's the most basic ability.
 /mob/proc/changeling_absorb_dna()
-	set category = "villain"
+	set category = "Changeling"
 	set name = "AbsorbDNA"
-	set desc = "Absorb"
 
 	var/datum/changeling/changeling = changeling_power(0,0,100)
 	if(!changeling)	return
@@ -267,7 +266,7 @@
 	var/time_passed = world.time
 	for(var/mob/dead/observer/G in player_list)
 		spawn(0)
-			G << 'sound/webbers/console_interact7.ogg'
+			G << 'console_interact7.ogg'
 			switch(alert(G, "Do you want to become one of THEM?","Please answer in 30 seconds!","Yes","No"))
 				if("Yes")
 					if((world.time-time_passed)>300)//If more than 30 game seconds passed.
@@ -298,7 +297,7 @@
 			latepartynum -= 1
 		new_character.mind.make_They()
 		new_character.client.color = null
-		new_character.updateStatPanel()
+		new_character.updatePig()
 		log_game("[new_character.real_name]([new_character?.key]) is now a THEY(spawned from theycage).")
 		qdel(src)
 		return TRUE
@@ -330,10 +329,9 @@
 	return new_character
 
 //Change our DNA to that of somebody we've absorbed.
-/mob/proc/extend_tentacles()
-	set category = "villain"
+/mob/verb/extend_tentacles()
+	set category = "Changeling"
 	set name = "ExtendTentacles"
-	set desc = "Extend Tentacles"
 	var/mob/living/carbon/human/H = src
 	if(!H?.mind?.changeling)
 		return
@@ -341,8 +339,8 @@
 		playsound(H.loc, 'sound/effects/changeling_hunt.ogg', 50, 0, -1)
 		H.visible_message("<span class='warning'>[H] hides tentacles!</span>")
 		H.tentaclesexposed = FALSE
-		H.my_stats.change_stat(STAT_ST , -1)
-		H.my_stats.change_stat(STAT_DX , -3)
+		H.my_stats.st -= 1
+		H.my_stats.dx -= 3
 		H.overlays_standing[2] = null
 		var/image/standing = null
 		H.overlays_standing[2] = standing
@@ -352,11 +350,11 @@
 		playsound(H.loc, 'sound/effects/changeling_walk.ogg', 50, 0, -1)
 		H.visible_message("<span class='warning'>[H] exposes tentacles!</span>")
 		H.tentaclesexposed = TRUE
-		H.my_stats.change_stat(STAT_ST , 1)
-		H.my_stats.change_stat(STAT_DX , 3)
+		H.my_stats.st += 1
+		H.my_stats.dx += 3
 		H.overlays_standing[2] = null
 		var/image/standing = overlay_image('icons/mob/mob.dmi', "theytentacle")
-		if(H?.my_stats?.get_stat(STAT_ST) > 10)
+		if(H?.my_stats?.st > 10)
 			standing = overlay_image('icons/mob/mob.dmi', "3floater")
 		else
 			if(H.gender == FEMALE)
@@ -368,10 +366,9 @@
 		return
 	return
 
-/mob/proc/changhunt()
-	set category = "villain"
+/mob/verb/changhunt()
+	set category = "Changeling"
 	set name = "Hunt"
-	set desc = "Hunt"
 	if(!ishuman(src)) return
 	var/mob/living/carbon/human/H = src
 	if(H.ishunting)
@@ -383,10 +380,9 @@
 		sight &= ~SEE_MOBS
 		H.ishunting = 1
 
-/mob/proc/infestweb()
-	set category = "villain"
+/mob/verb/infestweb()
+	set category = "Changeling"
 	set name = "infest"
-	set desc = "Infest the Lifeweb"
 	if(!ishuman(src)) return
 	var/mob/living/carbon/human/H = src
 	if(H.absorbedP >= 3)
@@ -401,7 +397,7 @@
 					if(HH.mind.changeling)
 						HH.reagents.add_reagent("dentrine",2000)
 	else
-		to_chat(H, "<span class='combat'>[pick(fnord)] I need to absorb atleast three people.</span>")
+		to_chat(H, "<span class='combat'>[pick(nao_consigoen)] I need to absorb atleast three people.</span>")
 
 /obj/effect/lump
 	name = "Lump"
@@ -431,10 +427,9 @@
 		playsound(M, pick('sound/lfwbsounds/lump_active.ogg', 'sound/lfwbsounds/lump_active2.ogg'), 100, 1)
 		qdel(src)
 
-/mob/proc/lump()
-	set category = "villain"
+/mob/verb/lump()
+	set category = "Changeling"
 	set name = "Lump"
-	set desc = "Lump"
 	if(!ishuman(src)) return
 	var/mob/living/carbon/human/H = src
 	if(!H?.mind?.changeling)
@@ -447,15 +442,14 @@
 				playsound(H, pick('sound/lfwbsounds/lump_spawn.ogg', 'sound/lfwbsounds/lump_spawn2.ogg'), 100, 1)
 				new/obj/effect/lump(src.loc)
 		else
-			to_chat(H, "<span class='combat'>[pick(fnord)] I need to be naked.</span>")
+			to_chat(H, "<span class='combat'>[pick(nao_consigoen)] I need to be naked.</span>")
 	else
-		to_chat(H, "<span class='combat'>[pick(fnord)] I need to wait longer!</span>")
+		to_chat(H, "<span class='combat'>[pick(nao_consigoen)] I need to wait longer!</span>")
 		return
 
-/mob/proc/learn()
-	set category = "villain"
+/mob/verb/learn()
+	set category = "Changeling"
 	set name = "Learnch"
-	set desc = "Learn"
 	if(!ishuman(src)) return
 	var/mob/living/carbon/human/H = src
 	for(var/mob/living/carbon/human/Other in view(1, H))
@@ -470,7 +464,7 @@
 
 				playsound(H, 'sound/lfwbsounds/they_learn.ogg', 100, 1)
 				return
-		to_chat(H, "<span class='combat'>[pick(fnord)] I must stand still.</span>")
+		to_chat(H, "<span class='combat'>[pick(nao_consigoen)] I must stand still.</span>")
 
 
 
@@ -513,6 +507,10 @@
 
 	var/datum/changeling/changeling = changeling_power(1,0,0)
 	if(!changeling)	return
+
+	if(src.has_brain_worms())
+		src << "<span class='warning'>We cannot perform this ability at the present time!</span>"
+		return
 
 	var/mob/living/carbon/C = src
 	changeling.chem_charges--
@@ -655,9 +653,8 @@
 
 //Fake our own death and fully heal. You will appear to be dead but regenerate fully after a short delay.
 /mob/proc/changeling_fakedeath()
-	set category = "villain"
+	set category = "Changeling"
 	set name = "RegenerativeStasis"
-	set desc = "Regenerate"
 
 	var/datum/changeling/changeling = changeling_power(20,1,100,DEAD)
 	if(!changeling)	return

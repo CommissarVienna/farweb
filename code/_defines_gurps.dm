@@ -1,26 +1,21 @@
 //DEFINES DO GURPS
-#define GP_CRITSUCC 2
-#define GP_CRITFAIL -2
-#define GP_SUCC 1
-#define GP_FAIL -1
+#define GP_CRITSUCCESS "critsuccess"
+#define GP_CRITFAIL "critfailed"
+#define GP_SUCCESS "success"
+#define GP_FAILED "failed"
 
-#define GP_RESULT 1
-#define GP_MARGIN 2
-#define GP_DICE 3
-#define GP_CHANCE 4
+#define GP_RESULT "1"
+#define GP_MARGIN "2"
+#define GP_DICE "3"
 
 #define STAT_ST  1
 #define STAT_DX  2
 #define STAT_HT  3
-#define STAT_IN  4
-#define STAT_PR  5
+#define STAT_PR  4
+#define STAT_IN  5
 #define STAT_WP  6
 #define STAT_IM  7
 #define STAT_SPD 8
-#define TOTAL_STATS 8
-
-#define BASE_STAT_VALUE 10
-#define BASE_STAT_CHANGE rand(-1, 0)
 
 #define SKILL_NONE	 0
 #define SKILL_MELEE  1

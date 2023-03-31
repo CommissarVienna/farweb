@@ -81,7 +81,7 @@
 
 /obj/structure/closet/Move()
 	..()
-	playsound(src.loc, 'sound/effects/wooden_move.ogg', 50, 0)
+	playsound(src.loc, 'wooden_move.ogg', 50, 0)
 
 /obj/structure/closet/proc/open()
 	if(src.opened)
@@ -95,7 +95,7 @@
 
 	if(hastrap && !firstopen)
 		if(prob(trapprob))
-			var/monster = pick(/mob/living/carbon/human/monster/strygh)
+			var/monster = pick(/mob/living/carbon/human/monster/strygh,/mob/living/carbon/human/monster/skeleton)
 			new monster(src.loc)
 
 	src.dump_contents()

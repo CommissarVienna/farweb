@@ -80,9 +80,9 @@
 	force = 30
 	force_wielded = 35
 	force_unwielded = 30
-	drop_sound = 'sound/items/wooden_drop.ogg'
+	drop_sound = 'wooden_drop.ogg'
 	speciality = SKILL_SWING
-	hitsound = 'sound/weapons/classic_baton.ogg'
+	hitsound = 'classic_baton.ogg'
 	attack_verb = list("smashes", "bludgeons", "clubs")
 	weaponteaching = "CLUB"
 
@@ -96,10 +96,10 @@
 	force = 30
 	force_wielded = 35
 	force_unwielded = 30
-	drop_sound = 'sound/items/wooden_drop.ogg'
+	drop_sound = 'wooden_drop.ogg'
 	speciality = SKILL_SWING
 	slot_flags = SLOT_BELT
-	hitsound = 'sound/weapons/classic_baton.ogg'
+	hitsound = 'classic_baton.ogg'
 	attack_verb = list("smashes", "bludgeons", "clubs")
 	weaponteaching = "CLUB"
 /*
@@ -167,7 +167,7 @@
 	flags = FPRINT | TABLEPASS
 	blunt = TRUE
 	slot_flags = SLOT_BELT
-	drop_sound = 'sound/items/wooden_drop.ogg'
+	drop_sound = 'wooden_drop.ogg'
 	force = 25
 	force_wielded = 30
 	force_unwielded = 25
@@ -193,7 +193,7 @@
 	hitsound = "hitsound"
 	hitsound= 'sound/weapons/club.ogg'
 	weapon_speed_delay = 20
-	drawsound = 'sound/weapons/mace_draw.ogg'
+	drawsound = 'mace_draw.ogg'
 	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
 
 /obj/item/weapon/melee/classic_baton/smallclub
@@ -229,7 +229,7 @@
 	hitsound= 'sound/weapons/club.ogg'
 	weapon_speed_delay = 16
 	weight = 3
-	drawsound = 'sound/weapons/mace_draw.ogg'
+	drawsound = 'mace_draw.ogg'
 	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
 
 
@@ -240,8 +240,8 @@
 	force = 16
 	force_wielded = 20
 	force_unwielded = 16
-	drop_sound = 'sound/effects/chainarmor_drop.ogg'
-	drawsound = 'sound/effects/chain_misc.ogg'
+	drop_sound = 'chainarmor_drop.ogg'
+	drawsound = 'chain_misc.ogg'
 	parry_chance = -5
 	item_worth = 5
 	hitsound = "hitsound"
@@ -367,7 +367,7 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "klevec"
 	item_state = "klevec"
-	hitsound= 'sound/weapons/klevec.ogg'
+	hitsound= 'klevec.ogg'
 	flags = FPRINT | TABLEPASS
 	slot_flags = SLOT_BELT
 	force = 25
@@ -376,7 +376,7 @@
 	parry_chance = 2
 	item_worth = 20
 	weapon_speed_delay = 16
-	drawsound = 'sound/weapons/mace_draw.ogg'
+	drawsound = 'mace_draw.ogg'
 	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
 
 /obj/item/weapon/melee/classic_baton/blackjack

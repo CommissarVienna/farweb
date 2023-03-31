@@ -73,7 +73,7 @@
 		if(AS.wrenchTry(AS, AF))
 			if (affectedorgan.status & ORGAN_BROKEN)
 				AS.visible_message("<span class='hitbold'>[assailant]</span> <span class='hit'>twists</span> <span class='hitbold'>[AF]</span> <span class='hit'>[affectedorgan.display_name]!</span>")
-				playsound(AF.loc, 'sound/weapons/bite.ogg', 75, 0, -1)
+				playsound(AF.loc, 'bite.ogg', 75, 0, -1)
 				var/baseDamage = 10
 				var/chanceToFracture = 40
 				var/attack_mod = 0
@@ -108,7 +108,7 @@
 				if(prob(chanceToFracture))
 					if(istype(affectedorgan, /datum/organ/external/head))
 						var/datum/organ/external/head/H = affectedorgan
-						if (H.headwrenched == 0  && (attack_result == GP_CRITSUCC || attack_result == GP_SUCC))
+						if (H.headwrenched == 0  && (attack_result == GP_CRITSUCCESS || attack_result == GP_SUCCESS))
 							H.wrenchedhead()
 							AS.visible_message("<span class='hitbold'>[AF]</span> <span class='hit'>[affectedorgan.display_name] rotates at an unnatural angle!</span>")
 					else
@@ -117,7 +117,7 @@
 			else
 
 				AS.visible_message("<span class='hitbold'>[assailant]</span> <span class='hit'>wrenches</span> <span class='hitbold'>[AF]</span> <span class='hit'>[affectedorgan.display_name]!</span>")
-				playsound(AF.loc, 'sound/weapons/bite.ogg', 75, 0, -1)
+				playsound(AF.loc, 'bite.ogg', 75, 0, -1)
 
 				var/baseDamage = 25
 				var/chanceToFracture = 10
@@ -149,10 +149,10 @@
 				AF.apply_damage(baseDamage, BRUTE, affectedorgan)
 				AS.adjustStaminaLoss(rand(8,13))
 
-				if(prob(chanceToFracture) || attack_result == GP_CRITSUCC)
+				if(prob(chanceToFracture) || attack_result == GP_CRITSUCCESS)
 					if(istype(affectedorgan, /datum/organ/external/head))
 						var/datum/organ/external/head/H = affectedorgan
-						if(!H.headwrenched && attack_result == GP_CRITSUCC)
+						if(!H.headwrenched && attack_result == GP_CRITSUCCESS)
 							H.wrenchedhead()
 							AS.visible_message("<span class='hitbold'>[AF]</span> <span class='hit'>[affectedorgan.display_name] rotates at an unnatural angle!</span>")
 
@@ -169,14 +169,13 @@
 		if (affectedorgan.cripple_left > 0)
 			if(skillcheck(AS.my_skills.GET_SKILL(SKILL_SURG), 30, 0, AS) || prob(40))
 				AS.visible_message("<span class='combatbold'>[assailant]</span> <span class='combat'>fixes</span> <span class='combatbold'>[AF]</span> <span class='combat'>[affectedorgan.display_name]!</span>")
-				playsound(AF.loc, 'sound/effects/bone_crack.ogg', 75, 0, -1)
+				playsound(AF.loc, 'bone_crack.ogg', 75, 0, -1)
 				affectedorgan.cripple_left = 0
 				AS.adjustStaminaLoss(rand(5,10))
 			else
 				AS.visible_message("<span class='combatbold'>[assailant]</span> <span class='combat'>fails to fix</span> <span class='combatbold'>[AF]</span> <span class='combat'>[affectedorgan.display_name]!</span>")
-				playsound(AF.loc, 'sound/weapons/bite.ogg', 75, 0, -1)
-				var/damage_AF = rand(10, 20)+AS.my_stats.get_stat(STAT_ST)-AF.my_stats.get_stat(STAT_HT)
-				AF.apply_damage(damage_AF, BRUTE, affectedorgan)
+				playsound(AF.loc, 'bite.ogg', 75, 0, -1)
+				AF.apply_damage(rand(10, 20)+AS.my_stats.st-AF.my_stats.ht, BRUTE, affectedorgan)
 				AS.adjustStaminaLoss(rand(10,15))
 		if(istype(affectedorgan, /datum/organ/external/head))
 			var/datum/organ/external/head/H = affectedorgan
@@ -356,7 +355,7 @@
 	if(G.assailant == H)
 		return ..()
 
-	var/damage = my_stats.get_stat(STAT_ST) * 2.3
+	var/damage = my_stats.st * 2.3
 	H.apply_damage(damage, BRUTE, G.aforgan)
 	apply_damage(damage / 2.5, BRUTE, get_organ("head"))
 	visible_message("<span class='combatbold'>[G.assailant] headbutts [H.name]!</span>")
@@ -386,7 +385,7 @@
 		var/mob/living/carbon/human/secondHeadbutter = GG.affecting
 		if(firstHeadbutter == secondHeadbutter)
 			return
-		var/damage = firstHeadbutter.my_stats.get_stat(STAT_HT) + secondHeadbutter.my_stats.get_stat(STAT_HT) + attacker.my_stats.get_stat(STAT_ST)
+		var/damage = firstHeadbutter.my_stats.ht + secondHeadbutter.my_stats.ht + attacker.my_stats.st
 
 		visible_message("<span class='combatbold'>[attacker.name] hits [firstHeadbutter.name]'s head with [secondHeadbutter.name]'s head!</span>")
 		firstHeadbutter.apply_damage(damage, BRUTE, G.aforgan)
@@ -433,7 +432,8 @@
 					if(istype(assailant, /mob/living/carbon/human))
 						var/mob/living/carbon/human/H = assailant
 						H.buckle_mob(affecting)
-						affecting.SetResting(FALSE)
+						affecting.resting = 0
+						affecting.update_canmove()
 
 						affecting.plane = initial(affecting.plane)
 						affecting.layer = 3.9
@@ -559,7 +559,7 @@
 				if(istype(affectante.grabbed_by[x], /obj/item/weapon/grab))
 					var/obj/item/weapon/grab/G = affectante.grabbed_by[x]
 					if(G.assailant == assailant)
-						affectante.grabbed_by -= G
+						affectante.grabbed_by[x] = null
 
 	affecting = null
 	aforgan = null
@@ -598,7 +598,7 @@
 	if(!defensor.combat_mode)
 		modifier += 38
 
-	var/diff = atacante.my_stats.get_stat(STAT_ST) - defensor.my_stats.get_stat(STAT_HT)
+	var/diff = atacante.my_stats.st - defensor.my_stats.ht
 
 	if(diff < 0)
 		var/parsedDiff = diff * -1

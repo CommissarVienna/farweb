@@ -55,7 +55,7 @@ var/list/gemlist = list("quartz","ruby","emerald","sapphire","diamond","topaz")
         swag = 8
     if(istype(W, /obj/item/weapon/chisel))
         user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-        playsound(user.loc, 'sound/effects/stonestone.ogg', 65, 1)
+        playsound(user.loc, 'stonestone.ogg', 65, 1)
         if(finished)
             return
         if(progress >= 100)
@@ -64,14 +64,14 @@ var/list/gemlist = list("quartz","ruby","emerald","sapphire","diamond","topaz")
             return
         var/list/roll_result = roll3d6(user,SKILL_CRAFT,swag)
         switch(roll_result[GP_RESULT])
-            if(GP_CRITSUCC)
+            if(GP_CRITSUCCESS)
                 user.visible_message("<span class='passive'>[user] cuts the gem.</span>")
                 progress++
                 gemquality++
-            if(GP_SUCC)
+            if(GP_SUCCESS)
                 user.visible_message("<span class='passive'>[user] cuts the gem.</span>")
                 progress++
-            if(GP_FAIL)
+            if(GP_FAILED)
                 user.visible_message("<span class='combat'>[user] cuts the gem.</span>")
             if(GP_CRITFAIL)
                 user.visible_message("<span class='combat'>[user] cuts the gem.</span>")

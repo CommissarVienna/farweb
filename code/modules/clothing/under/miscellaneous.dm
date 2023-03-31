@@ -17,12 +17,12 @@
 /obj/item/clothing/under/new_cut
 	name = "mafiaman outfit"
 	desc = ""
-	icon_state = "new_cut_alt"
-	item_color = "new_cut_alt"
+	icon_state = "new_cut"
+	item_color = "new_cut"
 	item_state = "w_suit"
 
 /obj/item/clothing/under/new_cut_alt
-	name = "mafiaman outfit2"
+	name = "mafiaman outfit"
 	desc = ""
 	icon_state = "new_cut_alt"
 	item_color = "new_cut_alt"
@@ -267,9 +267,9 @@
 
 /obj/item/clothing/under/ordinator
 	name = "tribunal enlisted uniform"
-	icon_state = "oldordinator"
-	item_state = "oldordinator"
-	item_color = "oldordinator"
+	icon_state = "ordinator"
+	item_state = "ordinator"
+	item_color = "ordinator"
 
 /obj/item/clothing/under/ordinatorLT
 	name = "tribunal officer uniform"

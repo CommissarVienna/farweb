@@ -138,6 +138,7 @@
 
 			if(emagged)
 				new /obj/effect/spawner/newbomb/timer/syndicate(src.loc)
+				new /obj/item/clothing/head/collectable/petehat(src.loc)
 				message_admins("[key_name_admin(usr)] has outbombed Cuban Pete and been awarded a bomb.")
 				log_game("[key_name_admin(usr)] has outbombed Cuban Pete and been awarded a bomb.")
 				src.New()
@@ -148,6 +149,9 @@
 
 				if(istype(prizeselect, /obj/item/toy/gun)) //Ammo comes with the gun
 					new /obj/item/toy/ammo/gun(src.loc)
+
+				else if(istype(prizeselect, /obj/item/clothing/suit/syndicatefake)) //Helmet is part of the suit
+					new	/obj/item/clothing/head/syndicatefake(src.loc)
 
 			else
 				var/atom/movable/prize = pick(contents)

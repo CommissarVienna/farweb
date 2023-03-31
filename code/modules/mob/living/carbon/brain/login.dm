@@ -1,3 +1,4 @@
 /mob/living/carbon/brain/Login()
 	..()
-	updateStatPanel()
+	updatePig()
+	updateButtons()

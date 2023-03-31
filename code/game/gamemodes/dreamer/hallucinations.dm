@@ -363,11 +363,11 @@
 	src.my_skills.CHANGE_SKILL(SKILL_MELEE, 10)
 	src.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(1,2))
 	src.vice = "Graphomaniac"
-
-	src.my_stats.change_stat(STAT_ST, 9)
-	src.my_stats.change_stat(STAT_DX, 6)
-	src.my_stats.change_stat(STAT_HT, 7)
-	src.add_verb(/mob/living/carbon/human/proc/dreamer)
+	src.my_stats.st = rand(19,24)
+	src.my_stats.dx = rand(16,20)
+	src.my_stats.ht = rand(17,19)
+	src.verbs += /mob/living/carbon/human/proc/dreamer
+	src.updatePig()
 	src.status_flags |= STATUS_NO_PAIN
 	var/datum/antagonist/dreamer/M = new()
 	src.mind.antag_datums = M

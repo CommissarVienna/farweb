@@ -22,7 +22,6 @@
 	icon_state = "seductress"
 	item_state = "seductress"
 	item_color = "hooker"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS_TOGETHER
 	flags = FPRINT | TABLEPASS
 
 /obj/item/clothing/suit/hooker/domina
@@ -44,6 +43,7 @@
 	icon_state = "tube_dress"
 	item_state = "tubedress"
 	item_color = "tubedress"
+	sleeves = 0
 
 /obj/item/clothing/suit/rebelsuccessor
 	name = "crop jacket"
@@ -54,7 +54,7 @@
 /obj/item/clothing/under/rank/captain //Alright, technically not a 'civilian' but its better then giving a .dm file for a single define.
 	name = "noble garments"
 	desc = "Some clothes for snobby people."
-	icon_state = "meister"
+	icon_state = "baron"
 	item_state = "caparmor"
 	item_color = "baron"
 	flags = FPRINT | TABLEPASS
@@ -105,8 +105,9 @@
 /obj/item/clothing/under/rank/chaplain
 	desc = "It's a black jumpsuit, often worn by religious folk."
 	name = "chaplain's jumpsuit"
-	icon_state = "practicus"
+	icon_state = "chaplain"
 	item_state = "bl_suit"
+	item_color = "chapblack"
 	flags = FPRINT | TABLEPASS
 
 /obj/item/clothing/under/rank/practicus
@@ -120,9 +121,9 @@
 /obj/item/clothing/under/rank/soulbreaker
 	desc = "It's a crew suit, usually wore by crewmembers of stations and soulbreakers."
 	name = "soulbreaker uniform"
-	icon_state = "cargo"
-	item_state = "cargo"
-	item_color = "cargo"
+	icon_state = "soulbreaker"
+	item_state = "soulbreaker"
+	item_color = "soulbreaker"
 	flags = FPRINT | TABLEPASS
 
 
@@ -160,9 +161,10 @@
 
 
 /obj/item/clothing/under/rank/hydroponics
-	name = "leather suit"
-	icon_state = "consyte"
-	item_color = "consyte"
+	name = "leather pants"
+	icon_state = "hydroponics"
+	item_state = "g_suit"
+	item_color = "hydroponics"
 	permeability_coefficient = 0.50
 	flags = FPRINT | TABLEPASS
 
@@ -177,10 +179,10 @@
 
 
 /obj/item/clothing/under/rank/janitor
-	desc = "Old uniform, usuaally wore by morticians."
+	desc = "Old uniform, usually wore by morticians."
 	name = "mortician garment"
-	icon_state = "consyte"
-	item_color = "consyte"
+	icon_state = "janitor"
+	item_color = "janitor"
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 10, rad = 0)
 	flags = FPRINT | TABLEPASS
 

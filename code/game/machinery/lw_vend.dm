@@ -1,7 +1,7 @@
 /obj/machinery/onion
 	name = "ONION"
 	desc = "<font color = 'green'><b>--PRICES--</b> \n Mini-UZI - 350 Obols \n Magazine (.45) - 25 Obols \n Knife - 15 Obols \n Grenade - 80 Obols \n Cigarrete Pack - 20 Obols \n Zippo - 10 Obols \n Mini-Pistol - 80 Obols \n 9mm Magazine - 25 Obols\n</font>"
-	icon = 'icons/obj/vending.dmi'
+	icon = 'vending.dmi'
 	icon_state = "onion"
 	var/obols = 20
 	var/product
@@ -21,15 +21,14 @@
 	playsound(src.loc, pick('sound/effects/public1.ogg','sound/effects/public2.ogg','sound/effects/public3.ogg'), 30, 0)
 	if(src.obols)
 		to_chat(user, "<i>The ONION has [src.obols] obols.</i>")
-		var/withdraw = input("How much you want to withdraw | There is [src.obols] obols on the ONION.","ONION",src.obols) as num
+		var/withdraw = input("How much you want to withdraw | There is [src.obols] obols on the ONION.","ONION",src.obols)
 		if(!withdraw)
 			return
-		withdraw = abs(withdraw) //No negative numbers.
 		if(withdraw > src.obols)
 			to_chat(user, "There's not enough obols to withdraw that amount!")
 		if(withdraw < 0)
 			to_chat(user, "negro nem tente")
-			usr << 'sound/olha-o-macaco.ogg'
+			usr << 'olha-o-macaco.ogg'
 			return
 		if(withdraw <= src.obols)
 			to_chat(user, "<i>You withdraw [withdraw] from the ONION.</i>")
@@ -143,15 +142,14 @@
 	playsound(src.loc, pick('sound/effects/public1.ogg','sound/effects/public2.ogg','sound/effects/public3.ogg'), 30, 0)
 	if(src.obols)
 		to_chat(user,"<i>The terminal has [src.obols] obols.</i>")
-		var/withdraw = input("How much you want to withdraw | There is [src.obols] obols on the terminal.","terminal",src.obols) as num
+		var/withdraw = input("How much you want to withdraw | There is [src.obols] obols on the terminal.","terminal",src.obols)
 		if(!withdraw)
 			return
-		withdraw = abs(withdraw) //No negative numbers.
 		if(withdraw > src.obols)
 			to_chat(user, "There's not enough obols to withdraw that amount!")
 		if(withdraw < 0)
 			to_chat(user, "negro nem tente")
-			usr << 'sound/olha-o-macaco.ogg'
+			usr << 'olha-o-macaco.ogg'
 			return
 		if(withdraw <= src.obols)
 			to_chat(user,"<i>You withdraw [withdraw] from the terminal.</i>")
@@ -247,13 +245,12 @@
 	playsound(src.loc, pick('sound/effects/public1.ogg','sound/effects/public2.ogg','sound/effects/public3.ogg'), 30, 0)
 	if(src.obols)
 		usr << "<i>The [src] has [src.obols] obols.</i>"
-		var/withdraw = input("How much you want to withdraw | There is [src.obols] obols on the [src].","[src]",src.obols) as num
+		var/withdraw = input("How much you want to withdraw | There is [src.obols] obols on the [src].","[src]",src.obols)
 		if(!withdraw)
 			return
-		withdraw = abs(withdraw) //No negative numbers.
 		if(withdraw < 0)
 			usr << "negro nem tente"
-			usr << 'sound/olha-o-macaco.ogg'
+			usr << 'olha-o-macaco.ogg'
 			return
 		if(withdraw > src.obols)
 			usr << "There's not enough obols to withdraw that amount!"

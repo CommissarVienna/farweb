@@ -27,7 +27,7 @@
 	..()
 	if(user.mind && (user.mind.assigned_role == "Bishop" || user.mind.assigned_role == "Priest"))
 		user.show_message(text("\red <B>[user] blesses [M]!</B>"), 1)
-		playsound(src.loc, 'sound/weapons/hallelujah.ogg', 40, 0, -1)
+		playsound(src.loc, 'hallelujah.ogg', 40, 0, -1)
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 			if(H.religion == "Gray Church")

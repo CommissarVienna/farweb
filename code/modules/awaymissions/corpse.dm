@@ -132,8 +132,36 @@
 
 
 
+/obj/effect/landmark/corpse/syndicatesoldier
+	name = "Syndicate Operative"
+	corpseuniform = /obj/item/clothing/under/syndicate
+	corpsesuit = /obj/item/clothing/suit/armor/vest
+	corpseshoes = /obj/item/clothing/shoes/lw/swat
+	corpsegloves = /obj/item/clothing/gloves/swat
+	corpseradio = /obj/item/device/radio/headset
+	corpsemask = /obj/item/clothing/mask/gas
+	corpsehelmet = /obj/item/clothing/head/helmet/swat
+	corpseback = /obj/item/weapon/storage/backpack
+	corpseid = 1
+	corpseidjob = "Operative"
+	corpseidaccess = "Syndicate"
 
 
+
+/obj/effect/landmark/corpse/syndicatecommando
+	name = "Syndicate Commando"
+	corpseuniform = /obj/item/clothing/under/syndicate
+	corpsesuit = /obj/item/clothing/suit/space/rig/syndi
+	corpseshoes = /obj/item/clothing/shoes/lw/swat
+	corpsegloves = /obj/item/clothing/gloves/swat
+	corpseradio = /obj/item/device/radio/headset
+	corpsemask = /obj/item/clothing/mask/gas/syndicate
+	corpsehelmet = /obj/item/clothing/head/helmet/space/rig/syndi
+	corpseback = /obj/item/weapon/tank/jetpack/oxygen
+	corpsepocket1 = /obj/item/weapon/tank/emergency_oxygen
+	corpseid = 1
+	corpseidjob = "Operative"
+	corpseidaccess = "Syndicate"
 
 
 
@@ -145,6 +173,7 @@
 	corpseuniform = /obj/item/clothing/under/rank/chef
 	corpsesuit = /obj/item/clothing/suit/chef/classic
 	corpseshoes = /obj/item/clothing/shoes/lw/black
+	corpsehelmet = /obj/item/clothing/head/chefhat
 	corpseback = /obj/item/weapon/storage/backpack
 	corpseradio = /obj/item/device/radio/headset
 	corpseid = 1
@@ -163,7 +192,7 @@
 	corpseuniform = /obj/item/clothing/under/rank/medical
 	corpsesuit = /obj/item/clothing/suit/storage/labcoat
 	corpseback = /obj/item/weapon/storage/backpack/medic
-
+	corpsepocket1 = /obj/item/device/flashlight/pen
 	corpseshoes = /obj/item/clothing/shoes/lw/black
 	corpseid = 1
 	corpseidjob = "Medical Doctor"
@@ -187,6 +216,11 @@
 	corpseid = 1
 	corpseidjob = "Vessel Engineer"
 	corpseidaccess = "Vessel Engineer"
+
+/obj/effect/landmark/corpse/engineer/rig
+	corpsesuit = /obj/item/clothing/suit/space/rig
+	corpsemask = /obj/item/clothing/mask/breath
+	corpsehelmet = /obj/item/clothing/head/helmet/space/rig
 
 /obj/effect/landmark/corpse/clown
 	name = "Clown"
@@ -223,6 +257,10 @@
 	corpseidjob = "Shaft Miner"
 	corpseidaccess = "Shaft Miner"
 
+/obj/effect/landmark/corpse/miner/rig
+	corpsesuit = /obj/item/clothing/suit/space/rig/mining
+	corpsemask = /obj/item/clothing/mask/breath
+	corpsehelmet = /obj/item/clothing/head/helmet/space/rig/mining
 
 
 /////////////////Officers//////////////////////
@@ -238,6 +276,24 @@
 	corpseid = 1
 	corpseidjob = "Bridge Officer"
 	corpseidaccess = "Captain"
+
+/obj/effect/landmark/corpse/commander
+	name = "Commander"
+	random_name = 1
+	corpseuniform = /obj/item/clothing/under/rank/centcom_commander
+	corpsesuit = /obj/item/clothing/suit/armor/bulletproof
+	corpseradio = /obj/item/device/radio/headset/heads/captain
+	corpseglasses = /obj/item/clothing/glasses/Reyepatch
+	corpsemask = /obj/item/clothing/mask/cigarette/cigar/cohiba
+	corpsehelmet = /obj/item/clothing/head/centhat
+	corpsegloves = /obj/item/clothing/gloves/swat
+	corpseshoes = /obj/item/clothing/shoes/lw/swat
+	corpsepocket1 = /obj/item/weapon/flame/lighter/zippo
+	corpseid = 1
+	corpseidjob = "Commander"
+	corpseidaccess = "Captain"
+
+
 /obj/effect/landmark/corpse/captain_will
 	name = "William Wilkerson"
 	corpseradio = /obj/item/device/radio/headset/heads/captain

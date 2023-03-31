@@ -3,7 +3,7 @@
 #define SPACE_PLANE                -90
 
 
-#define sound_to(target, sound)                target << sound
+#define sound_to(target, sound)                             target << sound
 #define to_target(target, payload)            target << (payload)
 #define from_target(target, receiver)         target >> (receiver)
 #define to_file(handle, value)                to_target(handle, value)
@@ -12,6 +12,7 @@
 #define legacy_chat(target, message)          to_target(target, message)
 #define to_world(message)                     to_chat(world, message)
 #define to_world_log(message)                 to_target(world.log, message)
+#define sound_to(target, sound)               to_target(target, sound)
 #define image_to(target, image)               to_target(target, image)
 #define show_browser(target, content, title)  to_target(target, browse(content, title))
 #define close_browser(target, title)          to_target(target, browse(null, title))

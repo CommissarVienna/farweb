@@ -81,7 +81,7 @@ var/list/CandidatesForInspector = list() //max = 4
 					new_character.voice_name = new_character.real_name
 					new_character.h_style = random_hair_style(gender = new_character.gender, species = "Human")
 					new_character.f_style = random_facial_hair_style(gender = new_character.gender, species = "Human")
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					var/obj/item/device/radio/R = new /obj/item/device/radio/headset/tribunal(new_character)
 					R.set_frequency(COMM_FREQ)
 					new_character.equip_to_slot_or_del(new_character, slot_l_ear)
@@ -97,15 +97,15 @@ var/list/CandidatesForInspector = list() //max = 4
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/head/obard(new_character), slot_head)
 					new_character.equip_to_slot_or_del(new /obj/item/sheath/sabre(new_character), slot_belt)
 
-					new_character.add_verb(list(/mob/living/carbon/human/proc/gradeHygiene, \
-					/mob/living/carbon/human/proc/gradePeople, \
-					/mob/living/carbon/human/proc/gradeFortress))
+					new_character.verbs += /mob/living/carbon/human/proc/gradeHygiene
+					new_character.verbs += /mob/living/carbon/human/proc/gradePeople
+					new_character.verbs += /mob/living/carbon/human/proc/gradeFortress
 
 					new_character.client.color = null
-					new_character.my_stats.change_stat(STAT_ST , 1)
-					new_character.my_stats.change_stat(STAT_DX , 1)
-					new_character.my_stats.change_stat(STAT_HT , 4)
-					new_character.my_stats.change_stat(STAT_PR , 4)
+					new_character.my_stats.st = 11
+					new_character.my_stats.dx = rand(11,12)
+					new_character.my_stats.ht = rand(14,16)
+					new_character.my_stats.pr = rand(15,16)
 					new_character.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(10,11))
 					new_character.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(9,9))
 					new_character.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
@@ -149,7 +149,7 @@ var/list/CandidatesForInspector = list() //max = 4
 					new_character.voice_name = new_character.real_name
 					new_character.h_style = random_hair_style(gender = new_character.gender, species = "Human")
 					new_character.f_style = random_facial_hair_style(gender = new_character.gender, species = "Human")
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					var/obj/item/device/radio/R = new /obj/item/device/radio/headset/tribunal(new_character)
 					R.set_frequency(COMM_FREQ)
 					new_character.equip_to_slot_or_del(new_character, slot_l_ear)
@@ -170,12 +170,12 @@ var/list/CandidatesForInspector = list() //max = 4
 						new_character.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/new_rifle/lakko(new_character), slot_back2)
 					else
 						new_character.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/shotgun/princess(new_character), slot_back2)
-					new_character.add_verb(/mob/living/carbon/human/proc/localizeAdvisor)
+					new_character.verbs += /mob/living/carbon/human/proc/localizeAdvisor
 					new_character.client.color = null
-					new_character.my_stats.change_stat(STAT_ST , 4)
-					new_character.my_stats.change_stat(STAT_DX , 1)
-					new_character.my_stats.change_stat(STAT_HT , 3)
-					new_character.my_stats.change_stat(STAT_PR , 4)
+					new_character.my_stats.st = rand(13,14)
+					new_character.my_stats.dx = rand(10,11)
+					new_character.my_stats.ht = rand(13,14)
+					new_character.my_stats.pr = rand(14,16)
 					new_character.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(12,13))
 					new_character.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(12,13))
 					new_character.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(12,13))
@@ -210,8 +210,6 @@ var/peopleGrade = 70
 var/fortressGrade = 70
 
 /mob/living/carbon/human/proc/gradeHygiene()
-	set desc = "Grade Hygiene!"
-	set category = "gpc"
 	var/hygiene = sanitize_uni(input(usr, "What will be the grade - Choose between 0 and 100.", "FIRETHORN FORTRESS HYGIENE") as num)
 	if(hygiene > 100 || hygiene < 1)
 		return
@@ -220,8 +218,6 @@ var/fortressGrade = 70
 
 
 /mob/living/carbon/human/proc/gradePeople()
-	set desc = "Grade the people!"
-	set category = "gpc"
 	var/people = sanitize_uni(input(usr, "What will be the grade? - Choose between 0 and 100.", "FIRETHORN FORTRESS PEOPLE") as num)
 	if(people > 100 || people < 1)
 		return
@@ -229,8 +225,6 @@ var/fortressGrade = 70
 	to_chat(usr, "People grade is [people].")
 
 /mob/living/carbon/human/proc/gradeFortress()
-	set desc = "Grade the Fortress!"
-	set category = "gpc"
 	var/fortress = sanitize_uni(input(usr, "What will be the grade? - Choose between 0 and 100.", "FIRETHORN FORTRESS BEAUTY") as num)
 	if(fortress > 100 || fortress < 1)
 		return
@@ -238,8 +232,6 @@ var/fortressGrade = 70
 	to_chat(usr, "Beauty grade is [fortress].")
 
 /mob/living/carbon/human/proc/localizeAdvisor()
-	set desc = "Locate the Advisor!"
-	set category = "gpc"
 	for(var/mob/living/carbon/human/L in mob_list)
 		if(L.job == "Francisco's Advisor")
 			var/dirR = get_dir(src,L)

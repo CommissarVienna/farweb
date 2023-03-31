@@ -60,7 +60,7 @@
 					affected.add_pain(10)
 					M.confused = max(pick(1, 2), M.confused)
 					if(prob(33))
-						var/sound_play = pick('sound/lfwbsounds/bee_attack1.ogg','sound/lfwbsounds/bee_attack2.ogg','sound/lfwbsounds/bee_attack3.ogg')
+						var/sound_play = pick('bee_attack1.ogg','bee_attack2.ogg','bee_attack3.ogg')
 						playsound(src.loc, sound_play, 100, 1)
 					if(prob(25))
 						to_chat(M, "<span class='combatbold'>The [src] stings [M]!</span>")

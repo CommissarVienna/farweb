@@ -8,7 +8,6 @@
 	anchored = 1
 	opacity = 1
 	density = 1
-	plane = 22
 	layer = 2.7
 	var/open_layer = 2.8
 	var/obj/machinery/card_scanner/my_scanner = null
@@ -147,9 +146,9 @@
 	if(src.operating || isrobot(user))	return //borgs can't attack doors open because it conflicts with their AI-like interaction with them.
 	if(iszombie(user) || istype(user?:species, /datum/species/human/alien))
 		if(istype(user?:species, /datum/species/human/alien))
-			playsound(src.loc, pick('sound/webbers/aliendoor1.ogg', 'sound/webbers/aliendoor2.ogg', 'sound/webbers/aliendoor3.ogg', 'sound/webbers/aliendoor4.ogg'), 50, 1)
+			playsound(src.loc, pick('aliendoor1.ogg', 'aliendoor2.ogg', 'aliendoor3.ogg', 'aliendoor4.ogg'), 50, 1)
 		else
-			playsound(src.loc, 'sound/webbers/bang.ogg', 50, 1)
+			playsound(src.loc, 'bang.ogg', 50, 1)
 		src.Jitter(pick(1,2,3))
 		user.visible_message("<span class='combatbold'>[user]</span><span class='combat'> [pick("slashes against")] the airlock!</span>")
 		if(zombiedamage > 80 || (locked && zombiedamage > 200))

@@ -5,19 +5,19 @@ client/proc/invite_ckey()
 		to_chat(usr, "<span class='highlighttext'>They're too young.</span>")
 		return
 	age = "[invitee] age:[age] \n\n"
-	var/details = input("Formu doldurup gonderiniz. 155 karakter limiti var.", "Farweb", "Kisinin discord id sini atip sunucuya neden aldiginizi aciklayiniz.") as message
+	var/details = input("Fill this form and send it, 156 character limit", "Farweb", "Why are they interested in Farweb and will become an active and interesting player?") as message
 	var/reason = age
 	reason += details
 	if(length(reason) <= 99 || length(reason) >= 255)
 		if(!holder)
-			to_chat(usr, "<span class='highlighttext'>Aciklamaniz cok kisa</span>")
+			to_chat(usr, "<span class='highlighttext'>Reason is too long or too short.</span>")
 			return
 	var/DBQuery/queryInvites = dbcon.NewQuery("SELECT invitecount FROM playersfarweb WHERE ckey = \"[usr.ckey]\";")
 	if(!queryInvites.Execute())
 		world.log << queryInvites.ErrorMsg()
 		return
 	while(queryInvites.NextRow())
-		if(text2num(queryInvites.item[1]) >= MAX_COMRADE_INVITES && !usr.client.holder && !(usr.client in admins))
+		if(text2num(queryInvites.item[1]) >= MAX_COMRADE_INVITES && !usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
 			to_chat(usr, "<span class='highlighttext'>You've spent all your invites.</span>")
 			queryInvites.Close()
 			return
@@ -55,8 +55,9 @@ client/proc/invite_ckey()
 			queryIncreaseInvite.Close()
 			ckeywhitelistweb.Add(ckey(invitee))
 			to_chat(usr, "<span class='highlighttext'>[invitee] has been invited.</span>")
-			usr << 'sound/effects/thanet.ogg'
+			usr << 'thanet.ogg'
 			var/inviteez = "`[invitee] has been invited by [usr.ckey]` [reason]"
+			HttpPost("https://discord.com/api/webhooks/809920414796349440/mZWJvl9vTmVUYaiq-nLGESFoIkkDV58xCGqD1rZWpfS-qBG55bcf9n_s95Rarw8EJ_vi",list(content = inviteez,username = usr.ckey))
 			return
 	else
 		var/confirmation = input("You will invite [invitee]. Are you sure?","Confirmation") in list ("Yes","No")
@@ -75,8 +76,9 @@ client/proc/invite_ckey()
 			queryIncreaseInvite.Close()
 			ckeywhitelistweb.Add(ckey(invitee))
 			to_chat(usr, "<span class='highlighttext'>[invitee] has been invited.</span>")
-			usr << 'sound/effects/thanet.ogg'
+			usr << 'thanet.ogg'
 			var/inviteez = "`[invitee] has been invited by [usr.ckey]` [reason]"
+			HttpPost("https://discord.com/api/webhooks/809920414796349440/mZWJvl9vTmVUYaiq-nLGESFoIkkDV58xCGqD1rZWpfS-qBG55bcf9n_s95Rarw8EJ_vi",list(content = inviteez,username = usr.ckey))
 			return
 
 
@@ -92,6 +94,10 @@ client/proc/remove_whitelist()
 	switch(alert("Apply a stickyban?",,"Yes","No"))
 		if("Yes")
 			stickyban(ckeyy)
+	if(do_discord_ban(ckeyy) == "False")
+		to_chat(usr, "<span class='highlighttext'>Unable to remove Discord role for user. Perhaps they never joined.</span>")
+	var/banz = "`[ckeyy] has been banned by [usr.ckey]` [reason]"
+	HttpPost("https://discord.com/api/webhooks/809920414796349440/mZWJvl9vTmVUYaiq-nLGESFoIkkDV58xCGqD1rZWpfS-qBG55bcf9n_s95Rarw8EJ_vi",list(content = banz,username = usr.ckey))
 	return
 
 client/proc/game_remove_whitelist(var/reason = "", var/stickyban = TRUE) // Used for setting bans in the code
@@ -102,6 +108,8 @@ client/proc/game_remove_whitelist(var/reason = "", var/stickyban = TRUE) // Used
 	bans.Add(ckey)
 	if(stickyban)
 		stickyban(ckey)
+	var/banz = "`[ckey] has been banned by the server` [reason]"
+	HttpPost("https://discord.com/api/webhooks/809920414796349440/mZWJvl9vTmVUYaiq-nLGESFoIkkDV58xCGqD1rZWpfS-qBG55bcf9n_s95Rarw8EJ_vi",list(content = banz,username = "Automated tyranny"))
 	return
 
 /proc/remove_ban()

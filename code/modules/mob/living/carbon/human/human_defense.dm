@@ -260,13 +260,13 @@ emp_act
 						playsound(I.loc, som, 50, 1)
 				var/mob/living/carbon/human/M = O.thrower
 
-				if(I.sharp && prob(I.force*17 + M.my_stats.get_stat(STAT_ST) + M.my_skills.GET_SKILL(SKILL_MELEE) - src.my_stats.get_stat(STAT_HT)) && !(affecting.status & ORGAN_ARTERY) && prob(affecting.artery_prob))
+				if(I.sharp && prob(I.force*17 + M.my_stats.st + M.my_skills.GET_SKILL(SKILL_MELEE) - src.my_stats.ht) && !(affecting.status & ORGAN_ARTERY) && prob(affecting.artery_prob))
 					affecting.sever_artery()
 					if(affecting.artery_name == "carotid artery")
 						src.visible_message("<span class='danger'>[M] slices [src]'s throat!</span>")
 					else
 						src.visible_message("<span class='danger'>[M] slices open [src]'s [affecting.artery_name] artery!</span>")
-				if(I.sharp && prob(I.force*17 + M.my_stats.get_stat(STAT_ST) + M.my_skills.GET_SKILL(SKILL_MELEE) - src.my_stats.get_stat(STAT_HT)) && prob(20))
+				if(I.sharp && prob(I.force*17 + M.my_stats.st + M.my_skills.GET_SKILL(SKILL_MELEE) - src.my_stats.ht) && prob(20))
 					if(affecting.hasVocal && !affecting.VocalTorn)
 						src.visible_message("<span class='hitbold'>[M] slices [src]'s vocal chords!</span>")
 						affecting.VocalTorn = TRUE
@@ -332,7 +332,7 @@ emp_act
 		return
 
 	if(istype(user.buckled,/obj/structure/stool/bed/chair/comfy/torture))
-		to_chat(usr,"<span class='combat'>[pick(fnord)] I can't move my legs!</span>")
+		to_chat(usr,"<span class='combat'>[pick(nao_consigoen)] I can't move my legs!</span>")
 		return
 
 	if(istype(user?.species, /datum/species/human/alien))
@@ -445,14 +445,14 @@ emp_act
 		if("l_foot")
 			affecting.name = "left foot"
 	switch(kickRoll[GP_RESULT])
-		if(GP_FAIL)
+		if(GP_FAILED)
 			if(src.handcuffed)
 				var/list/kickRollCuff = roll3d6(user,SKILL_UNARM,null)
 				switch(kickRollCuff[GP_RESULT])
-					if(GP_FAIL || GP_CRITFAIL)
+					if(GP_FAILED || GP_CRITFAIL)
 						playsound(loc, 'sound/weapons/punchmiss.ogg', 50, 1)
 						visible_message("<span class='crithit'>CRITICAL FAILURE!</span> <span class='hitbold'>[H.name]</span> <span class='hit'>loses their balance!</span>")
-						H.SetResting(TRUE)
+						H.resting = 1
 						H.Weaken(6)
 						return
 			else
@@ -462,7 +462,7 @@ emp_act
 		if(GP_CRITFAIL)
 			playsound(loc, 'sound/weapons/punchmiss.ogg', 50, 1)
 			visible_message("<span class='crithit'>CRITICAL FAILURE!</span> <span class='hitbold'>[H.name]</span> <span class='hit'>loses their balance!</span>")
-			H.SetResting(TRUE)
+			H.resting = 1
 			H.Weaken(6)
 			return
 
@@ -607,13 +607,13 @@ emp_act
 			affecting.name = "left foot"
 	var/list/failRoll = roll3d6(user,SKILL_UNARM,null)
 	switch(failRoll[GP_RESULT])
-		if(GP_FAIL)
+		if(GP_FAILED)
 			user.visible_message("<span class=hitbold>[user]</span> <span class='hit'>tries to bite</span> <span class='hitbold'>[src]</span> <span class='hit'>in the [affecting.name], but misses!</span> ")
 			playsound(loc, 'sound/weapons/punchmiss.ogg', 50, 1)
 		if(GP_CRITFAIL)
 			playsound(loc, 'sound/weapons/punchmiss.ogg', 50, 1)
 			visible_message("<span class='crithit'>CRITICAL FAILURE!</span> <span class='hitbold'>[H.name]</span> <span class='hit'>loses their balance!</span> ")
-			H.SetResting(TRUE)
+			H.resting = 1
 			return
 	var/dmgTXT
 	if(attempt_dodge(src, user) && canmove && !stat && c_intent == "dodge") // nao da pra desviar deitado
@@ -629,7 +629,7 @@ emp_act
 		if(user.isVampire && user.ExposedFang && armour != ARMOR_BLOCKED)
 			playsound(user.loc, 'fangs_flesh.ogg', 50, 1)
 		else
-			playsound(user.loc, 'sound/weapons/bite.ogg', 50, 1)
+			playsound(user.loc, 'bite.ogg', 50, 1)
 			src.emote("agonymoan")
 			apply_damage(rand(4,12), BRUTE, hit_zone, armour, sharp=TRUE)
 
@@ -661,7 +661,7 @@ emp_act
 		if(user.ExposedFang)
 			playsound(user.loc, 'fangs_flesh.ogg', 35, 1)
 		else
-			playsound(user.loc, 'sound/weapons/bite.ogg', 50, 1)
+			playsound(user.loc, 'bite.ogg', 50, 1)
 
 		if(affecting.name == "head" && affecting.brute_dam > affecting.min_broken_damage && iszombie(user))
 			var/datum/organ/external/head/O = affecting
@@ -690,7 +690,7 @@ emp_act
 	if(user.get_active_hand() != null) //nao da pra roubar com a mão cheia
 		return
 	if(src.combat_mode)
-		to_chat(user, "<span class='combatbold'>[pick(fnord)] They're aware!</span>")
+		to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)] They're aware!</span>")
 		return
 
 	var/hit_zone = user.zone_sel.selecting
@@ -711,7 +711,7 @@ emp_act
 			user.visible_message("<span class='bname'>CRITICAL FAILURE! [user]</span><span class='baron'> tries to steal from </span><span class='bname'>[src]</span> and trips!")
 			user.Weaken(rand(1,5))
 			return
-		if(GP_FAIL)
+		if(GP_FAILED)
 			user.visible_message("<span class='bname'>[user]</span><span class='baron'> tries to steal from </span><span class='bname'>[src]</span>!")
 			return
 
@@ -725,7 +725,7 @@ emp_act
 					whatwillitsteal = src.l_store
 					slot_it_will_go = l_store
 				else
-					to_chat(user, "[pick(fnord)] There is nothing left in the pockets!")
+					to_chat(user, "[pick(nao_consigoen)] There is nothing left in the pockets!")
 					return
 		if("vitals" || "groin")
 			if(src.belt)
@@ -736,14 +736,14 @@ emp_act
 					whatwillitsteal = src.s_store
 					slot_it_will_go = s_store
 				else
-					to_chat(user, "[pick(fnord)] There is nothing left in the belt!")
+					to_chat(user, "[pick(nao_consigoen)] There is nothing left in the belt!")
 					return
 		if("l_hand" || "r_hand")
 			if(!src.gloves)
 				whatwillitsteal = src.wear_id
 				slot_it_will_go = slot_wear_id
 			else
-				to_chat(user, "[pick(fnord)] They're wearing gloves!")
+				to_chat(user, "[pick(nao_consigoen)] They're wearing gloves!")
 				return
 	if(whatwillitsteal)
 		var/obj/item/stolen/S = new(src)

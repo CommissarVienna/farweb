@@ -295,6 +295,7 @@
 		"brainloss" = H.getBrainLoss(),
 		"paralysis" = H.paralysis,
 		"bodytemp" = H.bodytemperature,
+		"borer_present" = H.has_brain_worms(),
 		"ephedrine_amount" = H.reagents.get_reagent_amount("ephedrine"),
 		"salbutamol_amount" = H.reagents.get_reagent_amount("salbutamol"),
 		"stoxin_amount" = H.reagents.get_reagent_amount("stoxin"),

@@ -52,7 +52,6 @@
 
 /obj/structure/statuespooky/creepy
 	icon_state = "creepy"
-	density = TRUE
 
 /obj/structure/statuespooky/cooldecal
 	icon_state = "cooldecal"

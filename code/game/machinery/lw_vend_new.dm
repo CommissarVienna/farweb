@@ -4,7 +4,7 @@
 	list(name = "Bandages", path = /obj/item/stack/medical/bruise_pack, price = 8, code = "bandages"),
 	list(name = "Cigarrete Pack", path = /obj/item/weapon/storage/fancy/cigarettes, price = 30, code = "cigpacket"))
 	name = "Vendor"
-	icon = 'icons/obj/vending.dmi'
+	icon = 'vending.dmi'
 	icon_state = "snack"
 	anchored = 1
 	density = 1
@@ -75,15 +75,14 @@
 		playsound(src.loc, pick('sound/effects/public1.ogg','sound/effects/public2.ogg','sound/effects/public3.ogg'), 30, 0)
 		if(src.obols)
 			to_chat(usr, "<i>[src] has [src.obols] obols.</i>")
-			var/withdraw = input("How much you want to withdraw | There is [src.obols] obols in [src].","[src]",src.obols) as num
+			var/withdraw = input("How much you want to withdraw | There is [src.obols] obols in [src].","[src]",src.obols)
 			if(!withdraw)
 				return
-			withdraw = abs(withdraw) //No negative numbers.
 			if(withdraw > src.obols)
 				to_chat(usr, "There's not enough obols to withdraw that amount!")
 			if(withdraw < 0)
 				to_chat(usr, "negro nem tente")
-				usr << 'sound/olha-o-macaco.ogg'
+				usr << 'olha-o-macaco.ogg'
 				return
 			if(withdraw <= src.obols)
 				to_chat(usr, "<i>You withdraw [withdraw] from [src].</i>")
@@ -161,7 +160,7 @@ var/debt = 1
 	list(name = "Buckshot (3)", path = /obj/item/stack/bullets/buckshot/three, price = 16, code = "buckshot"),
 	list(name = "Pusher Debt", path = /obj/item/coupon/pusher, price = 100, code = "debt"))
 	name = "ONION"
-	icon = 'icons/obj/vending.dmi'
+	icon = 'vending.dmi'
 	icon_state = "onion"
 	anchored = 1
 	density = 0
@@ -189,7 +188,7 @@ var/debt = 1
 	list(name = "Suture", path = /obj/item/weapon/surgery_tool/suture, price = 12, code = "suture"),
 	list(name = "Syringe (Antibiotic)", path = /obj/item/weapon/reagent_containers/syringe/antibiotic, price = 20, code = "antibiotic"))
 	name = "Sanctuary Vendor"
-	icon = 'icons/obj/vending.dmi'
+	icon = 'vending.dmi'
 	icon_state = "snack"
 	anchored = 1
 	density = 1
@@ -214,7 +213,7 @@ var/debt = 1
 	list(name = "Beer", path = /obj/item/weapon/reagent_containers/glass/bottle/beer, price = 8, code = "beer"),
 	list(name = "Salami", path = /obj/item/weapon/reagent_containers/food/snacks/breadsys/salamistick, price = 12, code = "salami"))
 	name = "Innkeep Vendor"
-	icon = 'icons/obj/vending.dmi'
+	icon = 'vending.dmi'
 	icon_state = "production"
 	anchored = 1
 	density = 1
@@ -224,7 +223,7 @@ var/debt = 1
 /obj/machinery/computerVendor
 	name = "vendor"
 	desc = "A vendor used to buy and sell items."
-	icon = 'icons/obj/vending.dmi'
+	icon = 'vending.dmi'
 	icon_state = "snack"
 	anchored = 1
 	density = 1
@@ -333,15 +332,13 @@ var/debt = 1
 		if(usr.job in acceptableJobs)
 			if(src.obols)
 				to_chat(usr, "<i>[src] has [src.obols] obols.</i>")
-				var/withdraw = input("How much you want to withdraw | There is [src.obols] obols in [src].","[src]",src.obols) as num
+				var/withdraw = input("How much you want to withdraw | There is [src.obols] obols in [src].","[src]",src.obols)
 				if(!withdraw)
 					return
-				withdraw = abs(withdraw) //No negative numbers.
 				if(withdraw > src.obols)
 					to_chat(usr, "There's not enough obols to withdraw that amount!")
 				if(withdraw < 0)
 					to_chat(usr, "That is an invalid amount to withdraw!")
-					return
 				if(get_dist(usr,src) > 1)
 					return
 				if(withdraw <= src.obols)

@@ -46,9 +46,9 @@
 			H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/count/countess(H), slot_back)
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/iron_plate/countess(H), slot_wear_suit)
 			H.equip_to_slot_or_del(new /obj/item/weapon/card/id/count/countess(H), slot_wear_id)
-			H.my_stats.change_stat(STAT_ST , 4)
-			H.my_stats.change_stat(STAT_DX , 3)
-			H.my_stats.change_stat(STAT_HT , 5)
+			H.my_stats.st = rand(13,15)
+			H.my_stats.dx = rand(13,15)
+			H.my_stats.ht = rand(13,16)
 			H.my_skills.CHANGE_SKILL(SKILL_SWORD, rand(4,5))
 			H.my_skills.CHANGE_SKILL(SKILL_UNARM, rand(4,5))
 		else
@@ -58,17 +58,17 @@
 			H.equip_to_slot_or_del(new /obj/item/clothing/mask/ironmask(H), slot_wear_mask)
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/iron_plate(H), slot_wear_suit)
 			H.equip_to_slot_or_del(new /obj/item/weapon/card/id/count(H), slot_wear_id)
-			H.my_stats.change_stat(STAT_ST , 4)
-			H.my_stats.change_stat(STAT_DX , 3)
-			H.my_stats.change_stat(STAT_HT , 5)
+			H.my_stats.st = rand(13,15)
+			H.my_stats.dx = rand(13,15)
 			H.add_perk(/datum/perk/ref/strongback)
+			H.my_stats.ht = rand(13,16)
 			H.my_skills.CHANGE_SKILL(SKILL_SWORD, rand(4,5))
 			H.my_skills.CHANGE_SKILL(SKILL_UNARM, rand(4,5))
-		H.add_verb(list(/mob/living/carbon/human/proc/reinforcement_call,
-		/mob/living/carbon/human/proc/siege_command,
-		/mob/living/carbon/human/proc/special_reinforcement,
-		/mob/living/carbon/human/proc/recruit_siege,
-		/mob/living/carbon/human/proc/capture_throne))
+		H.verbs += /mob/living/carbon/human/proc/reinforcement_call
+		H.verbs += /mob/living/carbon/human/proc/siege_command
+		H.verbs += /mob/living/carbon/human/proc/special_reinforcement
+		H.verbs += /mob/living/carbon/human/proc/recruit_siege
+		H.verbs +=/mob/living/carbon/human/proc/capture_throne
 		log_game("[H.real_name]/[H.key] spawned as Count")
 		H.create_kg()
 		H.outsider = TRUE
@@ -86,7 +86,7 @@
 
 /mob/living/carbon/human/proc/reinforcement_call()
 	set hidden = 0
-	set category = "gpc"
+	set category = "Siege"
 	set name = "Reinforcement"
 	set desc="Change Reinforcement"
 
@@ -146,11 +146,11 @@
 			to_chat(H, "<span class='passive'>Count decides: the siege requires extra [reinforcement_type]!</span>")
 		else
 			to_chat(H, "<span class='passive'>Count decides: the siege has no need of extra [reinforcement_type]!</span>")
-		H << sound(pick('sound/effects/horn1.ogg','sound/effects/horn2.ogg'))
+		H << sound(pick('horn1.ogg','horn2.ogg'))
 
 /mob/living/carbon/human/proc/siege_command()
 	set hidden = 0
-	set category = "gpc"
+	set category = "Siege"
 	set name = "Command"
 	set desc="Siege Command"
 	if(!(src.siegesoldier) || ticker.mode.config_tag != "siege")
@@ -159,14 +159,14 @@
 	var/command = sanitize(input(src, "Type your command.", "Siege Command", "") as text|null)
 	if(!command || !length(command))
 		return
-	var/comsound = pick('sound/effects/horn1.ogg','sound/effects/horn2.ogg')
+	var/comsound = pick('horn1.ogg','horn2.ogg')
 	for(var/mob/living/carbon/human/H in S.siegerslist)
 		to_chat(H, "<span class='excomm'>[job] orders you to [command]</span>")
 		H << sound(comsound)
 
 /mob/living/carbon/human/proc/special_reinforcement()
 	set hidden = 0
-	set category = "gpc"
+	set category = "Siege"
 	set name = "SpecialReinforcement"
 	set desc="Call for Special Reinforcement"
 	var/failed = FALSE
@@ -185,7 +185,7 @@
 			if(S.specialgang)
 				failed = TRUE
 	if(failed)
-		to_chat(src, "<span class='combat'>[pick(fnord)] I already called one!</span>")
+		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] I already called one!</span>")
 		return
 	switch(alert("Would you like to call for Special Reinforcements? (You can do this only once for short period of time)","Call for Special Reinforcements","Yes","No"))
 		if("Yes")
@@ -213,7 +213,7 @@
 
 /mob/living/carbon/human/proc/recruit_siege()
 	set hidden = 0
-	set category = "gpc"
+	set category = "Siege"
 	set name = "Recruit"
 	set desc="Recruit to Siege Troops"
 	if(!(src.siegesoldier) || ticker.mode.config_tag != "siege")
@@ -242,7 +242,7 @@
 
 /mob/living/carbon/human/proc/capture_throne()
 	set hidden = 0
-	set category = "gpc"
+	set category = "Siege"
 	set name = "CaptureThrone"
 	set desc="Capture Throne"
 	var/needed_sieger = 7
@@ -310,9 +310,9 @@
 		H.add_perk(/datum/perk/ref/strongback)
 		H.add_perk(/datum/perk/lessstamina)
 		H.add_perk(/datum/perk/heroiceffort)
-		H.my_stats.change_stat(STAT_ST , 3)
-		H.my_stats.change_stat(STAT_DX , 1)
-		H.my_stats.change_stat(STAT_HT , 3)
+		H.my_stats.st = rand(12,14)
+		H.my_stats.dx = rand(10,11)
+		H.my_stats.ht = rand(13,14)
 		H.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(10,15))
 		H.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(8,9))
 		H.my_skills.CHANGE_SKILL(SKILL_MASON, 8)
@@ -343,9 +343,9 @@
 					H.equip_to_slot_or_del(new /obj/item/weapon/hatchet(H), slot_r_hand)
 			if(SKILL_STAFF)
 				H.equip_to_slot_or_del(new /obj/item/weapon/claymore/spear(H), slot_r_hand)
-		H.add_verb(list(/mob/living/carbon/human/proc/siege_command,
-		/mob/living/carbon/human/proc/special_reinforcement,
-		/mob/living/carbon/human/proc/recruit_siege))
+		H.verbs += /mob/living/carbon/human/proc/siege_command
+		H.verbs += /mob/living/carbon/human/proc/special_reinforcement
+		H.verbs += /mob/living/carbon/human/proc/recruit_siege
 		H.create_kg()
 		H.outsider = TRUE
 		H.siegesoldier = TRUE
@@ -390,9 +390,9 @@
 		H.equip_to_slot_or_del(R, slot_l_ear)
 		H.add_event("nobleblood", /datum/happiness_event/noble_blood)
 		H.add_perk(/datum/perk/lessstamina)
-		H.my_stats.change_stat(STAT_ST , 1)
-		H.my_stats.change_stat(STAT_DX , 1)
-		H.my_stats.change_stat(STAT_HT , 1)
+		H.my_stats.st = rand(10,12)
+		H.my_stats.dx = rand(10,12)
+		H.my_stats.ht = rand(10,12)
 		log_game("[H.real_name]/[H.key] spawned as Count's Heir")
 		H.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(8,12))
 		H.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(7,9))
@@ -404,7 +404,7 @@
 		H.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(8,8))
 		H.my_skills.CHANGE_SKILL(SKILL_SWORD, rand(0,4))
 		H.my_skills.CHANGE_SKILL(SKILL_UNARM, rand(1,2))
-		H.add_verb(/mob/living/carbon/human/proc/special_reinforcement)
+		H.verbs += /mob/living/carbon/human/proc/special_reinforcement
 		H.create_kg()
 		H.outsider = TRUE
 		H.siegesoldier = TRUE

@@ -69,9 +69,12 @@
 			if(M.lifeweb_locked)
 				return 0
 			var/list/valid_objects = list()
-			for(var/obj/item/weapon/W in embedded)
-				if(W.w_class >= 0)
-					valid_objects += W
+			if(istype(src,/mob/living/carbon/human))
+				valid_objects = src.get_visible_implants(1)
+			else
+				for(var/obj/item/weapon/W in embedded)
+					if(W.w_class >= 0)
+						valid_objects += W
 
 			if(lying || resting || !grabdodge(src, M))
 
@@ -114,7 +117,7 @@
 						return
 					if(BP_HEAD)
 						if(is_it_high(M))
-							to_chat(M, "<span class='combatbold'>[pick(fnord)] You can't reach that high.</span>")
+							to_chat(M, "<span class='combatbold'>[pick(nao_consigoen)] You can't reach that high.</span>")
 							return
 						var/obj/item/weapon/grab/wrench/W = new /obj/item/weapon/grab/wrench(M, src)
 						M.put_in_active_hand(W)
@@ -124,7 +127,7 @@
 						return
 					if("face")
 						if(is_it_high(M))
-							to_chat(M, "<span class='combatbold'>[pick(fnord)] You can't reach that high.</span>")
+							to_chat(M, "<span class='combatbold'>[pick(nao_consigoen)] You can't reach that high.</span>")
 							return
 						var/obj/item/weapon/grab/wrench/W = new /obj/item/weapon/grab/wrench(M, src)
 						M.put_in_active_hand(W)
@@ -134,7 +137,7 @@
 						return
 					if("mouth")
 						if(is_it_high(M))
-							to_chat(M, "<span class='combatbold'>[pick(fnord)] You can't reach that high.</span>")
+							to_chat(M, "<span class='combatbold'>[pick(nao_consigoen)] You can't reach that high.</span>")
 							return
 						var/obj/item/weapon/grab/wrench/W = new /obj/item/weapon/grab/wrench(M, src)
 						M.put_in_active_hand(W)
@@ -216,37 +219,37 @@
 			M.adjustStaminaLoss(rand(2,3))//ja ta balangando o braço, gasta stamina
 
 			if(affecting?.status && affecting?.status & ORGAN_DESTROYED) //nao da pra bater em limb que nao existe
-				to_chat(M, "<span class='combatbold'>[pick(fnord)] Their limb is destroyed.</span>")
-				visible_message("<span class='hitbold'>[M]</span><span class='hit'> misses trying to attack </span><span class='hitbold'>[src]'s</span><span class='hit'> [affecting.display_name] with the fist!</span>")
+				to_chat(M, "<span class='combatbold'>[pick(nao_consigoen)] Their limb is destroyed.</span>")
+				visible_message("<span class='hitbold'>[M]</span><span class='hit'> misses trying to attack </span><span class='hitbold'>[src]'s</span><span class='hit'> [affecting] with the fist!</span>")
 				playsound(loc, attack.miss_sound, 25, 1)
 				return
 
 			if(is_it_high(M)) // ta muito alto
-				visible_message("<span class='hitbold'>[M]</span><span class='hit'> misses trying to attack </span><span class='hitbold'>[src]'s</span><span class='hit'> [affecting.display_name] with the fist!</span>")
-				to_chat(M, "<span class='combatbold'>[pick(fnord)] too high.</span>")
+				visible_message("<span class='hitbold'>[M]</span><span class='hit'> misses trying to attack </span><span class='hitbold'>[src]'s</span><span class='hit'> [affecting] with the fist!</span>")
+				to_chat(M, "<span class='combatbold'>[pick(nao_consigoen)] too high.</span>")
 				playsound(loc, attack.miss_sound, 25, 1)
 				return
 
 			if(attempt_dodge(src, M) && canmove && !stat && c_intent == "dodge") // nao da pra desviar deitado
-				visible_message("<span class='hitbold'>[M]</span><span class='hit'> misses trying to attack </span><span class='hitbold'>[src]'s</span><span class='hit'> [affecting.display_name] with the fist!</span>")
+				visible_message("<span class='hitbold'>[M]</span><span class='hit'> misses trying to attack </span><span class='hitbold'>[src]'s</span><span class='hit'> [affecting] with the fist!</span>")
 				do_dodge()
 				return
 
-			if(attempt_parry(src, M, strToDamageModifier(M.my_stats.get_stat(STAT_ST), src.my_stats.get_stat(STAT_HT))) && src.c_intent == "parry" && !src.sleeping && src.stat == 0) // parry de soco
-				visible_message("<span class='hitbold'>[M]</span><span class='hit'> misses trying to attack </span><span class='hitbold'>[src]'s</span><span class='hit'> [affecting.display_name] with the fist!</span>")
+			if(attempt_parry(src, M, strToDamageModifier(M.my_stats.st, src.my_stats.ht)) && src.c_intent == "parry" && !src.sleeping && src.stat == 0) // parry de soco
+				visible_message("<span class='hitbold'>[M]</span><span class='hit'> misses trying to attack </span><span class='hitbold'>[src]'s</span><span class='hit'> [affecting] with the fist!</span>")
 				do_parry(src, M)
 				return
 
 			if(M.combat_mode && prob(1) && !prob(M.my_skills.GET_SKILL(SKILL_MELEE)+3*10))
 				visible_message("<span class='hitbold'>[M.name]</span> <span class='hit'>loses their balance trying to punch [src]!</span> ")
-				M.SetResting(TRUE)
+				M.resting = 1
 				playsound(loc, attack.miss_sound, 25, 1)
 
 			if(!M.combat_mode && prob(1))
 				visible_message("<span class='hitbold'>[M.name]</span> <span class='hit'>loses their balance trying to punch [src]!</span> ")
 				to_chat(M, "WHAT HAVE I DONE WRONG?!")
 				M.rotate_plane()
-				M.SetResting(TRUE)
+				M.resting = 1
 				playsound(loc, attack.miss_sound, 25, 1)
 
 			if(HULK in M.mutations) //missplace do caralho mas onde possso botar?
@@ -257,7 +260,7 @@
 					damageType = "GAUNTLET"
 
 			if(M.combat_mode && prob(M.my_skills.GET_SKILL(SKILL_MELEE)+3*10))
-				punchType = "skillfull" // adroitly/skillfuly/adeptly
+				punchType = "skillful" // adroitly/skillfuly/adeptly
 			else
 				if(prob(60))
 					punchType = "clumsy" //clumsily/embarassedly/awkwardly/ungainly
@@ -304,7 +307,7 @@
 						if(prob(80))
 							apply_effect(10, WEAKEN, armor_block)
 					if(affecting.name == "vitals")
-						if(prob(50-src.my_stats.get_stat(STAT_HT)))
+						if(prob(50-src.my_stats.ht))
 							src.vomit()
 				if(!src.resting && !src.lying)
 					if(prob(70) && src.head)
@@ -337,19 +340,19 @@
 						if(prob(25))
 							src.CU()
 
-			if(affecting.name == "head" && prob(weakenProb - src.my_stats.get_stat(STAT_HT) + M.my_stats.get_stat(STAT_ST)) && damage >= 7 || affecting.name == "face" && prob(weakenProb - src.my_stats.get_stat(STAT_HT) + M.my_stats.get_stat(STAT_ST)) && damage >= 7)
+			if(affecting.name == "head" && prob(weakenProb - src.my_stats.ht + M.my_stats.st) && damage >= 7 || affecting.name == "face" && prob(weakenProb - src.my_stats.ht + M.my_stats.st) && damage >= 7)
 				dmgTXT += "<span class='hitbold'>[src]</span> <span class='hit'>is weakened!</span> "
 				apply_effect(rand(1,4), WEAKEN, armor_block)
 				src.receive_damage()
 				if(prob(65))
 					src.CU()
-			if(affecting.name == "vitals" && prob((70-(src.my_stats.get_stat(STAT_HT)*2)) + M.my_stats.get_stat(STAT_ST)) && damage >= 23)
+			if(affecting.name == "vitals" && prob((70-(src.my_stats.ht*2)) + M.my_stats.st) && damage >= 23)
 				apply_effect(rand(1,4), WEAKEN, armor_block)
 				src.vomit()
 				if(prob(65))
 					src.CU()
 
-			if(affecting.name == "head" && prob(weakenProb - src.my_stats.get_stat(STAT_HT) + M.my_stats.get_stat(STAT_ST)/2) && damage >= 10 || affecting.name == "face" && prob(weakenProb - src.my_stats.get_stat(STAT_HT) + M.my_stats.get_stat(STAT_ST)/2) && damage >= 10)
+			if(affecting.name == "head" && prob(weakenProb - src.my_stats.ht + M.my_stats.st/2) && damage >= 10 || affecting.name == "face" && prob(weakenProb - src.my_stats.ht + M.my_stats.st/2) && damage >= 10)
 				var/rand1 = rand(1,2)
 				if(rand1 == 1)
 					apply_effect(13, PARALYZE, armor_block)
@@ -362,7 +365,7 @@
 					src.ear_deaf = max(src.ear_deaf,6)
 					src.receive_damage()
 
-			damage += strToDamageModifier(M.my_stats.get_stat(STAT_ST), src.my_stats.get_stat(STAT_HT))
+			damage += strToDamageModifier(M.my_stats.st, src.my_stats.ht)
 			playsound(loc, attack.attack_sound, 100, 1)
 			apply_damage(damage, BRUTE, affecting, armor_block, sharp=attack.sharp, edge=attack.edge)
 			update_canmove()
@@ -387,8 +390,8 @@
 					clear_event("want_punch")
 
 
-			if(M.my_stats.get_stat(STAT_ST) >= src.my_stats.get_stat(STAT_HT)+7 && !attack.sharp && !src.lying)
-				var/diferenca = M.my_stats.get_stat(STAT_ST) - src.my_stats.get_stat(STAT_HT)+7
+			if(M.my_stats.st >= src.my_stats.ht+7 && !attack.sharp && !src.lying)
+				var/diferenca = M.my_stats.st - src.my_stats.ht+7
 				var/turf/target = get_turf(src.loc)
 				var/range = src.throw_range
 				var/throw_dir = get_dir(M, src)
@@ -423,7 +426,10 @@
 				var/obj/item/I = null
 				I = get_active_hand()
 				if(I && !prob(M.my_skills.GET_SKILL(SKILL_MELEE)))
-					src.item_disarm()
+					src.drop_from_inventory(I)
+					throw_at(get_edge_target_turf(I, pick(alldirs)), rand(1,3), throw_speed)//Throw that sheesh away
+					playsound(loc, pick('sound/weapons/bladeparry1.ogg', 'sound/weapons/bladeparry2.ogg', 'sound/weapons/bladeparry3.ogg', 'sound/weapons/bladeparry4.ogg'), 25, 1)
+
 
 			if(w_uniform)
 				w_uniform.add_fingerprint(M)
@@ -458,7 +464,7 @@
 				push_or_disarm = "push"
 				for(var/obj/item/weapon/grab/G in usr.grabbed_by)
 					if (G.state >= 2) return
-				if(skillcheck(M.my_skills.GET_SKILL(SKILL_MELEE), 35, null, M) && statcheck(M.my_stats.get_stat(STAT_ST), 9, null, M) && statcheck(M.my_stats.get_stat(STAT_DX), 8, null, M))
+				if(skillcheck(M.my_skills.GET_SKILL(SKILL_MELEE), 35, null, M) && statcheck(M.my_stats.st, 9, null, M) && statcheck(M.my_stats.dx, 8, null, M))
 					//apply_effect(4, WEAKEN, run_armor_check(affecting, "melee"))
 					playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 					var/edgeTurf = get_edge_target_turf(src, M.dir)
@@ -474,7 +480,7 @@
 			//if(affecting.name != "chest")
 			if(M.zone_sel.selecting != "chest")
 				push_or_disarm = "disarm"
-				if(skillcheck(M.my_skills.GET_SKILL(SKILL_MELEE), 70, null, M) && statcheck(M.my_stats.get_stat(STAT_DX), rand(7,10), null, M))
+				if(skillcheck(M.my_skills.GET_SKILL(SKILL_MELEE), 70, null, M) && statcheck(M.my_stats.dx, rand(7,10), null, M))
 					//BubbleWrap: Disarming breaks a pull
 					if(pulling)
 						visible_message("<span class='hitbold'>[M]</span> <span class='hit'>has broken</span> <span class='hitbold'>[src]'s</span> <span class='hit'>grip on</span> <span class='hitbold'>[pulling]</span><span class='hit'>!</span> ")

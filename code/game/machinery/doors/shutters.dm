@@ -46,7 +46,7 @@
 	if(!operating) //in case of emag
 		operating = 1
 	//playsound(src.loc, 'sound/lfwbsounds/lava_open.ogg', 30, 1)
-	playsound(src.loc, 'sound/machines/airlock_open_force.ogg', 70, 0, 4)
+	playsound(src.loc, 'airlock_open_force.ogg', 70, 0, 4)
 	flick("opening", src)
 	icon_state = "open"
 	sleep(10)
@@ -65,7 +65,7 @@
 	if(operating)
 		return
 	operating = 1
-	playsound(src.loc, 'sound/machines/airlock_close_force.ogg', 70, 0, 4)
+	playsound(src.loc, 'airlock_close_force.ogg', 70, 0, 4)
 	flick("closing", src)
 	icon_state = "closed"
 	density = 1

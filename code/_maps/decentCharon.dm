@@ -25,45 +25,45 @@ var/shuttleMain = null
 	if(called && !launched && timer != 0) // i know its gross but i cant do anything about it!!
 		switch(timer)
 			if(9 MINUTES)
-				world << 'sound/machines/pods_launch_countdown.ogg'
+				world << 'pods_launch_countdown.ogg'
 				INTERCOM.autosay("The Fortress will be abandoned in T - 9 min. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 			if(8 MINUTES)
-				world << 'sound/machines/pods_launch_countdown.ogg'
+				world << 'pods_launch_countdown.ogg'
 				INTERCOM.autosay("The Fortress will be abandoned in T - 8 min. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 			if(7 MINUTES)
-				world << 'sound/machines/pods_launch_countdown.ogg'
+				world << 'pods_launch_countdown.ogg'
 				INTERCOM.autosay("The Fortress will be abandoned in T - 7 min. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 			if(6 MINUTES)
-				world << 'sound/machines/pods_launch_countdown.ogg'
+				world << 'pods_launch_countdown.ogg'
 				INTERCOM.autosay("The Fortress will be abandoned in T - 6 min. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 			if(5 MINUTES)
-				world << 'sound/machines/pods_launch_countdown.ogg'
+				world << 'pods_launch_countdown.ogg'
 				INTERCOM.autosay("The Fortress will be abandoned in T - 5 min. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 			if(4 MINUTES)
-				world << 'sound/machines/pods_launch_countdown.ogg'
+				world << 'pods_launch_countdown.ogg'
 				INTERCOM.autosay("The Fortress will be abandoned in T - 4 min. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 			if(3 MINUTES)
-				world << 'sound/machines/pods_launch_countdown.ogg'
+				world << 'pods_launch_countdown.ogg'
 				INTERCOM.autosay("The Fortress will be abandoned in T - 3 min. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 			if(2 MINUTES)
-				world << 'sound/machines/pods_launch_countdown.ogg'
+				world << 'pods_launch_countdown.ogg'
 				INTERCOM.autosay("The Fortress will be abandoned in T - 2 min. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 			if(1 MINUTES)
-				world << 'sound/machines/pods_launch_countdown.ogg'
+				world << 'pods_launch_countdown.ogg'
 				INTERCOM.autosay("The Fortress will be abandoned in T - 1 min. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 			if(30 SECONDS)
-				world << 'sound/machines/pods_launch_countdown.ogg'
+				world << 'pods_launch_countdown.ogg'
 				INTERCOM.autosay("The Fortress will be abandoned in T - 30 secs. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 			if(15 SECONDS)
-				world << 'sound/machines/pods_launch_countdown.ogg'
+				world << 'pods_launch_countdown.ogg'
 				INTERCOM.autosay("The Fortress will be abandoned in T - 15 secs. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 			if(5 SECONDS)
 				world << 'sound/AI/5.ogg'
 				INTERCOM.autosay("The Fortress will be abandoned in T - 5 secs. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 
 	if(timer == 0 && !launched)
-		world << 'sound/machines/pods_launched.ogg'
-		world << 'sound/machines/podsfly.ogg'
+		world << 'pods_launched.ogg'
+		world << 'podsfly.ogg'
 		launched = 1
 		INTERCOM.autosay("The Babylon has been launched. Firethorn has been abandoned.", "CTTU")
 		move()

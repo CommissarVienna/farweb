@@ -137,7 +137,7 @@ datum/train_controller/proc/backtotransit()
 		for(var/mob/M in end_location)
 			if(M.client)
 				M << 'sound/lfwbsounds/train_loop.ogg'
-				M << 'sound/music/trainmusic.ogg'
+				M << 'trainmusic.ogg'
 				spawn(0)
 					if(M.buckled)
 						shake_camera(M, 4, 1) // buckled, not a lot of shaking
@@ -215,14 +215,14 @@ datum/train_controller/train_shuttle/process()
 	if((online) && (timeleft() < last60) && (direction == 1))
 		if(timeleft > 60)
 
-			world << 'sound/machines/pods_launch_countdown.ogg'
+			world << 'pods_launch_countdown.ogg'
 			if(timeleft() - 60 > 60)
 				last60 = timeleft() - 60
 			else
 				last60 = 60
 		else if(timeleft > 30)
 
-			world << 'sound/machines/pods_launch_countdown.ogg'
+			world << 'pods_launch_countdown.ogg'
 			if(timeleft() - 10 > 10)
 				last60 = timeleft() - 10
 			else
@@ -231,11 +231,11 @@ datum/train_controller/train_shuttle/process()
 			if(timeleft() > 0)
 				if(timeleft() == 3)
 
-					world << 'sound/machines/pods_launch_countdown.ogg'
+					world << 'pods_launch_countdown.ogg'
 				else
 					if(timeleft() == 0)
 
-						world << 'sound/machines/pods_launched.ogg'
+						world << 'pods_launched.ogg'
 					else
 
 
@@ -366,7 +366,7 @@ datum/train_controller/train_shuttle/process()
 				for(var/mob/M in end_location)
 					if(M.client)
 						M << 'sound/lfwbsounds/train_loop.ogg'
-						M << 'sound/music/trainmusic.ogg'
+						M << 'trainmusic.ogg'
 						spawn(0)
 							if(M.buckled)
 								shake_camera(M, 4, 1) // buckled, not a lot of shaking

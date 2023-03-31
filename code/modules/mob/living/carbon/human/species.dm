@@ -7,11 +7,11 @@
 	var/name                                             // Species name.
 	var/name_plural
 
-	var/icobase = 'icons/mob/human.dmi'    // Normal icon set.
+	var/icobase = 'icons/mob/human_races/r_human.dmi'    // Normal icon set.
 	var/deform = 'icons/mob/human_races/r_def_human.dmi' // Mutated icon set.
 	var/icon/damage_icon = 'icons/mob/dam_human.dmi'
 	var/prone_icon                                       // If set, draws this from icobase when mob is prone.
-	var/eyes = "eyes"                                  // Icon for eyes.
+	var/eyes = "eyes_s"                                  // Icon for eyes.
 
 	var/primitive                              // Lesser form, if any (ie. monkey for humans)
 	var/tail                                   // Name of tail image in species effects icon file.

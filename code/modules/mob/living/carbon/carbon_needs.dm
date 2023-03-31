@@ -107,7 +107,6 @@
 			if(mood_icon)
 				mood_icon.icon_state = "pressure8"
 
-
 		if(MOOD_LEVEL_SAD3 to MOOD_LEVEL_SAD2)
 			if(mood_icon)
 				mood_icon.icon_state = "pressure7"
@@ -169,9 +168,6 @@ var/list/HAPPYLIST = list( 1, 0, 0, 0,\
 		if(src.mind.changeling)
 			moodscreen?.icon_state = "blank"
 			return
-	var/datum/job/j= job_master.GetJob(src.job)
-
-	
 	switch(happiness)
 		if(-5000000 to MOOD_LEVEL_SAD4)
 			flash_sadness()

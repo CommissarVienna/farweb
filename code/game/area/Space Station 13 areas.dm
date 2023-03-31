@@ -13,7 +13,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 
 */
 
-#define CAVES list('sound/fwambi/cave_ambient2.ogg','sound/fwambi/Cave3.ogg','sound/fwambi/caves4.ogg', 'sound/fwambi/caves8.ogg', 'sound/fwambi/caves7.ogg', 'sound/music/Cave4.ogg', 'sound/lfwbambi/caves3.ogg')
+#define CAVES list('cave_ambient2.ogg','sound/fwambi/Cave3.ogg','caves4.ogg', 'caves8.ogg', 'caves7.ogg', 'Cave4.ogg', 'caves3.ogg')
 #define FORTRESS list('sound/lfwbambimusic/atrementous-city.ogg', 'sound/lfwbambimusic/curvedblade.ogg', 'sound/lfwbambimusic/dustareallherbeauties.ogg', 'sound/fwambi/ravenheart7.ogg', 'sound/fwambi/happy_temple.ogg', 'sound/fwambi/many_torches.ogg')
 
 
@@ -253,9 +253,6 @@ var/list/ghostteleportlocs = list()
 	forced_ambience = list('sound/lfwbambi/invasion.ogg', 'sound/lfwbambi/invasion.ogg')
 	ambience_vol = 100
 
-/area/dunwell
-	var/alarm_toggled = FALSE
-
 /area/dunwell/miniwar
 	name = "Mini War"
 	icon_state = "miniwar"
@@ -309,6 +306,7 @@ var/list/ghostteleportlocs = list()
 	forced_ambience = FORTRESS
 	ambience_vol = 20
 	single_ambience = FALSE
+	var/alarm_toggled = FALSE
 
 /area/dunwell/station
 	name = "Hallway"
@@ -323,6 +321,7 @@ var/list/ghostteleportlocs = list()
 	forced_ambience = FORTRESS
 	ambience_vol = 24
 	single_ambience = FALSE
+	var/alarm_toggled = FALSE
 
 
 
@@ -343,7 +342,7 @@ var/list/ghostteleportlocs = list()
 	name = "train station (Station)"
 	icon_state = "train_b"
 	nukesafe = TRUE
-	playsomething = 'sound/machines/loop_airy4.ogg'
+	playsomething = 'loop_airy4.ogg'
 	playvolume = 15
 	repeat = 1
 
@@ -351,7 +350,7 @@ var/list/ghostteleportlocs = list()
 	name = "train station (Fortress)"
 	icon_state = "train_f"
 	nukesafe = FALSE
-	playsomething = 'sound/machines/loop_airy4.ogg'
+	playsomething = 'loop_airy4.ogg'
 	playvolume = 15
 	repeat = 1
 
@@ -365,7 +364,7 @@ var/list/ghostteleportlocs = list()
 	fort = 1
 	has_gravity = 1
 	atmos = 0
-	forced_ambience = list('sound/lfwbambi/hostile_space.ogg')
+	forced_ambience = list('hostile_space.ogg')
 	ambience_vol = 24
 	single_ambience = FALSE
 /*
@@ -399,7 +398,7 @@ var/list/ghostteleportlocs = list()
 
 	has_gravity = 1
 	atmos = 0
-	forced_ambience = 'sound/music/Cave4.ogg'
+	forced_ambience = 'sound/lfwbambi/Cave4.ogg'
 	ambience_vol = 24
 	single_ambience = TRUE
 
@@ -477,7 +476,7 @@ var/list/ghostteleportlocs = list()
 	var/mob/living/L = A
 	if(!L.ckey)	return
 
-	L << sound('sound/ambience/harbor.ogg', repeat = 1, wait = 1, volume = 40, channel = 21)
+	L << sound('harbor.ogg', repeat = 1, wait = 1, volume = 40, channel = 21)
 
 /area/dunwell/station/church/harbor/Exited(A)
 	if(!istype(A,/mob/living))	return
@@ -533,7 +532,7 @@ var/list/ghostteleportlocs = list()
 	var/mob/living/L = A
 	if(!L.ckey)	return
 
-	L << sound(pick('sound/ambience/loop_machineroom.ogg','sound/ambience/loop_machineroom2.ogg','sound/ambience/loop_machineroom3.ogg','sound/ambience/loop_machineroom4.ogg'), repeat = 1, wait = 0, volume = 35, channel = 21)
+	L << sound(pick('loop_machineroom.ogg','loop_machineroom2.ogg','loop_machineroom3.ogg','loop_machineroom4.ogg'), repeat = 1, wait = 0, volume = 35, channel = 21)
 
 /area/dunwell/station/miser/trash/Exited(A)
 	if(!istype(A,/mob/living))	return
@@ -549,7 +548,7 @@ var/list/ghostteleportlocs = list()
 	icon_state = "misc2"
 	hum = 1
 	sound_env = TUNNEL_ENCLOSED
-	playsomething = 'sound/machines/loop_airy5.ogg'
+	playsomething = 'loop_airy5.ogg'
 	playvolume = 30
 	repeat = 1
 
@@ -572,7 +571,7 @@ var/list/ghostteleportlocs = list()
 	var/mob/living/L = A
 	if(!L.ckey)	return
 
-	L << sound('sound/lfwbambi/running_river.ogg', repeat = 1, wait = 1, volume = 75, channel = 21)
+	L << sound('running_river.ogg', repeat = 1, wait = 1, volume = 75, channel = 21)
 
 /area/dunwell/river/Exited(A)
 	if(!istype(A,/mob/living))	return
@@ -584,7 +583,7 @@ var/list/ghostteleportlocs = list()
 
 /area/dunwell/realsurface
 	name = "Surface"
-	forced_ambience = list('sound/lfwbambimusic/surfacing.ogg')
+	forced_ambience = list('surfacing.ogg')
 	icon_state = "camp2"
 	has_gravity = 1
 	atmos = 0
@@ -686,7 +685,7 @@ var/list/ghostteleportlocs = list()
 /area/dunwell/station/burrow/maintenance
 	name = "Maintenance"
 	icon_state = "wall"
-	playsomething = 'sound/ambience/clank_loop.ogg'
+	playsomething = 'clank_loop.ogg'
 	playvolume = 24
 	repeat = 1
 
@@ -821,7 +820,7 @@ var/list/ghostteleportlocs = list()
 	var/mob/living/L = A
 	if(!L.ckey)	return
 
-	L << sound('sound/ambience/harbor.ogg', repeat = 1, wait = 1, volume = 40, channel = 21)
+	L << sound('harbor.ogg', repeat = 1, wait = 1, volume = 40, channel = 21)
 
 /area/dunwell/station/harbor/Exited(A)
 	if(!istype(A,/mob/living))	return
@@ -852,7 +851,7 @@ var/list/ghostteleportlocs = list()
 	if(!ishuman(A))	return
 	var/mob/living/carbon/human/H = A
 	H.Lifewebbed = TRUE
-	H << sound('sound/ambience/lifeweb2b.ogg', repeat = 1, wait = 1, volume = 50, channel = 21)
+	H << sound('lifeweb2b.ogg', repeat = 1, wait = 1, volume = 50, channel = 21)
 
 /area/dunwell/station/lifeweb/Exited(A)
 	..()
@@ -925,7 +924,7 @@ var/list/ghostteleportlocs = list()
 
 /area/shuttle/escape_pod1
 	name = "\improper Escape Pod A"
-	forced_ambience = list('sound/effects/charon_loop.ogg')
+	forced_ambience = list('charon_loop.ogg')
 	music = "music/escape.ogg"
 	luminosity = 0
 

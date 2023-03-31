@@ -17,13 +17,13 @@
 	if(istype(H) && user.a_intent == "help" && target_zone == "chest" && istype(H.w_uniform, /obj/item/clothing/under))
 		var/obj/item/clothing/under/UN = H.w_uniform
 		if(UN.medal_attached)
-			to_chat(user, "<span class='combat'>[H.name]'s uniform already has a medal on it.</span>")
+			to_chat(user, "<span class='combat'>[H.name]'s uniform already have a medal on it.</span>")
 			return
 		user.visible_message("<span class='passive'>[user.name] starts placing a medal on the [H.name]'s uniform.</span>")
 		if(do_after(user, time_place) && UN == H.w_uniform)
 			user.transfer_equiped_item_to(src, UN)
-		//	UN.medal_attached = src
-		//	UN.medal_overlay()
+			UN.medal_attached = src
+			UN.medal_overlay()
 			H.update_inv_w_uniform()
 			if(length(medal_nominated) && (H in medal_nominated) && user == medal_nominated[H])
 				medal_nominated.Remove(H)

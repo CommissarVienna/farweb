@@ -889,6 +889,16 @@
 	products = list(/obj/item/weapon/handcuffs = 8,/obj/item/weapon/grenade/flashbang = 4,/obj/item/device/flash = 5,
 					/obj/item/weapon/reagent_containers/food/snacks/donut/normal = 12,/obj/item/weapon/storage/box/evidence = 6)
 	contraband = list(/obj/item/clothing/glasses/sunglasses = 2,/obj/item/weapon/storage/fancy/donut_box = 2)
+//This one's from Oldbay12
+/obj/machinery/vending/security/advanced
+	name = "Advanced SecTech"
+	desc = "A security equipment vendor. It has more stuff."
+	products = list(/obj/item/clothing/under/color/red = 3,/obj/item/clothing/under/det = 2,/obj/item/clothing/suit/storage/det_suit = 2,/obj/item/clothing/head/det_hat = 2,
+					/obj/item/clothing/head/helmet = 3,/obj/item/clothing/suit/armor/vest = 3,/obj/item/clothing/tie/holster/armpit = 2,/obj/item/weapon/storage/belt/security = 3,
+					/obj/item/device/radio/headset/headset_sec = 5,/obj/item/clothing/glasses/sunglasses = 4,/obj/item/weapon/handcuffs = 8,/obj/item/weapon/melee/baton = 3,/obj/item/weapon/gun/energy/taser = 3,
+					/obj/item/weapon/grenade/flashbang = 8,/obj/item/device/flash = 5,/obj/item/weapon/storage/box/evidence = 6)
+	contraband = list (/obj/item/weapon/storage/fancy/donut_box = 3)
+
 
 
 /obj/machinery/vending/hydronutrients
@@ -931,6 +941,22 @@
 	product_ads = "FJKLFJSD;AJKFLBJAKL;1234 LOONIES LOL!;>MFW;Kill them fuckers!;GET DAT FUKKEN DISK;HONK!;EI NATH;Destroy the station!;Admin conspiracies since forever!;Space-time bending hardware!"
 	products = list(/obj/item/clothing/head/wizard = 1,/obj/item/clothing/suit/wizrobe = 1,/obj/item/clothing/head/wizard/red = 1,/obj/item/clothing/suit/wizrobe/red = 1,/obj/item/clothing/shoes/lw/sandal = 1,/obj/item/weapon/staff = 2)
 	contraband = list(/obj/item/weapon/reagent_containers/glass/bottle/wizarditis = 1)	//No one can get to the machine to hack it anyways; for the lulz - Microwave
+
+//This one's from Oldbay12
+/obj/machinery/vending/kitchen
+    name = "Kitchen Mate Plus"
+    desc = "The Kitchen Mate Plus.  Better ingredients.  Better burgers."
+    icon_state = "kitchen"
+    product_ads = "Mm, food stuffs!;Food and food accessories.;Get your plates!;You like forks?;I like forks.;Woo, utensils.;You don't really need these..."
+    products = list(/obj/item/clothing/under/rank/chef = 2,/obj/item/clothing/suit/chef = 2,/obj/item/clothing/head/chefhat = 2,/obj/item/weapon/kitchenknife = 3,
+    				/obj/item/weapon/kitchen/rollingpin = 2,/obj/item/weapon/storage/fancy/egg_box = 5,
+					/obj/item/weapon/reagent_containers/food/snacks/breadsys/butterpack = 3,/obj/item/weapon/reagent_containers/food/snacks/breadsys/salamistick = 3,
+					/obj/item/weapon/reagent_containers/food/snacks/sliceable/cheesewheel = 3,/obj/item/weapon/reagent_containers/food/condiment/sugar = 3,
+					/obj/item/weapon/reagent_containers/food/drinks/flour = 5,/obj/item/weapon/reagent_containers/food/snacks/spagetti = 3,
+					/obj/item/weapon/reagent_containers/food/snacks/meat = 3,/obj/item/weapon/reagent_containers/food/snacks/rawmeatball = 3,
+					/obj/item/weapon/reagent_containers/food/condiment/ketchup = 3,/obj/item/weapon/reagent_containers/food/snacks/grown/potato = 2,
+					/obj/item/weapon/reagent_containers/food/snacks/grown/tomato = 2,/obj/item/weapon/reagent_containers/food/snacks/grown/apple = 2,
+					/obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/chanterelle = 2,/obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/plumphelmet = 2)
 
 /obj/machinery/vending/tool
 	name = "YouTool"

@@ -9,7 +9,7 @@ mob/living/carbon/proc/dream()
 			dreams -= dream_image
 			to_chat(src, "<san class='passive'> <i>... [dream_image] ...</i></span>")
 			if(prob(30))
-				src << pick('sound/sweetdreams/dream1.ogg','sound/sweetdreams/dream2.ogg','sound/sweetdreams/dream3.ogg','sound/sweetdreams/dream4.ogg','sound/sweetdreams/dream5.ogg')
+				src << pick('dream1.ogg','dream2.ogg','dream3.ogg','dream4.ogg','dream5.ogg')
 			sleep(rand(40,70))
 			if(paralysis <= 0)
 				dreaming = 0

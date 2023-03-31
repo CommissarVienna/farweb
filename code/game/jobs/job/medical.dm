@@ -5,7 +5,6 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
-	stats_mods = list(STAT_ST = 1, STAT_DX = 0, STAT_HT = 1, STAT_IN = 4)
 	department_flag = MEDSCI
 	supervisors = "the captain"
 	jobdesc = "Being fortunate enough to wear the title of Esculap is no small feat. Having gone through many years of rigorous formal and academic medical training, these medical professionals are some of the best and brightest Evergreen has to offer. They are usually the second sons of wealthy merchants, but some deceitful charlatans use coin to buy their way into this estimable title."
@@ -24,6 +23,7 @@
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/esculap(H), slot_wrist_r)
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/common/smith(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/boots(H), slot_shoes)
+		H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/esculap(H), slot_wear_suit)
 		H.add_event("nobleblood", /datum/happiness_event/noble_blood)
 		H.add_perk(/datum/perk/chemical)
 		H.terriblethings = TRUE
@@ -37,7 +37,6 @@
 	flag = DOCTOR
 	department_flag = MEDSCI
 	faction = "Station"
-	stats_mods = list(STAT_ST = 0, STAT_DX = 0, STAT_HT = 0, STAT_IN = 2)
 	total_positions = 3
 	spawn_positions = 3
 	supervisors = "the Esculap"
@@ -70,7 +69,6 @@
 	flag = CHEMSIS
 	department_flag = MEDSCI
 	faction = "Station"
-	stats_mods = list(STAT_ST = -1, STAT_DX = 0, STAT_HT = -1, STAT_IN = 2)
 	total_positions = 3
 	spawn_positions = 3
 	supervisors = "the Esculap"

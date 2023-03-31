@@ -120,13 +120,7 @@
 		to_chat(usr, "I don't know how to fix this.")
 
 /obj/machinery/information_terminal/attack_hand(mob/living/carbon/human/user as mob)
-	if(!user.wear_id)
-		to_chat(usr, "I don't have a ring, I can't use the terminal!")
-		return
 	var/obj/item/weapon/card/id/idcard = user.wear_id
-	if(!idcard.money_account)
-		to_chat(user, "<span class='malfunction'>My ring is malfunction!</span>")
-		return
 	var/id_money = idcard.money_account.get_money()
 	if(screenbroken)
 		var/symb1 = ionnum()
@@ -135,6 +129,9 @@
 			to_chat(usr, "<B>[symb1] [symb2]</B>")
 		else
 			to_chat(usr, "<B>[symb1] KILL [KILLSOMEONE] [symb2]</B>")
+		return
+	if(!user.wear_id)
+		to_chat(usr, "I don't have a ring, I can't use the terminal!")
 		return
 	if(hacked)
 		playsound(src.loc, pick('sound/effects/public1.ogg','sound/effects/public2.ogg','sound/effects/public3.ogg'), 100, 0, -5)
@@ -270,13 +267,7 @@
 		to_chat(usr, msg)
 
 /obj/machinery/information_terminal/RightClick(mob/living/carbon/human/user as mob)
-	if(!user.wear_id)
-		to_chat(user, "<span class='danger'>I don't have a ring!</span>")
-		return
 	var/obj/item/weapon/card/id/idcard = user.wear_id
-	if(!idcard.money_account)
-		to_chat(user, "<span class='malfunction'>My ring is malfunction!</span>")
-		return
 	var/id_money = idcard.money_account.get_money()
 	if(screenbroken)
 		var/symb1 = ionnum()
@@ -357,7 +348,7 @@
 			return
 		if(withdraw < 1 || (withdraw % 1))
 			to_chat(usr, "negro nem tente")
-			usr << 'sound/olha-o-macaco.ogg'
+			usr << 'olha-o-macaco.ogg'
 			return
 		if(withdraw <= liquify)
 			if(TRUEOBOLCHOICE == "silver")

@@ -1,5 +1,5 @@
 obj/item/weapon/organ/finger
-	icon = 'icons/mob/human_races/human_severed.dmi'
+	icon = 'human_severed.dmi'
 	var/nail = 1
 	var/state = "OK" // OK, BROKEN
 

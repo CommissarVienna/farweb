@@ -39,10 +39,10 @@
 	if(prob(40))
 		M.Move(locate(src.x, src.y, M.z+1))
 		M << "<span class='warning'>You swim back up.</span>"
-		playsound(M.loc, 'sound/effects/fst_water_jump_down_01.ogg', 40, 0)
+		playsound(M.loc, 'fst_water_jump_down_01.ogg', 40, 0)
 	else
 		M << "<span class='warning'>You fail to swim back up!</span>"
-		playsound(M.loc, pick('sound/effects/water_max1.ogg','sound/effects/water_max2.ogg'), 40, 0)
+		playsound(M.loc, pick('water_max1.ogg','water_max2.ogg'), 40, 0)
 
 /turf/simulated/floor/airless/ceiling
 	icon_state = "rockvault"
@@ -398,38 +398,38 @@
 	icon = 'icons/turf/carpetlw.dmi'
 	icon_state = "carpet"
 	New()
-		turfs.Add(src)
+		return 0
 
 /turf/simulated/floor/carpet/beatifulcarpet8
 	icon = 'icons/turf/carpetlw.dmi'
 	icon_state = "carpet2"
 	New()
-		turfs.Add(src)
+		return 0
 
 /turf/simulated/floor/carpet/beatifulcarpet9
 	icon = 'icons/turf/carpetlw.dmi'
 	icon_state = "mcarpet"
 	New()
-		turfs.Add(src)
+		return 0
 
 /turf/simulated/floor/carpet/beatifulcarpet10
 	icon = 'icons/turf/carpetlw.dmi'
 	icon_state = "mcarpet2"
 	New()
-		turfs.Add(src)
+		return 0
 
 /turf/simulated/floor/carpet/beatifulcarpet11
 	icon = 'icons/turf/carpetlw.dmi'
 	icon_state = "hcarp"
 	New()
-		turfs.Add(src)
+		return 0
 
 
 /turf/simulated/floor/meister1
 	icon = 'icons/life/floors.dmi'
 	icon_state = "k1"
 	New()
-		turfs.Add(src)
+		return 0
 
 /turf/simulated/floor/shuttle1
 	icon = 'icons/life/floors.dmi'
@@ -800,30 +800,30 @@
 	icon_state = "surgery2"
 
 /turf/simulated/floor/lifeweb/soulbreaker
-	icon = 'icons/turf/soulwall2.dmi'
+	icon = 'soulwall2.dmi'
 	icon_state = ""
 
 
 /turf/simulated/floor/lifeweb/train
-	icon = 'icons/turf/train.dmi'
+	icon = 'train.dmi'
 	icon_state = "floor"
 
 /turf/simulated/floor/lifeweb/soulbreaker/two
-	icon = 'icons/turf/soulwall2.dmi'
+	icon = 'soulwall2.dmi'
 	icon_state = "darkfloor"
 
 /turf/simulated/floor/lifeweb/soulbreaker/three
-	icon = 'icons/turf/soulwall2.dmi'
+	icon = 'soulwall2.dmi'
 	icon_state = "SoulFloor"
 
 
 /turf/simulated/floor/lifeweb/soulbreaker/four
-	icon = 'icons/turf/soulwall2.dmi'
+	icon = 'soulwall2.dmi'
 	icon_state = "SoulFloorS"
 
 
 /turf/simulated/floor/lifeweb/soulbreaker/cluster
-	icon = 'icons/turf/soulwall2.dmi'
+	icon = 'soulwall2.dmi'
 	icon_state = "cluster"
 
 /turf/simulated/floor/lifeweb/soulbreaker/cluster/New()
@@ -944,8 +944,8 @@
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
 			H.adjustStaminaLoss(rand(3,5))
-			take_damage(H.my_stats.get_stat(STAT_ST))
-		playsound(src, pick('sound/effects/wallhit.ogg','sound/effects/wallhit2.ogg','sound/effects/wallhit3.ogg'), 80, 1)
+			take_damage(H.my_stats.st)
+		playsound(src, pick('wallhit.ogg','wallhit2.ogg','wallhit3.ogg'), 80, 1)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
 
@@ -984,7 +984,7 @@
 	var/opened = FALSE
 	var/open_state = "sewerhatch0"
 	var/default_state = "sewerhatch1"
-	icon = 'icons/obj/miscobjs.dmi'
+	icon = 'miscobjs.dmi'
 	icon_state = "sewerhatch1"
 	var/turf/below
 	New()
@@ -1026,7 +1026,7 @@
 /turf/simulated/floor/lifeweb/stone/handmade/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/weapon/chisel) && !chiseled)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		playsound(src, 'sound/weapons/obj_stone_generic_switch_enter_01.ogg', 80, 0,0)
+		playsound(src, 'obj_stone_generic_switch_enter_01.ogg', 80, 0,0)
 		chiseled = TRUE
 		user.visible_message("<span class='passive'>\The [user] chisels \the [src]</span>")
 		icon_state = "newstone[rand(1,4)]"

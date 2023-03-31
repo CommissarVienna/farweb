@@ -64,16 +64,23 @@
 	return 0
 
 /mob/living/carbon/human/proc/isStealth()
+
+	if(src.wrist_l && istype(src.wrist_l, /obj/item/weapon/cloaking_device/brothel))
+		var/obj/item/weapon/cloaking_device/brothel/C = src.wrist_l
+		if(C.active && istype(src.loc:loc, /area/dunwell/station/brothel))
+			return 2
+	if(src.wrist_r && istype(src.wrist_r, /obj/item/weapon/cloaking_device/brothel))
+		var/obj/item/weapon/cloaking_device/brothel/C = src.wrist_r
+		if(C.active && istype(src.loc:loc, /area/dunwell/station/brothel))
+			return 2
+
 	if(src.wrist_l && istype(src.wrist_l, /obj/item/weapon/cloaking_device))
 		var/obj/item/weapon/cloaking_device/C = src.wrist_l
-		if(C.active && !C.area_locked)
+		if(C.active)
 			return 1
-		else if(C.active && istype(src.loc:loc, C.area_locked))
-			return 2
 	if(src.wrist_r && istype(src.wrist_r, /obj/item/weapon/cloaking_device))
 		var/obj/item/weapon/cloaking_device/C = src.wrist_r
-		if(C.active && !C.area_locked)
+		if(C.active)
 			return 1
-		else if(C.active && istype(src.loc:loc, C.area_locked))
-			return 2
+
 	return 0

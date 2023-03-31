@@ -18,7 +18,7 @@
 /turf/simulated/floor/proc/generateSigils(var/mob/M)
 	var/obj/effect/decal/cleanable/thanati/C/C = new(src)
 	C.add_fingerprint(M)
-	playsound(C, 'sound/webbers/sigil_draw.ogg', 100)
+	playsound(C, 'sigil_draw.ogg', 100)
 	var/list/sigilsPath = list(
 	/obj/effect/decal/cleanable/thanati/N,
 	/obj/effect/decal/cleanable/thanati/S,
@@ -47,4 +47,4 @@
 			var/obj/heart = H.get_active_hand()
 			qdel(heart)
 			generateSigils(H)
-			playsound(src, 'sound/webbers/sigil_draw.ogg', 100)
+			playsound(src, 'sigil_draw.ogg', 100)

@@ -13,7 +13,7 @@
 	else
 		playsound(src.loc, 'sound/effects/drown_female.ogg', rand(35,50), 1)
 	visible_message("[src] drowns!")
-	adjustOxyLoss(10)//If you are suiciding, you should die a little bit faster
+	adjustOxyLoss(4)//If you are suiciding, you should die a little bit faster
 	failed_last_breath = 1
 	if(r_hand && istype(r_hand, /obj/item/weapon/flame))
 		var/obj/item/weapon/flame/F = r_hand
@@ -32,7 +32,7 @@
 	var/atom/movable/overlay/animation = new /atom/movable/overlay( loc )
 	animation.pixel_y = 16
 	animation.icon_state = "blank"
-	animation.icon = 'icons/life/reagents.dmi'
+	animation.icon = 'reagents.dmi'
 	animation.master = src
 	flick(animation, "bubbles")
 	spawn(25)

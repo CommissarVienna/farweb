@@ -66,7 +66,7 @@
 	if(src.last_water_state == water_state) return
 	var/image/I = null
 	overlays = null
-	I = image('icons/life/reagents.dmi', "reagent_filling[water_state]")
+	I = image('reagents.dmi', "reagent_filling[water_state]")
 	src.appearance_flags |= KEEP_TOGETHER
 	I.blend_mode = BLEND_INSET_OVERLAY
 	I.color = cor
@@ -138,7 +138,7 @@
 			client.color = cor
 		else
 			client.color = cor
-	if(depth >= 165)
+	if(!src.resting && depth >= 165)
 		if(handle_drowning())
 			if(client)
 				client.color = cor

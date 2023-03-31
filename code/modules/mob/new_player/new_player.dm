@@ -93,12 +93,8 @@ var/aspects_max = 3
 	Stat()
 		..()
 		//statpanel("Lobby")
-		if(client?.statpanel_loaded != TRUE)
-			return
-		if(client.current_button == "note")
-			client.newtext(noteUpdate())
 		updateTimeToStart()
-
+		updatePig()
 		if(ticker)
 			if(ticker.current_state == GAME_STATE_PLAYING)
 				src << browse(null, "window=playerlist")
@@ -112,9 +108,9 @@ var/aspects_max = 3
 			for(var/mob/new_player/player in player_list)
 				if(client)
 					if(player.ready && player.client.work_chosen)
-						client << output(list2params(list("[player.client.work_chosen]", "[player.client.prefs.real_name]")), "playerlist.browser:addPlayerCell")
+						client << output(list2params(list("[player.client.work_chosen]", "[player.client.key]")), "playerlist.browser:addPlayerCell")
 					else
-						client << output(list2params(list("HIDDEN", "[player.client.prefs.real_name]")), "playerlist.browser:addPlayerCell")
+						client << output(list2params(list("HIDDEN", "[player.client.key]")), "playerlist.browser:addPlayerCell")
 					client << output(list2params(list()), "playerlist.browser:renderPlayerList")
 					player.updateTimeToStart()
 					/*
@@ -200,8 +196,7 @@ var/aspects_max = 3
 				to_chat(src, "<span class='specialhbold'>⠀Your character is now <i>special</i>!</span>")
 				to_chat(src, "<span class='specialbold'>Limitations:</span> <span class='special'>[specialdatum.limitationsen]</span>")
 				to_chat(src, "<span class='specialbold'>Description:</span> <span class='special'>[specialdatum.descriptionen]</span>")
-				if(specialdatum.rewarden)
-					to_chat(src, "<span class='specialbold'>Reward:</span> <span class='special'>[specialdatum.rewarden]</span>")
+				to_chat(src, "<span class='specialbold'>Reward:</span> <span class='special'>[specialdatum.rewarden]</span>")
 
 			if(!special && !SpecialRolledList.Find(src.ckey))
 				special = 1
@@ -216,8 +211,7 @@ var/aspects_max = 3
 				to_chat(src, "<span class='specialhbold'>⠀Your character is now <i>special</i>!</span>")
 				to_chat(src, "<span class='specialbold'>Limitations:</span> <span class='special'>[specialdatum.limitationsen]</span>")
 				to_chat(src, "<span class='specialbold'>Description:</span> <span class='special'>[specialdatum.descriptionen]</span>")
-				if(specialdatum.rewarden)
-					to_chat(src, "<span class='specialbold'>Reward:</span> <span class='special'>[specialdatum.rewarden]</span>")
+				to_chat(src, "<span class='specialbold'>Reward:</span> <span class='special'>[specialdatum.rewarden]</span>")
 
 		if(href_list["refresh"])
 			src << browse(null, "window=playersetup") //closes the player setup window
@@ -339,7 +333,7 @@ var/aspects_max = 3
 		matchmaker.do_matchmaking()
 
 		if(character.mind.assigned_role != "Cyborg")
-		//	data_core.manifest_inject(character)
+			data_core.manifest_inject(character)
 			ticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
 			AnnounceArrival(character, rank)
 
@@ -399,12 +393,7 @@ var/aspects_max = 3
 			if(rank == "Bum" || rank == "Migrant")
 				return
 			else
-				var/gender_prefix
-				if(character.gender == MALE)
-					gender_prefix = "M"
-				else
-					gender_prefix = "F"
-				a.autosay("[character.real_name] ([rank ? " [rank];" : " visitor;"] [gender_prefix]/[character.age]) will arrive soon.", "Firethorn CTTU")
+				a.autosay("[character.real_name],[rank ? " [rank]," : " visitor," ] has arrived at Firethorn.", "Firethorn CTTU")
 				world << 'sound/effects/arrival.ogg'
 				qdel(a)
 
@@ -537,8 +526,8 @@ var/aspects_max = 3
 			new_character.my_skills.CHANGE_SKILL(SKILL_MUSIC, rand(13,15))
 		if(singer.Find(client?.ckey))
 			new_character.add_perk(/datum/perk/singer)
-			new_character.add_verb(list(/mob/living/carbon/human/proc/remembersong,
-			/mob/living/carbon/human/proc/sing))
+			new_character.verbs += /mob/living/carbon/human/proc/remembersong
+			new_character.verbs += /mob/living/carbon/human/proc/sing
 		if(bee_queen.Find(client?.ckey))
 			new_character.add_perk(/datum/perk/bee_queen)
 		if(client?.prefs.togglefuta)

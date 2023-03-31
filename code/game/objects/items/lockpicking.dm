@@ -5,8 +5,8 @@
 ///////////////////////////
 
 //SOM
-var/list/lockpicking_sounds = list('sound/effects/ui_lockpicking_pickmovement_01.ogg','sound/effects/ui_lockpicking_pickmovement_02.ogg','sound/effects/ui_lockpicking_pickmovement_03.ogg','sound/effects/ui_lockpicking_pickmovement_04.ogg')
-var/lockpick_break_sound = 'sound/effects/lockpick_break.ogg'
+var/list/lockpicking_sounds = list('ui_lockpicking_pickmovement_01.ogg','ui_lockpicking_pickmovement_02.ogg','ui_lockpicking_pickmovement_03.ogg','ui_lockpicking_pickmovement_04.ogg')
+var/lockpick_break_sound = 'lockpick_break.ogg'
 //INTERFACE
 /obj/screen/lockpicking
 	icon = 'icons/misc/lockpicking.dmi'
@@ -135,10 +135,10 @@ var/lockpick_break_sound = 'sound/effects/lockpick_break.ogg'
 	var/succ_chance = 0
 	var/mob/living/carbon/human/H = usr
 	if(H.my_skills.GET_SKILL(SKILL_LOCK) < 1)
-		succ_chance = (H.my_stats.get_stat(STAT_PR)+H.my_stats.get_stat(STAT_IN)) + rand(0,5)
+		succ_chance = (H.my_stats.pr+H.my_stats.it) + rand(0,5)
 	else
-		succ_chance = (((H.my_stats.get_stat(STAT_PR)+H.my_stats.get_stat(STAT_IN)) * H.my_skills.GET_SKILL(SKILL_LOCK)) / 2) + 5
-	succ_chance += H.my_stats.get_stat(STAT_DX) / 2
+		succ_chance = (((H.my_stats.pr+H.my_stats.it) * H.my_skills.GET_SKILL(SKILL_LOCK)) / 2) + 5
+	succ_chance += H.my_stats.dx / 2
 	// PR + IT * Lockpicking skill dividido por 2, bonus extra de DX dividida por 2
 	if(pin.dir == pin.correct_dir && prob(succ_chance))
 		to_chat(usr, "<span class='jogtowalk'><i>The lock makes a little click noise...</span>")
@@ -161,10 +161,10 @@ var/lockpick_break_sound = 'sound/effects/lockpick_break.ogg'
 	var/failchance = 75
 	var/mob/living/carbon/human/H = usr
 	if(H.my_skills.GET_SKILL(SKILL_LOCK) < 1)
-		succ_chance = (H.my_stats.get_stat(STAT_PR)+H.my_stats.get_stat(STAT_IN)) + rand(0,5)
+		succ_chance = (H.my_stats.pr+H.my_stats.it) + rand(0,5)
 	else
-		succ_chance = (((H.my_stats.get_stat(STAT_PR)+H.my_stats.get_stat(STAT_IN)) * H.my_skills.GET_SKILL(SKILL_LOCK)) / 2) + 5
-	succ_chance += H.my_stats.get_stat(STAT_DX) / 2
+		succ_chance = (((H.my_stats.pr+H.my_stats.it) * H.my_skills.GET_SKILL(SKILL_LOCK)) / 2) + 5
+	succ_chance += H.my_stats.dx / 2
 	failchance -= succ_chance
 	// PR + IT * Lockpicking skill dividido por 2, bonus extra de DX dividida por 2
 	if(pin.dir == pin.correct_dir)

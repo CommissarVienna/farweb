@@ -26,35 +26,35 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/fish/fish1
 	name = "fish"
-	icon = 'icons/fish.dmi'
+	icon = 'fish.dmi'
 	icon_state = "fish1_l"
 	filling_color = "#785210"
 	item_worth = 5
 
 /obj/item/weapon/reagent_containers/food/snacks/fish/fish2
 	name = "fish"
-	icon = 'icons/fish.dmi'
+	icon = 'fish.dmi'
 	icon_state = "fish2_l"
 	filling_color = "#785210"
 	item_worth = 8
 
 /obj/item/weapon/reagent_containers/food/snacks/fish/fish3
 	name = "fish"
-	icon = 'icons/fish.dmi'
+	icon = 'fish.dmi'
 	icon_state = "fish3_l"
 	filling_color = "#785210"
 	item_worth = 5
 
 /obj/item/weapon/reagent_containers/food/snacks/fish/fish4
 	name = "fish"
-	icon = 'icons/fish.dmi'
+	icon = 'fish.dmi'
 	icon_state = "fish4_l"
 	filling_color = "#785210"
 	item_worth = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/fish/fish5
 	name = "fish"
-	icon = 'icons/fish.dmi'
+	icon = 'fish.dmi'
 	icon_state = "fish5_l"
 	filling_color = "#785210"
 	item_worth = 10

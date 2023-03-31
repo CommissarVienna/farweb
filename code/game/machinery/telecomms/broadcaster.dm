@@ -368,17 +368,17 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 		// --- Some more pre-message formatting ---
 		var/part_b_extra = ""
-		var/part_b = "</span> [icon2html(radio, world)]\[[freq_text]\][part_b_extra]</b> <span class='message'>" //fixes radios icon
+		var/part_b = "</span> [icon2html(radio, M)]\[[freq_text]\][part_b_extra]</b> <span class='message'>"
 		if(ishuman(M))
 			if (ending != "!")
 				var/mob/living/carbon/human/H = M
 				var/ageAndGender = ageAndGender2Desc(H.age, H.gender)
-				part_b = "</span> \[[icon2html(radio, world, realsize = TRUE)]\]<span class='commsbold'> - \[[job]\  [ageAndGender]] " // Tweaked for security headsets -- TLE
+				part_b = "</span> \[[icon2html(radio, M, realsize = TRUE)]\]<span class='commsbold'> - \[[job]\  [ageAndGender]] " // Tweaked for security headsets -- TLE
 			else if (ending == "!")
 				var/mob/living/carbon/human/H = M
 				var/ageAndGender = ageAndGender2Desc(H.age, H.gender)
 				verbage = pick("shouts", "yells")
-				part_b = "</span> [icon2html(radio, world)]<span class='commsbold'>\[[job]\  [ageAndGender]]</span> <span class='commsbold'>"
+				part_b = "</span> [icon2html(radio, M)]<span class='commsbold'>\[[job]\  [ageAndGender]]</span> <span class='commsbold'>"
 		message = replacetext(message, " i ", " I ") // força preto a usar letra em caps
 		message = replacetext(message, " ive ", " I've ")// força preto a escrever corretamente
 		message = replacetext(message, " im ", " I'm ")// força preto a usar I'm do jeito certo
@@ -400,7 +400,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 			message += "."
 
 		else if(!(ishuman(M)))
-			part_b = "</span> [icon2html(radio, world)]<span class='bname'>\[Firethorn Fortress]</span></span> "
+			part_b = "</span> [icon2html(radio, M)]<span class='bname'>\[Firethorn Fortress]</span></span> "
 		if(data == 3) // intercepted radio message
 			part_b_extra = " <i>(Intercepted)</i>"
 		var/part_c = "</span></span>"

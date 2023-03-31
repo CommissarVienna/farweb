@@ -11,14 +11,14 @@ var/list/bandit_names = list("Maddox Mad-Eye", "Fast-Fingers Fairfax", "Blackjac
 var/ludruk = 0
 var/lady = 0
 /mob/dead/observer/verb/lateparty()
-	set category = "dead"
+	set category = "Wraith"
 	set name = "LateParty"
-	set desc = "Late Party"
+	set desc = "Joins the late party."
 
 	if(!client) return
 
 	if(master_mode == "holywar" || master_mode == "minimig")
-		to_chat(usr, "<span class	='combatbold'>[pick(fnord)],</span><span class='combat'> fuck you.</span>")
+		to_chat(usr, "<span class	='combatbold'>[pick(nao_consigoen)],</span><span class='combat'> fuck you.</span>")
 		return 0
 
 	if(world.time < 1)
@@ -47,19 +47,7 @@ var/lady = 0
 /mob/living/carbon/human/var/mySon = ""
 /mob/living/carbon/human/var/myWife = ""
 
-
 /mob/living/carbon/human/var/hasMother = 1
-var/latepartynum = 0
-var/latepartystarted = FALSE
-var/hasancest = FALSE
-var/hasrolled = FALSE
-var/pimp = FALSE
-var/sirballat = FALSE
-var/countess = FALSE
-var/ladyballat = FALSE
-var/wardeclared = FALSE
-var/forcedlate = null
-var/hasgifthand = FALSE
 
 /proc/check_late_party()
 	if(latepartied_list.len >= LATEPARTY_MAX)
@@ -102,7 +90,7 @@ var/hasgifthand = FALSE
 		while(candidatos.len)
 			var/mob/dead/observer/OO = pick(candidatos)
 			if(!OO.client) continue
-			OO << 'sound/effects/newBuzzer.ogg'
+			OO << 'newBuzzer.ogg'
 			animate(OO.client, color = null, time = 10)
 			var/chosen = pick(possiblefates)
 			switch(chosen)
@@ -126,10 +114,10 @@ var/hasgifthand = FALSE
 					new_character.b_hair = rand(40, 90)
 					new_character.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(3,4))
 					new_character.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(5,7))
-					new_character.my_stats.change_stat(STAT_ST , 4)
-					new_character.my_stats.change_stat(STAT_HT , 4)
-					new_character.my_stats.change_stat(STAT_IN , -1)
-					new_character.my_stats.change_stat(STAT_DX , -2)
+					new_character.my_stats.st = rand(12, 14)
+					new_character.my_stats.ht = rand(14, 17)
+					new_character.my_stats.it = rand(8, 10)
+					new_character.my_stats.dx = rand(7, 9)
 					new_character.old_job = "Migrant"
 					new_character.voice_name = new_character.real_name
 					new_character.terriblethings = TRUE
@@ -146,7 +134,7 @@ var/hasgifthand = FALSE
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/wrist/bracer(new_character), slot_wrist_l)
 					new_character.equip_to_slot_or_del(new /obj/item/weapon/flame/torch/on(new_character), slot_r_hand)
 					new_character.equip_to_slot_or_del(new /obj/item/weapon/card/id/family(new_character), slot_wear_id)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 
 					spawn(5)
@@ -192,16 +180,16 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_FISH, rand(5,7))
 					new_character.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(5,7))
 					new_character.my_skills.CHANGE_SKILL(SKILL_COOK, rand(8,9))
-					new_character.my_stats.change_stat(STAT_ST , -1)
-					new_character.my_stats.change_stat(STAT_HT , -1)
-					new_character.my_stats.change_stat(STAT_IN , 2)
-					new_character.my_stats.change_stat(STAT_DX , 2)
+					new_character.my_stats.st = rand(8, 10)
+					new_character.my_stats.ht = rand(7, 10)
+					new_character.my_stats.it = rand(10, 13)
+					new_character.my_stats.dx = rand(10, 13)
 					new_character.old_job = "Migrant"
 					new_character.voice_name = new_character.real_name
 					new_character.terriblethings = TRUE
 					new_character.vice = pick(VicesList)
 					new_character.age = rand(35,55)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 				if("Heir1")
 					var/mob/living/carbon/human/new_character = new(pick(latejoin))
@@ -224,10 +212,10 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(5,7))
 					new_character.my_skills.CHANGE_SKILL(SKILL_FISH, rand(2,4))
 					new_character.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(3,5))
-					new_character.my_stats.change_stat(STAT_ST , 3)
-					new_character.my_stats.change_stat(STAT_HT , 3)
-					new_character.my_stats.change_stat(STAT_IN , -1)
-					new_character.my_stats.change_stat(STAT_DX , -2)
+					new_character.my_stats.st = rand(12, 13)
+					new_character.my_stats.ht = rand(12, 13)
+					new_character.my_stats.it = rand(9, 11)
+					new_character.my_stats.dx = rand(8, 10)
 					new_character.old_job = "Migrant"
 					new_character.voice_name = new_character.real_name
 					new_character.terriblethings = TRUE
@@ -245,7 +233,7 @@ var/hasgifthand = FALSE
 					new_character.equip_to_slot_or_del(new /obj/item/weapon/flame/torch/on(new_character), slot_r_hand)
 					new_character.equip_to_slot_or_del(new /obj/item/weapon/card/id/family(new_character), slot_wear_id)
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/gloves/botanic_leather(new_character), slot_gloves)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 					spawn(5)
 						for(var/mob/living/carbon/human/H in range(4, new_character))
@@ -285,10 +273,10 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_SWIM,rand(11,12))
 					new_character.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(11,11))
 					new_character.my_skills.CHANGE_SKILL(SKILL_SURVIV, rand(11,14))
-					new_character.my_stats.change_stat(STAT_ST , 6)
-					new_character.my_stats.change_stat(STAT_HT , 6)
-					new_character.my_stats.set_stat(STAT_IN , 12)
-					new_character.my_stats.change_stat(STAT_DX , 1)
+					new_character.my_stats.st = rand(15,16)
+					new_character.my_stats.ht = rand(15,16)
+					new_character.my_stats.it = 12
+					new_character.my_stats.dx = rand(10,11)
 					new_character.old_job = "Soulbreaker Bashar"
 					new_character.name = pick(soulbreaker_names)
 					soulbreaker_names.Remove(new_character.name)
@@ -298,7 +286,7 @@ var/hasgifthand = FALSE
 					new_character.age = rand(24,45)
 					new_character.voicetype = "strong"
 					new_character.religion = "Allah"
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 					for(var/obj/effect/landmark/L in landmarks_list)
 						if (L.name == "Soulbreaker")
@@ -332,10 +320,10 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_SWIM,rand(11,12))
 					new_character.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(11,11))
 					new_character.my_skills.CHANGE_SKILL(SKILL_SURVIV, rand(11,11))
-					new_character.my_stats.change_stat(STAT_ST , 3)
-					new_character.my_stats.change_stat(STAT_HT , 3)
-					new_character.my_stats.change_stat(STAT_IN , 0)
-					new_character.my_stats.change_stat(STAT_DX , 0)
+					new_character.my_stats.st = rand(13,14)
+					new_character.my_stats.ht = rand(13,14)
+					new_character.my_stats.it = rand(9,10)
+					new_character.my_stats.dx = rand(9,10)
 					new_character.old_job = "Soulbreaker"
 					new_character.name = pick(soulbreaker_names)
 					soulbreaker_names.Remove(new_character.name)
@@ -345,7 +333,7 @@ var/hasgifthand = FALSE
 					new_character.age = rand(24,45)
 					new_character.voicetype = "strong"
 					new_character.religion = "Allah"
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 					for(var/obj/effect/landmark/L in landmarks_list)
 						if (L.name == "Soulbreaker")
@@ -378,10 +366,10 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_SWIM,rand(11,12))
 					new_character.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(11,11))
 					new_character.my_skills.CHANGE_SKILL(SKILL_SURVIV, rand(11,11))
-					new_character.my_stats.change_stat(STAT_ST , 2)
-					new_character.my_stats.change_stat(STAT_HT , 2)
-					new_character.my_stats.change_stat(STAT_IN , 2)
-					new_character.my_stats.change_stat(STAT_DX , 0)
+					new_character.my_stats.st = rand(11,12)
+					new_character.my_stats.ht = rand(11,12)
+					new_character.my_stats.it = rand(11,12)
+					new_character.my_stats.dx = rand(9,10)
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/head/eunuch(new_character), slot_head)
 					new_character.old_job = "Soulbreaker Eunuch"
 					new_character.name = pick(soulbreaker_names)
@@ -393,7 +381,7 @@ var/hasgifthand = FALSE
 					new_character.voicetype = "strong"
 					new_character.mutilate_genitals()
 					new_character.religion = "Allah"
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 					for(var/obj/effect/landmark/L in landmarks_list)
 						if (L.name == "Soulbreaker")
@@ -430,9 +418,9 @@ var/hasgifthand = FALSE
 						new_character.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(8,8))
 						new_character.my_skills.CHANGE_SKILL(SKILL_SWIM,rand(7,7))
 						new_character.age = rand(18,30)
-						new_character.my_stats.change_stat(STAT_ST , 0)
-						new_character.my_stats.change_stat(STAT_DX , 2)
-						new_character.my_stats.change_stat(STAT_HT , 0)
+						new_character.my_stats.st = rand(9,11)
+						new_character.my_stats.dx = rand(13,14)
+						new_character.my_stats.ht = rand(10,12)
 						new_character.old_job = "Countess"
 						new_character.job = "Countess"
 						log_game("[new_character.real_name]/[new_character.key] spawned as Countess (LP)")
@@ -461,7 +449,7 @@ var/hasgifthand = FALSE
 						new_character.siegesoldier = TRUE
 						new_character.outsider = TRUE
 						new_character.update_all_siege_icons()
-						new_character.updateStatPanel()
+						new_character.updatePig()
 						new_character.create_kg()
 						spawn(5)
 						if(S.hascount)
@@ -496,9 +484,9 @@ var/hasgifthand = FALSE
 					new_character.add_perk(/datum/perk/ref/strongback)
 					new_character.add_perk(/datum/perk/morestamina)
 					new_character.age = rand(17,40)
-					new_character.my_stats.change_stat(STAT_ST , 1)
-					new_character.my_stats.change_stat(STAT_DX , 0)
-					new_character.my_stats.change_stat(STAT_HT , 1)
+					new_character.my_stats.st = 11
+					new_character.my_stats.dx = rand(9,10)
+					new_character.my_stats.ht = rand(10,11)
 					new_character.old_job = "Sieger"
 					new_character.terriblethings = TRUE
 					new_character.job = "Sieger"
@@ -514,7 +502,7 @@ var/hasgifthand = FALSE
 					new_character.siegesoldier = TRUE
 					new_character.outsider = TRUE
 					new_character.update_all_siege_icons()
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 					var/obj/effect/landmark/SG = pick(siegestart)
 					new_character.forceMove(SG.loc)
@@ -539,7 +527,7 @@ var/hasgifthand = FALSE
 					log_game("[new_character.real_name]/[new_character.key] spawned as Gink")
 					latepartystarted = TRUE
 					hasrolled = TRUE
-					new_character << 'sound/ginklate.ogg'
+					new_character << 'ginklate.ogg'
 					to_chat(new_character, "<span class='objectives'>Escaping from the overcrowded Wei-Ji and north's xenophobia, you finally find somewhere stable to live.</span>")
 					to_chat(new_character, "<span class='baronboldoutlined'>Objective #1:</span> <span class='objectives'>Arrive at the fortress.</span>")
 					to_chat(new_character, "<span class='baronboldoutlined'>Objective #2:</span> <span class='objectives'>Find a job.</span>")
@@ -547,10 +535,10 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(7,10))
 					new_character.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
 					new_character.age = rand(20,35)
-					new_character.my_stats.change_stat(STAT_ST , 0)
-					new_character.my_stats.change_stat(STAT_DX , 1)
-					new_character.my_stats.change_stat(STAT_HT , 0)
-					new_character.my_stats.change_stat(STAT_IN , 0)
+					new_character.my_stats.st = rand(9,10)
+					new_character.my_stats.dx = rand(10,11)
+					new_character.my_stats.ht = rand(8,11)
+					new_character.my_stats.it = rand(9,10)
 					new_character.old_job = "Gink"
 					for(var/obj/effect/landmark/L in landmarks_list)
 						if (L.name == "Gink")
@@ -560,7 +548,7 @@ var/hasgifthand = FALSE
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/leatherboots(new_character), slot_shoes)
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/under/gink(new_character), slot_w_uniform)
 					new_character.equip_to_slot_or_del(new /obj/item/weapon/flame/torch/on(new_character), slot_l_hand)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 
 				if("Counthandgift")
@@ -591,9 +579,9 @@ var/hasgifthand = FALSE
 					new_character.add_perk(/datum/perk/ref/strongback)
 					new_character.add_perk(/datum/perk/morestamina)
 					new_character.age = rand(28,50)
-					new_character.my_stats.change_stat(STAT_ST , 3)
-					new_character.my_stats.change_stat(STAT_DX , 1)
-					new_character.my_stats.change_stat(STAT_HT , 3)
+					new_character.my_stats.st = rand(12,14)
+					new_character.my_stats.dx = rand(10,11)
+					new_character.my_stats.ht = rand(13,14)
 					new_character.old_job = "Count Hand"
 					new_character.terriblethings = TRUE
 					new_character.job = "Count Hand"
@@ -607,7 +595,7 @@ var/hasgifthand = FALSE
 					new_character.equip_to_slot_or_del(new /obj/item/countflag(new_character), slot_r_hand)
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/jackboots(new_character), slot_shoes)
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/iron_plate(new_character), slot_wear_suit)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 					for(var/obj/effect/landmark/L in landmarks_list)
 						if (L.name == "Countgift")
@@ -652,9 +640,9 @@ var/hasgifthand = FALSE
 					new_character.add_perk(/datum/perk/ref/strongback)
 					new_character.add_perk(/datum/perk/morestamina)
 					new_character.age = rand(17,40)
-					new_character.my_stats.change_stat(STAT_ST , 1)
-					new_character.my_stats.change_stat(STAT_DX , 0)
-					new_character.my_stats.change_stat(STAT_HT , 1)
+					new_character.my_stats.st = 11
+					new_character.my_stats.dx = rand(9,10)
+					new_character.my_stats.ht = rand(10,11)
 					new_character.old_job = "Grunt"
 					new_character.terriblethings = TRUE
 					new_character.job = "Grunt"
@@ -664,7 +652,7 @@ var/hasgifthand = FALSE
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/lw/siegehelmet(new_character), slot_head)
 					new_character.equip_to_slot_or_del(new /obj/item/weapon/flame/torch/on(new_character), slot_l_hand)
 					new_character.equip_to_slot_or_del(new /obj/item/sheath/claymore(new_character), slot_belt)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 					log_game("[new_character.real_name]/[new_character.key] spawned as Grunt(gift)")
 					for(var/obj/effect/landmark/L in landmarks_list)
@@ -706,9 +694,9 @@ var/hasgifthand = FALSE
 						new_character.mind.thanati_corrupt = pick(thanatiWords)
 					new_character.mind.store_memory("My word is [new_character.mind.thanati_corrupt] and my circle is [new_character.mind.thanati_type]")
 					to_chat(new_character, "<span class='baron'>Your corrupt word: [new_character.mind.thanati_corrupt], [new_character.mind.thanati_word_random] (The Circle of [new_character.mind.thanati_type]).</span>\n")
-					new_character.add_verb(list(/mob/living/carbon/human/proc/getWords,
-					/mob/living/carbon/human/proc/praisethelord,
-					/mob/living/carbon/human/proc/getBrothers))
+					new_character.verbs += /mob/living/carbon/human/proc/getWords
+					new_character.verbs += /mob/living/carbon/human/proc/praisethelord
+					new_character.verbs += /mob/living/carbon/human/proc/getBrothers
 					log_game("[new_character.real_name]/[new_character.key] spawned as Thanati (LP)")
 					for(var/obj/effect/landmark/L in landmarks_list)
 						if (L.name == "ThanatiLate")
@@ -740,12 +728,11 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_CLIMB,rand(12,13))
 					new_character.my_skills.CHANGE_SKILL(SKILL_SWIM,rand(9,10))
 					new_character.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(9,10))
-
-					new_character.my_stats.change_stat(STAT_ST , 2)
-					new_character.my_stats.change_stat(STAT_DX , 1)
-					new_character.my_stats.change_stat(STAT_HT , 1)
-					new_character.my_stats.change_stat(STAT_IN , 0)
-					new_character.updateStatPanel()
+					new_character.my_stats.st = rand(11,12)
+					new_character.my_stats.dx = rand(10,11)
+					new_character.my_stats.ht = rand(10,11)
+					new_character.my_stats.it = rand(9,10)
+					new_character.updatePig()
 					new_character.create_kg()
 					spawn(30)
 						new_character << sound('sound/music/thanati2.ogg', repeat = 0, wait = 0, volume = 100, channel = 3)
@@ -785,9 +772,9 @@ var/hasgifthand = FALSE
 						new_character.mind.thanati_corrupt = pick(thanatiWords)
 					new_character.mind.store_memory("My word is [new_character.mind.thanati_corrupt] and my circle is [new_character.mind.thanati_type]")
 					to_chat(new_character, "<span class='baron'>Your corrupt word: [new_character.mind.thanati_corrupt], [new_character.mind.thanati_word_random] (The Circle of [new_character.mind.thanati_type]).</span>\n")
-					new_character.add_verb(list(/mob/living/carbon/human/proc/getWords,
-					/mob/living/carbon/human/proc/praisethelord,
-					/mob/living/carbon/human/proc/getBrothers))
+					new_character.verbs += /mob/living/carbon/human/proc/getWords
+					new_character.verbs += /mob/living/carbon/human/proc/praisethelord
+					new_character.verbs += /mob/living/carbon/human/proc/getBrothers
 					log_game("[new_character.real_name]/[new_character.key] spawned as Thanati Leader (LP)")
 					for(var/obj/effect/landmark/L in landmarks_list)
 						if (L.name == "ThanatiLate")
@@ -806,12 +793,11 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_CLIMB, 13)
 					new_character.my_skills.CHANGE_SKILL(SKILL_SWIM,rand(9,10))
 					new_character.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(9,10))
-
-					new_character.my_stats.change_stat(STAT_ST , 2)
-					new_character.my_stats.change_stat(STAT_DX , 1)
-					new_character.my_stats.change_stat(STAT_HT , 1)
-					new_character.my_stats.change_stat(STAT_IN , 0)
-					new_character.updateStatPanel()
+					new_character.my_stats.st = 12
+					new_character.my_stats.dx = rand(10,11)
+					new_character.my_stats.ht = 12
+					new_character.my_stats.it = rand(9,10)
+					new_character.updatePig()
 					new_character.create_kg()
 					spawn(30)
 						playsound(new_character.loc, pick('sound/ThanatiLP/ThanatiLP_1.ogg', 'sound/ThanatiLP/ThanatiLP_2.ogg', 'sound/ThanatiLP/ThanatiLP_3.ogg', 'sound/ThanatiLP/ThanatiLP_4.ogg', 'sound/ThanatiLP/ThanatiLP_5.ogg', 'sound/ThanatiLP/ThanatiLP_6.ogg', 'sound/ThanatiLP/ThanatiLP_7.ogg', 'sound/ThanatiLP/ThanatiLP_8.ogg', 'sound/ThanatiLP/ThanatiLP_9.ogg', 'sound/ThanatiLP/ThanatiLP_10.ogg', 'sound/ThanatiLP/ThanatiLP_11.ogg', 'sound/ThanatiLP/ThanatiLP_12.ogg', 'sound/ThanatiLP/ThanatiLP_13.ogg', 'sound/ThanatiLP/ThanatiLP_14.ogg'), 100)
@@ -852,9 +838,9 @@ var/hasgifthand = FALSE
 						new_character.mind.thanati_corrupt = pick(thanatiWords)
 					new_character.mind.store_memory("My word is [new_character.mind.thanati_corrupt] and my circle is [new_character.mind.thanati_type]")
 					to_chat(new_character, "<span class='baron'>Your corrupt word: [new_character.mind.thanati_corrupt], [new_character.mind.thanati_word_random] (The Circle of [new_character.mind.thanati_type]).</span>\n")
-					new_character.add_verb(list(/mob/living/carbon/human/proc/getWords,
-					/mob/living/carbon/human/proc/praisethelord,
-					/mob/living/carbon/human/proc/getBrothers))
+					new_character.verbs += /mob/living/carbon/human/proc/getWords
+					new_character.verbs += /mob/living/carbon/human/proc/praisethelord
+					new_character.verbs += /mob/living/carbon/human/proc/getBrothers
 					log_game("[new_character.real_name]/[new_character.key] spawned as Thanati Bomber (LP)")
 					for(var/obj/effect/landmark/L in landmarks_list)
 						if (L.name == "ThanatiLate")
@@ -874,12 +860,11 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_CLIMB,rand(12,13))
 					new_character.my_skills.CHANGE_SKILL(SKILL_SWIM,rand(9,10))
 					new_character.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(9,10))
-					new_character.my_stats.change_stat(STAT_ST , 1)
-					new_character.my_stats.change_stat(STAT_DX , 0)
-					new_character.my_stats.change_stat(STAT_HT , 1)
-					new_character.my_stats.change_stat(STAT_IN , 0)
-					new_character.updateStatPanel()
-
+					new_character.my_stats.st = rand(11,12)
+					new_character.my_stats.dx = rand(10,11)
+					new_character.my_stats.ht = rand(10,11)
+					new_character.my_stats.it = rand(9,10)
+					new_character.updatePig()
 					new_character.create_kg()
 					spawn(30)
 						new_character << sound('sound/music/thanati2.ogg', repeat = 0, wait = 0, volume = 100, channel = 3)
@@ -901,10 +886,10 @@ var/hasgifthand = FALSE
 					new_character.f_style = random_facial_hair_style(gender = MALE, species = "Human")
 					new_character.gender = "male"
 					new_character.job = "Sir Vandenberg"
-					new_character.my_stats.change_stat(STAT_ST , 6)
-					new_character.my_stats.change_stat(STAT_DX , 1)
-					new_character.my_stats.change_stat(STAT_HT , 6)
-					new_character.my_stats.change_stat(STAT_IN , 1)
+					new_character.my_stats.st = rand(15,16)
+					new_character.my_stats.dx = rand(10,11)
+					new_character.my_stats.ht = rand(15,16)
+					new_character.my_stats.it = rand(10,11)
 					new_character.my_skills.CHANGE_SKILL(SKILL_MELEE, 15)
 					new_character.my_skills.CHANGE_SKILL(SKILL_RANGE, 11)
 					new_character.my_skills.CHANGE_SKILL(SKILL_UNARM, 3)
@@ -927,7 +912,7 @@ var/hasgifthand = FALSE
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/iron(new_character), slot_shoes)
 					new_character.equip_to_slot_or_del(new /obj/item/weapon/claymore/bastard(new_character), slot_back)
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat/gauntlet/steel(new_character), slot_gloves)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 					spawn(5)
 						for(var/mob/living/carbon/human/H in range(4, new_character))
@@ -950,10 +935,10 @@ var/hasgifthand = FALSE
 					new_character.h_style = "Fling"
 					new_character.age = rand(18,24)
 					new_character.gender = "female"
-					new_character.my_stats.change_stat(STAT_ST , -2)
-					new_character.my_stats.change_stat(STAT_DX , 1)
-					new_character.my_stats.change_stat(STAT_HT , 0)
-					new_character.my_stats.change_stat(STAT_IN , 1)
+					new_character.my_stats.st = rand(7,8)
+					new_character.my_stats.dx = rand(10,11)
+					new_character.my_stats.ht = rand(9,10)
+					new_character.my_stats.it = rand(10,11)
 					new_character.job = "Lady Vandenberg"
 					lady = 1
 					new_character.my_skills.CHANGE_SKILL(SKILL_MELEE, 5)
@@ -973,7 +958,7 @@ var/hasgifthand = FALSE
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/suit/ladydress(new_character), slot_wear_suit)
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/boots(new_character), slot_shoes)
 					new_character.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/pistol/ml23/gold(new_character), slot_belt)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 
 				if("LudrukGuard")
@@ -992,10 +977,10 @@ var/hasgifthand = FALSE
 					ludruk_nicknames.Remove(nickname)
 					new_character.real_name = "[new_character.name] the [nickname]"
 					new_character.voice_name = new_character.real_name
-					new_character.my_stats.change_stat(STAT_ST , 3)
-					new_character.my_stats.change_stat(STAT_DX , 1)
-					new_character.my_stats.change_stat(STAT_HT , 2)
-					new_character.my_stats.change_stat(STAT_IN , 0)
+					new_character.my_stats.st = rand(12,13)
+					new_character.my_stats.dx = rand(10,11)
+					new_character.my_stats.ht = rand(11,12)
+					new_character.my_stats.it = rand(9,10)
 					new_character.job = "Ludruk's Leper"
 					ludruk = 1
 					new_character.my_skills.CHANGE_SKILL(SKILL_MELEE, 11)
@@ -1033,7 +1018,7 @@ var/hasgifthand = FALSE
 					for(var/obj/effect/landmark/L in landmarks_list)
 						if (L.name == "LudrukGuard")
 							new_character.forceMove(L.loc)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 
 				if("LudrukGuardCaptain")
@@ -1052,10 +1037,10 @@ var/hasgifthand = FALSE
 					ludruk_nicknames.Remove(nickname)
 					new_character.real_name = "[ludruk_captain] [new_character.name] the [nickname]"
 					new_character.voice_name = new_character.real_name
-					new_character.my_stats.change_stat(STAT_ST , 4)
-					new_character.my_stats.change_stat(STAT_DX , 1)
-					new_character.my_stats.change_stat(STAT_HT , 4)
-					new_character.my_stats.change_stat(STAT_IN , 1)
+					new_character.my_stats.st = rand(13,14)
+					new_character.my_stats.dx = rand(10,11)
+					new_character.my_stats.ht = rand(13,14)
+					new_character.my_stats.it = rand(10,11)
 					new_character.job = "Ludruk's Leper"
 					ludruk = 1
 					new_character.my_skills.CHANGE_SKILL(SKILL_MELEE, 13)
@@ -1086,7 +1071,7 @@ var/hasgifthand = FALSE
 					for(var/obj/effect/landmark/L in landmarks_list)
 						if (L.name == "LudrukGuard")
 							new_character.forceMove(L.loc)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 
 				if("Mortician")
@@ -1114,24 +1099,24 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_CLIMB,rand(12,12))
 					new_character.my_skills.CHANGE_SKILL(SKILL_SWIM,rand(6,8))
 					new_character.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(10,10))
-					new_character.my_stats.change_stat(STAT_ST , 1)
-					new_character.my_stats.change_stat(STAT_DX , 0)
-					new_character.my_stats.change_stat(STAT_HT , 2)
+					new_character.my_stats.st = rand(11,12)
+					new_character.my_stats.dx = rand(9,10)
+					new_character.my_stats.ht = rand(11,12)
+					new_character.my_stats.pr = rand(9,10)
 					new_character.old_job = "Mortus"
 					new_character.job = "Mortus"
-					new_character.province = "Ravenheart"
 					new_character.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/cheap(new_character), slot_wrist_r)
 					new_character.equip_to_slot_or_del(new /obj/item/daggerssheath(new_character), slot_wrist_l)
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/under/rank/janitor(new_character), slot_w_uniform)
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/boots(new_character), slot_shoes)
-					new_character.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/vest/goodhood/morticiancloak(new_character), slot_wear_suit)
 					new_character.equip_to_slot_or_del(new /obj/item/weapon/chisel(new_character), slot_r_store)
 					new_character.equip_to_slot_or_del(new /obj/item/weapon/spacecash/c10(new_character), slot_l_store)
+					new_character.equip_to_slot_or_del(new /obj/item/clothing/gloves/brown(new_character), slot_gloves)
 					new_character.equip_to_slot_or_del(new /obj/item/weapon/cell/web/empty(new_character), slot_back)
 					new_character.equip_to_slot_or_del(new /obj/item/weapon/flame/torch/on(new_character), slot_l_hand)
 					new_character.add_perk(/datum/perk/ref/strongback)
 					new_character.add_perk(/datum/perk/ancitech)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 
 				if("Cerberus")
@@ -1164,12 +1149,12 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_CLIMB,rand(13,13))
 					new_character.my_skills.CHANGE_SKILL(SKILL_SWIM,rand(11,12))
 					new_character.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(11,11))
-					new_character.my_stats.change_stat(STAT_ST , 3)
-					new_character.my_stats.change_stat(STAT_DX , 0)
-					new_character.my_stats.change_stat(STAT_HT , 3)
+					new_character.my_stats.st = rand(12,14)
+					new_character.my_stats.dx = rand(9,10)
+					new_character.my_stats.ht = rand(12,13)
+					new_character.my_stats.pr = rand(11,15)
 					new_character.old_job = "Cerberus"
 					new_character.job = "Cerberus"
-					new_character.province = "Ravenheart"
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/under/rank/security(new_character), slot_w_uniform)
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/jackboots(new_character), slot_shoes)
 					new_character.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/sechelm/cerbhelm(new_character), slot_r_hand)
@@ -1179,7 +1164,7 @@ var/hasgifthand = FALSE
 					new_character.add_perk(/datum/perk/ref/strongback)
 					new_character.add_perk(/datum/perk/morestamina)
 					new_character.add_perk(/datum/perk/heroiceffort)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 
 				if("Inquisitor1")
@@ -1215,8 +1200,12 @@ var/hasgifthand = FALSE
 					new_character.add_perk(/datum/perk/morestamina)
 					new_character.add_perk(/datum/perk/ref/strongback)
 					new_character.add_perk(/datum/perk/heroiceffort)
-					new_character.add_verb(/mob/living/carbon/human/proc/interrogate)
-
+					new_character.verbs += /mob/living/carbon/human/proc/interrogate
+					new_character.my_stats.st = rand(11,12)
+					new_character.my_stats.dx = rand(11,12)
+					new_character.my_stats.ht = rand(11,12)
+					new_character.my_stats.it = rand(12,14)
+					new_character.my_stats.pr = rand(12,14)
 					for(var/obj/effect/landmark/L in landmarks_list)
 						if (L.name == "InquisitorLate")
 							new_character.forceMove(L.loc)
@@ -1243,7 +1232,7 @@ var/hasgifthand = FALSE
 						R.assignment = new_character.job
 						R.name = "[R.registered_name]'s Ring"
 						R.access = list(church, access_morgue, access_chapel_office, access_maint_tunnels)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 
 				if("Practicus1")
@@ -1277,10 +1266,11 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(11,11))
 					new_character.add_perk(/datum/perk/morestamina)
 					new_character.add_perk(/datum/perk/ref/strongback)
-					new_character.my_stats.change_stat(STAT_ST , 3)
-					new_character.my_stats.change_stat(STAT_DX , 0)
-					new_character.my_stats.change_stat(STAT_HT , 2)
-					new_character.my_stats.change_stat(STAT_IN , 0)
+					new_character.my_stats.st = rand(12,13)
+					new_character.my_stats.dx = rand(9,10)
+					new_character.my_stats.ht = rand(11,12)
+					new_character.my_stats.it = rand(9,10)
+					new_character.my_stats.pr = rand(11,12)
 					for(var/obj/effect/landmark/L in landmarks_list)
 						if (L.name == "PracticusLate")
 							new_character.forceMove(L.loc)
@@ -1306,7 +1296,7 @@ var/hasgifthand = FALSE
 						R.assignment = new_character.job
 						R.name = "[R.registered_name]'s Ring"
 						R.access = list(church, access_morgue, access_chapel_office, access_maint_tunnels)
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					new_character.create_kg()
 
 				if("Bandit")
@@ -1388,12 +1378,12 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 					new_character.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
 					new_character.my_skills.CHANGE_SKILL(SKILL_STEAL, rand(8,9))
-					new_character.my_stats.change_stat(STAT_ST , 3)
-					new_character.my_stats.change_stat(STAT_HT , 2)
-					new_character.my_stats.change_stat(STAT_DX , 0)
-					new_character.my_stats.change_stat(STAT_IN , -2)
+					new_character.my_stats.st = rand(12,13)
+					new_character.my_stats.ht = rand(11,13)
+					new_character.my_stats.dx = rand(9,10)
+					new_character.my_stats.it = rand(7,9)
 					new_character.create_kg()
-					new_character.updateStatPanel()
+					new_character.updatePig()
 
 				if("Nephi")
 					var/mob/living/carbon/human/new_character = new(pick(latejoin))
@@ -1433,14 +1423,14 @@ var/hasgifthand = FALSE
 					new_character.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 					new_character.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(12,13))
 					new_character.my_skills.CHANGE_SKILL(SKILL_STEAL, rand(11,13))
-					new_character.my_stats.change_stat(STAT_ST , 3)
-					new_character.my_stats.change_stat(STAT_HT , 3)
-					new_character.my_stats.change_stat(STAT_DX , 1)
-					new_character.my_stats.change_stat(STAT_IN , -2)
+					new_character.my_stats.st = 13
+					new_character.my_stats.ht = 13
+					new_character.my_stats.dx = rand(10,11)
+					new_character.my_stats.it = rand(7,9)
 					new_character.add_perk(/datum/perk/morestamina)
 					new_character.add_perk(/datum/perk/ref/strongback)
 					new_character.create_kg()
-					new_character.updateStatPanel()
+					new_character.updatePig()
 					for(var/obj/effect/landmark/L in landmarks_list)
 						if (L.name == "Bandit")
 							new_character.forceMove(L.loc)

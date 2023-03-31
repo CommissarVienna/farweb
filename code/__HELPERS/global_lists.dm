@@ -52,11 +52,9 @@ var/global/list/backbaglist = list("Nothing")
 
 var/global/list/table_recipes = list()
 
-var/global/list/lightflickersounds = list('sound/machines/light_flicker101.ogg','sound/machines/light_flicker102.ogg','sound/machines/light_flicker103.ogg','sound/machines/light_flicker104.ogg','sound/machines/light_flicker105.ogg','sound/machines/light_flicker106.ogg','sound/machines/light_flicker107.ogg','sound/machines/light_flicker108.ogg','sound/machines/light_flicker109.ogg',
-'sound/machines/light_flicker110.ogg','sound/machines/light_flicker111.ogg','sound/machines/light_flicker112.ogg','sound/machines/light_flicker113.ogg','sound/machines/light_flicker114.ogg','sound/machines/light_flicker115.ogg','sound/machines/light_flicker116.ogg','sound/machines/light_flicker117.ogg','sound/machines/light_flicker118.ogg','sound/machines/light_flicker119.ogg','sound/machines/light_flicker120.ogg',
-'sound/machines/light_flicker121.ogg','sound/machines/light_flicker122.ogg','sound/machines/light_flicker123.ogg','sound/machines/light_flicker124.ogg')
-var/list/init_obj = list()
-
+var/global/list/lightflickersounds = list('light_flicker101.ogg','light_flicker102.ogg','light_flicker103.ogg','light_flicker104.ogg','light_flicker105.ogg','light_flicker106.ogg','light_flicker107.ogg','light_flicker108.ogg','light_flicker109.ogg',
+'light_flicker110.ogg','light_flicker111.ogg','light_flicker112.ogg','light_flicker113.ogg','light_flicker114.ogg','light_flicker115.ogg','light_flicker116.ogg','light_flicker117.ogg','light_flicker118.ogg','light_flicker119.ogg','light_flicker120.ogg',
+'light_flicker121.ogg','light_flicker122.ogg','light_flicker123.ogg','light_flicker124.ogg')
 //////////////////////////
 /////Initial Building/////
 //////////////////////////

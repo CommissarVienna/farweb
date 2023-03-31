@@ -148,7 +148,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/organ/proc/bumorgans()
 	if(!istype(src, /obj/item/weapon/reagent_containers/food/snacks/organ/eyes) || !istype(src, /obj/item/weapon/organ/jaw))
-		icon = 'icons/mob/severed_bum.dmi'
+		icon = 'severed_bum.dmi'
 		bumorgan = TRUE
 		item_worth = 1
 
@@ -194,7 +194,7 @@
 	gender = PLURAL
 	item_worth = 0
 	body_part = MOUTH
-	icon = 'icons/obj/surgery.dmi'
+	icon = 'surgery.dmi'
 
 /obj/item/weapon/reagent_containers/food/snacks/organ/eyes
 	name = "eyeballs"
@@ -274,12 +274,12 @@
 			if(do_after(user, 20))
 				var/list/roll_result = roll3d6(user, SKILL_SURG, -2, FALSE)
 				switch(roll_result[GP_RESULT])
-					if(GP_SUCC, GP_CRITSUCC)
+					if(GP_SUCCESS, GP_CRITSUCCESS)
 						user.visible_message("<span class='passive'>[user] sewing [src.name] inside [H.name].</span>")
 						connected = TRUE
 						coisa(src, owner, 1)
 						playsound(src, 'sound/lfwbsounds/suture.ogg', 70, 1)
-					if(GP_FAIL, GP_CRITFAIL)
+					if(GP_FAILED, GP_CRITFAIL)
 						user.visible_message("<span class='combat'>[user] damaging the [src]</span>")
 						var/damage_organs = rand(1,3)
 						health -= damage_organs
@@ -293,12 +293,12 @@
 			if(do_after(user, 20))
 				var/list/roll_result = roll3d6(user, SKILL_SURG, -2, FALSE)
 				switch(roll_result[GP_RESULT])
-					if(GP_SUCC, GP_CRITSUCC)
+					if(GP_SUCCESS, GP_CRITSUCCESS)
 						user.visible_message("<span class='passive'>[user] repaired the [src]</span>")
 						health = max_health
 						src.organ_data.damage = 0
 						playsound(src, 'sound/lfwbsounds/suture.ogg', 70, 1)
-					if(GP_FAIL, GP_CRITFAIL)
+					if(GP_FAILED, GP_CRITFAIL)
 						user.visible_message("<span class='combat'>[user] damaging the [src]</span>")
 						var/damage_organs = rand(1,3)
 						health -= damage_organs
@@ -311,13 +311,13 @@
 		if(do_after(user, 20))
 			var/list/roll_result = roll3d6(user, SKILL_SURG, -2, FALSE)
 			switch(roll_result[GP_RESULT])
-				if(GP_SUCC, GP_CRITSUCC)
+				if(GP_SUCCESS, GP_CRITSUCCESS)
 					connected = FALSE
 					user.visible_message("<span class='passive'>[user] unconnects [owner.name]'s [src.name]!</span>")
 					coisa(src, owner, 0)
 					if(organ_data.vital)
 						owner.death()
-				if(GP_FAIL, GP_CRITFAIL)
+				if(GP_FAILED, GP_CRITFAIL)
 					user.visible_message("<span class='combat'>[user] damaging [owner.name]'s [src.name]!</span>")
 					var/damage_organs = rand(1,3)
 					health -= damage_organs
@@ -341,7 +341,7 @@
 
 /obj/item/weapon/organ/attackby(obj/item/weapon/W as obj, mob/living/carbon/human/user as mob)
 	if(W.sharp)
-		if(statcheck(user.my_stats.get_stat(STAT_ST), 9, 0))
+		if(statcheck(user.my_stats.st, 9, 0))
 			if(do_after(user, 20))
 				new/obj/item/weapon/bone(src.loc)
 				new/obj/item/weapon/reagent_containers/food/snacks/meat(src.loc)

@@ -410,7 +410,7 @@
 
 /obj/structure/sign/signnew/web/quiet_world
 	name = "Quiet World"
-	icon = 'icons/obj/raventhrone.dmi'
+	icon = 'raventhrone.dmi'
 	icon_state = "qw1"
 
 /obj/structure/sign/signnew/web/quiet_world/_2
@@ -584,7 +584,7 @@
 
 /obj/structure/sign/signnew/web/poster/thoushall
 	name = "Thou shall not kill"
-	icon = 'icons/obj/big.dmi'
+	icon = 'big.dmi'
 	icon_state = "thou"
 
 /obj/structure/sign/signnew/web/poster/comatic
@@ -685,7 +685,7 @@
 
 /obj/structure/sign/signnew/web/church/sunofeternalnight
 	name = "sun of eternal night"
-	icon = 'icons/obj/sun_of_eternal_night.dmi'
+	icon = 'sun_of_eternal_night.dmi'
 	icon_state = "sun"
 	layer = 2.1
 	plane = 0
@@ -695,7 +695,7 @@
 ////////////////////
 
 /obj/structure/sign/signnew/soulbreaker
-	icon = 'icons/sb_decor.dmi'
+	icon = 'sb_decor.dmi'
 	name = "The Hive"
 
 

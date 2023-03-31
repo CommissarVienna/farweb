@@ -24,15 +24,14 @@
 	return
 
 
-/obj/item/proc/attack(mob/living/M, mob/living/user, def_zone, var/special = FALSE)
+/obj/item/proc/attack(mob/living/M as mob, mob/living/user as mob, def_zone)
 	var/wait = 3
-	var/offhand_attack = FALSE
-	if(!istype(M)) // not sure if this is the right thing...
+	if (!istype(M)) // not sure if this is the right thing...
 		return
-	if(depotenzia(M, user))
+	if (depotenzia(M, user))
 		return
 
-	if(can_operate(M))        //Checks if mob is lying down on table for surgery
+	if (can_operate(M))        //Checks if mob is lying down on table for surgery
 		if (do_surgery(M,user,src))
 			return
 
@@ -41,72 +40,7 @@
 			to_chat(user, "<span class='warning'>The [src] is not ready to attack again!</span>")
 		return 0
 
-	if(!user.combat_mode)
-		special = FALSE
-
-	if(!special)
-		apply_speed_delay(0)
-
-	if(special)//We did a special attack, let's apply it's special properties.
-		if(user.combat_intent == I_FURY)//Faster attack but takes much more stamina.
-			//user.visible_message("<span class='combat'>[user] performs a furious attack!</span>")
-			user.adjustStaminaLoss(w_class + 6)
-			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-			apply_speed_delay(-5)
-
-		else if(user.combat_intent == I_AIMED)//More accurate attack
-			//user.visible_message("<span class='combat'>[user] performs an aimed attack!</span>")
-			user.adjustStaminaLoss(w_class + 5)
-			user.setClickCooldown(DEFAULT_SLOW_COOLDOWN)
-			apply_speed_delay(5)
-
-		else if(user.combat_intent == I_FEINT)//Feint attack that leaves them unable to attack for a few seconds
-			var/list/roll = roll3d6(user, SKILL_MELEE, specialty_check(user, src))//Roll a skill check here, only the most skilled can use feinting, obviously.
-			var/result = roll[GP_RESULT]
-			var/success = TRUE
-			switch(result)
-				if(GP_FAIL)
-					success = FALSE
-				if(GP_CRITFAIL)
-					success = FALSE
-				else
-					success = TRUE
-			if(!success)//Failed your melee roll, no success for you.
-				user.visible_message("<span class='combat'>[user] botches a feint attack!</span>")
-				return 0
-
-			user.adjustStaminaLoss(w_class + 5)
-			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-			M.setClickCooldown(20)//Longer than a slow attack cooldown. You got feinted on you gon die.
-			M.Stun(1)
-			apply_speed_delay(0)
-			user.visible_message("<span class='combat'>[user] performs a successful feint attack!</span>")
-			if(M.combat_intent == I_DEFEND)
-				if(M.combat_mode)
-					M.item_disarm()
-			return 0 //We fiented them don't actaully hit them now, we can follow up with another attack.
-
-		else if(user.combat_intent == I_STRONG)//Attack with stronger damage at the cost slightly longer cooldown
-			//user.visible_message("<span class='combat'>[user] performs a heavy attack!</span>")
-			user.adjustStaminaLoss(w_class + 5)
-			user.setClickCooldown(DEFAULT_SLOW_COOLDOWN)
-			apply_speed_delay(6)
-
-		else if(user.combat_intent == I_WEAK)
-			//user.visible_message("<span class='combat'>[user] performs a weak attack.</span>")
-			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-			apply_speed_delay(0)
-
-		else if(user.combat_intent == I_DUAL)
-			//user.visible_message("<span class='combat'>[user] attacks with their offhand!</span>")
-			offhand_attack = TRUE
-			apply_speed_delay(3)
-		else
-			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-			apply_speed_delay(0)
-
-	if(!special)
-		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
 	/////////////////////////
 	user.lastattacked = M
@@ -128,15 +62,10 @@
 	if(force)
 		user.adjustStaminaLoss(wait)
 
+	next_attack_time = world.time + (weapon_speed_delay)
+
 	if(istype(M, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = M
-		if(offhand_attack)//We're attacking with our offhand then.
-			if(istype(user.get_inactive_hand(), /obj/item))
-				var/obj/item/I = user.get_inactive_hand()
-				I.attack(src, user)//No special flag here, you can only do standard attacks with your offhand.
-				return
-		else
-			return H.attacked_by(src, user, def_zone, special)
+		return M:attacked_by(src, user, def_zone)
 	else
 		switch(damtype)
 			if("brute")
@@ -157,11 +86,6 @@
 
 	add_fingerprint(user)
 	return 1
-
-//by default, that's 25 - 10. Which is 15. Which should be what the average attack is. People who are weaker will swing heavy objects slower.
-//The "delay" arg is for adding a greater or lesser delay from special attacks.
-/obj/item/proc/apply_speed_delay(delay)
-	next_attack_time = world.time + (weapon_speed_delay + delay)
 
 
 /atom/proc/storage_depth(atom/container) // Hi

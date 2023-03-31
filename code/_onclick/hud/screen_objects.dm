@@ -458,43 +458,43 @@
 					if(33 to 62)
 						switch(icon_y)
 							if(55 to 64)
-								to_chat(H, "<span class='combatmodes'><i>Weak: You will deal as little damage as possible to an enemy target. Perhaps it is good to suppress someone.</i></span>")
-								H.combat_intent = I_WEAK
+								to_chat(H, "<span class='combatmodes'>⠀Weak: You will deal as little damage as possible to an enemy target. Perhaps it is good to suppress someone.</i></span>")
+								H.combat_intent = "weak"
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "min_st"
 							if(48 to 54)
-								to_chat(H, "<span class='combatmodes'><i>Aimed: You will more precisely damage your enemy in exchange for stamina and strength. Good at hitting targets with few weaknesses.</i></span>")
-								H.combat_intent = I_AIMED
+								to_chat(H, "<span class='combatmodes'>⠀Aimed: You will more precisely damage your enemy in exchange for stamina and strength. Good at hitting targets with few weaknesses.</i></span>")
+								H.combat_intent = "aimed"
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "aimed"
 							if(40 to 47)
-								to_chat(H, "<span class='combatmodes'><i>⠀Fury: You will attack as quickly as possible at the cost of damage and stamina.</i></span>")
-								H.combat_intent = I_FURY
+
+								H.combat_intent = "fury"
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "fury"
 							if(33 to 40)
-								to_chat(H, "<span class='combatmodes'><i>Strong: You will deal as much damage as possible to an enemy target in exchange for stamina. Great to finish off someone.</i></span>")
-								H.combat_intent = I_STRONG
+								to_chat(H, "<span class='combatmodes'>⠀Strong: You will deal as much damage as possible to an enemy target in exchange for stamina. Great to finish off someone.</i></span>")
+								H.combat_intent = "strong"
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "max_st"
 							if(25 to 31)
-								to_chat(H, "<span class='combatmodes'><i>Defend: You will more easily dodge or parry an enemy attack in exchange for stamina. Great to defend yourself!</i></span>")
-								H.combat_intent = I_DEFEND
+								to_chat(H, "<span class='combatmodes'>⠀Defend: You will more easily dodge or parry an enemy attack in exchange for stamina. Great to defend yourself!</i></span>")
+								H.combat_intent = "defend"
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "defend"
 							if(18 to 24)
-								to_chat(H, "⠀<span class='combatmodes'><i>Guard: You will be able to riposte on a successful parry.</i></span>")
-								H.combat_intent = I_GUARD
+								to_chat(H, "⠀<span class='combatbold'>[pick(nao_consigoen)]! You don't know how to use this..</span>")
+								H.combat_intent = "guard"
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "guard"
 							if(9 to 17)
-								to_chat(H, "⠀<span class='combatmodes'><i>Dual: You will attack with the weapon in your offhand.</i></span>")
-								H.combat_intent = I_DUAL
+								to_chat(H, "⠀<span class='combatbold'>[pick(nao_consigoen)]! You don't know how to use this..</span>")
+								H.combat_intent = "dual"
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "dual"
 							if(1 to 9)
-								to_chat(H, "⠀<span class='combatmodes'><i>Fient: You will be able to fient attacks to stun, and even disarm opponents.</i></span>")
-								H.combat_intent = I_FEINT
+								to_chat(H, "⠀<span class='combatbold'>[pick(nao_consigoen)]! You don't know how to use this..</span>")
+								H.combat_intent = "feint"
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "feint"
 		if("resist")
@@ -634,7 +634,7 @@
 			else
 				var/mob/living/carbon/human/HHH = usr
 				if(HHH.special == "weirdgait")
-					to_chat(HHH, "<span class='combat'>[pick(fnord)] I'm stuck!</span>")
+					to_chat(HHH, "<span class='combat'>[pick(nao_consigoen)] I'm stuck!</span>")
 					return
 				usr.fixeye()
 				if(usr.facing_dir)

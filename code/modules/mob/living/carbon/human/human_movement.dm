@@ -26,7 +26,7 @@
 		tally += wear_suit.slowdown
 
 	if(sprinting && my_stats)
-		tally -= (my_stats.get_stat(STAT_SPD) / 10) * 2
+		tally -= (my_stats.spd / 10) * 2
 
 	if(facing_dir && special != "weirdgait" && shouldTally(actualDir, goingTo))
 		tally += 0.6
@@ -151,8 +151,8 @@
 
 /mob/living/carbon/human/Move(NewLoc, direct)
 	if(clinged_turf)
-		to_chat(src, "<span class='passive'>You let go of \the [clinged_turf]</span>")
-		clinged_turf = null
+		if(get_dist(src, clinged_turf) > 1)
+			src.clinged_turf = null
 
 	for(var/organ_name in list("l_foot","r_foot","l_leg","r_leg"))
 		if(resting || lying || buckled){
@@ -182,6 +182,7 @@
 	if(shallReset)
 		update_fluid_icon(0, null)
 
+	update_flashlight()
 	for(var/obj/item/weapon/grab/G in grabbed_by)
 		if(G.assailant == G.affecting)
 			continue

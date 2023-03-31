@@ -89,9 +89,9 @@
 			var/who = (isnull(user) || eater == user) ? "my" : "their"
 
 			if(istype(cover, /obj/item/clothing/mask/))
-				to_chat(user, "<span class='combat'>[pick(fnord)] [who] mask is in the way!</span>")
+				to_chat(user, "<span class='combat'>[pick(nao_consigoen)] [who] mask is in the way!</span>")
 			else
-				to_chat(user, "<span class='combat'>[pick(fnord)] [who] helmet is in the way!</span>")
+				to_chat(user, "<span class='combat'>[pick(nao_consigoen)] [who] helmet is in the way!</span>")
 
 			return 0
 	return 1

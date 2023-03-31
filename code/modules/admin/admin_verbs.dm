@@ -41,6 +41,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_direct_narrate,	/*send text directly to a player with no padding. Useful for narratives and fluff-text*/
 	/client/proc/cmd_admin_world_narrate,	/*sends text to all players with no padding*/
 	/client/proc/cmd_admin_create_centcom_report,
+	/client/proc/check_words,			/*displays cult-words*/
 	/client/proc/check_ai_laws,			/*shows AI and borg laws*/
 	/client/proc/admin_memo,			/*admin memo system. show/delete/write. +SERVER needed to delete admin memos of others*/
 	/client/proc/dsay,					/*talk in deadchat using our ckey/fakekey*/
@@ -167,6 +168,7 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/admin_cancel_shuttle,
 	/client/proc/cmd_admin_direct_narrate,
 	/client/proc/cmd_admin_world_narrate,
+	/client/proc/check_words,
 	/client/proc/play_local_sound,
 	/client/proc/play_sound,
 	/client/proc/object_talk,
@@ -796,7 +798,7 @@ var/list/admin_verbs_mod = list(
 	T << "<font color='red'><b><font size=3>SAIA DO JOGO.</font></b></span>"
 	T << "<font color='red'><b><font size=3>SAIA DO JOGO.</font></b></span>"
 	T.add_overlay_dreamer()
-	T << 'sound/jumpscarehand.ogg'
+	T << 'jumpscarehand.ogg'
 	spawn(20)
 		qdel(T.client)
 
@@ -815,7 +817,7 @@ var/list/admin_verbs_mod = list(
 	set name = "Fyut'Ha"
 	set desc = "Fyut'has and shutdowns the server."
 	to_chat(world, "<p style='font-size:25.00px'>FYUT'HA!</p>")
-	world << 'sound/ha.ogg'
+	world << 'ha.ogg'
 	if(world.port == BRZ_PORT)
 		shell("node nodejs/discordhookclose.js")
 	if(world.port == IZ2_PORT)

@@ -56,7 +56,7 @@
 
 	w_class = 4 //might need to readjust if it's full
 	max_w_class = 2
-	storage_slots = 7
+	storage_slots = 20
 	can_hold = list() // any
 	cant_hold = list("/obj/item/weapon/disk/nuclear")
 
@@ -66,22 +66,6 @@
 	else
 		icon_state = "cbag"
 
-/obj/item/weapon/storage/bag/leather/afterattack(atom/A, mob/user as mob, proximity)
-	if(!proximity) return
-	if(istype(A, /obj/item))
-		var/obj/item/I = A
-		if(isturf(I.loc) && !src.contents.len >= storage_slots)
-			I.loc = src
-			playsound(src.loc, "rustle", 50, 1, -5)
-			update_icon()
-	if(istype(A, /turf/simulated/floor))
-		var/turf/simulated/floor/T = A
-		for(var/obj/item/I in T)
-			if(src.contents.len >= storage_slots)
-				break;
-			I.loc = src
-			playsound(src.loc, "rustle", 50, 1, -5)
-			update_icon()
 
 // -----------------------------
 //        Plastic Bag

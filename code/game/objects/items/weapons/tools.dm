@@ -110,12 +110,15 @@
 	origin_tech = "materials=1;engineering=1"
 	attack_verb = list("pinched", "nipped")
 
+/obj/item/weapon/wirecutters/New()
+	if(prob(50))
+		icon_state = "cutters-y"
+		item_state = "cutters_yellow"
 
 /obj/item/weapon/wirecutters/attack(mob/living/carbon/C as mob, mob/user as mob)
 	if (depotenzia(C, user))
 		return
 
-	//This was copied and pasted from IS12 thanks for the credit!
 	if(ishuman(C) && user.zone_sel.selecting == "mouth")
 		var/mob/living/carbon/human/H = C
 		var/datum/organ/external/mouth/O = locate() in H.organs
@@ -137,8 +140,7 @@
 				H.visible_message("<span class='hitbold'>[user]</span> <span class='hit'>tears off</span> <span class='hitbold'>[H]'s</span> <span class='hit'>tooth with [src]!</span>",
 								"<span class='combatbold'>[user] tears off your tooth with [src]!</span>")
 				H.apply_damage(rand(1, 3), BRUTE, O)
-				var/datum/organ/external/mouth/F = H.get_organ(user.zone_sel.selecting)
-				F.add_pain(60)
+				H.custom_pain("[pick("<span class='hugepain'>OH [uppertext(H.god_text())] YOUR MOUTH HURTS SO BAD!</span>", "<span class='hugepain'OH [uppertext(H.god_text())] WHY!</span>", "<span class='hugepain'OH [uppertext(H.god_text())] YOUR MOUTH!</span>")]", 100)
 				if(H.buckled && istype(H.buckled, /obj/structure/stool/bed/chair/comfy/torture))
 					if(prob(20))
 						H.client.ChromieWinorLoose(H.client, -1)

@@ -27,8 +27,7 @@
 
 /obj/item/clothing/shoes/lw/infantry
 	name = "infantry boots"
-	icon_state = "mercboots"
-	item_state = "mercboots"
+	icon_state = "infantry"
 	armor = list(melee = 10, bullet = 0)
 	armor_type = ARMOR_LEATHER
 
@@ -38,7 +37,7 @@
 	icon_state = "paladin"
 	armor = list(melee = 35, bullet = 0)
 	item_worth = 60
-	drop_sound = 'sound/items/metalboots_drop.ogg'
+	drop_sound = 'metalboots_drop.ogg'
 	armor_type = ARMOR_METAL
 
 /obj/item/clothing/shoes/lw/soulbreaker
@@ -47,7 +46,7 @@
 	icon_state = "soulbreaker"
 	armor = list(melee = 40, bullet = 40)
 	item_worth = 100
-	drop_sound = 'sound/items/metalboots_drop.ogg'
+	drop_sound = 'metalboots_drop.ogg'
 	armor_type = ARMOR_METAL
 	body_parts_covered = FEET
 
@@ -57,7 +56,7 @@
 	icon_state = "ironboots"
 	armor = list(melee = 30, bullet = 0)
 	item_worth = 16
-	drop_sound = 'sound/items/metalboots_drop.ogg'
+	drop_sound = 'metalboots_drop.ogg'
 	armor_type = ARMOR_METAL
 	min_cold_protection_temperature = 1500
 

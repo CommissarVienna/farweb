@@ -320,7 +320,6 @@ var/MAX_EXPLOSION_RANGE = 14
 #define MOUTH         (1<<16)
 #define R_EYE         (1<<17)
 #define L_EYE         (1<<18)
-#define LEGS_TOGETHER (1<<19) //if the legs are one piece, used for icon drawing
 #define FULL_BODY    (~0)
 
 // bitflags for the percentual amount of protection a piece of clothing which covers the body part offers.

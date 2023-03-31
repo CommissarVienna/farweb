@@ -258,23 +258,19 @@
 	if(A.Adjacent(src))
 		proximity_flag = 1
 	if(proximity_flag > 0)
-	/*
 		if(istype(src, /mob/living/carbon/human) && istype(A.loc, /turf))
 			var/mob/living/carbon/human/H = src
 			if(H.combat_mode && H.combat_intent == I_DEFEND)
 				H.do_combat_intent(I_DEFEND)
 				return
-	*/
 		A.RightClick(src)
 
 	else
-		/*
 		if(istype(src, /mob/living/carbon/human) && istype(A.loc, /turf) || istype(src, /mob/living/carbon/human) && istype(A.loc, /area))
 			var/mob/living/carbon/human/H = src
 			if(H.combat_mode && H.combat_intent == I_DEFEND)
 				H.do_combat_intent(I_DEFEND)
 				return
-		*/
 		if((istype(A, /mob/living) || istype(A, /obj/structure/oldways)) && istype(src, /mob/living/carbon/human))
 			var/atom/user = A
 			var/mob/living/carbon/human/H = src
@@ -320,6 +316,7 @@
 		return
 	if(user.lying)
 		return
+	user.visible_message("<span class='notice'>[user] peers into the distance.</span>")
 	user.face_atom(src)
 	user.do_zoom()
 	return

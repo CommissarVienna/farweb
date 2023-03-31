@@ -319,13 +319,13 @@
 		var/result = roll[GP_RESULT]
 		var/margin = roll[GP_MARGIN]
 		switch(result)
-			if(GP_CRITSUCC)
+			if(GP_CRITSUCCESS)
 				user.visible_message("<span class ='passivebold'>[user]</span><span class ='passive'> <B> INSTANTLY</B> rips the dead plant out of \the <span class ='passivebold'>[src]</span>!</span>")
 				qdel(plantgrowing)
 				overlays = list()
 				plantgrowing = new
 				return
-			if(GP_SUCC)
+			if(GP_SUCCESS)
 				user.visible_message("<span class ='passivebold'>[user]</span><span class ='passive'> begins removing the dead plant from \the <span class ='passivebold'>[src]</span></span>")
 				if(do_after(user, (13 - margin)))
 					src.visible_message("<span class ='passivebold'>[user]</span><span class ='passive'> removes the dead plant from \the <span class ='passivebold'>[src]</span></span>")
@@ -333,7 +333,7 @@
 					overlays = list()
 					plantgrowing = new
 					return
-			if(GP_FAIL)
+			if(GP_FAILED)
 				user.visible_message("<span class ='passivebold'>[user]</span><span class ='passive'> begins removing the dead plant from \the <span class ='passivebold'>[src]</span></span>")
 				if(do_after(user, (13 - margin)))
 					src.visible_message("<span class ='passivebold'> [user]</span><span class ='passive'> removes the dead plant from \the <span class ='passivebold'>[src]</span></span>")
@@ -360,24 +360,24 @@
 		var/result = roll[GP_RESULT]
 		var/margin = roll[GP_MARGIN]
 		switch(result)
-			if(GP_CRITSUCC)
+			if(GP_CRITSUCCESS)
 				rangetospawn = list(rangetospawn[1], rangetospawn[2] + (round(farming / 2) + margin))
-			if(GP_SUCC)
+			if(GP_SUCCESS)
 				rangetospawn = list(rangetospawn[1], rangetospawn[2] + round(farming / 2))
-			if(GP_FAIL)
+			if(GP_FAILED)
 				rangetospawn = list(rangetospawn[1], rangetospawn[2] + margin)
 			if(GP_CRITFAIL)
-				to_chat(H,"<span class='combatbold'>[pick(fnord)]</span><span class='combat'> I've <span class='combatbold'>RUINED</span> the plant!</span>")
+				to_chat(H,"<span class='combatbold'>[pick(nao_consigoen)]</span><span class='combat'> I've <span class='combatbold'>RUINED</span> the plant!</span>")
 				qdel(plantgrowing)
 				overlays = list()
 				plantgrowing = new
 
 		if(rangetospawn[2] <= 0)
-			to_chat(H,"<span class='combatbold'>[pick(fnord)]</span><span class='combat'> I've failed to harvest the plant!</span>")
+			to_chat(H,"<span class='combatbold'>[pick(nao_consigoen)]</span><span class='combat'> I've failed to harvest the plant!</span>")
 			return
 
 		for(var/x = rangetospawn[1]; x != rangetospawn[2]; x++)
-			playsound(user, pick('sound/webbers/hydro_harvest1.ogg','sound/webbers/hydro_harvest2.ogg','sound/webbers/hydro_harvest3.ogg','sound/webbers/hydro_harvest4.ogg'), rand(35, 45), 0)
+			playsound(user, pick('hydro_harvest1.ogg','hydro_harvest2.ogg','hydro_harvest3.ogg','hydro_harvest4.ogg'), rand(35, 45), 0)
 			new plantgrowing.productpath(src)
 
 		overlays = list()
@@ -494,7 +494,7 @@
 			return
 		var/mob/living/carbon/human/H = user
 		if(ground_state == GROUND_SOFT)
-			to_chat(user,"<span class='combatbold'>[pick(fnord)]</span><span class='combat'> The soil is already soft!</span>")
+			to_chat(user,"<span class='combatbold'>[pick(nao_consigoen)]</span><span class='combat'> The soil is already soft!</span>")
 			return
 		var/obj/item/weapon/W = C
 		var/mod = 0
@@ -507,26 +507,26 @@
 		var/result = roll[GP_RESULT]
 		var/margin = roll[GP_MARGIN]
 		switch(result)
-			if(GP_CRITSUCC)
+			if(GP_CRITSUCCESS)
 				to_chat(user,"<span class = 'legendary'>Amazing!</span><span class='passive'> I've instantly softened \the <span class ='passivebold'>[src]</span>!</span>")
 				ground_state++
-				playsound(user, pick('sound/webbers/pitchfork.ogg','sound/webbers/pitchfork2.ogg'), rand(35, 45), 0)
-			if(GP_SUCC)
+				playsound(user, pick('pitchfork.ogg','pitchfork2.ogg'), rand(35, 45), 0)
+			if(GP_SUCCESS)
 				if(do_after(user, (25 - margin)))
 					to_chat(user,"<span class = 'passivebold'>There</span><span class='passive'>, \the <span class ='passivebold'>[src]</span> is now softer.</span>")
-					playsound(user, pick('sound/webbers/pitchfork.ogg','sound/webbers/pitchfork2.ogg'), rand(35, 45), 0)
+					playsound(user, pick('pitchfork.ogg','pitchfork2.ogg'), rand(35, 45), 0)
 					if(ground_state < GROUND_SOFT)
 						ground_state++
 					return
 
-			if(GP_FAIL)
+			if(GP_FAILED)
 				if(do_after(user, (25 - margin)))
-					to_chat(user,"<span class='combatbold'>[pick(fnord)]</span><span class='combat'> I haven't managed to soften \the <span class ='combatbold'>[src]</span>!</span>")
+					to_chat(user,"<span class='combatbold'>[pick(nao_consigoen)]</span><span class='combat'> I haven't managed to soften \the <span class ='combatbold'>[src]</span>!</span>")
 					return
 
 			if(GP_CRITFAIL)
 				if(do_after(user, (25 - margin)))
-					to_chat(user,"<span class='combatbold'>[pick(fnord)]</span><span class='combat'> I've ruined \the <span class ='combatbold'>[src]</span>!</span>")
+					to_chat(user,"<span class='combatbold'>[pick(nao_consigoen)]</span><span class='combat'> I've ruined \the <span class ='combatbold'>[src]</span>!</span>")
 					ground_state = GROUND_VERY_HARD
 					return
 	..()
@@ -572,7 +572,7 @@
 	pathh = text2path(pathh)
 
 	visible_message("<span class='bname'>[user]</span> crushes [src].")
-	playsound(user, pick('sound/effects/itm_ingredient_mushroom_up_01.ogg','sound/effects/itm_ingredient_mushroom_up_02.ogg','sound/effects/itm_ingredient_mushroom_up_03.ogg','sound/effects/itm_ingredient_mushroom_up_04.ogg'), 70, 0)
+	playsound(user, pick('itm_ingredient_mushroom_up_01.ogg','itm_ingredient_mushroom_up_02.ogg','itm_ingredient_mushroom_up_03.ogg','itm_ingredient_mushroom_up_04.ogg'), 70, 0)
 	if(ispath(pathh)) //temp fix
 		var/obj/item/seedsn/N = new pathh(user.loc)
 		N.icon_state = ""

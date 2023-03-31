@@ -5,7 +5,7 @@
 	item_worth = 10
 	name = "Tzanch"
 	real_name = "Tzanch"
-	attacksound = 'sound/effects/tzanzlife1.ogg'
+	attacksound = 'tzanzlife1.ogg'
 	viewrange = 5
 	zone_allowed = list("groin","vitals","l_foot", "r_foot", "l_leg", "r_leg")
 	cycle_pause = 10
@@ -23,7 +23,7 @@
 
 /datum/unarmed_attack/tzanch
 	attack_verb = list("hits","slash")
-	attack_sound = 'sound/weapons/bite.ogg'
+	attack_sound = 'bite.ogg'
 	miss_sound = 'sound/weapons/slashmiss.ogg'
 	damage = 3
 	sharp = 1
@@ -35,9 +35,12 @@
 
 	src.zone_sel = new /obj/screen/zone_sel( null )
 	potenzia = rand(16, 25)
-	my_stats.change_stat(STAT_ST, -5)
-	my_stats.change_stat(STAT_HT, -5)
-	my_stats.change_stat(STAT_DX, -5)
+	my_stats.initst = rand(3,6)
+	my_stats.initht = rand(2,3)
+	my_stats.initdx = rand(5,8)
+	my_stats.st = my_stats.initst
+	my_stats.ht = my_stats.initht
+	my_stats.dx = my_stats.initdx
 	my_skills.CHANGE_SKILL(SKILL_MELEE, rand(1,2))
 	equip_to_slot_or_del(new /obj/item/clothing/under/tzanch(src), slot_w_uniform)
 	for(var/obj/item/weapon/reagent_containers/food/snacks/organ/O in src.organ_storage)
@@ -53,8 +56,8 @@
 /mob/living/carbon/human/monster/tzanch/Move()
 	if(resting || stat)
 		return ..()
-	playsound(loc, 'sound/effects/tzanz_walk2.ogg', 30, 1)
-	var/selectedSound = pick('sound/effects/tzanzlife1.ogg','sound/effects/tzanzlife2.ogg','sound/effects/tzanzlife3.ogg')
+	playsound(loc, 'tzanz_walk2.ogg', 30, 1)
+	var/selectedSound = pick('tzanzlife1.ogg','tzanzlife2.ogg','tzanzlife3.ogg')
 	if(prob(10))
 		playsound(loc, selectedSound, 80, 1)
 	return ..()

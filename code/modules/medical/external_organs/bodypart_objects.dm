@@ -1,7 +1,7 @@
 //a gente usa datum de orgao por enquanto
 //entao por enquanto fica essa merda escrota de item aqui
 obj/item/weapon/organ
-	icon = 'icons/mob/human.dmi'
+	icon = 'icons/mob/human_races/r_human.dmi'
 	var/body_part
 
 obj/item/weapon/organ/New(loc, mob/living/carbon/human/H)
@@ -16,7 +16,12 @@ obj/item/weapon/organ/New(loc, mob/living/carbon/human/H)
 	//Forming icon for the limb
 
 	//Setting base icon for this mob's race
-	var/icon/base = icon(src.icon)
+	var/icon/base
+	if(H.species && H.species.icobase)
+		base = icon('icons/mob/human_races/human_severed.dmi')
+	else
+		base = icon('icons/mob/human_races/r_human.dmi')
+
 	if(base)
 		//Changing limb's skin tone to match owner
 		if(!H.species || H.species.flags & HAS_SKIN_TONE)
@@ -42,7 +47,7 @@ obj/item/weapon/organ/New(loc, mob/living/carbon/human/H)
 	desc = "To pick with you."
 	icon = 'icons/mob/human_races/human_severed.dmi'
 	icon_state = "bone"
-	drop_sound = 'sound/items/bone_drop.ogg'
+	drop_sound = 'bone_drop.ogg'
 	force = 21
 	layer = 3.1
 
@@ -51,9 +56,9 @@ obj/item/weapon/organ/New(loc, mob/living/carbon/human/H)
 	desc = "How poetic."
 	icon = 'icons/mob/human_races/human_severed.dmi'
 	icon_state = "skull"
-	drop_sound = 'sound/items/bone_drop.ogg'
+	drop_sound = 'bone_drop.ogg'
 	layer = 3.1
-
+	
 /obj/item/weapon/skull/attackby(obj/item/weapon/W as obj, mob/living/carbon/human/user as mob)
 	if(W.sharp)
 		if(do_after(user, 20))
@@ -87,33 +92,33 @@ obj/item/weapon/organ/New(loc, mob/living/carbon/human/H)
 	layer = 3.1
 	item_worth = 1
 	body_part = EYES
-	icon = 'icons/obj/surgery.dmi'
+	icon = 'surgery.dmi'
 
 obj/item/weapon/organ/l_arm
 	name = "severed left arm"
-	icon = 'icons/mob/human_races/human_severed.dmi'
-	icon_state = "left_arm_nohand"
+	icon = 'human_severed.dmi'
+	icon_state = "left_arm"
 	item_state = "limb"
 	force = 20
 	body_part = ARM_LEFT
 
 obj/item/weapon/organ/l_foot
 	name = "severed left foot"
-	icon = 'icons/mob/human_races/human_severed.dmi'
+	icon = 'human_severed.dmi'
 	icon_state = "left_foot"
 	item_state = "limb"
 	body_part = FOOT_LEFT
 
 obj/item/weapon/organ/l_hand
 	name = "severed left hand"
-	icon = 'icons/mob/human_races/human_severed.dmi'
+	icon = 'human_severed.dmi'
 	icon_state = "left_hand"
 	item_state = "limb"
 	body_part =	HAND_LEFT
 
 obj/item/weapon/organ/l_leg
 	name = "severed left leg"
-	icon = 'icons/mob/human_races/human_severed.dmi'
+	icon = 'human_severed.dmi'
 	icon_state = "left_leg_nofoot"
 	item_state = "limb"
 	force = 20
@@ -121,29 +126,29 @@ obj/item/weapon/organ/l_leg
 
 obj/item/weapon/organ/r_arm
 	name = "severed right arm"
-	icon = 'icons/mob/human_races/human_severed.dmi'
-	icon_state = "right_arm_nohand"
+	icon = 'human_severed.dmi'
+	icon_state = "right_arm"
 	item_state = "limb"
 	force = 20
 	body_part = ARM_RIGHT
 
 obj/item/weapon/organ/r_foot
 	name = "severed right foot"
-	icon = 'icons/mob/human_races/human_severed.dmi'
+	icon = 'human_severed.dmi'
 	icon_state = "right_foot"
 	item_state = "limb"
 	body_part = FOOT_RIGHT
 
 obj/item/weapon/organ/r_hand
 	name = "severed right hand"
-	icon = 'icons/mob/human_races/human_severed.dmi'
+	icon = 'human_severed.dmi'
 	icon_state = "right_hand"
 	item_state = "limb"
 	body_part = HAND_RIGHT
 
 obj/item/weapon/organ/r_leg
 	name = "severed right leg"
-	icon = 'icons/mob/human_races/human_severed.dmi'
+	icon = 'human_severed.dmi'
 	icon_state = "right_leg_nofoot"
 	item_state = "limb"
 	force = 20
@@ -151,30 +156,61 @@ obj/item/weapon/organ/r_leg
 
 obj/item/weapon/organ/head
 	name = "severed head"
-	icon_state = "head_m_s"
+	icon_state = "head_m"
 	item_state = "head"
 	var/mob/living/carbon/brain/brainmob
 	var/brain_op_stage = 0
 	body_part = HEAD
-	dir = SOUTH
 
 /obj/item/weapon/organ/head/posi
 	name = "robotic head"
 
 obj/item/weapon/organ/head/New(loc, mob/living/carbon/human/H)
 	if(istype(H))
-		src.icon_state = H.gender == MALE? "head_m_s" : "head_f_s"
-		overlays += H.generate_head_icon()
+		src.icon_state = H.gender == MALE? "head_m" : "head_f"
 	..()
+	//Add (facial) hair.
+	if(H.f_style)
+		var/datum/sprite_accessory/facial_hair_style = facial_hair_styles_list[H.f_style]
+		if(facial_hair_style)
+			var/icon/facial = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
+			if(facial_hair_style.do_colouration)
+				facial.Blend(rgb(H.r_facial, H.g_facial, H.b_facial), ICON_ADD)
+
+			overlays.Add(facial) // icon.Blend(facial, ICON_OVERLAY)
+
+	if(H.h_style && !(H.head && (H.head.flags & BLOCKHEADHAIR)))
+		var/datum/sprite_accessory/hair_style = hair_styles_list[H.h_style]
+		if(hair_style)
+			var/icon/hair = new/icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
+			if(hair_style.do_colouration)
+				hair.Blend(rgb(H.r_hair, H.g_hair, H.b_hair), ICON_ADD)
+
+			overlays.Add(hair) //icon.Blend(hair, ICON_OVERLAY)
+
+	var/icon/eyes_s = new/icon("icon" = 'icons/mob/human_face.dmi', "icon_state" = H.species ? H.species.eyes : "eyes_s")
+
+	eyes_s.Blend(rgb(H.r_eyes, H.g_eyes, H.b_eyes), ICON_ADD)
+
+	overlays.Add(eyes_s)
+
 	spawn(5)
 	if(brainmob && brainmob.client)
 		brainmob.client.screen.len = null //clear the hud
-		brainmob.stat = 2
-		brainmob.death()
+
+	//if(ishuman(H))
+	//	if(H.gender == FEMALE)
+	//		H.icon_state = "head_f"
+	//	H.overlays += H.generate_head_icon()
+
+	dir = 2
 
 	name = "[H.real_name]'s head"
 
 	H.regenerate_icons()
+
+	brainmob.stat = 2
+	brainmob.death()
 
 obj/item/weapon/organ/head/proc/transfer_identity(var/mob/living/carbon/human/H)//Same deal as the regular brain proc. Used for human-->head
 	H.ghostize(1)

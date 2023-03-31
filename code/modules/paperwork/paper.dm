@@ -3,7 +3,7 @@
  * also scraps of paper
  */
 
-var/list/fontsRC = list('code/chatpanel/browserassets/rsc/gothic.ttf', 'code/chatpanel/browserassets/rsc/hando.ttf', 'code/chatpanel/browserassets/rsc/type.ttf')
+var/list/fontsRC = list('gothic.ttf', 'hando.ttf', 'type.ttf')
 
 /obj/item/weapon/paper
 	name = "paper"

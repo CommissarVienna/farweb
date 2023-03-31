@@ -5,7 +5,6 @@ datum/job/ordinator
 	department_head = list("meister")
 	department_flag = ENGSEC
 	faction = "Station"
-	stats_mods = list(STAT_ST = 8, STAT_DX = 3, STAT_HT = 6, STAT_IN = 2)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "The Baron."
@@ -43,7 +42,7 @@ datum/job/ordinator
 		H.terriblethings = TRUE
 		H.add_perk(/datum/perk/heroiceffort)
 		H.add_perk(/datum/perk/morestamina)
-		//H.verbs += /mob/living/carbon/human/verb/BaronRiot //fun fact, every human ALREADY HAS THIS VERB.
+		H.verbs += /mob/living/carbon/human/verb/BaronRiot
 		H.create_kg()
 		return 1
 
@@ -54,7 +53,6 @@ datum/job/ordinator
 	department_head = list("Captain")
 	department_flag = ENGSEC
 	faction = "Station"
-	stats_mods = list(STAT_ST = 3, STAT_DX = 0, STAT_HT = 4, STAT_IN = 0)
 	total_positions = 5
 	spawn_positions = 5
 	supervisors = "the Baron and the Marduk"
@@ -120,10 +118,10 @@ datum/job/ordinator
 			H.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/taser/leet/sparq(H), slot_belt)
 			H.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(10,11))
 			H.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(10,11))
-			H.my_stats.change_stat(STAT_ST , -2)
-			H.my_stats.change_stat(STAT_HT , -3)
-			H.my_stats.change_stat(STAT_DX , 0)
-			H.my_stats.change_stat(STAT_IN , 0)
+			H.my_stats.st = 11
+			H.my_stats.ht = rand(10,11)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(9,10)
 
 		H.create_kg()
 		return 1
@@ -135,7 +133,6 @@ datum/job/ordinator
 	department_head = list("Captain")
 	department_flag = ENGSEC
 	faction = "Station"
-	stats_mods = list(STAT_ST = 1, STAT_DX = 0, STAT_HT = 0, STAT_IN = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the Baron and the Marduk"
@@ -156,7 +153,7 @@ datum/job/ordinator
 		H.voicetype = "sketchy"
 		H.outsider = TRUE
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/security(H), slot_w_uniform)
-		H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/vest/ravcoat(H), slot_wear_suit)
+		H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/vest/sheriff(H), slot_wear_suit)
 		H.equip_to_slot_or_del(new /obj/item/clothing/head/papakha(H), slot_head)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/bastard(H), slot_shoes)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/security(H), slot_wrist_r)
@@ -176,7 +173,6 @@ datum/job/ordinator
 	department_head = list("Captain")
 	department_flag = ENGSEC
 	faction = "Station"
-	stats_mods = list(STAT_ST = -1, STAT_DX = 0, STAT_HT = -2, STAT_IN = -1)
 	total_positions = 4
 	spawn_positions = 4
 	supervisors = "the Cerberii"
@@ -212,14 +208,14 @@ datum/job/ordinator
 			H.my_skills.CHANGE_SKILL(SKILL_STEAL,rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_SWIM,rand(9,10))
 			H.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(8,9))
-			H.my_stats.change_stat(STAT_ST , 2)
-			H.my_stats.change_stat(STAT_HT , 2)
-			H.my_stats.change_stat(STAT_DX , 0)
-			H.my_stats.change_stat(STAT_IN , 0)
+			H.my_stats.st = 11
+			H.my_stats.ht = rand(10,10)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(9,10)
 			H.add_perk(/datum/perk/heroiceffort)
 			H.add_perk(/datum/perk/morestamina)
 			if(H.gender == FEMALE && !H.has_penis())
-				H.my_stats.change_stat(STAT_ST , -1)
+				H.my_stats.st -=1
 			var/weaponreal = pick("axe","sword")
 			switch(weaponreal)
 				if("axe")
@@ -229,7 +225,7 @@ datum/job/ordinator
 			H.equip_to_slot_or_del(new /obj/item/weapon/shield/fort(H), slot_r_hand)
 		else
 			H.set_species("Child")
-			H.equip_to_slot_or_del(new /obj/item/clothing/under/urchin(H), slot_w_uniform)
+			H.equip_to_slot_or_del(new /obj/item/clothing/under/child_jumpsuit(H), slot_w_uniform)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/child/shoes(H), slot_shoes)
 			H.set_dir(NORTH)
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/squire(H), slot_wear_suit)
@@ -251,7 +247,6 @@ var/global/Gatekeeper_Type = "Null"
 	department_head = list("Duke")
 	department_flag = ENGSEC
 	faction = "Station"
-	stats_mods = list(STAT_ST = 0, STAT_DX = 0, STAT_HT = 0, STAT_IN = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the Baron and the Marduk"
@@ -279,10 +274,11 @@ var/global/Gatekeeper_Type = "Null"
 			H.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/taser/leet/legax(H), slot_belt)
 			H.my_skills.CHANGE_SKILL(SKILL_MELEE, 9)
 			H.my_skills.CHANGE_SKILL(SKILL_RANGE, 13)
-			H.my_stats.change_stat(STAT_ST , 1)
-			H.my_stats.change_stat(STAT_HT , 1)
-			H.my_stats.change_stat(STAT_DX , 0)
-			H.my_stats.change_stat(STAT_IN , 0)
+			H.my_stats.st = 11
+			H.my_stats.ht = rand(10,11)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(9,10)
+			H.my_stats.pr = 12
 			H.terriblethings = TRUE
 			H.add_perk(/datum/perk/morestamina)
 			H.religion = "Gray Church"
@@ -304,10 +300,11 @@ var/global/Gatekeeper_Type = "Null"
 			H.my_skills.CHANGE_SKILL(SKILL_CRAFT, 12)
 			H.my_skills.CHANGE_SKILL(SKILL_SWIM, 12)
 			H.my_skills.CHANGE_SKILL(SKILL_SWING,rand(1,3))
-			H.my_stats.change_stat(STAT_ST , 2)
-			H.my_stats.change_stat(STAT_HT , 6)
-			H.my_stats.change_stat(STAT_DX , 0)
-			H.my_stats.change_stat(STAT_IN , 0)
+			H.my_stats.st = 11
+			H.my_stats.ht = rand(15,16)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(9,10)
+			H.my_stats.pr = rand(9,10)
 			H.terriblethings = TRUE
 			H.add_perk(/datum/perk/morestamina)
 			H.add_perk(/datum/perk/ref/strongback)
@@ -323,7 +320,6 @@ var/global/Gatekeeper_Type = "Null"
 	flag = MIGRANT
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = 2, STAT_DX = 2, STAT_HT = 2, STAT_IN = 2)
 	total_positions = -1
 	spawn_positions = -1
 	supervisors = "No one, yet"
@@ -361,10 +357,11 @@ var/global/Gatekeeper_Type = "Null"
 		H.equip_to_slot_or_del(R, slot_l_ear)
 		H.add_perk(/datum/perk/ref/strongback)
 		H.add_perk(/datum/perk/morestamina)
-		H.my_stats.change_stat(STAT_ST , 2)
-		H.my_stats.change_stat(STAT_HT , 3)
-		H.my_stats.change_stat(STAT_DX , 0)
-		H.my_stats.change_stat(STAT_IN , 0)
+		H.my_stats.st = rand(12,13)
+		H.my_stats.ht = rand(13,14)
+		H.my_stats.dx = rand(9,10)
+		H.my_stats.it = rand(9,10)
+		H.my_stats.pr = rand(11,13)
 		H.my_skills.CHANGE_SKILL(SKILL_MELEE,rand(12,12))
 		H.my_skills.CHANGE_SKILL(SKILL_RANGE,rand(12,15))
 		H.my_skills.CHANGE_SKILL(SKILL_UNARM,rand(0,3))

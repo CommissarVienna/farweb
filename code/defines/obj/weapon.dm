@@ -39,6 +39,17 @@
 	throw_speed = 4
 	throw_range = 20
 
+/obj/item/weapon/corncob
+	name = "corn cob"
+	desc = "A reminder of meals gone by."
+	icon = 'icons/obj/harvest.dmi'
+	icon_state = "corn_cob"
+	item_state = "corn_cob"
+	w_class = 1.0
+	throwforce = 0
+	throw_speed = 4
+	throw_range = 20
+
 /obj/item/weapon/soap
 	name = "soap"
 	desc = "A cheap bar of soap. Doesn't smell."
@@ -188,7 +199,7 @@
 						if(O == H)
 							continue
 						O.show_message("\red <B>[H] steps on \the [src].</B>", 1)
-		if(isanimal(AM) && !istype(AM, /mob/living/simple_animal/parrot) && !istype(AM, /mob/living/simple_animal/construct) && !istype(AM, /mob/living/simple_animal/shade))
+		if(isanimal(AM) && !istype(AM, /mob/living/simple_animal/parrot) && !istype(AM, /mob/living/simple_animal/construct) && !istype(AM, /mob/living/simple_animal/shade) && !istype(AM, /mob/living/simple_animal/hostile/viscerator))
 			armed = 0
 			var/mob/living/simple_animal/SA = AM
 			SA.health -= 20
@@ -531,14 +542,14 @@
 	m_amt = 15000
 	speciality = SKILL_SWING
 	origin_tech = "materials=2;combat=1"
-	attack_verb = list("chopped", "cut", "cleaved")
-	drop_sound = 'sound/effects/axe_drop.ogg'
-	drawsound = 'sound/weapons/axe_unsheath.ogg'
+	attack_verb = list("chopped", "torn", "cut")
+	drop_sound = 'axe_drop.ogg'
+	drawsound = 'axe_unsheath.ogg'
 	hitsound= "axechop"
 	swing_sound = "axeswing"
 	force_wielded = 40.0
 	force_unwielded = 28.0
-	equip_sound = 'sound/weapons/axe_sheath.ogg'
+	equip_sound = 'axe_sheath.ogg'
 	edge = 1
 	weapon_speed_delay = 12
 	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
@@ -650,8 +661,8 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "horn"
 	var/cooldown
-	var/distantsound = 'sound/effects/horn1d.ogg'
-	var/closesound = 'sound/effects/horn1.ogg'
+	var/distantsound = 'horn1d.ogg'
+	var/closesound = 'horn1.ogg'
 	flags = FPRINT | TABLEPASS | CONDUCT
 	slot_flags = SLOT_BELT
 	w_class = 4
@@ -675,8 +686,8 @@
 	name = "horn"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "horn2"
-	distantsound = 'sound/effects/horn2d.ogg'
-	closesound = 'sound/effects/horn2.ogg'
+	distantsound = 'horn2d.ogg'
+	closesound = 'horn2.ogg'
 
 ///////////////////////////////////////Stock Parts /////////////////////////////////
 

@@ -38,7 +38,7 @@
 	if(isnull(AC) || !istype(AC))
 		return 0
 	AC.loc = get_turf(src) //Eject casing onto ground.
-	playsound(get_turf(src), pick('sound/weapons/guns/misc/casingfall1.ogg','sound/weapons/guns/misc/casingfall2.ogg','sound/weapons/guns/misc/casingfall3.ogg'), 50, 1)
+	playsound(get_turf(src), pick('casingfall1.ogg','casingfall2.ogg','casingfall3.ogg'), 50, 1)
 	chambered = null
 	chamber_round()
 

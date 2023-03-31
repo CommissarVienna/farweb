@@ -303,7 +303,7 @@ proc/move_mining_shuttle()
 	attack_verb = list("bashed", "bludgeoned", "thrashed", "whacked")
 	full = 0
 	icon_state = "shovel"
-	drop_sound = 'sound/effects/shovel_drop.ogg'
+	drop_sound = 'shovel_drop.ogg'
 	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
 
 /obj/item/weapon/shovel/update_icon()
@@ -311,16 +311,16 @@ proc/move_mining_shuttle()
 		icon_state = "shovel1"
 	else
 		icon_state = "shovel0"
-/*
-/obj/item/weapon/shovel/attack(mob/living/carbon/human/M as mob, mob/living/carbon/human/user as mob) //This is really fucking bad.
+
+/obj/item/weapon/shovel/attack(mob/living/carbon/human/M as mob, mob/living/carbon/human/user as mob) //wtf is this shit
 	..()
 	if(user.zone_sel.selecting == "head")
 		if(prob(40))
 			if (user.a_intent == "hurt")
 				if(user.combat_mode)
 					if(M.combat_mode == FALSE)
-						if(user.my_stats.get_stat(STAT_ST) >= 11)
-							if(M.my_stats.get_stat(STAT_HT) < 12)
+						if(user.my_stats.st >= 11)
+							if(M.my_stats.ht < 12)
 								if(!..()) return
 								M.Stun(8)
 								M.Weaken(8)
@@ -329,7 +329,7 @@ proc/move_mining_shuttle()
 								M.Jitter(8)
 								for(var/mob/O in viewers(M))
 									if (O.client)	O.show_message("\red <B>[M] has been beaten with \the [src] by [user]!</B>", 1, "\red You hear someone fall", 2)
-*/
+
 /obj/item/weapon/shovel/spade
 	name = "spade"
 	desc = "A small tool for digging and moving dirt."

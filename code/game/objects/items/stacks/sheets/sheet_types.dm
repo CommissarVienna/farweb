@@ -146,7 +146,7 @@ var/global/list/datum/stack_recipe/wood_recipes = list ( \
 	item_state = "logs"
 	origin_tech = "materials=1;biotech=1"
 	max_amount = 5
-	drop_sound = 'sound/items/wooden_drop.ogg'
+	drop_sound = 'wooden_drop.ogg'
 	item_worth = 6
 	weight = 15
 

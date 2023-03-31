@@ -73,9 +73,6 @@ var/round_nuke_loc = "None"
 
 var/turf/MiniSpawn
 
-/client/proc/HttpPostt(url, data)
-    src << output(list2params(list(url, json_encode(data))), "http_post_browser.browser:post")
-
 /datum/controller/gameticker/proc/pre_migwave()
 	var/list/mob/living/carbon/human/family_migrants = list()
 	if(migwave_timeleft <= 0)
@@ -154,10 +151,10 @@ var/turf/MiniSpawn
 		if(forcemod)
 			master_mode = forcemod
 		else if(current_server == "S3")
-			master_mode = "minimig"
+			master_mode = "miniwar"
 		else
 			if(minimigcounter >= minimax)
-				master_mode = "minimig"
+				master_mode = "miniwar"
 			else
 				if(master_mode != "extended")
 					if(master_mode != "holywar")
@@ -165,8 +162,8 @@ var/turf/MiniSpawn
 							master_mode = list("kingwill", "siege", "revolution")
 						else if(prob(85))
 							var/list/gamemodes = list("changeling", "dreamer", "succubus")
-					//		if(prob(10)) // uncomment when gamemode fixed, keep the prob(10) since it's supposed to be RARE
-						//		gamemodes.Add("alien")
+							if(prob(10)) // uncomment when gamemode fixed, keep the prob(10) since it's supposed to be RARE
+								gamemodes.Add("alien")
 							if(prob(20))
 								gamemodes.Add("inspector") // this is so boring... im sorry
 							master_mode = pick(gamemodes)
@@ -210,8 +207,8 @@ var/turf/MiniSpawn
 	else
 		if(master_mode == "holywar")
 			src.mode = config.pick_mode("holywar")
-			login_music = 'sound/holywar/holywarlobby.ogg'
-			global.login_music = 'sound/holywar/holywarlobby.ogg'
+			login_music = 'holywarlobby.ogg'
+			global.login_music = 'holywarlobby.ogg'
 			for(var/mob/new_player/N in player_list)
 				N.client.playtitlemusic()
 		else
@@ -220,9 +217,8 @@ var/turf/MiniSpawn
 	if (privateparty && !privatepartyallow)
 		//world << "<B>Unable to start [mode.name].</B> Not enough victims, [mode.required_players] victims are required. Reverting to pre-simulation lobby."
 		to_chat(world,"<b>Não foi possível iniciar.</b> The overlord didn't allow the private party yet,<span class='highlighttext'> contact him on discord: <b>caePax#0001</b>.</span>")
-		world << 'sound/Unready_Lobby.ogg'
+		world << 'Unready_Lobby.ogg'
 		qdel(mode)
-		to_chat(world,"<b><span class='hitbold'>Haritaya Reboot Atıldı:</span></b><span class='hit'> Birazdan client geri bağlanacaktır. </span>")
 		current_state = GAME_STATE_PREGAME
 		job_master.ResetOccupations()
 		return 0
@@ -243,24 +239,24 @@ var/turf/MiniSpawn
 			to_chat(world,"<b><span class='highlighttext'>Crusade aborted:</span></b> We need <span class='bname'>20 soldiers</span>!")
 			to_chat(world,"<b><span class='bname'>10 Thanatis</span> and <span class='bname'>10 Post-Christians</span>!")
 		else
-			if(master_mode == "minimig")
+			if(master_mode == "miniwar")
 				to_chat(world,"<b><span class='hitbold'>Migration aborted:</span></b><span class='hit'> The caves needs </span><span class='badmood'><b>5 migrants</b></span>.")
 			else
 				to_chat(world,"<b><span class='hitbold'>Story aborted:</span></b><span class='hit'> The fortress needs a generous </span><span class='[merchant]'><b>Bookkeeper</b></span>,<span class='hit'> a just </span><span class='[baron]'><b>Baron</b></span><span class='hit'> and a kind </span><span class='[inquisitor]'><b>Inquisitor</b></span><span class='hit'>!</span>")
 			if(minimigcounter < minimax)
 				minimigcounter++
-				to_chat(world,"<span class='highlighttext'> [minimigcounter]/[minimax] fails for Mini-Mig!</span>")
+				to_chat(world,"<span class='highlighttext'> [minimigcounter]/[minimax] fails for Mini-War!</span>")
 			if(minimigcounter >= minimax)
-				to_chat(world,"<span class='ravenheartfortress'> Mini-Mig!</span>")
-				world << 'sound/minimigration.ogg'
+				to_chat(world,"<span class='ravenheartfortress'> Mini-War!</span>")
+				world << 'minimigration.ogg'
 				job_master.ResetOccupations()
-				master_mode = "minimig"
+				master_mode = "miniwar"
 		qdel(mode)
 		first_timer = FALSE
 		current_state = GAME_STATE_PREGAME
 		if(minimigcounter >= minimax)
 			job_master.ResetOccupations()
-			master_mode = "minimig"
+			master_mode = "miniwar"
 			for(var/mob/new_player/N in player_list)
 				N.ready = FALSE
 				N.client.prefs.ShowChoices(N)
@@ -321,8 +317,8 @@ var/turf/MiniSpawn
 			to_chat(world,"<h2><B><FONT color='#8f535d'>Holy War!</font></B></h2>")
 			var/quote = pick("War is neither glamorous nor attractive. It is monstrous. Its very nature is one of tragedy and suffering.","Dwell in peace in the home of your own being, and the Messenger of Death will not be able to touch you.","The real and lasting victories are those of peace and not of war.")
 			to_chat(world,"<h4><B><i> \"[quote]\" </i></B></h4>")
-			world << 'sound/effects/war_banner.ogg'
-			world << sound('sound/holywar/holywarintroduction.ogg', volume = 50, channel = 6)
+			world << 'war_banner.ogg'
+			world << sound('holywarintroduction.ogg', volume = 50, channel = 6)
 		else
 			TIME_SINCE_START = world.time
 
@@ -592,7 +588,7 @@ var/turf/MiniSpawn
 			for(var/area/dunwell/station/treasury/A in treasuryareas)
 				A.updatetreasurybankrupt() */
 	proc/update_the_graceperiods()
-		if(master_mode == "minimig")
+		if(master_mode == "miniwar")
 			for(var/obj/effect/blockedminimig/M in minimiglist)
 				M.icon_state = "dark23"
 		else
@@ -614,7 +610,7 @@ var/turf/MiniSpawn
 				EquipCustomItems(player)
 
 	proc/do_postequip()
-		if(master_mode == "minimig" || master_mode == "holywar")
+		if(master_mode == "miniwar" || master_mode == "holywar")
 			for(var/mob/living/carbon/human/player in player_list)
 				if(player && player.mind)
 					job_master.PostEquip(player, 0)
@@ -640,8 +636,6 @@ var/turf/MiniSpawn
 				continue
 			if(!second)
 				second = F
-				continue
-			if(F.members.len <= 1)
 				continue
 			if(F.members.len > biggest.members.len)
 				biggest = F
@@ -716,9 +710,9 @@ var/turf/MiniSpawn
 						to_chat(world, "<span class='bname'>The fortress has been abandoned.</span>")
 						world.Reboot()
 					else
-						to_chat(world,"<span class='passivebold'>[pick(fnord)]</span> <span class='passive'>The comatic hasn't allowed the story to end yet!</span>")
+						to_chat(world,"<span class='passivebold'>[pick(nao_consigoen)]</span> <span class='passive'>The comatic hasn't allowed the story to end yet!</span>")
 				else
-					to_chat(world,"<span class='passivebold'>[pick(fnord)]</span> <span class='passive'>The comatic hasn't allowed the story to end yet!</span>")
+					to_chat(world,"<span class='passivebold'>[pick(nao_consigoen)]</span> <span class='passive'>The comatic hasn't allowed the story to end yet!</span>")
 
 
 		return 1
@@ -744,12 +738,12 @@ var/turf/MiniSpawn
 	var/client/list/cultists = list()
 	for(var/mob/M in player_list)
 		if(M.client.prefs.toggles & SOUND_MIDI && EndRoundMusicGAMEMODE == 0) //pra antag que tem endround song proprio, e uma var global so botar = 1 e deixar no declare completion
-			M << pick('sound/roundend1.ogg','sound/roundend2.ogg')
+			M << pick('roundend1.ogg','roundend2.ogg')
 			showlads = TRUE
 			var/list/nomusicmodes = list("revolution")
 			if(M.z >= 5 || nomusicmodes.Find(master_mode))
 				M << sound('sound/music/sherold.ogg', repeat = 0, wait = 0, volume = M?.client?.prefs?.music_volume, channel = 24)
-	/*if(master_mode == "minimig")
+	/*if(master_mode == "miniwar")
 		world << 'allmigration_end.ogg'
 		for(var/mob/living/carbon/human/H in player_list)
 			if(H.stat != DEAD && H.client)
@@ -800,10 +794,10 @@ var/turf/MiniSpawn
 		to_chat(player_list, "Roles Handover: [english_list(key_changed_list)]")
 	if(achievements_unlocked.len >= 1)
 		to_chat(player_list, "Achievements Unlocked: [english_list(achievements_unlocked)]")
-
-	if(cuckoldlist.len >= 1)
-		to_chat(player_list, "<span class='baron'>&#8226;</span> <span class='combatbold'>Cuckolds were:</span> [english_list(cuckoldlist, and_text = ", ")]")
-
+	/*
+	if(cuckoldlist && cuckoldlist.len >= 1)
+		to_chat(player_list, "<span class='baron'>&#8226;</span> <span class='baron'>Cuckolds were:</span> [english_list(cuckoldlist)]")
+*/
 	mode.end_round_rewards()
 
 	for (var/mob/living/carbon/human/H in mob_list)
@@ -855,9 +849,6 @@ var/turf/MiniSpawn
 			if("amusermany")
 				if(src.HadSex.len >= 1 && stat != DEAD && src.job == "Amuser")
 					src?.client?.ChromieWinorLoose(src?.client, src.HadSex.len)
-			if("cucked")
-				if(src.CuckedBy.len >= 5 && stat != DEAD)
-					src?.client?.ChromieWinorLoose(src?.client, 10)
 			if("baronsurvive")
 				if(src.job == "Tiamat")
 					for(var/mob/living/carbon/human/H in mob_list)

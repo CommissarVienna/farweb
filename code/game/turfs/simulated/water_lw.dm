@@ -17,7 +17,7 @@
 	var/mob/living/carbon/human/H = M
 	if(get_dist(src,M) <= 1)
 		if(M.wear_mask && M.wear_mask.flags & MASKCOVERSMOUTH)
-			to_chat(M, "<span class='combat'>[pick(fnord)] my mask is in the way!</span>")
+			to_chat(M, "<span class='combat'>[pick(nao_consigoen)] my mask is in the way!</span>")
 			return
 		var/datum/reagents/reagents = new/datum/reagents(2)
 		reagents.add_reagent("water", 2)
@@ -123,12 +123,12 @@
 			M.rotate_plane()
 	for(F in M.contents)
 		F.turn_off()
-	var/DXTOTAL = M.my_stats.get_stat(STAT_DX) * 2
+	var/DXTOTAL = M.my_stats.dx * 2
 	if(prob(70-DXTOTAL) && !skillcheck(M.my_skills.GET_SKILL(SKILL_SWIM), 40, 0, M))
-		M.visible_message("<span class='bname'>[M.name]</span> flounders in water!")
+		M.visible_message("<span class='bname'>[M.name]</span> floundes in water!")
 		M.adjustStaminaLoss(rand(1,2))
 		playsound(M.loc, 'sound/effects/fst_water_jump_down_01.ogg', 80, 1, -1)
-	var/totalroll = (M.my_skills.GET_SKILL(SKILL_SWIM)+M.my_stats.get_stat(STAT_DX)) / 2
+	var/totalroll = (M.my_skills.GET_SKILL(SKILL_SWIM)+M.my_stats.dx) / 2
 	spawn(rand(2,totalroll))
 		if(M.x == src.x && M.y == src.y && M.z == src.z)
 			M.Move(get_step(M,src.directionz))

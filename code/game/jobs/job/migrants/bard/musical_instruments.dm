@@ -34,15 +34,15 @@
 			return
 		var/list/roll_result = roll3d6(H, SKILL_MUSIC, difficulty * -1, FALSE)
 		switch(roll_result[GP_RESULT])
-			if(GP_CRITSUCC)
+			if(GP_CRITSUCCESS)
 				H.visible_message("<span class='passivebold'>\the [H] begins to play \the [src] masterfully!</span>")
 				StartPlaying(H, music_list[music_name], 2)
 
-			if(GP_SUCC)
+			if(GP_SUCCESS)
 				H.visible_message("<span class='passive'>\the [H] begins to play \the [src].</span>")
 				StartPlaying(H, music_list[music_name], 1)
 
-			if(GP_FAIL, GP_CRITFAIL)
+			if(GP_FAILED, GP_CRITFAIL)
 				H.visible_message("<span class='combat'>\the [H] begins to play \the [src] poorly.</span>")
 				if(roll_result[GP_RESULT] == GP_CRITFAIL)
 					H.add_event("failed", /datum/happiness_event/misc/ivefailed)

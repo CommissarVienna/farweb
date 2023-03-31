@@ -53,8 +53,7 @@
 		user.Paralyse(20)
 		return
 
-//	if (M.stat !=2)
-	/*
+	if (M.stat !=2)
 		if((M.mind in ticker.mode.cult) && prob(33))
 			M << "\red The power of [src] clears your mind of the cult's influence!"
 			user << "\red You wave [src] over [M]'s head and see their eyes become clear, their mind returning to normal."
@@ -69,14 +68,12 @@
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\red [] waves [] over []'s head.", user, src, M), 1)
 			return
-		*/
 
-/*
 /obj/item/weapon/nullrod/afterattack(atom/A, mob/user as mob)
 	if (istype(A, /turf/simulated/floor))
 		user << "\blue You hit the floor with the [src]."
 		call(/obj/effect/rune/proc/revealrunes)(src)
-*/
+
 /obj/item/weapon/sord
 	name = "\improper SORD"
 	desc = "This thing is so unspeakably shitty you are having a hard time even holding it."
@@ -520,8 +517,7 @@
 	name = "ginkese spear"
 	icon_state = "tribal_spear"
 	item_state = "tribal_spear"
-	wielded_icon = TRUE
-	wielded_underlay = TRUE
+	wielded_icon = "tribal_spear-wielded"
 	force = 25
 	force_wielded = 40
 	force_unwielded = 25
@@ -660,7 +656,7 @@
 /obj/item/weapon/stone/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/stone))
 		usr.visible_message("<span class='passivebold'>[usr]</span> <span class='passive'>hits</span> <span class='passivebold'>[src]</span><span class='passive'> with </span> <span class='passivebold'>[W]</span>")
-		playsound(user.loc, 'sound/effects/stonestone.ogg', 65, 1)
+		playsound(user.loc, 'stonestone.ogg', 65, 1)
 		if(prob(12))
 			usr.visible_message("<span class='bname'>[src]</span> makes a spark!")
 			var/turf/newLoc = get_step(usr.loc, usr.dir)

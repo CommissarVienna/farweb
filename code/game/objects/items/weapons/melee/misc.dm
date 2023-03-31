@@ -39,7 +39,7 @@
 /obj/item/weapon/gavelplatform/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/gavelhammer))
 		if(cooldown)
-			to_chat(user, "<span class='combatbold'>[pick(fnord)] I can't yet!</span>")
+			to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)] I can't yet!</span>")
 			return
 		cooldown = TRUE
 		spawn(50)
@@ -56,8 +56,8 @@
 	flags = FPRINT | TABLEPASS | CONDUCT
 	force = 0
 	w_class = 2
-	drop_sound = 'sound/webbers/keydrop.ogg'
-	drawsound = 'sound/webbers/keyring_up.ogg'
+	drop_sound = 'keydrop.ogg'
+	drawsound = 'keyring_up.ogg'
 	var/key_lock = ""
 
 /obj/item/weapon/key/New()

@@ -75,9 +75,6 @@
 	var/accuracy = 0 // negative = chance to hit, positive = chance to miss
 	var/can_improv = FALSE
 	var/can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
-	var/RightLeft = FALSE
-	var/wielded_underlay
-	var/hand_underlay
 
 /obj/item/Crossed(H as mob|obj)
 	..()
@@ -243,36 +240,41 @@
 
 	var/randtext = null
 	var/valuetext = "No idea."
-	var/sharptext = ""
-	var/duratext = ""
-
-	if(src.sharp)
-		if(src.sharpness > 75)
-			sharptext = "<span class='passive'>It's well sharpened, it's </span><span class='passivebold'>[sharpness]%</span><span class='passive'> sharp!</span>"
-		else if(src.sharpness > 50)
-			sharptext = "<span class='passive'>it's <span class='passivebold'>[sharpness]%</span><span class='passive'> sharp!</span>"
-		else if(src.sharpness < 50)
-			sharptext = "<span class='combat'>It's blunt, it's <span class='combatbold'>[sharpness]%</span><span class='combat'> sharp!</span>"
-		else if(src.sharpness <= 1)
-			sharptext = "<span class='combat'>It's completely blunt!</span>"
-
-	if(src.durability == 0)
-		duratext = "<span class='combat'>it's broken!</span>"
-	else if(src.durability < 20 && durability > 0)
-		duratext = "<span class='combat'>it's heavily damaged!</span>"
-	else if(src.durability < 50 && durability > 20)
-		duratext = "<span class='combat'>it's damaged!</span>"
-	else if(src.durability < 80 && durability > 50)
-		duratext = "<span class='combat'>it's slightly damaged!</span>"
 
 	if(ishuman(usr))
 		var/mob/living/carbon/human/H = usr
-		if(H.my_stats.get_stat(STAT_IN) <= 5)
+		if(H.my_stats.it <= 5)
 			randtext = pick("Yoh!","Doh!","Haha")
 		if(H.check_perk(/datum/perk/ref/value))
 			valuetext = "[src.item_worth]"
 
-		to_chat(H, "<div class='firstdivexamine'><div class='box'><span class='statustext'>This is a [src.blood_DNA ? "bloody " : ""][icon2html(src, usr)]</span> <span class='uppertext'>[src.name].[QualityToThingo(src?.quality)] [randtext]</span>\n<span class='statustext'>[src.desc]</span>\n[TheReach]<span class='bname'>Cost: [valuetext] </span>\n[sharptext]\n[duratext]<hr class='linexd'>[TheSpec]</div></div>")
+		to_chat(H, "<div class='firstdivexamine'><div class='box'><span class='statustext'>This is a [src.blood_DNA ? "bloody " : ""][icon2html(src, usr)]</span> <span class='uppertext'>[src.name].[QualityToThingo(src?.quality)] [randtext]</span>\n<span class='statustext'>[src.desc]</span>\n[TheReach]<span class='bname'>Cost: [valuetext] </span><hr class='linexd'>[TheSpec]</div></div>")
+
+	if(src.sharp)
+		if(src.sharpness > 75)
+			to_chat(usr, "<span class='passive'>It's well sharpened, it's </span><span class='passivebold'>[sharpness]%</span><span class='passive'> sharp!</span>")
+		else
+			if(src.sharpness > 50)
+				to_chat(usr, "<span class='passive'>it's <span class='passivebold'>[sharpness]%</span><span class='passive'> sharp!</span>")
+			else
+				if(src.sharpness < 50)
+					to_chat(usr, "<span class='combat'>It's blunt, it's <span class='combatbold'>[sharpness]%</span><span class='combat'> sharp!</span>")
+				else
+					if(src.sharpness <= 1)
+						to_chat(usr, "<span class='combat'>It's completely blunt!</span>")
+
+	if(src.durability)
+		if(src.durability == 0)
+			to_chat(usr, "<span class='combat'>it's broken!</span>")
+		else
+			if(src.durability < 20)
+				to_chat(usr, "<span class='combat'>it's heavily damaged!</span>")
+			else
+				if(src.durability < 50)
+					to_chat(usr, "<span class='combat'>it's damaged!</span>")
+				else
+					if(src.durability < 80)
+						to_chat(usr, "<span class='combat'>it's slightly damaged!</span>")
 	return
 
 
@@ -289,7 +291,7 @@
 		durability -= modifier
 	if(durability <= 0)
 		durability = 0
-		playsound(src.loc, 'sound/items/breaksound.ogg', 100, 1)
+		playsound(src.loc, 'breaksound.ogg', 100, 1)
 		src.visible_message("<span class='combatbold'>[src]</span><span class='combat'> breaks!</span>")
 		qdel(src)
 
@@ -362,7 +364,7 @@
 		if (user.hand)
 			temp = user:organs_by_name["l_hand"]
 		if(temp && !temp.is_usable())
-			to_chat(src, "<span class='combat'>[pick(fnord)] I can't use my [temp.display_name].</span>")
+			to_chat(src, "<span class='combat'>[pick(nao_consigoen)] I can't use my [temp.display_name].</span>")
 			return
 
 	if(istype(user, /mob/living/carbon/human))
@@ -528,7 +530,7 @@
 			return
 		src.sharpness = min(100, sharpness+rand(1,3))
 		user.visible_message("<span class='passivebold'>[user]</span> <span class='passive'>sharpens \the [src]!</span>")
-		playsound(user.loc, pick('sound/effects/sharpen_long1.ogg','sound/effects/sharpen_long2.ogg','sound/effects/sharpen_short1.ogg','sound/effects/sharpen_short2.ogg'), 65, 1)
+		playsound(user.loc, pick('sharpen_long1.ogg','sharpen_long2.ogg','sharpen_short1.ogg','sharpen_short2.ogg'), 65, 1)
 		src.sound2()
 		if(prob(12))
 			usr.visible_message("<span class='bname'>[src]</span> makes a spark!")
@@ -604,13 +606,16 @@
 	if(wielded)
 		unwield(user)
 
+	update_twohanding()
 	if(user)
 		if(user.l_hand)
+			user.l_hand.update_twohanding()
 			user.update_inv_l_hand()
 			src.item_state = "[initial(item_state)]"
 			if(blooded_icon)
 				src.item_state = "[initial(item_state)+blood_suffix]"
 		if(user.r_hand)
+			user.r_hand.update_twohanding()
 			user.update_inv_r_hand()
 			src.item_state = "[initial(item_state)]"
 			if(blooded_icon)
@@ -628,6 +633,8 @@
 // called when this item is removed from a storage item, which is passed on as S. The loc variable is already set to the new destination before this is called.
 /obj/item/proc/on_exit_storage(obj/item/weapon/storage/S as obj, var/new_location)
 	return
+
+/obj/item/proc/nigga_cat(obj/item/W as obj, mob/target as mob)
 
 // called when this item is added into a storage item, which is passed on as S. The loc variable is already set to the storage item.
 /obj/item/proc/on_enter_storage(obj/item/weapon/storage/S as obj)
@@ -1004,10 +1011,17 @@ var/global/list/blood_overlay_cache = list()
 		force = force_unwielded
 	else
 		force = (force / 1.5)
+/*	var/sf = findtext(name," (Wielded)")
+	if(sf)
+		name = copytext(name,1,sf)
+	else //something wrong
+		name = "[initial(name)]"*/
+	update_unwield_icon()
 	update_icon()
-	user.update_inv_r_hand()
-	user.update_inv_l_hand()
-	user.moreactions.overlays -= "moreactions_2h"
+	if(user)
+		user.update_inv_r_hand()
+		user.update_inv_l_hand()
+		user.moreactions.overlays -= "moreactions_2h"
 
 	if(unwieldsound)
 		playsound(loc, unwieldsound, 50, 1)
@@ -1029,10 +1043,13 @@ var/global/list/blood_overlay_cache = list()
 		force = force_wielded
 	else
 		force = (force * 1.5)
+	//name = "wielded [name]"
+	update_wield_icon()
 	update_icon()//Legacy
-	user.update_inv_r_hand()
-	user.update_inv_l_hand()
-	user.moreactions.overlays += "moreactions_2h"
+	if(user)
+		user.update_inv_r_hand()
+		user.update_inv_l_hand()
+		user.moreactions.overlays += "moreactions_2h"
 	user.visible_message("<span class='combatbold'>[user]</span> <span class='combat'>squeezes his</span> <span class='combatbold'>[user.r_hand ? "right hand" : "left hand"]</span><span class='combat'>!</span>")
 	if(wieldsound)
 		playsound(loc, wieldsound, 50, 1)
@@ -1043,6 +1060,13 @@ var/global/list/blood_overlay_cache = list()
 	return
 
 
+/obj/item/proc/update_wield_icon()
+	if(wielded && wielded_icon)
+		item_state = wielded_icon
+
+/obj/item/proc/update_unwield_icon()//That way it doesn't interupt any other special icon_states.
+	if(!wielded && wielded_icon)
+		item_state = "[initial(item_state)]"
 
 //For general weapons.
 /obj/item/proc/attempt_wield(mob/user)
@@ -1050,6 +1074,10 @@ var/global/list/blood_overlay_cache = list()
 		unwield(user)
 	else //Trying to wield it
 		wield(user)
+
+//Checks if the item is being held by a mob, and if so, updates the held icons
+/obj/item/proc/update_twohanding()
+	update_held_icon()
 
 /obj/item/proc/update_held_icon()
 	if(ismob(src.loc))

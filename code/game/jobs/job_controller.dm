@@ -496,8 +496,8 @@ var/global/thanatiWords = list()
 			var/last_name = R.group[2]
 			if(gink_last_names.Find(last_name))
 				H.voicetype = "gink"
-				H.my_stats.change_stat(STAT_ST , -1)
-				H.my_stats.change_stat(STAT_DX , 1)
+				H.my_stats.st -= 1
+				H.my_stats.dx += 1
 
 
 		spawnId(H, rank, alt_title)
@@ -530,16 +530,16 @@ var/global/thanatiWords = list()
 							H.mind.store_memory("My word is [H.mind.thanati_corrupt] and my circle is [H.mind.thanati_type]")
 							to_chat(H, "<span class='baron'>Your corrupt word: [H.mind.thanati_corrupt], [H.mind.thanati_word_random] (The Circle of [H.mind.thanati_type]).</span>\n")
 							to_chat(H, "\n<span class='barondarker'><i>* Glorify our lord in a Sigil to remember our goals. *</i></span>")
-							H.add_verb(list(/mob/living/carbon/human/proc/getWords,
-							/mob/living/carbon/human/proc/praisethelord,
-							/mob/living/carbon/human/proc/getBrothers))
+							H.verbs += /mob/living/carbon/human/proc/getWords
+							H.verbs += /mob/living/carbon/human/proc/praisethelord
+							H.verbs += /mob/living/carbon/human/proc/getBrothers
 					else
 						if(!H.isChild() && !joined_late)
 							to_chat(H, "<span class='jogtowalk'><i>Thanati Roll: Failed!</i></span>")
 						H.religion = "Gray Church"
 			if(H.religion == "Gray Church")
 				if(H.job == "Mortus")
-					to_chat(H, "<span class='baronboldoutlined'>You profess Post-Christianity</span><span class='baron'>, but in practice it is indifferent. The more you work in this place, the less you care about</span> <span class='baronboldoutlined'>religions</span><span class='baron'>, </span><span class='baronboldoutlined'>thoughts</span> <span class='baron'>and</span> <span class='baronboldoutlined'>common affairs</span><span class='baron'>. Your attention is consumed by the intoxicating anxiety that you continue to feel close to the Lifeweb.</span>")
+					to_chat(H, "<span class='baronboldoutlined'>You profess Post-Christianity.</span><span class='baron'>, but in practice it is indifferent. The more you work in this place, the less you care about</span> <span class='baronboldoutlined'>religions</span><span class='baron'>, </span><span class='baronboldoutlined'>thoughts</span> <span class='baron'>and</span> <span class='baronboldoutlined'>common affairs</span><span class='baron'>. Your attention is consumed by the intoxicating anxiety that you continue to feel close to the Lifeweb.</span>")
 				else
 					to_chat(H, "<span class='baronboldoutlined'>You profess Post-Christianity.</span> <span class='baron'>It is Evergreen's only legal religion. May God and the Inquisition save us from Thanati. Amen.</span>")
 				H.religion = "Gray Church"
@@ -589,7 +589,7 @@ var/global/thanatiWords = list()
 		if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under))
 			var/obj/item/clothing/under/U = H.w_uniform
 			U.medal_attached = new /obj/item/medal/patreon(U)
-		//	U.medal_overlay()
+			U.medal_overlay()
 			H.update_inv_w_uniform()
 
 	proc/spawnId(var/mob/living/carbon/human/H, rank, title)

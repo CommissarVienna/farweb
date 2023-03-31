@@ -1,8 +1,6 @@
 //handles setting lastKnownIP and computer_id for use by the ban systems as well as checking for multikeying
 /mob/proc/update_Login_details()
 	//Multikey checks and logging
-	if(!client)
-		return
 	lastKnownIP	= client.address
 	computer_id	= client.computer_id
 	log_access("Login: [key_name(src)] from [lastKnownIP ? lastKnownIP : "localhost"]-[computer_id] || BYOND v[client.byond_version]")
@@ -82,7 +80,7 @@
 		if(H.species && H.species.abilities)
 			client.verbs |= H.species.abilities
 	src.add_filter_effects()
-	updateStatPanel()
+	updatePig()
 	hud_used?.add_inventory_overlay()
 	winset(src, "name", "text='[real_name]'")
 	//bug blur effect, para ativar por completo tira os comentario do Turfs.dm

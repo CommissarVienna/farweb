@@ -20,10 +20,6 @@
 	//TODO: fix husking
 	if( ((species?.total_health - total_burn) < config?.health_threshold_dead) && stat == DEAD)
 		ChangeToHusk()
-
-	//TEMP: Will remove when I port over my health changes.
-	if ((src.health < 0 && src.health > -95.0))
-		add_verb(/mob/living/proc/succumb)
 	return
 
 /mob/living/carbon/human/adjustBrainLoss(var/amount)

@@ -13,6 +13,7 @@
 	slot_flags = SLOT_BACK	//ERROOOOO
 	max_w_class = 3
 	max_combined_w_class = 21
+	var/RightLeft = FALSE
 	var/diffcolor = null
 
 /obj/item/weapon/storage/backpack/equipped/(mob/user, var/slot)
@@ -22,12 +23,12 @@
 /obj/item/weapon/storage/backpack/attack_hand(mob/user)
 	if(!ishuman(user))
 		if(src == user.back && !is_satchel)  // you have to hold backpacks, sorry my guys
-			to_chat(user, "<span class ='combat'>[pick(fnord)] I can't reach my [src]!</span>")
+			to_chat(user, "<span class ='combat'>[pick(nao_consigoen)] I can't reach my [src]!</span>")
 			return
 	else
 		var/mob/living/carbon/human/H = user
 		if((src == H.back || src == H.back2) && !is_satchel)  // you have to hold backpacks, sorry my guys
-			to_chat(H, "<span class ='combat'>[pick(fnord)] I can't reach my [src]!</span>")
+			to_chat(H, "<span class ='combat'>[pick(nao_consigoen)] I can't reach my [src]!</span>")
 			return
 
 	..()
@@ -117,7 +118,7 @@
 	name = "baron's cloak"
 	desc = "A fancy dark cloak for the lord."
 	icon_state = "lord"
-	item_state = "lord_cloak"
+	item_state = "baroncloak"
 	storage_slots = 3
 	is_satchel = TRUE
 	RightLeft = TRUE

@@ -123,9 +123,9 @@
 	if(!istype(src?.species, /datum/species/human/alien) && !ismonster(src))
 		if(ishuman(src))
 			var/mob/living/carbon/human/H = src
-			var/stun_time = max(0, 13 - H.my_stats.get_stat(STAT_HT))
+			var/stun_time = max(0, 13 - H.my_stats.ht)
 			Stun(stun_time)//This should work for now, more is really silly and makes you lay there forever
-			if(!H.my_stats.get_stat(STAT_HT)>=12)
+			if(!H.my_stats.ht>=12)
 				Weaken(1)
 //	if(src.weakened < 20*siemens_coeff)	src.weakened = 20*siemens_coeff
 	return shock_damage
@@ -219,7 +219,7 @@
 		src.sleeping = max(0,src.sleeping-5)
 		if(src.sleeping == 0)
 			if(src.can_stand)
-				src.SetResting(FALSE)
+				src.resting = 0
 		AdjustParalysis(-2)
 		AdjustStunned(-2)
 		AdjustWeakened(-3)
@@ -307,10 +307,10 @@
 	if(src.a_intent == "help" && !glindcooldown)
 		var/turf/turfloc = get_step(src,src.dir)
 		var/obj/objloc = get_step(src, src.dir)
-		var/image/hide = image('icons/blind.dmi', turfloc)
-		var/image/hide2 = image('icons/blind.dmi', objloc)
-		hide.icon = 'icons/blind.dmi'
-		hide2.icon = 'icons/blind.dmi'
+		var/image/hide = image('blind.dmi', turfloc)
+		var/image/hide2 = image('blind.dmi', objloc)
+		hide.icon = 'blind.dmi'
+		hide2.icon = 'blind.dmi'
 		hide.appearance_flags = NO_CLIENT_COLOR|RESET_ALPHA
 		hide.plane = 50
 		hide.layer = HUD_ABOVE_ITEM_LAYER
@@ -395,7 +395,7 @@ proc/strToSpeedModifier(var/strength, var/w_class)//Looks messy. Is messy. Is al
 		var/obj/item/I = item
 		weight_class = I.w_class
 
-	var/throw_delay = strToSpeedModifier(src?.my_stats?.get_stat(STAT_ST), weight_class)
+	var/throw_delay = strToSpeedModifier(src?.my_stats?.st, weight_class)
 
 	src.visible_message("<span class='hitbold'>[src]</span> <span class='hit'>is trying to throw [item].</span>")
 
@@ -596,8 +596,8 @@ var/const/GALOSHES_DONT_HELP = 8
 			H.tryingtosleep = FALSE
 	else
 		if(ishuman(src))
-			if(H.feel_pain_check() && (get_pain() > (70 + my_stats.get_stat(STAT_HT)*3)) )
-				to_chat(H, "<span class='combatbold'>[pick(fnord)]</span><span class='combat'> I can't sleep while... IN PAIN!</span>")
+			if(H.feels_pain() && (get_pain() > (70 + my_stats.ht*3)) )
+				to_chat(H, "<span class='combatbold'>[pick(nao_consigoen)]</span><span class='combat'> I can't sleep while... IN PAIN!</span>")
 				return
 			var/cansleep = TRUE
 			if(istype(H.wear_suit, /obj/item/clothing/suit/armor))
@@ -609,7 +609,7 @@ var/const/GALOSHES_DONT_HELP = 8
 			if(istype(H.gloves, /obj/item/clothing/gloves/combat))
 				cansleep = FALSE
 			if(!cansleep)
-				to_chat(H, "<span class='combatbold'>[pick(fnord)]</span><span class='combat'> I can't sleep while wearing armor!</span>")
+				to_chat(H, "<span class='combatbold'>[pick(nao_consigoen)]</span><span class='combat'> I can't sleep while wearing armor!</span>")
 				return
 		H.tryingtosleep = TRUE
 		H.sleeping = 6
@@ -618,8 +618,6 @@ var/const/GALOSHES_DONT_HELP = 8
 		H.clear_event("mentalfatigue")
 
 /mob/living/carbon/human/verb/toggle_eye()
-	var/obj/item/clothing/head/blackbag/B = head //Head location
-	if(B) return //This is a dirty hack but it stops exploits. I'll fix it proper later. Or I won't. Fuck you. I do what I want.
 	if(eye_closed == FALSE)
 		if(gender == FEMALE)
 			emote("closes her eyes.")
@@ -635,6 +633,80 @@ var/const/GALOSHES_DONT_HELP = 8
 	handle_regular_hud_updates()
 	regenerate_icons()
 
+//Brain slug proc for voluntary removal of control.
+/mob/living/carbon/proc/release_control()
+
+	set category = "Abilities"
+	set name = "Release Control"
+	set desc = "Release control of your host's body."
+
+	var/mob/living/simple_animal/borer/B = has_brain_worms()
+
+	if(!B)
+		return
+
+	if(B.controlling)
+		src << "\red <B>You withdraw your probosci, releasing control of [B.host_brain]</B>"
+		B.host_brain << "\red <B>Your vision swims as the alien parasite releases control of your body.</B>"
+		B.ckey = ckey
+		B.controlling = 0
+	if(B.host_brain.ckey)
+		ckey = B.host_brain.ckey
+		B.host_brain.ckey = null
+		B.host_brain.name = "host brain"
+		B.host_brain.real_name = "host brain"
+
+	verbs -= /mob/living/carbon/proc/release_control
+	verbs -= /mob/living/carbon/proc/punish_host
+	verbs -= /mob/living/carbon/proc/spawn_larvae
+
+//Brain slug proc for tormenting the host.
+/mob/living/carbon/proc/punish_host()
+	set category = "Abilities"
+	set name = "Torment host"
+	set desc = "Punish your host with agony."
+
+	var/mob/living/simple_animal/borer/B = has_brain_worms()
+
+	if(!B)
+		return
+
+	if(B.host_brain.ckey)
+		src << "\red <B>You send a punishing spike of psychic agony lancing into your host's brain.</B>"
+		B.host_brain << "\red <B><FONT size=3>Horrific, burning agony lances through you, ripping a soundless scream from your trapped mind!</FONT></B>"
+
+//Check for brain worms in head.
+/mob/proc/has_brain_worms()
+
+	for(var/I in contents)
+		if(istype(I,/mob/living/simple_animal/borer))
+			return I
+
+	return 0
+
+/mob/living/carbon/proc/spawn_larvae()
+	set category = "Abilities"
+	set name = "Reproduce"
+	set desc = "Spawn several young."
+
+	var/mob/living/simple_animal/borer/B = has_brain_worms()
+
+	if(!B)
+		return
+
+	if(B.chemicals >= 150)
+		src << "\red <B>Your host twitches and quivers as you rapdly excrete several larvae from your sluglike body.</B>"
+		visible_message("\red <B>[src] heaves violently, expelling a rush of vomit and a wriggling, sluglike creature!</B>")
+		B.chemicals -= 150
+
+		new /obj/effect/decal/cleanable/vomit(get_turf(src))
+		playsound(loc, 'sound/effects/splat.ogg', 50, 1)
+		Stun(5)
+		new /mob/living/simple_animal/borer(get_turf(src))
+
+	else
+		src << "You do not have enough chemicals stored to reproduce."
+		return
 
 /mob/living/carbon/fall(var/forced)
     loc.handle_fall(src, forced)//it's loc so it doesn't call the mob's handle_fall which does nothing

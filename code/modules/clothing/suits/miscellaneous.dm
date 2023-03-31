@@ -63,10 +63,10 @@
 /obj/item/clothing/suit/bishop
 	name = "bishop's robe"
 	desc = "This robe commands authority."
-	icon_state = "newbishop"
-	item_state = "newbishop"
+	icon_state = "bishop"
+	item_state = "bishop"
 	flags = FPRINT | TABLEPASS
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|LEGS_TOGETHER
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	allowed = list(/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/spacecash)
 
 /obj/item/clothing/suit/bishop/advisor
@@ -86,7 +86,7 @@
 	icon_state = "hand"
 	item_state = "hand"
 	flags = FPRINT | TABLEPASS
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|LEGS_TOGETHER
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	fatmaywear = 1
 
 /obj/item/clothing/suit/storage/guest
@@ -101,8 +101,8 @@
 /obj/item/clothing/suit/storage/firethorner
 	name = "firethorner clothing"
 	desc = ""
-	icon_state = "ravenhearter" //lol
-	item_state = "ravenhearter"
+	icon_state = "firethorner"
+	item_state = "firethorner"
 	flags = FPRINT | TABLEPASS
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	fatmaywear = 1
@@ -110,18 +110,18 @@
 /obj/item/clothing/suit/serpent
 	name = "serpent garment"
 	desc = ""
-	icon_state = "hausite"
-	item_state = "hausite"
+	icon_state = "serpent"
+	item_state = "serpent"
 	flags = FPRINT | TABLEPASS
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|LEGS_TOGETHER
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	allowed = list(/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/spacecash)
 
 /obj/item/clothing/suit/storage/chemsis
 	name = "chemsister's garment"
-	icon_state = "hausite"
+	icon_state = "chemsis"
 	item_state = "bio_suit"
 	flags = FPRINT | TABLEPASS
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|LEGS_TOGETHER
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 
 /obj/item/clothing/suit/judgerobe
 	name = "judge's robe"
@@ -129,7 +129,7 @@
 	icon_state = "judge"
 	item_state = "judge"
 	flags = FPRINT | TABLEPASS
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|LEGS_TOGETHER
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	allowed = list(/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/spacecash)
 	flags_inv = HIDEJUMPSUIT
 
@@ -184,7 +184,7 @@
 	desc = "A suit made long ago by the ancient empire KFC."
 	icon_state = "chickensuit"
 	item_state = "chickensuit"
-	body_parts_covered = UPPER_TORSO|ARMS|LOWER_TORSO|LEGS|FEET|LEGS_TOGETHER
+	body_parts_covered = UPPER_TORSO|ARMS|LOWER_TORSO|LEGS|FEET
 	flags_inv = HIDESHOES|HIDEJUMPSUIT
 	siemens_coefficient = 2.0
 
@@ -204,7 +204,7 @@
 	desc = "This is a nice holiday my son."
 	icon_state = "holidaypriest"
 	item_state = "holidaypriest"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|LEGS_TOGETHER
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	flags_inv = HIDEJUMPSUIT
 
 
@@ -386,7 +386,7 @@
 	icon_state = "veteran_bum"
 	item_state = "veteran_bum"
 	flags = FPRINT | TABLEPASS
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|LEGS_TOGETHER
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 
 /obj/item/clothing/suit/countheir
 	name = "superior coat"
@@ -394,4 +394,4 @@
 	icon_state = "countheir"
 	item_state = "countheir"
 	flags = FPRINT | TABLEPASS
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|LEGS_TOGETHER
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS

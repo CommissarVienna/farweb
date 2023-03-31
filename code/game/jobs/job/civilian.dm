@@ -31,7 +31,6 @@
 	department_head = list("Head of Personnel")
 	department_flag = MEDSCI
 	faction = "Station"
-	stats_mods = list(STAT_ST = 2, STAT_DX = -2, STAT_HT = -1, STAT_IN = 0)
 	total_positions = 3
 	spawn_positions = 3
 	supervisors = "Life"
@@ -51,7 +50,6 @@
 		..()
 		if(H?.client?.info?.chromosomes >= 5)
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/ordinator/old(H), slot_w_uniform)
-
 			if(prob(20))
 				H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/vest/flakjacket/old/coat(H), slot_wear_suit)
 				H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/lw/ordinator/old/vietnam(H), slot_head)
@@ -90,7 +88,6 @@
 	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = 1, STAT_DX = 0, STAT_HT = 1, STAT_IN = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the baron"
@@ -123,7 +120,6 @@
 	department_head = list("Head of Personnel")
 	department_flag = MEDSCI
 	faction = "Station"
-	stats_mods = list(STAT_ST = 0, STAT_DX = 1, STAT_HT = -1, STAT_IN = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the baron"
@@ -172,7 +168,6 @@
 	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = 1, STAT_DX = 1, STAT_HT = -1, STAT_IN = 1)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the baron"
@@ -206,7 +201,6 @@
 	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = -1, STAT_DX = 1, STAT_HT = -1, STAT_IN = 2)
 	total_positions = 1
 	spawn_positions = 1
 	jobdesc = "The head housekeeper of the Baron&#8217;s female staff and personal servant. Your pecking order consists of the maids and child servants beneath you. Being the sole teacher and caretaker responsible for the upbringing Baron&#8217;s progeny, they consider you as much a mother as their real one."
@@ -240,7 +234,6 @@
 	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = -4, STAT_DX = 8, STAT_HT = -4, STAT_IN = 2)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the spark."
@@ -260,17 +253,17 @@
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/cheap(H), slot_wrist_r)
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/consyte(H), slot_back)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/brown(H), slot_shoes)
-		H.add_verb(list(/mob/living/carbon/human/proc/respark,
-		/mob/living/carbon/human/proc/choir))
+		H.verbs += /mob/living/carbon/human/verb/respark
+		H.verbs += /mob/living/carbon/human/verb/choir
 		H.add_perk(/datum/perk/morestamina)
 		H.consyte = TRUE
 		H.religion = "ConsCult"
 		H.status_flags |= STATUS_NO_PAIN
 		return 1
 
-/mob/living/carbon/human/proc/respark()
-	set desc = "Respark"
-	set category = "gpc"
+/mob/living/carbon/human/verb/respark()
+	set name = "respark"
+	set desc="Brings someone back to life!"
 
 	if(!consyte)
 		return
@@ -289,15 +282,67 @@
 			return
 		visible_message("<span class='examinebold'>[src]</span> <span class='examine'>bends down and kisses</span> <span class='examinebold'>[H]</span><span class='examine'> on the lips.</span>")
 		H.respark_revival()
-		H.add_verb(list(/mob/living/carbon/human/proc/respark,
-		/mob/living/carbon/human/proc/choir))
+		H.verbs += /mob/living/carbon/human/verb/respark
+		H.verbs += /mob/living/carbon/human/verb/choir
 		H.consyte = TRUE
 		H.religion = "ConsCult"
 		return 1
+/*
+	if(!isturf(loc)){
+		return
+	}
 
-/mob/living/carbon/human/proc/choir()
-	set desc = "Choir"
-	set category = "gpc"
+	var/turf/F = get_step(src, dir)
+	for(var/mob/living/carbon/human/H in F.contents){
+		if(H.species.name != "Human"){
+			return
+		}
+		if(H.stat != DEAD){
+			return
+		}
+		if(iszombie(H) || iszombie(src)){
+			return
+		}
+		if(H == src)
+			return
+		var/datum/organ/external/affectedorgan = H.get_organ(BP_HEAD)
+		if(affectedorgan.amputated || affectedorgan.status & ORGAN_DESTROYED)
+			return
+
+
+		visible_message("<span class='bname'>[src]</span> bends down and kisses [H] on the lips.")
+		H.respark_revival()
+		H.verbs += /mob/living/carbon/human/proc/respark
+		H.verbs += /mob/living/carbon/human/proc/choir
+		return 1
+	}
+	for(var/mob/living/carbon/human/H in loc.contents){
+		if(H.species.name != "Human"){
+			return
+		}
+		if(H.stat != DEAD){
+			return
+		}
+		if(iszombie(H) || iszombie(src)){
+			return
+		}
+
+		var/datum/organ/external/affectedorgan = H.get_organ(BP_HEAD)
+		if(affectedorgan.amputated || affectedorgan.status & ORGAN_DESTROYED)
+			return
+		visible_message("<span class='bname'>[src]</span> bends down and kisses [H] on the lips.")
+		H.respark_revival()
+		H.verbs += /mob/living/carbon/human/proc/respark
+		H.verbs += /mob/living/carbon/human/proc/choir
+		return 1
+	}
+	to_chat(src, "There's no one nearby to revive.")
+	return
+*/
+/mob/living/carbon/human/verb/choir()
+	set hidden = 0
+	set category = "Consyte"
+	set name = "Choir"
 	if(!consyte)
 		return
 	if(!consyte_voice)
@@ -322,7 +367,6 @@
 	department_head = list("Head of Personnel")
 	department_flag = MEDSCI
 	faction = "Station"
-	stats_mods = list(STAT_ST = -2, STAT_DX = 1, STAT_HT = -3, STAT_IN = -1)
 	total_positions = 3
 	spawn_positions = -1
 	supervisors = "No one"
@@ -343,7 +387,7 @@
 		H.religion = "Gray Church"
 		H.real_name =  "[first_name]"
 		H.name = H.real_name
-		H.add_verb(/mob/living/carbon/human/proc/tellTheTruth)
+		H.verbs += /mob/living/carbon/human/proc/tellTheTruth
 		if(prob(80))
 			H.add_perk(/datum/perk/illiterate)
 		for(var/obj/item/weapon/reagent_containers/food/snacks/organ/O in H.organ_storage)
@@ -374,7 +418,6 @@
 	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = -1, STAT_DX = -1, STAT_HT = -1, STAT_IN = -1)
 	total_positions = 14
 	spawn_positions = -1
 	supervisors = "No one"
@@ -399,7 +442,7 @@
 		H.hygiene = -400
 		H.nutrition = rand(80, 180)
 		H.hidratacao = 150
-		H.add_verb(/mob/living/carbon/human/proc/tellTheTruth)
+		H.verbs += /mob/living/carbon/human/proc/tellTheTruth
 		if(prob(80))
 			H.add_perk(/datum/perk/illiterate)
 		if(prob(5))
@@ -415,13 +458,6 @@
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/veteran_bum(H), slot_wear_suit)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/veteran_bum(H), slot_shoes)
 			H.equip_to_slot_or_del(new /obj/item/clothing/gloves/veteran_bum(H), slot_gloves)
-
-		var/datum/organ/external/mouth/O = locate(/datum/organ/external/mouth) in H.organs
-		if(O)//Bums are missing most of their teeth.
-			O.teeth_list.Cut()
-			var/obj/item/stack/teeth/T = new H.species.teeth_type(O)
-			T.amount = rand(1, 15)
-			O.teeth_list += T
 
 		var/pickitem = pick("knife","syringe","teddybear","teddybear2","dob","coupon","duster","switchblade")
 		switch(pickitem)
@@ -445,10 +481,10 @@
 			H.real_name =  "[first_name] The Strong"
 			H.name = H.real_name
 			H.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(13,13))
-			H.my_stats.change_stat(STAT_ST , 15)
-			H.my_stats.change_stat(STAT_HT , 15)
-			H.my_stats.change_stat(STAT_DX , 4)
-			H.my_stats.change_stat(STAT_IN , -5)
+			H.my_stats.st = rand(18,25)
+			H.my_stats.ht = rand(20,25)
+			H.my_stats.dx = rand(12,15)
+			H.my_stats.it = rand(3,5)
 			if(H.gender != FEMALE)
 				H.mutations += FAT
 		return 1
@@ -462,7 +498,6 @@
 	faction = "Station"
 	total_positions = 8
 	spawn_positions = 3
-	stats_mods = list(STAT_ST = 2, STAT_DX = 0, STAT_HT = 2, STAT_IN = 0)
 	selection_color = "#ffeeee"
 	idtype = /obj/item/weapon/card/id
 	access = list()
@@ -485,13 +520,13 @@
 		H.stat = UNCONSCIOUS
 		H.voicetype = pick("noble","strong","sketchy")
 		H.verbs += /mob/living/carbon/human/proc/pegaclassemerc
-		H.updateStatPanel()
+		H.updatePig()
 		return 1
 
 
 /mob/living/carbon/human/proc/pegaclassemerc()
 	set hidden = 0
-	set category = "gpc"
+	set category = "Migrant"
 	set name = "PegaclasseMerc"
 	set desc="Choose your Merc class!"
 	var/list/mercList = list("Mercenary")
@@ -570,7 +605,6 @@
 	flag = CLOWN
 	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
-	stats_mods = list(STAT_ST = 0, STAT_DX = 0, STAT_HT = 0, STAT_IN = 0)
 	faction = "Station"
 	jobdesc = "A sufferer of dwarfism whose talent for being small and making a fool of himself has brought him to the attention of the Baron&#8217;s court. His limitless ability for self-deprecation is often met with those laughing at him - not with him."
 	total_positions = 1
@@ -593,7 +627,7 @@
 			H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet(H), slot_wrist_r)
 			H.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/pistol/jester(H), slot_r_hand)
 			H.equip_to_slot_or_del(new /obj/item/weapon/grenade/syndieminibomb/frag/fake(H), slot_l_hand)
-			H.combat_music = pick('sound/music/jester_combat.ogg')
+			H.combat_music = pick('jester_combat.ogg')
 			H.add_perk(/datum/perk/lessstamina)
 			H.add_perk(/datum/perk/singer)
 			H.height = rand(100,130)
@@ -607,17 +641,17 @@
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, 9)
 			H.my_skills.CHANGE_SKILL(SKILL_BOAT, 10)
-
-			H.my_stats.change_stat(STAT_ST , rand(0, 4))
-			H.my_stats.change_stat(STAT_HT , 2)
-			H.my_stats.change_stat(STAT_DX , -3)
-			H.my_stats.change_stat(STAT_IN , -1)
-			H.add_verb(list(/mob/living/carbon/human/proc/apelidar,
-			/mob/living/carbon/human/proc/malabares,
-			/mob/living/carbon/human/proc/rememberjoke,
-			/mob/living/carbon/human/proc/joke,
-			/mob/living/carbon/human/proc/remembersong,
-			/mob/living/carbon/human/proc/sing))
+			H.my_stats.st = rand(9,15)
+			H.my_stats.ht = rand(10,12)
+			H.my_stats.dx = rand(6,7)
+			H.my_stats.it = rand(9,10)
+			H.my_stats.pr = rand(8,9)
+			H.verbs += /mob/living/carbon/human/proc/apelidar
+			H.verbs += /mob/living/carbon/human/proc/malabares
+			H.verbs += /mob/living/carbon/human/proc/rememberjoke
+			H.verbs += /mob/living/carbon/human/proc/joke
+			H.verbs += /mob/living/carbon/human/proc/remembersong
+			H.verbs += /mob/living/carbon/human/proc/sing
 			return 1
 		else
 			H.voicetype = "midget"
@@ -629,12 +663,12 @@
 			H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet(H), slot_wrist_r)
 			H.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/pistol/jester(H), slot_r_store)
 			H.equip_to_slot_or_del(new /obj/item/weapon/grenade/syndieminibomb/frag/fake(H), slot_l_store)
-			H.add_verb(list(/mob/living/carbon/human/proc/apelidar,
-			/mob/living/carbon/human/proc/malabares,
-			/mob/living/carbon/human/proc/rememberjoke,
-			/mob/living/carbon/human/proc/joke,
-			/mob/living/carbon/human/proc/remembersong,
-			/mob/living/carbon/human/proc/sing))
+			H.verbs += /mob/living/carbon/human/proc/apelidar
+			H.verbs += /mob/living/carbon/human/proc/malabares
+			H.verbs += /mob/living/carbon/human/proc/rememberjoke
+			H.verbs += /mob/living/carbon/human/proc/joke
+			H.verbs += /mob/living/carbon/human/proc/remembersong
+			H.verbs += /mob/living/carbon/human/proc/sing
 			H.acrobat = 1
 			H.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(6,6))
 			H.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(12,12))
@@ -650,17 +684,18 @@
 			H.my_skills.CHANGE_SKILL(SKILL_STEAL, rand(13,17))
 			H.my_skills.CHANGE_SKILL(SKILL_SWIM, rand(12,17))
 			H.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(14,15))
-			H.my_stats.change_stat(STAT_ST , -1)
-			H.my_stats.change_stat(STAT_HT , -1)
-			H.my_stats.change_stat(STAT_DX , 5)
-			H.my_stats.change_stat(STAT_IN , 1)
+			H.my_stats.st = rand(7,8)
+			H.my_stats.ht = rand(8,9)
+			H.my_stats.dx = rand(13,16)
+			H.my_stats.it = rand(11,12)
+			H.my_stats.pr = rand(13,15)
 			H.add_perk(/datum/perk/morestamina)
 			H.add_perk(/datum/perk/singer)
 			H.add_perk(/datum/perk/ref/jumper)
 			if(H.wear_id && istype(H.wear_id, /obj/item/weapon/card/id))
 				var/obj/item/weapon/card/id/I = H.wear_id
 				I.icon_state = "id_jester"
-			H.combat_music = pick('sound/music/jester_combat.ogg')
+			H.combat_music = pick('jester_combat.ogg')
 			H << sound(H.combat_music, repeat = 1, wait = 0, volume = 50, channel = 12)
 			H << sound(null, repeat = 0, wait = 0, volume = 0, channel = 12)
 			H.create_kg()
@@ -672,8 +707,6 @@
 /mob/living/carbon/human/var/list/jokes_remembered = list() //jokes remembered by Jester, so he can use them later.
 
 /mob/living/carbon/human/proc/apelidar()
-	set desc = "Give a Nickname!"
-	set category = "gpc"
 	if(stat) return
 	var/list/lista = list()
 	for(var/mob/M in view(7))
@@ -695,7 +728,7 @@
 
 		log_game("([src.ckey])[src.real_name] gave ([M.ckey])[M.real_name] the nickname: [responseTwo]")
 		if(findtext(responseTwo, config.ic_filter_regex))
-			src << 'sound/vam_ban.ogg'
+			src << 'vam_ban.ogg'
 			to_chat("THAT'S SO FUNNY!")
 			var/datum/organ/internal/heart/HE = (locate() in internal_organs)
 			if(HE)
@@ -711,8 +744,6 @@
 		M.nickname = responseTwo
 
 /mob/living/carbon/human/proc/malabares()
-	set desc = "Juggling!"
-	set category = "gpc"
 	if(malabares)
 		qdel(malabares)
 		malabares = null
@@ -777,8 +808,6 @@
 		//3 billion% intentional
 
 /mob/living/carbon/human/proc/rememberjoke()
-	set desc = "Remember a Joke"
-	set category = "gpc"
 	var/list/joke_to_safe
 	var/list/begining_list = list("One day, an Inquisitor walks into a brothel", "A Southerner and a Northerner meet each other in the cave", "The Baron returns from the campaign", "A Migrant arrives at the throne room", "The Bookkeeper asks the Baron for a favor", "The Jester decided to make a joke", "A woman calls for help", "The Heir and the Successor locked themselves in a room", "(ANOTHER)")
 	if(stat) return
@@ -808,8 +837,6 @@
 
 
 /mob/living/carbon/human/proc/joke()
-	set desc = "Joke"
-	set category = "gpc"
 	if(stat) return
 	if(is_joking)
 		is_joking = FALSE
@@ -843,15 +870,15 @@
 
 	for(var/mob/living/carbon/human/M in view(7, src))
 		if(M == src) continue
-		var/stat_math = round((M.my_stats.get_stat(STAT_HT) + M.my_stats.get_stat(STAT_IN)) / 2) + M.my_stats.get_stat(STAT_WP)
+		var/stat_math = round((M.my_stats.ht + M.my_stats.it) / 2) + M.my_stats.wp
 		var/list/roll_result = roll3d6(M, stat_math, howfunny * -1, FALSE, TRUE)
 		switch(roll_result[GP_RESULT])
-			if(GP_SUCC, GP_CRITSUCC)
+			if(GP_SUCCESS, GP_CRITSUCCESS)
 				spawn(rand(1,3))
-					if(roll_result[GP_RESULT] == GP_CRITSUCC)
-						M.my_stats.change_stat(STAT_WP, 1)
+					if(roll_result[GP_RESULT] == GP_CRITSUCCESS)
+						M.my_stats.wp += 1
 					M.emote("laugh")
-			if(GP_FAIL)
+			if(GP_FAILED)
 				spawn(rand(1,3))
 					if(prob(50))
 						M.emote("laugh")
@@ -861,7 +888,7 @@
 						M.emote("laugh")
 			if(GP_CRITFAIL)
 				spawn(rand(1,3))
-					if(prob(20 - M.my_stats.get_stat(STAT_HT)))
+					if(prob(20 - M.my_stats.ht))
 						var/datum/organ/internal/heart/HE = (locate() in M.internal_organs)
 						if(HE)
 							HE.heart_attack()
@@ -885,7 +912,6 @@
 	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = 2, STAT_DX = -2, STAT_HT = 1, STAT_IN = -2)
 	total_positions = 3
 	spawn_positions = 2
 	supervisors = "the Duke and the Chef."
@@ -923,7 +949,6 @@
 	department_head = list("Duke")
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = 0, STAT_DX = 3, STAT_HT = -1, STAT_IN = 3)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the merchant guild"
@@ -959,7 +984,6 @@
 	department_head = list("Bookkeeper")
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = 2, STAT_DX = 0, STAT_HT = 1, STAT_IN = -1)
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "the merchant and the BARON"
@@ -981,7 +1005,7 @@
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/new_cut(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/jackboots(H), slot_shoes)
 		H.equip_to_slot_or_del(new /obj/item/clothing/head/cap(H), slot_head)
-		H.equip_to_slot_or_del(new /obj/item/clothing/suit/new_cut/new_cut_alt2(H), slot_wear_suit)
+		H.equip_to_slot_or_del(new /obj/item/clothing/suit/new_cut_alt2(H), slot_wear_suit)
 		H.equip_to_slot_or_del(new /obj/item/clothing/gloves/fingerless(H), slot_gloves)
 		H.equip_to_slot_or_del(new /obj/item/weapon/melee/classic_baton/club/knuckleduster(H), slot_l_store)
 		H.add_perk(/datum/perk/docker)
@@ -1031,7 +1055,6 @@
 	department_head = list("Trader")
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = -1, STAT_DX = 1, STAT_HT = -1, STAT_IN = -1)
 	total_positions = 2
 	spawn_positions = 3
 	supervisors = "Your customer and the pusher."
@@ -1067,7 +1090,6 @@
 	department_head = list("Captain")
 	department_flag = MEDSCI
 	faction = "Station"
-	stats_mods = list(STAT_ST = -1, STAT_DX = 0, STAT_HT = -2, STAT_IN = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "Your parents."
@@ -1087,7 +1109,7 @@
 		..()
 		H.set_species("Child")
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/cheap(H), slot_wrist_r)
-		H.equip_to_slot_or_del(new /obj/item/clothing/under/urchin(H), slot_w_uniform)
+		H.equip_to_slot_or_del(new /obj/item/clothing/under/child_jumpsuit(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/child/shoes(H), slot_shoes)
 		H.equip_to_slot_or_del(new /obj/item/clothing/suit/scuff(H), slot_wear_suit)
 		H.add_perk(/datum/perk/illiterate)
@@ -1103,7 +1125,6 @@
 	department_head = null
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = 1, STAT_DX = -1, STAT_HT = -1, STAT_IN = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "The loan sharks and your luck."
@@ -1111,7 +1132,7 @@
 	access = list(brothel, amuser)
 	minimal_access = list(brothel, amuser)
 	idtype = /obj/item/weapon/card/id/ltgrey
-	money = 70
+	money = 20
 	thanati_chance = 75
 	jobdesc = "Those who come by the den to purchase your blood plungers range from nobility to dirt, and you&#8217;re here to sell them sex and indulge in all of their immoral hedonism. You hear the kids calling you the coolest person in the fortress, and you make sure that the obol-less bums spend it on a hit once it finally looks like they&#8217;ve made some dough. You&#8217;re looked up to by scoundrels and vermin, and are a target for those looking to challenge your drug trade. You won&#8217;t let that happen."
 	jobdescbr = "Those who come by the den to purchase your blood plungers range from nobility to dirt, and you&#8217;re here to sell them sex and indulge in all of their immoral hedonism. You hear the kids calling you the coolest person in the fortress, and you make sure that the obol-less bums spend it on a hit once it finally looks like they&#8217;ve made some dough. You&#8217;re looked up to by scoundrels and vermin, and are a target for those looking to challenge your drug trade. You won&#8217;t let that happen."
@@ -1187,7 +1208,6 @@
 	department_head = list("Captain")
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = 3, STAT_DX = 0, STAT_HT = 2, STAT_IN = -5)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the Baron"
@@ -1223,7 +1243,6 @@
 	department_head = list("Duke")
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = 1, STAT_DX = 0, STAT_HT = 0, STAT_IN = 2)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the baron and the northern law"
@@ -1249,8 +1268,6 @@
 //		H.verbs += /mob/living/carbon/human/proc/duel
 		return 1
 
-
-//TODO: re-enable these.
 /mob/living/carbon/human/proc/execution()
 	set hidden = 0
 	set category = "Law"

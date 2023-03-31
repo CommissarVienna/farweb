@@ -40,8 +40,10 @@ var/list/zombies = list()
 	becoming_zombie = 0
 	bodytemperature = 310.055
 	see_in_dark = 4
-	zombie = TRUE
+	zombie = 1
 	sight |= SEE_MOBS
+	update_icons()
+	update_body()
 	src.verbs += /mob/living/carbon/human/proc/supersuicide
 	to_chat(src, "<span class='dreamershitfuckcomicao1'>You have become a screamer!</span>")
 	src.consyte = FALSE
@@ -53,8 +55,13 @@ var/list/zombies = list()
 		if(HE.stopped_working)
 			HE.stopped_working = 0
 	src.sleeping = 0
-	update_body(1)
-	src.updateStatPanel()
+	update_body()
+	src.updatePig()
+	if(!isChild(src))
+		set_species("Zombie")
+	else
+		set_species("Zombie Child")
+	update_all_zombie_icons()
 
 
 /mob/living/carbon/human/proc/handle_zombify()
@@ -82,7 +89,7 @@ var/list/zombies = list()
 	if(zombify >= 500)
 		zombify = 500
 		src.zombify()
-		src.client?.color = null
+		src.client.color = null
 
 /mob/living/carbon/human/proc/update_all_zombie_icons()
 	var/ZMB
@@ -112,7 +119,7 @@ var/list/zombies = list()
 	zombies.Remove(src)
 	update_all_zombie_icons()
 	update_icons()
-	to_chat(src,"<span class='dreamershitfuckcomicao1'><<font size=3>You have been cured from being a screamer!")
+	src << "\red<font size=3>You have been cured from being a screamer!"
 /*
 /mob/living/carbon/human/proc/zombie_bit(var/mob/living/carbon/human/biter)
 	var/mob/living/carbon/human/biten = src

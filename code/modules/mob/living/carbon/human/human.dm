@@ -12,7 +12,6 @@
 	var/mini_war = FALSE  // Var only for mini war
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/futa = FALSE
-	var/signed_avowal = FALSE
 	plane = 10
 	flammable = 1
 	countsDensity = 0
@@ -63,11 +62,11 @@
 					if(src.client)
 						src.client.ChromieWinorLoose(src.client, -1)
 					visible_message("<span class='bname'>[src]</span> lets out a beep as \his microexplosive goes off!")
-					playsound(src, 'sound/effects/newBuzzer.ogg', 100, 1, 1)
+					playsound(src, 'newBuzzer.ogg', 100, 1, 1)
 					explosion(src.loc,2,4,6,4)
 
 /mob/living/carbon/human/New(var/new_loc, var/new_species = null)
-	combat_music = 'sound/music/ravenheart_combat1.ogg'
+	combat_music = 'ravenheart_combat1.ogg'
 	disguise_number = rand(1,length(player_list))
 	if(!dna)
 		dna = new /datum/dna(null)
@@ -154,9 +153,9 @@
 			return
 		if(ishuman(AM))
 			var/mob/living/carbon/human/humanmob = AM
-			if(statcheck(humanmob?.my_stats.get_stat(STAT_ST), 9, null, tmob))
+			if(statcheck(humanmob?.my_stats.st, 9, null, tmob))
 				if(humanmob.combat_mode)
-					if(prob(70+humanmob.my_stats.get_stat(STAT_ST)))
+					if(prob(70+humanmob.my_stats.st))
 						visible_message("<span class='bname'>[src]</span> tries to push <span class='bname'>[AM]</span>")
 						now_pushing = 0
 						return
@@ -237,7 +236,7 @@
 			b_loss += 60
 
 			for(var/datum/organ/external/E in organs)
-				if(prob(150-src.my_stats.get_stat(STAT_HT)*10))
+				if(prob(150-src.my_stats.ht*10))
 					E.fracture()
 
 			if (prob(getarmor(null, "bomb")))
@@ -260,7 +259,7 @@
 			if (prob(50) && !shielded)
 				Paralyse(10)
 			for(var/datum/organ/external/E in organs)
-				if(prob(110-src.my_stats.get_stat(STAT_HT)*10))
+				if(prob(110-src.my_stats.ht*10))
 					E.fracture()
 
 	var/update = 0
@@ -475,7 +474,7 @@
 			return "[idcard.assignment]"
 		else
 			return get_id_name("Unknown")
-	if(isStealth())
+	if(stealth || brothelstealth)
 		return get_id_name("R a t")		//MODO STEALTH
 	var/face_name = get_face_name()
 	var/id_name = get_id_name("")
@@ -640,7 +639,7 @@
 		else if (href_list["interaction"] == "kiss")
 			if( ((Adjacent(P) && !istype(P.loc, /obj/structure/closet)) || (H.loc == P.loc)) && mouthfree && mouthfree_p  && (H.species.flags & HAS_LIPS) && (P.species.flags & HAS_LIPS))
 				if(H.wear_mask && H.wear_mask.flags & MASKCOVERSMOUTH)
-					to_chat(H, "<span class='combat'>[pick(fnord)] my mask is in the way!</span>")
+					to_chat(H, "<span class='combat'>[pick(nao_consigoen)] my mask is in the way!</span>")
 					return
 				if (H.lust == 0)
 					H.visible_message("<span class='erpbold'>[H]</span> <span class='erp'>kisses</span> <span class='erpbold'>[P]</span>")
@@ -653,7 +652,8 @@
 				if(H?.mind?.succubus)
 					if(!P.check_event(H.real_name))
 						to_chat(P, "<span class='horriblestate' style='font-size: 200%;'><b><i>I NEED TO FUCK [H]!</i></b></span>")
-						src.my_stats.add_mod("succubus\ref[H]", stat_list(ST = -3, DX = -3), override = TRUE) //ref since multiple can kiss you.
+						P.my_stats.st -= 3
+						P.my_stats.dx -= 3
 					H.succubus_mood(P)
 				if(H.gender == FEMALE)
 					if(P.gender == MALE || P.gender == FEMALE && P.has_penis() || P.isFemboy())
@@ -895,7 +895,9 @@
 	if(istype(src.glasses, /obj/item/clothing/glasses/sunglasses))
 		number += 1
 	if(istype(src.glasses, /obj/item/clothing/glasses/welding))
-		number += 2
+		var/obj/item/clothing/glasses/welding/W = src.glasses
+		if(!W.up)
+			number += 2
 	return number
 
 
@@ -1518,6 +1520,9 @@
 		W.add_fingerprint(src)
 
 /mob/living/carbon/human/proc/exam_self()
+//	set name = "Examine Self"
+//	set category = "IC"
+
 
 
 	if(istype(src, /mob/living/carbon/human))
@@ -1557,7 +1562,7 @@
 				status += "<span class='missingnew'><big>MISSING</big></span>"
 			if(org.status & ORGAN_MUTATED)
 				status += "<span class='magentatext'>MISSHAPEN</span>"
-			if(org.germ_level >= INFECTION_LEVEL_ONE)
+			if(org.germ_level >= 1)
 				status += "<span class='redtext'>FESTERING</span>"
 			if(org.status & ORGAN_BLEEDING)
 				status += "<span class='redtext'>BLEEDING</span>"
@@ -1585,10 +1590,7 @@
 			if(status.len)
 				msg += "<span class='statustext'>¤ [capitalize(org.display_name)]: [english_listt(status)]</span>\n"
 			else
-				var/ok_msg = "OK"
-				if(isrev)
-					ok_msg = "<span class ='passivebold'>INTEGRAL</span>"
-				msg += "<span class='statustext'>¤ [capitalize(org.display_name)]: [ok_msg]</span>\n"
+				msg += "<span class='statustext'>¤ [capitalize(org.display_name)]: OK</span>\n"
 
 		to_chat(src, "[msg]</div></div>", 10)
 
@@ -1751,7 +1753,6 @@
 				H.hide_cone()
 				animate(client, pixel_x = world.icon_size*_x, pixel_y = world.icon_size*_y, time = 2, easing = SINE_EASING)
 				set_face_dir(dir)//Face what we're zoomed in on.
-				src.visible_message("<span class='notice'>[src] peers into the distance.</span>")
 	else
 		if(do_normal_zoom)
 			if(ishuman(src))
@@ -1768,13 +1769,9 @@
 	var/intent = user.a_intent
 	var/datum/organ/external/affectedorgan = src.get_organ(user.zone_sel.selecting)
 	var/list/allowedCheckPulse = list("right hand", "right arm", "left arm", "left hand")
-	if(user.combat_mode)
-		if(user.Adjacent(src))
-			var/obj/item/I = user.get_active_hand()
-			if(!I)
-				return
-			I.attack(src, user, user.zone_sel.selecting, TRUE)
-			return
+	if(intent == "hurt")
+		do_combat_rmb(user)
+		return
 	if(intent == "help" && allowedCheckPulse.Find(affectedorgan.display_name))
 		src.check_pulse(user)
 		return
@@ -1794,10 +1791,10 @@
 
 /mob/living/carbon/human/proc/combatfail(var/failchance, var/meleereq)
 	if(src.m_intent != "walk")
-		if(prob(5+src.my_skills.GET_SKILL(SKILL_MELEE)+src.my_stats.get_stat(STAT_DX)))
+		if(prob(5+src.my_skills.GET_SKILL(SKILL_MELEE)+src.my_stats.dx))
 			return
 	else
-		if(prob(60+src.my_skills.GET_SKILL(SKILL_MELEE)+src.my_stats.get_stat(STAT_DX)))
+		if(prob(60+src.my_skills.GET_SKILL(SKILL_MELEE)+src.my_stats.dx))
 			return
 
 /mob/living/carbon/human/proc/god_text()

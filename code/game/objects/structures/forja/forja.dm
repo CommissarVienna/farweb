@@ -13,7 +13,7 @@
 /obj/structure/sharpener
 	name = "grinding stone"
 	desc = "A grinding stone used to sharpen weapons"
-	icon = 'icons/obj/structures.dmi'
+	icon = 'structures.dmi'
 	icon_state = "grinding"
 	density = 1
 	anchored = 0
@@ -36,7 +36,7 @@
 		return
 
 	if(M.wear_mask && M.wear_mask.flags & MASKCOVERSMOUTH)
-		to_chat(M, "<span class='combat'>[pick(fnord)] my mask is in the way!</span>")
+		to_chat(M, "<span class='combat'>[pick(nao_consigoen)] my mask is in the way!</span>")
 		return
 
 	var/datum/reagents/reagents = new/datum/reagents(2)
@@ -62,7 +62,7 @@
 		var/mob/living/carbon/human/H = M
 		if(H.job == "Jester")
 			H.say("Pipipipipipipipi...")
-			playsound(M.loc, 'sound/elchavo.ogg', rand(30, 50), 0)
+			playsound(M.loc, 'elchavo.ogg', rand(30, 50), 0)
 
 /obj/structure/water/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/alicate))
@@ -199,7 +199,7 @@
 
 /obj/structure/forja/attack_hand(mob/user)
 	if(onfire)
-		playsound(src.loc, 'sound/effects/torch_snuff.ogg', 50, 0)
+		playsound(src.loc, 'torch_snuff.ogg', 50, 0)
 		onfire = 0
 		update_icon()
 
@@ -209,7 +209,7 @@
 		var/obj/item/weapon/flame/F = W
 		if(F.lit)
 			onfire = 1
-			playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
+			playsound(src.loc, 'torch_light.ogg', 50, 0)
 			user.visible_message("<span class='passivebold'>[user]</span> <span class='passive'>lights the [src]!</span>")
 			update_icon()
 		else	if(onfire)

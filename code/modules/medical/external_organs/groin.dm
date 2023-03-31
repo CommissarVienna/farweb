@@ -24,20 +24,3 @@
 			owner.mutilate_genitals()
 	..()
 
-/datum/organ/external/groin/get_icon(var/icon/race_icon, var/icon/deform_icon,gender="", var/fat, var/lfwblocked = 0, var/lying = 0)
-	if(!istype(owner.species, /datum/species/human))
-		if(istype(owner.species,/datum/species/skinless))
-			if(fat)
-				race_icon = 'icons/mob/flesh/subhuman.dmi'
-	else if(istype(owner.species,/datum/species/human/child)) //race_icon wille already be the child set.
-		if(gender != "f")
-			gender = "c"
-	else if(fat)
-		race_icon = 'icons/mob/flesh/old/human_fat_old.dmi'
-	else if(gender == "f")
-		if(owner.age >= 60)
-			race_icon = 'icons/mob/flesh/old/human_old.dmi'
-
-	var/ls = lying ? "_l" : "_s"
-	return new /icon(race_icon, "[icon_name][gender ? "_[gender]" : ""][ls]")
-

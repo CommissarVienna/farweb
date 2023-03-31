@@ -418,7 +418,7 @@ var/global/global_eggs = 0
 
 /obj/effect/alien/egg/attackhand_right(mob/living/carbon/human/H)
 	if(status == BURST && istype(H.species, /datum/species/human/alien))
-		playsound(src.loc, pick('sound/webbers/alien_creep.ogg', 'sound/webbers/alien_creep2.ogg'), 50, 1)
+		playsound(src.loc, pick('alien_creep.ogg', 'alien_creep2.ogg'), 50, 1)
 		qdel(src)
 
 /obj/effect/alien/egg/proc/GetFacehugger()
@@ -441,17 +441,17 @@ var/global/global_eggs = 0
 		flick("egg_opening", src)
 		status = BURSTING
 		global_eggs = max(0, global_eggs-1)
-		playsound(src.loc, pick('sound/webbers/eggshake.ogg'), 60, 1)
+		playsound(src.loc, pick('eggshake.ogg'), 60, 1)
 		spawn(15)
 			status = BURST
 			child.loc = get_turf(src)
 
 			if(kill && istype(child))
 				child.Die()
-				playsound(src.loc, pick('sound/webbers/death_egg.ogg'), 60, 1)
+				playsound(src.loc, pick('death_egg.ogg'), 60, 1)
 
 			else
-				playsound(src.loc, pick('sound/webbers/eggopen.ogg'), 60, 1)
+				playsound(src.loc, pick('eggopen.ogg'), 60, 1)
 				for(var/mob/M in range(1,src))
 					if(CanHug(M))
 						child.Attach(M)

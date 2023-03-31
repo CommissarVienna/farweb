@@ -5,7 +5,7 @@
 	reward = "Nenhuma"
 	limitationsen = "None"
 	descriptionen = "Description"
-	rewarden = ""
+	rewarden = "None"
 	specialitem = null
 
 /datum/special/proc/pick_special()
@@ -434,15 +434,6 @@
 	description = "You have something extra."
 	descriptionen = "You have something extra."
 
-/datum/special/cucked
-	name = "cucked"
-	limitations = "Married Men."
-	limitationsen = "Married Men."
-	description = "You've been overwhelmed by your thoughts of infidelity. Have your wife sleep with at least 5 other men."
-	descriptionen = "You've been overwhelmed by your thoughts of infidelity. Have your wife sleep with at least 5 other men."
-	reward = "10 Cromossomos"
-	rewarden = "10 Chromosomes"
-
 /mob/living/carbon/human/proc/special_load()
 	if(special)
 		switch(special)
@@ -452,7 +443,7 @@
 					to_chat(src, "<span class='bname'>You're a succubus.</span>")
 					to_chat(src, " Able to enslave men through your bedroom tricks, check the Spider tab to check on your powers.")
 					src.verbs += /mob/living/carbon/human/proc/teleportSlaves
-					src.updateStatPanel()*/
+					src.updatePig()*/
 			if("notafraid")
 				//code aqui
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
@@ -466,27 +457,29 @@
 			if("silverobols")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
 			if("interestingperson")
-				src.my_stats.change_stat(STAT_ST , rand(-2,2))
-				src.my_stats.change_stat(STAT_DX , rand(-2,2))
-				src.my_stats.change_stat(STAT_HT , rand(-2,2))
-				src.my_stats.change_stat(STAT_IN , rand(-2,2))
+				src.my_stats.st += rand(-2,2)
+				src.my_stats.dx += rand(-2,2)
+				src.my_stats.pr += rand(-2,2)
+				src.my_stats.ht += rand(-2,2)
+				src.my_stats.im += rand(-2,2)
+				src.my_stats.it += rand(-2,2)
 			if("badshape")
-				src.my_stats.change_stat(STAT_HT , -2)
-				src.my_stats.change_stat(STAT_ST , -2)
+				src.my_stats.ht -= 2
+				src.my_stats.st -= 2
 			if("blueblood")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
 				src.add_event("nobleblood", /datum/happiness_event/noble_blood)
 			if("naturalgenius")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.change_stat(STAT_IN , 5)
+				src.my_stats.it = rand(14, 18)
 				if(check_perk(/datum/perk/illiterate))
 					src.perks.Remove(locate(/datum/perk/illiterate) in src.perks)
 				add_perk(/datum/perk/ref/teaching)
 			if("naturalwarrior")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.change_stat(STAT_ST , 2)
-				src.my_stats.change_stat(STAT_HT , 2)
-				src.my_stats.change_stat(STAT_DX , 2)
+				src.my_stats.st += rand(1,1)
+				src.my_stats.ht += rand(2,2)
+				src.my_stats.dx += rand(2,2)
 				src.my_skills.ADD_SKILL(SKILL_MELEE, 5)
 				src.my_skills.ADD_SKILL(SKILL_RANGE, 5)
 			if("screamerimmunity")
@@ -498,25 +491,25 @@
 			if("robustmeister")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
 				if(src.job == "Meister")
-					src.my_stats.change_stat(STAT_ST , 2)
-					src.my_stats.change_stat(STAT_HT , 3)
-					src.my_stats.change_stat(STAT_DX , 2)
+					src.my_stats.st += 2
+					src.my_stats.ht += 3
+					src.my_stats.dx += 4
 					src.my_skills.ADD_SKILL(SKILL_MELEE, 6)
 			if("squireheir")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
 				if(src.job == "Heir")
 					src.my_skills.ADD_SKILL(SKILL_MELEE, 4)
 					src.my_skills.ADD_SKILL(SKILL_RANGE, 4)
-					src.my_stats.change_stat(STAT_ST , 2)
+					src.my_stats.st += rand(2,3)
 					equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/security/marduk_alt2(src), slot_wear_suit)
 			if("michaelshepard")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
 				if(src.job == "Bum")
 					real_name = "Michael Shepard"
 					my_skills.ADD_SKILL(SKILL_MELEE, 6)
-					my_stats.change_stat(STAT_ST , 6)
-					my_stats.change_stat(STAT_HT , 6)
-					my_stats.change_stat(STAT_DX , 6)
+					my_stats.st += 6
+					my_stats.ht += 6
+					my_stats.dx += 6
 					name = "Michael Shepard"
 					gender = MALE
 					job = "Bum"
@@ -535,11 +528,11 @@
 						if("limb")
 							equip_to_slot_or_del(new /obj/item/weapon/organ/l_leg(src), slot_r_hand)
 			if("perception")
-				src.my_stats.change_stat(STAT_PR, 5)
+				src.my_stats.pr = rand(16,20)
 			if("paingain")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.change_stat(STAT_ST, 3)
-				src.my_stats.change_stat(STAT_HT, 2)
+				src.my_stats.st += 3
+				src.my_stats.ht += 2
 			if("grandma")
 				src.my_skills.ADD_SKILL(SKILL_SURG, 12)
 				src.my_skills.ADD_SKILL(SKILL_MEDIC, 12)
@@ -553,14 +546,14 @@
 				src.my_stats.dx += 3*/
 			if("bulletdodger")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.change_stat(STAT_DX , 3)
+				src.my_stats.dx += 3
 				src.name = "[src.real_name] Bullet Dodger"
 			if("gunnorth")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
 				src.my_skills.CHANGE_SKILL(SKILL_RANGE, 17)
 			if("goodheart")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.change_stat(STAT_HT , 3)
+				src.my_stats.ht += rand(2,3)
 			if("merchunt")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
 			if("alcoholicsober")
@@ -570,7 +563,7 @@
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
 			if("looksmart")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.change_stat(STAT_IN , 3)
+				src.my_stats.it = rand(3,5)
 			if("semiteblood")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
 				//src.jewish = TRUE
@@ -585,9 +578,9 @@
 			if("orphanbum")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
 				if(src.job == "Bum")
-					src.my_stats.change_stat(STAT_ST , 2)
-					src.my_stats.change_stat(STAT_HT , 2)
-					src.my_stats.change_stat(STAT_DX , 2)
+					src.my_stats.st = rand(11,13)
+					src.my_stats.ht = rand(13,14)
+					src.my_stats.dx = rand(13,14)
 					src.my_skills.ADD_SKILL(SKILL_MELEE, rand(8,11))
 					src.my_skills.ADD_SKILL(SKILL_RANGE, rand(8,11))
 			if("gloves")
@@ -597,12 +590,12 @@
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
 				if(src.gender == FEMALE)
 					src.my_skills.ADD_SKILL(SKILL_MELEE, 2)
-					src.my_stats.change_stat(STAT_ST , 3)
-					src.my_stats.change_stat(STAT_HT , 2)
+					src.my_stats.st += 3
+					src.my_stats.ht += 1
 					src.virgin = 0
 			if("fragile")
 				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.change_stat(STAT_HT , -4)
+				src.my_stats.ht -= 4
 			if("doublewp")
 				src.add_perk(/datum/perk/heroiceffort)
 			if("bouncer")
@@ -661,11 +654,15 @@
 					src.assignment = "Archmortus"
 					src.equip_to_slot_or_del(new /obj/item/clothing/mask/plaguedoctor(src), slot_wear_mask)
 					src.my_skills.ADD_SKILL(SKILL_MELEE, 2)
-					src.my_stats.change_stat(STAT_ST , 2)
-					src.my_stats.change_stat(STAT_HT , 1)
-					src.my_stats.change_stat(STAT_DX , 1)
-					src.my_stats.change_stat(STAT_IN , 1)
+					src.my_stats.st += 2
+					src.my_stats.ht += 1
+					src.my_stats.dx += 1
+					src.my_stats.it += 1
 
+					src.my_stats.initst = src.my_stats.st
+					src.my_stats.initht = src.my_stats.ht
+					src.my_stats.initdx = src.my_stats.dx
+					src.my_stats.initit = src.my_stats.it
 					for(var/obj/effect/landmark/start/S in landmarks_list)
 						if(S.name == "Archmortus")
 							src.forceMove(S.loc)
@@ -688,15 +685,17 @@
 						qdel(src.head)
 					if(src.belt)
 						qdel(src.belt)
-					src.equip_to_slot_or_del(new /obj/item/clothing/under/urchin(src), slot_w_uniform)
+					src.equip_to_slot_or_del(new /obj/item/clothing/under/child_jumpsuit(src), slot_w_uniform)
 					src.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/squire(src), slot_wear_suit)
 					src.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/child/shoes(src), slot_shoes)
 					src.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/newRevolver/duelista/neoclassic(src), slot_belt)
 					src.equip_to_slot_or_del(new /obj/item/ammo_magazine/box/c38(src), slot_r_store)
 
-					src.my_stats.set_stat(STAT_ST, rand(8,9))
-					src.my_stats.set_stat(STAT_HT, rand(8,10))
-
+					src.my_stats.st = rand(8,9)
+					src.my_stats.ht = rand(8,9)
+					src.my_stats.dx = rand(12,13)
+					src.my_stats.it = rand(8,11)
+					src.my_stats.pr = rand(12,14)
 			if("rebelsuccessor")
 				if(src.job == "Successor" && src.age >= 18)
 					if(src.wear_suit)
@@ -713,7 +712,7 @@
 					src.equip_to_slot_or_del(new /obj/item/clothing/suit/rebelsuccessor(src), slot_wear_suit)
 					src.my_skills.ADD_SKILL(SKILL_PARTY, rand(12,15))
 					src.my_skills.ADD_SKILL(SKILL_MELEE, 6)
-					src.my_stats.change_stat(STAT_ST , 3)
+					src.my_stats.st += 3
 			if("castrated")
 				if(src.age >= 18 && src.gender == MALE)
 					src.mutilated_genitals = 1
@@ -722,7 +721,7 @@
 					src.my_skills.ADD_SKILL(SKILL_MUSIC, 13)
 					src.my_skills.ADD_SKILL(SKILL_CLIMB, 13)
 					src.my_skills.ADD_SKILL(SKILL_THROW, 15)
-					src.my_stats.change_stat(STAT_DX , 3)
+					src.my_stats.dx += rand(3)
 					src.acrobat = 1
 			if("doinked")
 				if(src.gender == FEMALE)

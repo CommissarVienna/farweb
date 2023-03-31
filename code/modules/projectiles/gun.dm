@@ -165,7 +165,7 @@
 	if(HHC.gloves)
 		var/obj/item/clothing/gloves/G = HHC.gloves
 		if(!no_trigger_guard && G.blocks_firing)
-			to_chat(user,"<span class='combatbold'><span class='combat'>[pick(fnord)]</span> I can't pull the trigger in these gloves!</span>")
+			to_chat(user,"<span class='combatbold'><span class='combat'>[pick(nao_consigoen)]</span> I can't pull the trigger in these gloves!</span>")
 			return
 	if(safety)
 		click_empty(user, target)
@@ -193,7 +193,7 @@
 					playsound(src.loc, jam_sound, 100, 1)
 				is_jammed = 1
 				return 0
-		if(GP_FAIL)
+		if(GP_FAILED)
 			if(istype(src, /obj/item/weapon/gun/energy))
 				if (!is_malfunction && prob(explode_chance))
 					is_malfunction = 1

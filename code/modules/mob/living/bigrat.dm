@@ -5,7 +5,7 @@
 	item_worth = 10
 	name = "Big Rat"
 	real_name = "Big Rat"
-	attacksound = 'sound/effects/rat_attack.ogg'
+	attacksound = 'rat_attack.ogg'
 	viewrange = 4
 	zone_allowed = list("l_foot", "r_foot", "l_leg", "r_leg")
 
@@ -63,7 +63,7 @@
 
 /datum/unarmed_attack/rat
 	attack_verb = list("slash", "bit")
-	attack_sound = 'sound/weapons/bite.ogg'
+	attack_sound = 'bite.ogg'
 	miss_sound = 'sound/weapons/slashmiss.ogg'
 	damage = 1
 	sharp = 1
@@ -75,9 +75,12 @@
 
 	src.zone_sel = new /obj/screen/zone_sel( null )
 	potenzia = rand(16, 25)
-	my_stats.set_stat(STAT_ST, rand(2,3))
-	my_stats.set_stat(STAT_HT, rand(2,3))
-	my_stats.set_stat(STAT_DX, rand(2,3))
+	my_stats.initst = rand(2,3)
+	my_stats.initht = rand(2,3)
+	my_stats.initdx = rand(2,3)
+	my_stats.st = my_stats.initst
+	my_stats.ht = my_stats.initht
+	my_stats.dx = my_stats.initdx
 	my_skills.CHANGE_SKILL(SKILL_MELEE, rand(1,2))
 	for(var/obj/item/weapon/reagent_containers/food/snacks/organ/O in src.organ_storage)
 		O.bumorgans()
@@ -92,7 +95,7 @@
 /mob/living/carbon/human/monster/rat/Move()
 	if(resting || stat)
 		return ..()
-	var/selectedSound = pick('sound/effects/rat_life.ogg','sound/effects/rat_life2.ogg','sound/effects/rat_life3.ogg')
+	var/selectedSound = pick('rat_life.ogg','rat_life2.ogg','rat_life3.ogg')
 	if(prob(25))
 		playsound(loc, selectedSound, 80, 1)
 	return ..()

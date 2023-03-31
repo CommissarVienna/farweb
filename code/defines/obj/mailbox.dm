@@ -31,7 +31,7 @@
 	if(user.s_active)
 		user.s_active.close(user)
 	show_to(user)
-	playsound(src.loc, 'sound/effects/drawer_sound.ogg', 75, 0)
+	playsound(src.loc, 'drawer_sound.ogg', 75, 0)
 	user.visible_message("<span class='passivebold'>[user.name] opens the [src].</span>")
 
 /obj/item/weapon/storage/mail_box/kick_act()
@@ -102,14 +102,14 @@
 					return
 				Inquisitor_Points -= price
 				var/A = L[2]
-				playsound(src.loc, pick('sound/effects/mail1.ogg', 'sound/effects/mail2.ogg', 'sound/effects/mail3.ogg', 'sound/effects/mail4.ogg'), 75, 1)
+				playsound(src.loc, pick('mail1.ogg', 'mail2.ogg', 'mail3.ogg', 'mail4.ogg'), 75, 1)
 				return new A(src)
 /obj/item/weapon/storage/mail_box/attack_hand(mob/user as mob)
 	orient2hud(user)          // dunno why it wasn't before
 	if(user.s_active)
 		user.s_active.close(user)
 	show_to(user)
-	playsound(src.loc, 'sound/effects/drawer_sound.ogg', 75, 0)
+	playsound(src.loc, 'drawer_sound.ogg', 75, 0)
 	user.visible_message("<span class='passivebold'>[user.name] opens the [src].</span>")
 
 /obj/item/weapon/storage/mail_box/attackby(obj/item/I as obj, mob/living/carbon/human/user as mob)
@@ -205,7 +205,7 @@ var/global/obj/item/weapon/storage/evermail/evermail_ref = null
 	if(user.s_active)
 		user.s_active.close(user)
 	show_to(user)
-	playsound(src.loc, 'sound/effects/drawer_sound.ogg', 75, 1)
+	playsound(src.loc, 'drawer_sound.ogg', 75, 1)
 	user.visible_message("<span class='passivebold'>[user.name] opens the [src].</span>")
 
 /obj/item/weapon/storage/evermail/proc/receive(var/obj/item/P, var/isImportantMessage=0)

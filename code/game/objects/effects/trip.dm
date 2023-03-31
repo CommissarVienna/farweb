@@ -72,7 +72,7 @@ var/list/trip_markers = list()
 			var/atom/movable/buckled_to = H.buckled
 			buckled_to.forceMove(T.loc)
 	else
-		to_chat(src, "<span class='combat'>[pick(fnord)] I need to stay still!</span>")
+		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] I need to stay still!</span>")
 
 /obj/effect/trip/siege
 	name = ""
@@ -93,7 +93,7 @@ var/list/trip_markers = list()
 	if(!(H.siegesoldier))
 		return
 	if(!S.siegewar && (!(H.migclass) || !(H.migclass in classes_observers)))
-		to_chat(H, "[pick(fnord)] War isn't declared!")
+		to_chat(H, "[pick(nao_consigoen)] War isn't declared!")
 		return
 	..()
 

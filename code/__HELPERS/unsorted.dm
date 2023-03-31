@@ -721,7 +721,7 @@ proc/anim(turf/location as turf,target as mob|obj,a_icon,a_icon_state as text,fl
 		qdel(progbar)
 		return 0
 
-/proc/do_after(var/mob/user as mob, delay as num, var/numticks = 10, var/needhand = 1)
+/proc/do_after(var/mob/user as mob, delay as num, var/numticks = 5, var/needhand = 1)
 	if(!user || isnull(user) || user.doing_after)
 		return 0
 	if(numticks == 0)
@@ -732,10 +732,11 @@ proc/anim(turf/location as turf,target as mob|obj,a_icon,a_icon_state as text,fl
 	var/turf/T = get_turf(user)
 	var/holding = user.get_active_hand()
 	var/datum/progressbar/progbar
+	var/starttime = world.time
 	progbar = new(user, delay)
-	for (var/i = 1 to 16)
-		sleep(delayfraction/1.6)
-		progbar.update(i)
+	for(var/i = 0, i<numticks, i++)
+		sleep(delayfraction)
+		progbar.update(world.time - starttime)
 
 
 		if(!user || user.stat || user.weakened || user.stunned || !(user.loc == T))

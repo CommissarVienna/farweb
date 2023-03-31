@@ -23,7 +23,7 @@ var/list/emergency_rooms = list()
 /obj/machinery/emergency_room/process()
 	..()
 	if(active && !cooldown)
-		playsound(src.loc, 'sound/effects/klaxon_alarm.ogg',50,0, 30, 30)
+		playsound(src.loc, 'klaxon_alarm.ogg',50,0, 30, 30)
 		cooldown = TRUE
 		spawn(80)
 			cooldown = FALSE
@@ -54,7 +54,7 @@ var/list/emergency_rooms = list()
 	a.autosay("Alert: An emergency alarm has been triggered in the [activearea.name]!", "Emergency")
 	activearea.alarm_toggled = TRUE
 	message_admins("[user.key] triggered a alarm.")
-	playsound(src.loc, 'sound/effects/danger_alarm.ogg',80,0, 30, 30)
+	playsound(src.loc, 'danger_alarm.ogg',80,0, 30, 30)
 	active = TRUE
 	spawn(20)
 		processing_objects.Add(src)

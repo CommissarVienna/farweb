@@ -40,7 +40,7 @@ var/list/areas = list()
 	//world.log << "New: [src] [tag]"
 		related = list(src)
 
-		src.icon = 'icons/effects/alert.dmi'
+		src.icon = 'alert.dmi'
 		src.layer = 10
 	//	update_lights()
 		if(name == "Space")			// override defaults for space
@@ -311,7 +311,7 @@ var/list/areas = list()
 	if(master_mode == "holywar")
 		if(!L.client.ambience_playing)
 			L.client.ambience_playing = 1
-			L << sound('sound/music/war.ogg', repeat=1, wait=0, channel=9, 65)
+			L << sound('war.ogg', repeat=1, wait=0, channel=9, 65)
 
 	else
 
@@ -367,14 +367,14 @@ var/list/areas = list()
 		else if(istype(src, /area/dunwell/surface))
 			L << sound(pick('sound/lfwbambi/ambimo2.ogg','sound/lfwbambi/ambicha1.ogg'), repeat = 0, wait = 1, volume = L?.client?.prefs?.ambi_volume, channel = 25)
 			if(prob(50))
-				L << sound(pick('sound/lfwbambi/cavedrip1.ogg','sound/lfwbambi/cavedrip2.ogg','sound/lfwbambi/cavedrip3.ogg','sound/lfwbambi/cavedrip4.ogg','sound/lfwbambi/cavedrip5.ogg','sound/lfwbambi/cavedrip6.ogg','sound/lfwbambi/cavedrip7.ogg','sound/lfwbambi/cavedrip8.ogg'), repeat = 0, wait = 1, volume = L?.client?.prefs?.ambi_volume, channel = 25)
+				L << sound(pick('cavedrip1.ogg','cavedrip2.ogg','cavedrip3.ogg','cavedrip4.ogg','cavedrip5.ogg','cavedrip6.ogg','cavedrip7.ogg','cavedrip8.ogg'), repeat = 0, wait = 1, volume = L?.client?.prefs?.ambi_volume, channel = 25)
 		else if(istype(src, /area/dunwell/station))
 			L << sound(pick('sound/lfwbambi/ambigen6.ogg','sound/lfwbambi/ambigen13.ogg'), repeat = 0, wait = 1, volume = L?.client?.prefs?.ambi_volume, channel = 25)
 		else
-			L << sound(pick('sound/lfwbambi/amb1.ogg','sound/lfwbambi/amb2.ogg','sound/lfwbambi/amb3.ogg','sound/lfwbambi/amb4.ogg','sound/lfwbambi/amb5.ogg','sound/lfwbambi/amb6.ogg','sound/lfwbambi/amb7.ogg','sound/lfwbambi/amb8.ogg','sound/lfwbambi/amb9.ogg','sound/lfwbambi/amb10.ogg','sound/lfwbambi/amb11.ogg','sound/lfwbambi/amb12.ogg',
-			'sound/lfwbambi/amb13.ogg','sound/lfwbambi/amb14.ogg','sound/lfwbambi/amb15.ogg','sound/lfwbambi/amb16.ogg','sound/lfwbambi/amb17.ogg','sound/lfwbambi/amb18.ogg','sound/lfwbambi/amb19.ogg','sound/lfwbambi/amb20.ogg','sound/lfwbambi/amb21.ogg','sound/lfwbambi/amb22.ogg','sound/lfwbambi/amb23.ogg','sound/lfwbambi/amb24.ogg','sound/lfwbambi/amb25.ogg',
-			'sound/lfwbambi/amb26.ogg','sound/lfwbambi/amb27.ogg','sound/lfwbambi/amb28.ogg','sound/lfwbambi/amb30.ogg','sound/lfwbambi/amb31.ogg','sound/lfwbambi/amb32.ogg','sound/lfwbambi/amb33.ogg','sound/lfwbambi/amb34.ogg','sound/lfwbambi/amb35.ogg','sound/lfwbambi/amb36.ogg','sound/lfwbambi/amb37.ogg','sound/lfwbambi/amb38.ogg','sound/lfwbambi/amb39.ogg',
-			'sound/lfwbambi/amb40.ogg'), repeat = 0, wait = 1, volume = L?.client?.prefs?.ambi_volume, channel = 25)
+			L << sound(pick('amb1.ogg','amb2.ogg','amb3.ogg','amb4.ogg','amb5.ogg','amb6.ogg','amb7.ogg','amb8.ogg','amb9.ogg','amb10.ogg','amb11.ogg','amb12.ogg',
+			'amb13.ogg','amb14.ogg','amb15.ogg','amb16.ogg','amb17.ogg','amb18.ogg','amb19.ogg','amb20.ogg','amb21.ogg','amb22.ogg','amb23.ogg','amb24.ogg','amb25.ogg',
+			'amb26.ogg','amb27.ogg','amb28.ogg','amb30.ogg','amb31.ogg','amb32.ogg','amb33.ogg','amb34.ogg','amb35.ogg','amb36.ogg','amb37.ogg','amb38.ogg','amb39.ogg',
+			'amb40.ogg'), repeat = 0, wait = 1, volume = L?.client?.prefs?.ambi_volume, channel = 25)
 /*
 		if(istype(src, /area/dunwell/station/church))
 			sound = pick('sound/lfwbambi/church.ogg','sound/lfwbambi/amb34.ogg')
@@ -540,7 +540,7 @@ var/list/areas = list()
 					var/obj/LightTest = locate(/obj/effect/alertlighting/atmoslight) in D.loc
 					if(isnull(LightTest))
 						var/obj/effect/alertlighting/atmoslight/F = new/obj/effect/alertlighting/atmoslight(D.loc)
-						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blueold")
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
 						world << imagelight
 
 			else if(AEast.density != 1 && AEastA.name != AName)
@@ -557,7 +557,7 @@ var/list/areas = list()
 					var/obj/LightTest = locate(/obj/effect/alertlighting/atmoslight) in D.loc
 					if(isnull(LightTest))
 						var/obj/effect/alertlighting/atmoslight/F = new/obj/effect/alertlighting/atmoslight(D.loc)
-						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blueold")
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
 						world << imagelight
 						//world << "Image should be placed"
 
@@ -575,7 +575,7 @@ var/list/areas = list()
 					var/obj/LightTest = locate(/obj/effect/alertlighting/atmoslight) in D.loc
 					if(isnull(LightTest))
 						var/obj/effect/alertlighting/atmoslight/F = new/obj/effect/alertlighting/atmoslight(D.loc)
-						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blueold")
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
 						world << imagelight
 
 			else if(AWest.density != 1 && AWestA.name != AName)
@@ -592,7 +592,7 @@ var/list/areas = list()
 					var/obj/LightTest = locate(/obj/effect/alertlighting/atmoslight) in D.loc
 					if(isnull(LightTest))
 						var/obj/effect/alertlighting/atmoslight/F = new/obj/effect/alertlighting/atmoslight(D.loc)
-						var/image/imagelight = image('icons/effects/alert.dmi',F,icon_state = "blueold")
+						var/image/imagelight = image('alert.dmi',F,icon_state = "blueold")
 						world << imagelight
 			else
 				if(src.air_doors_activated != 1)

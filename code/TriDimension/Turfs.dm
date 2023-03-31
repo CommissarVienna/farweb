@@ -24,16 +24,13 @@ var/turf/global_openspace = list()
 	dynamic_lighting = 0
 	var/flooded = 0
 
-/turf/simulated/floor/open/AddTracks(typepath, bloodDNA, comingdir, goingdir, bloodcolor)//You cannot add tracks to open spaces.
-	return
-
 /turf/simulated/floor/open/New()
 	..()
 	if(!darkover)
 		darkover = new()
 		darkover.icon = 'icons/turf/walls.dmi'
 		darkover.icon_state = "dark_over"
-		darkover.plane = src.plane
+		darkover.plane = 15
 		darkover.mouse_opacity = 0
 	for(var/direction in cardinal)
 		var/turf/turf_to_check = get_step(src,direction)
@@ -41,7 +38,7 @@ var/turf/global_openspace = list()
 			continue
 		else if(istype(turf_to_check, /turf/simulated))
 			var/image/dark_side = image('icons/turf/walls.dmi', "dark_side", dir = direction)//turn(direction, 180))
-			dark_side.plane = src.plane
+			dark_side.plane = 15
 			dark_side.layer = 6
 			overlays += dark_side
 	src.vis_contents += darkover
@@ -75,7 +72,7 @@ var/turf/global_openspace = list()
 		if(H.lying)
 			for(var/obj/item/weapon/flame/torch/F in H.contents)
 				F.turn_off()
-		H.visible_message("<span class='bname'>[M.name]</span> flounders in water!")
+		H.visible_message("<span class='bname'>[M.name]</span> floundes in water!")
 		H.adjustStaminaLoss(rand(1,2))
 		playsound(H.loc, 'sound/effects/fst_water_jump_down_01.ogg', 80, 1, -1)
 
@@ -90,7 +87,7 @@ var/turf/global_openspace = list()
 	if(do_after(H, 42-H.my_skills.GET_SKILL(SKILL_CLIMB)))
 		var/list/rolled = roll3d6(H,SKILL_CLIMB,null)
 		switch(rolled[GP_RESULT])
-			if(GP_SUCC, GP_CRITSUCC)
+			if(GP_SUCCESS, GP_CRITSUCCESS)
 				var/turf/T = locate(src.x, src.y, src.z-1)
 				if(T.density)
 					to_chat(H, "<span class='hitbold'>  I cannot climb there!</span>")
@@ -99,7 +96,7 @@ var/turf/global_openspace = list()
 				playsound(H.loc, 'sound/effects/climb.ogg', 40, 1)
 				H.visible_message("<span class='baronboldoutlined'>[H]</span> climbs down.")
 
-			if(GP_FAIL)
+			if(GP_FAILED)
 				var/turf/T = locate(src.x, src.y, src.z-1)
 				if(T.density)
 					to_chat(H, "<span class='hitbold'>  I cannot climb there!</span>")
@@ -177,13 +174,13 @@ var/turf/global_openspace = list()
 		src.visible_message("<span class='bname'>[src.name]</span> lands softly!")
 		return
 	var/damage = 10
-	var/list/roll_result = roll3d6(src, src.my_stats.get_stat(STAT_DX), -1, FALSE, TRUE)
+	var/list/roll_result = roll3d6(src, src.my_stats.dx, -1, FALSE, TRUE)
 	switch(roll_result[GP_RESULT])
-		if(GP_CRITSUCC)
+		if(GP_CRITSUCCESS)
 			src.visible_message("<span class='bname'>[src.name]</span> lands softly!")
 			playsound(src, pick('sound/webbers/fst_stone_solid_land_01.ogg', 'sound/webbers/fst_stone_solid_land_02.ogg'), 80, 1)
 			return
-		if(GP_SUCC)
+		if(GP_SUCCESS)
 			src.visible_message("<span class='bname'>[src.name]</span> lands softly!")
 			playsound(src, pick('sound/webbers/fst_stone_solid_land_01.ogg', 'sound/webbers/fst_stone_solid_land_02.ogg'), 80, 1)
 			return
@@ -195,8 +192,8 @@ var/turf/global_openspace = list()
 			continue
 		var/organ = pick("chest", "head")
 		victim.emote("scream")
-		victim.apply_damage(src.my_stats.get_stat(STAT_HT) + src.my_stats.get_stat(STAT_ST) * 1.5, BRUTE, organ)
-		victim.Stun(src.my_stats.get_stat(STAT_HT))
+		victim.apply_damage(src.my_stats.ht + src.my_stats.st * 1.5, BRUTE, organ)
+		victim.Stun(src.my_stats.ht)
 		victim.updatehealth()
 		victim.update_canmove()
 	apply_damage(damage/2 + rand(-5,12), BRUTE, "l_leg")

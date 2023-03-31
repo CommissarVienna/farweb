@@ -7,6 +7,7 @@ var/global/obj/effect/overlay/slmaster = null
 var/global/times_came = 0
 
 var/global/list/active_areas = list()
+var/global/list/gibbed_people = list()
 var/global/list/all_areas = list()
 var/global/list/machines = list()
 var/global/list/processing_objects = list()
@@ -49,7 +50,7 @@ var/list/paper_blacklist = list("java","onblur","onchange","onclick","ondblclick
 
 var/global/list/nao_consigo = list("Merda!", "Droga!", "Inferno!", "Porra!", "Desgraça!")
 
-var/global/list/fnord = list("Fnord,", "No!", "I've failed,", "NOPE!", "Krya,", "Neca de pitibiribas,","I wish I could but no,", "I've tried my hardest but,")
+var/global/list/nao_consigoen = list("Fnord,", "No!", "I've failed,", "NOPE!", "Krya,", "Neca de pitibiribas,")
 
 var/BLINDBLOCK = 0
 var/DEAFBLOCK = 0
@@ -241,7 +242,7 @@ var/list/awaydestinations = list()	//a list of landmarks that the warpgate can t
 
 var/sqladdress = "127.0.0.1"
 var/sqlport = "3306"
-var/sqldb = "farweb"
+var/sqldb = "white"
 var/sqllogin = "root"
 var/sqlpass = ""
 

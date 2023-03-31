@@ -3,8 +3,7 @@
 	desc = "Useful for sweeping alleys."
 	icon_state = "shotgun"
 	item_state = "shotgun"
-	wielded_icon = TRUE
-	wielded_underlay = TRUE
+	wielded_icon = "shotgun-wielded"
 	w_class = 4.0
 	force = 10
 	slot_flags = SLOT_BACK
@@ -12,15 +11,15 @@
 	mag_type = /obj/item/ammo_magazine/internal/shot
 	stacktype = /obj/item/stack/bullets/buckshot
 	spenttype = /obj/item/ammo_casing/spent/shotgun
-	recoil = 1
-	item_worth = 195
-	jam_chance = 8
-	load_shell_sound = 'sound/weapons/shotgunshell.ogg'
-	fire_sound = 'sound/weapons/Shotgun.ogg'
-	weight = 8
 	var/recentpump = 0 // to prevent spammage
 	var/pumped = 0
+	recoil = 1
 	var/pumpsound = 'sound/weapons/shotgunpump.ogg'
+	item_worth = 195
+	jam_chance = 8
+	load_shell_sound = 'shotgunshell.ogg'
+	fire_sound = 'Shotgun.ogg'
+	weight = 8
 
 /obj/item/weapon/gun/projectile/shotgun/process_chambered()
 	var/obj/item/ammo_casing/AC = chambered //Find chambered round
@@ -63,7 +62,7 @@
 			new stacktype (get_turf(src))
 		else
 			new spenttype (get_turf(src))
-		playsound(src.loc, 'sound/weapons/shotgunshell.ogg', 60, 1)
+		playsound(src.loc, 'shotgunshell.ogg', 60, 1)
 		chambered = null
 		if(in_chamber)
 			in_chamber = null
@@ -554,7 +553,7 @@
 	desc = "This piece of junk looks like something that could have been used 700 years ago"
 	icon_state = "princess"
 	item_state = "princess"
-	load_shell_sound = 'sound/weapons/boltaction_load.ogg'
+	load_shell_sound = 'boltaction_load.ogg'
 	wielded_icon = "princess_wielded"
 	item_worth = 195
 	caliber = ".762"
@@ -562,7 +561,7 @@
 	jam_chance = 5
 	pumpsound = 'sound/weapons/boltpump.ogg'
 	mag_type = /obj/item/ammo_magazine/internal/princ
-	fire_sound = 'sound/weapons/princess_fire.ogg'
+	fire_sound = 'princess_fire.ogg'
 	stacktype = /obj/item/stack/bullets/rifle
 	spenttype = /obj/item/ammo_casing/spent/rifle
 	weight = 7

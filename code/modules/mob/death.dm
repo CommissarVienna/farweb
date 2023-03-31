@@ -15,7 +15,7 @@
 
 //	flick("gibbed-m", animation)
 	gibs(loc, viruses, dna)
-	src << 'sound/death_sound.ogg'
+	src << 'death_sound.ogg'
 	dead_mob_list -= src
 	spawn(15)
 		if(animation)	qdel(animation)
@@ -37,7 +37,7 @@
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src
-	src << 'sound/death_sound.ogg'
+	src << 'death_sound.ogg'
 //	flick("dust-m", animation)
 	new /obj/effect/decal/cleanable/ash(loc)
 

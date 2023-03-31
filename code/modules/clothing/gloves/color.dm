@@ -32,12 +32,26 @@
 	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_HEAT_PROTECTION_TEMPERATURE
 
+
+	hos
+		item_color = "hosred"		//Exists for washing machines. Is not different from black gloves in any way.
+
+	ce
+		item_color = "chief"			//Exists for washing machines. Is not different from black gloves in any way.
+
 /obj/item/clothing/gloves/black/inquisitor
 	name = "fencer gloves"
 	desc = "fencer gloves worn by an inquisitor."
 	icon_state = "bast"
 	item_state = "bast"
 	item_color="black"
+
+/obj/item/clothing/gloves/orange
+	name = "orange gloves"
+	desc = "A pair of gloves, they don't look special in any way."
+	icon_state = "orange"
+	item_state = "orangegloves"
+	item_color="orange"
 
 /obj/item/clothing/gloves/red
 	name = "red gloves"
@@ -46,6 +60,30 @@
 	item_state = "redgloves"
 	item_color = "red"
 
+/obj/item/clothing/gloves/rainbow
+	name = "rainbow gloves"
+	desc = "A pair of gloves, they don't look special in any way."
+	icon_state = "rainbow"
+	item_state = "rainbowgloves"
+	item_color = "rainbow"
+
+	clown
+		item_color = "clown"
+
+/obj/item/clothing/gloves/blue
+	name = "blue gloves"
+	desc = "A pair of gloves, they don't look special in any way."
+	icon_state = "blue"
+	item_state = "bluegloves"
+	item_color="blue"
+
+/obj/item/clothing/gloves/purple
+	name = "purple gloves"
+	desc = "A pair of gloves, they don't look special in any way."
+	icon_state = "purple"
+	item_state = "purplegloves"
+	item_color="purple"
+
 /obj/item/clothing/gloves/green
 	name = "green gloves"
 	desc = "A pair of gloves, they don't look special in any way."
@@ -53,12 +91,35 @@
 	item_state = "greengloves"
 	item_color="green"
 
+/obj/item/clothing/gloves/grey
+	name = "grey gloves"
+	desc = "A pair of gloves, they don't look special in any way."
+	icon_state = "gray"
+	item_state = "graygloves"
+	item_color="grey"
+
+	rd
+		item_color = "director"			//Exists for washing machines. Is not different from gray gloves in any way.
+
+	hop
+		item_color = "hop"				//Exists for washing machines. Is not different from gray gloves in any way.
+
+/obj/item/clothing/gloves/light_brown
+	name = "light brown gloves"
+	desc = "A pair of gloves, they don't look special in any way."
+	icon_state = "lightbrown"
+	item_state = "lightbrowngloves"
+	item_color="light brown"
+
 /obj/item/clothing/gloves/brown
 	name = "brown gloves"
 	desc = "A pair of gloves, they don't look special in any way."
 	icon_state = "brown"
 	item_state = "browngloves"
 	item_color="brown"
+
+	cargo
+		item_color = "cargo"				//Exists for washing machines. Is not different from brown gloves in any way.
 
 /obj/item/clothing/gloves/jester
 	name = "jester's gloves"

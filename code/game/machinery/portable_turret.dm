@@ -507,7 +507,7 @@ Status: []<BR>"},
 	else
 		icon_state = "[lasercolor]orange_target_prism"
 	if(sound)
-		playsound(src.loc, 'sound/weapons/Gunshot3.ogg', 75, 1)
+		playsound(src.loc, 'Gunshot3.ogg', 75, 1)
 	for(var/i = 0; i <= 3; i++)
 		var/obj/item/projectile/bullet/princess/A
 		if(emagged)

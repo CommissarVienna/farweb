@@ -17,8 +17,8 @@
 
 /obj/item/clothing/suit/storage/jester_suit
 	name = "jester's suit"
-	icon_state = "mijester"
-	item_color = "mijester"
+	icon_state = "jester"
+	item_color = "jester"
 	species_restricted = list("Midget")
 	storage_slots = 7
 	max_w_class = 2

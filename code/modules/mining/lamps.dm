@@ -199,7 +199,7 @@
 
 /obj/machinery/soulbreaker_light
 	name = "lamp"
-	icon = 'icons/sb_decor.dmi'
+	icon = 'sb_decor.dmi'
 	icon_state = "lamp"
 	desc = ""
 	density = 1
@@ -227,7 +227,7 @@
 
 /obj/effect/soulbreaker_beam
 	name = "soulbreaker light overlay"
-	icon = 'icons/sb_decor.dmi'
+	icon = 'sb_decor.dmi'
 	icon_state = "lampo"
 	plane = 0
 	layer = 3

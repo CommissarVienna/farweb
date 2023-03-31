@@ -10,7 +10,7 @@
 	if(!M.canmove)
 		return
 	to_chat(M, "Searching...")
-	playsound(src.loc, 'sound/webbers/console_interact7.ogg', 60, 0)
+	playsound(src.loc, 'console_interact7.ogg', 60, 0)
 	for(var/mob/living/carbon/human/H in mob_list)
 		if(istype(H.amulet, /obj/item/clothing/head/amulet/breaker))
 			H.forceMove(src.loc)
@@ -34,7 +34,7 @@
 
 /obj/machinery/computer/sellbreaker/attack_hand(mob/living/carbon/human/M as mob)
 	to_chat(M, "Searching...")
-	playsound(src.loc, 'sound/webbers/console_interact7.ogg', 60, 0)
+	playsound(src.loc, 'console_interact7.ogg', 60, 0)
 	for(var/obj/structure/stool/bed/chair/breaker/B in range(src,2))
 		if(istype(B.buckled_mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = B.buckled_mob
@@ -77,4 +77,4 @@
 		if("Noble")
 			slavetype = "Work"
 	to_chat(user, "SLAVE TYPE: [slavetype]")
-	playsound(src.loc, 'sound/webbers/console_interact7.ogg', 60, 0)
+	playsound(src.loc, 'console_interact7.ogg', 60, 0)

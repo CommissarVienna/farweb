@@ -1,5 +1,5 @@
 /obj/item/peg_parts
-	icon = 'icons/obj/pegbody.dmi'
+	icon = 'pegbody.dmi'
 	var/list/part = null
 
 /obj/item/peg_parts/l_foot

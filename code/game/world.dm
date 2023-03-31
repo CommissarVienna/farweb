@@ -4,8 +4,6 @@ var/current_server
 	turf = /turf/simulated/wall/r_wall/cave
 	area = /area/dunwell/surface
 	view = "15x15"
-	hub = "Exadv1.spacestation13"
-	hub_password = "kMZy3U5jJHSiBQjr"
 	cache_lifespan = 0	//stops player uploaded stuff from being kept in the rsc past the current session
 	sleep_offline = FALSE
 
@@ -55,7 +53,7 @@ var/rtlog_path
 	if(src.port == IZ3_PORT)
 		server_language = "IZ"
 		current_server = "S3"
-		hub_password = "kMZy3U5jJHSiBQjr"
+		hub_password = "SORRYNOPASSWORD"
 		if(send_roundstart_embed != "True")
 			world.log << "Failed to send roundstart embed!"
 			del(world)
@@ -75,11 +73,11 @@ var/rtlog_path
 		// dumb and hardcoded but I don't care~
 		config.server_name += " #[(world.port % 1000) / 100]"
 
-	world_name()
 	callHook("startup")
 	load_admins()
 	LoadBansjob()
 	load_whitelist()
+#ifdef FARWEB_LIVE
 	load_db_whitelist()
 	load_db_bans()
 	load_comrade_list()
@@ -87,7 +85,7 @@ var/rtlog_path
 	load_villain_list()
 	build_donations_list()
 	get_story_id()
-
+#endif
 	href_logfile = file("data/logs/[server_language]-[current_server]/STORY[story_id]-[date_string] hrefs.htm")
 	diary = file("data/logs/[server_language]-[current_server]/STORY[story_id]-[date_string].log")
 	diaryofmeanpeople = file("data/logs/[server_language]-[current_server]/STORY[story_id]-[date_string] Attack.log")
@@ -186,13 +184,14 @@ var/rtlog_path
 		*/
 	for(var/client/C in clients)
 		C << link("byond://[world.address]:[world.port]")
+	if(send_roundend_embed != "True")
+		world.log << "Failed to send roundend embed!"
 	if(roundendping.len > 0)
 		for(var/C in roundendping)
 			TgsChatPrivateMessage("[current_server] has restarted!", C)
 	TgsReboot()
 	TgsEndProcess()
 	..(reason)
-	
 
 /hook/startup/proc/loadMode()
 	world.load_mode()
@@ -226,21 +225,21 @@ var/rtlog_path
 
 /world/proc/update_status()
 	var/s = ""
-
+/*
 	if (config && config.server_name)
-		s += "<b>[config.server_name]</b> &#8212; "
+		s += "<b>[server_language] | [config.server_name]</b> &#8212; "
 
-	s += "<b>[vessel_name()]</b>";
+	s += "<b>[vessel_name()]</b>";*/
 	s += "<b>[vessel_name()]</b> &#8212; "
 	s += " ("
-	s += "<a href=\"https://discord.gg/gyvEzxXJsV\">" //Change this to wherever you want the hub to link to.
+	s += "<a href=\"https://discord.gg/JcVcG6JxJm\">" //Change this to wherever you want the hub to link to.
 //	s += "[game_version]"
-	s += "Discord"  //Replace this with something else. Or ever better, delete it and uncomment the game version.
+	s += "Dungeon"  //Replace this with something else. Or ever better, delete it and uncomment the game version.
 	s += "</a>"
 	s += ")"
 
 	var/list/features = list()
-
+/*
 	if(ticker)
 		if(master_mode)
 			features += master_mode
@@ -249,7 +248,7 @@ var/rtlog_path
 
 	if (!enter_allowed)
 		features += "trancado"
-
+*/
 	//features += abandon_allowed ? "respawn" : "no respawn"
 
 	var/n = 0
@@ -272,8 +271,8 @@ var/rtlog_path
 	s += "<br><b>Map of the Week:</b> [currentmaprotation]"
 	if(master_mode == "holywar")
 		s += "<br><b>HOLY WAR!</b>"
-	if(master_mode == "minimig")
-		s += "<br><b>MINIMIG!</b>"
+	if(master_mode == "miniwar")
+		s += "<br><b>MINIWAR!</b>"
 	/* does this help? I do not know */
 	if (src.status != s)
 		src.status = s
@@ -281,14 +280,14 @@ var/rtlog_path
 #define FAILED_DB_CONNECTION_CUTOFF 5
 var/failed_db_connections = 0
 
-
+#ifdef FARWEB_LIVE
 /hook/startup/proc/connectDB()
 	if(!setup_database_connection())
 		world.log << "Your server failed to establish a connection with the feedback database."
 	else
 		world.log << "Feedback database connection established."
 	return 1
-
+#endif
 
 proc/setup_database_connection()
 	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.

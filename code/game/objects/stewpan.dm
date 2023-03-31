@@ -8,7 +8,6 @@
 	r_range = 4
 	density = 0
 	var/comesoff = 1
-	particlePath = null
 
 /obj/structure/fireplace/hearth/New()
 	..()
@@ -25,7 +24,7 @@
 	item_state = "cannonball"
 	var/fervendo = 0
 	var/leftToFerver = 200
-	drop_sound = 'sound/effects/helm_drop.ogg'
+	drop_sound = 'helm_drop.ogg'
 
 /obj/item/weapon/reagent_containers/glass/beaker/stewpan/process()
 	var/turf/T = get_turf(src)

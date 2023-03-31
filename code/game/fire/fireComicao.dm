@@ -74,7 +74,7 @@
 				src.chanceToGrow += 200
 				qdel(R)
 			else
-				playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 0)
+				playsound(src.loc, 'torch_snuff.ogg', 75, 0)
 				qdel(src)
 				return
 		if(!A.flammable)
@@ -88,12 +88,12 @@
 			I.flammable = 0
 			spawn(40)
 				new/obj/item/ash(I.loc)
-				playsound(src,pick('sound/effects/dustdrop.ogg','sound/effects/fx_dust_a_01.ogg','sound/effects/fx_dust_a_02.ogg','sound/effects/fx_dust_a_03.ogg'),75)
+				playsound(src,pick('dustdrop.ogg','fx_dust_a_01.ogg','fx_dust_a_02.ogg','fx_dust_a_03.ogg'),75)
 				I.visible_message("<span class='combat'>[I] is consumed by fire!</span>")
 				qdel(I)
 		else if(ishuman(A))
 			var/mob/living/carbon/human/H = A
-			if(isskeleton(H))
+			if(H?.species?.name == "Skeleton")
 				continue
 			if(prob(35 * state))
 				H.apply_damage(damage * 1.5, BURN, pick("l_foot", "r_foot", "l_leg", "r_leg", "chest", "head"))
@@ -101,7 +101,7 @@
 				if(H.health < -70)
 					if(prob(1) && H.on_fire && H.resting)
 						H.visible_message("<span class='combat'>[H] is consumed by fire!</span>")
-						playsound(src,pick('sound/effects/dustdrop.ogg','sound/effects/fx_dust_a_01.ogg','sound/effects/fx_dust_a_02.ogg','sound/effects/fx_dust_a_03.ogg'),75)
+						playsound(src,pick('dustdrop.ogg','fx_dust_a_01.ogg','fx_dust_a_02.ogg','fx_dust_a_03.ogg'),75)
 						H.dust()
 				if(prob(80))
 					H.on_fire = 1
@@ -112,7 +112,7 @@
 			A.flammable = 0
 			spawn(40)
 				new/obj/item/ash(A.loc)
-				playsound(src,pick('sound/effects/dustdrop.ogg','sound/effects/fx_dust_a_01.ogg','sound/effects/fx_dust_a_02.ogg','sound/effects/fx_dust_a_03.ogg'),75)
+				playsound(src,pick('dustdrop.ogg','fx_dust_a_01.ogg','fx_dust_a_02.ogg','fx_dust_a_03.ogg'),75)
 				A.visible_message("<span class='combat'>[A] is consumed by fire!</span>")
 				qdel(A)
 		else
@@ -121,7 +121,7 @@
 			A.flammable = 0
 			spawn(50)
 				new/obj/item/ash(A.loc)
-				playsound(src,pick('sound/effects/dustdrop.ogg','sound/effects/fx_dust_a_01.ogg','sound/effects/fx_dust_a_02.ogg','sound/effects/fx_dust_a_03.ogg'),75)
+				playsound(src,pick('dustdrop.ogg','fx_dust_a_01.ogg','fx_dust_a_02.ogg','fx_dust_a_03.ogg'),75)
 				A.visible_message("<span class='combat'>[A] is consumed by fire!</span>")
 				qdel(A)
 
@@ -164,19 +164,19 @@
 
 	if(timeLeft == 0)
 		if(state == FIRE_BIG)
-			playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 0)
+			playsound(src.loc, 'torch_snuff.ogg', 75, 0)
 			state -= 1
 			timeLeft += 60 SECONDS
 			updateRandom()
 			return
 		if(state == FIRE_MEDIUM)
-			playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 0)
+			playsound(src.loc, 'torch_snuff.ogg', 75, 0)
 			state -= 1
 			timeLeft += 30 SECONDS
 			updateRandom()
 			return
 		if(state == FIRE_SMALL)
-			playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 0)
+			playsound(src.loc, 'torch_snuff.ogg', 75, 0)
 			qdel(src)
 			return
 
@@ -206,7 +206,7 @@
 
 /obj/structure/fire/fluid_act()
 	..()
-	playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 0)
+	playsound(src.loc, 'torch_snuff.ogg', 75, 0)
 	qdel(src)
 	return
 

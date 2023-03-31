@@ -9,7 +9,7 @@
 
 /datum/game_mode/allmig/announce()
 	world << "<B>All migration!</B>"
-	world << 'sound/music/allmigration_start.ogg'
+	world << 'allmigration_start.ogg'
 
 /datum/game_mode/allmig/pre_setup()
 	return 1

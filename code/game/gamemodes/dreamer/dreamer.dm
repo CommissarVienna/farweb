@@ -33,11 +33,11 @@
 	H.my_skills.CHANGE_SKILL(SKILL_RANGE, 13)
 	H.my_skills.CHANGE_SKILL(SKILL_CRAFT, 15)
 	H.vice = "Graphomaniac"
-
-	H.my_stats.change_stat(STAT_ST , 15)
-	H.my_stats.change_stat(STAT_DX , 5)
-	H.my_stats.change_stat(STAT_HT , 15)
+	H.my_stats.st = rand(20,25)
+	H.my_stats.dx += rand(5,5)
+	H.my_stats.ht = rand(20,25)
 	H.verbs += /mob/living/carbon/human/proc/dreamer
+	H.updatePig()
 	H.consyte = 0
 	H.status_flags |= STATUS_NO_PAIN
 	starringlist += "[H.key] "
@@ -46,7 +46,7 @@
 			H.religion = "Gray Church"
 
 /datum/game_mode/dreamer/pre_setup()
-	var/list/possible_dreamers = get_players_for_antag()
+	var/list/possible_dreamers = get_players_for_role(BE_TRAITOR)
 	var/max_dreamer = 1
 
 	for(var/j = 0, j < max_dreamer, j++)

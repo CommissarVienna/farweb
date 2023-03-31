@@ -122,8 +122,6 @@ proc/iszombie(A)
 		var/mob/living/carbon/human/H = A
 		if(H.species && (H.species.name == "Zombie" || H.species.name == "Zombie Child"))
 			return 1
-		if(H.zombie)
-			return 1
 	if(istype(A, /mob/living/carbon))
 		var/mob/living/carbon/C = A
 		if(C.zombie)
@@ -141,9 +139,7 @@ proc/isskeleton(A)
 	if(istype(A, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = A
 		if(H.species && istype(H.species, /datum/species/human/skeleton))
-			return TRUE
-		if(SKELETON in H.mutations)
-			return TRUE
+			return 1
 	return 0
 
 proc/hasorgans(A)

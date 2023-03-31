@@ -1,6 +1,6 @@
 /obj/machinery/card_scanner
 	name = "card scanner"
-	icon = 'icons/obj/monitors.dmi'
+	icon = 'monitors.dmi'
 	icon_state = "card_scanner"
 	var/obj/machinery/door/my_door = null
 	proc

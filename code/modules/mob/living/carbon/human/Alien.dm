@@ -45,6 +45,8 @@
 
 /datum/species/human/alien/handle_post_spawn(var/mob/living/carbon/human/H)
 	H.density = 1
+	H.verbs += /mob/living/carbon/human/proc/plantWeeds
+	H.verbs += /mob/living/carbon/human/proc/plantEgg
 	if(H.client)
 		H.hud_used.instantiate()
 		H.overlay_fullscreen("ghost", /obj/screen/fullscreen/screamer_overlay, 3)
@@ -52,8 +54,8 @@
 	if(brain)
 		brain.min_broken_damage = 90
 		brain.min_bruised_damage = 30
-	H?.my_stats.change_stat(STAT_ST , 2)
-	H?.my_stats.change_stat(STAT_HT , 9)
+	H?.my_stats.st = rand(12,13)
+	H?.my_stats.ht = rand(19,21)
 	H?.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(8,9))
 	H?.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(9,10))
 	H.overlays_standing[3]	= null
@@ -73,8 +75,8 @@
 	H.status_flags &= ~CANWEAKEN
 	H.status_flags &= ~CANPARALYSE
 	H.mutilate_genitals()
-	H.add_verb(list(/mob/living/carbon/human/proc/plantWeeds, \
-	/mob/living/carbon/human/proc/plantEgg))
+	H.verbs += /mob/living/carbon/human/proc/plantWeeds
+	H.verbs += /mob/living/carbon/human/proc/plantEgg
 
 
 /datum/alien
@@ -83,19 +85,15 @@
 	var/last_weed = 0
 
 /mob/living/carbon/human/proc/plantWeeds()
-	set desc = "Plant Weeds"
-	set category = "villain"
 	if(!mind?.alien)	return
 	if(istype(src?.species, /datum/species/human/alien))
 		if(world.time > (mind.alien.last_weed + WEED_DELAY))
 			new /obj/structure/stool/bed/weeds/node(loc)
 			src.visible_message("<span class='hitbold'>[src.name]</span> <span class='hit'>plants</span> <span class='hit'>gooey mass!</span> ")
-			playsound(src.loc, pick('sound/webbers/alien_creep.ogg', 'sound/webbers/alien_creep2.ogg'), 50, 1)
+			playsound(src.loc, pick('alien_creep.ogg', 'alien_creep2.ogg'), 50, 1)
 			mind.alien.last_weed = world.time + WEED_DELAY
 
 /mob/living/carbon/human/proc/plantEgg()
-	set desc = "Plant an Egg"
-	set category = "villain"
 	if(!mind?.alien)	return
 	if(world.time > (mind.alien.last_egg + EGG_DELAY))
 		return
@@ -108,12 +106,12 @@
 	mind.alien.last_egg = world.time + EGG_DELAY
 	src.visible_message("<span class='hitbold'>[src.name]</span> <span class='hit'>lays</span> <span class='hit'>a strange egg!</span> ")
 	new /obj/effect/alien/egg(loc)
-	playsound(src.loc, pick('sound/webbers/alien_creep.ogg', 'sound/webbers/alien_creep2.ogg'), 50, 1)
+	playsound(src.loc, pick('alien_creep.ogg', 'alien_creep2.ogg'), 50, 1)
 	return
 
 /mob/living/carbon/human/examine()
 	if(istype(src?.species, /datum/species/human/alien))
 		if(src.stat != DEAD)
 			to_chat(usr, "<span class='combat'>OH [uppertext(god_text())]!</span>")
-			usr << sound(pick('sound/webbers/alien_examine1.ogg','sound/webbers/alien_examine2.ogg','sound/webbers/alien_examine3.ogg','sound/webbers/alien_examine4.ogg','sound/webbers/alien_examine5.ogg'), repeat = 0, wait = 0, volume = usr?.client?.prefs?.ambi_volume, channel = 23)
+			usr << sound(pick('alien_examine1.ogg','alien_examine2.ogg','alien_examine3.ogg','alien_examine4.ogg','alien_examine5.ogg'), repeat = 0, wait = 0, volume = usr?.client?.prefs?.ambi_volume, channel = 23)
 	..()

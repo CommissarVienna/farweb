@@ -216,7 +216,7 @@
 	// human interact with machine
 	attack_hand(mob/user as mob)
 		if(user && user.loc == src)
-			to_chat(usr, "<span class='combatbold'>[pick(fnord)] You cannot reach the controls from inside.</span>")
+			to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)] You cannot reach the controls from inside.</span>")
 			return
 		flush()
 	attackhand_right(mob/user as mob)

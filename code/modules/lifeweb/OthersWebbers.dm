@@ -19,7 +19,7 @@
 	if (!ticker)
 		return
 
-	if(isskeleton(M))
+	if(M.species.name == "Skeleton")
 		return
 	if(istype(M.species, /datum/species/human/alien))
 		return
@@ -65,7 +65,7 @@
 /obj/structure/stool/bed/chair/cross/buckle_mob(mob/living/carbon/human/M as mob, mob/user as mob)
 	if(LifewebChecks(M, user))
 		M.visible_message("<B>[M.name]</B> is locked on the [src]!")
-		playsound(src.loc, pick('sound/LW2/lw_sacrificed1.ogg','sound/LW2/lw_sacrificed2.ogg','sound/LW2/lw_sacrificed3.ogg','sound/LW2/lw_sacrificed4.ogg'), 100, 0, -1)
+		playsound(src.loc, pick('lw_sacrificed1.ogg','lw_sacrificed2.ogg','lw_sacrificed3.ogg','lw_sacrificed4.ogg'), 100, 0, -1)
 	else
 		return
 
@@ -189,7 +189,7 @@
 		return
 
 	var/mob/living/carbon/human/victim = tobebuckled[1]
-	playsound(loc, 'sound/effects/cage_close.ogg', 85, 0, -1)
+	playsound(loc, 'cage_close.ogg', 85, 0, -1)
 	buckled_mob = victim
 	victim.buckled = src
 	victim.loc = src.loc
@@ -242,7 +242,7 @@
 			pixel_x = 0
 			pixel_y = 0
 
-		if(my_stats.get_stat(STAT_ST) >= 15 || istype(species, /datum/species/human/alien))
+		if(my_stats.st >= 15 || istype(species, /datum/species/human/alien))
 			if(prob(10))
 				to_chat("<span class='combatbold'>[name] breaks out of the cage!</span>")
 				C.locked = 0

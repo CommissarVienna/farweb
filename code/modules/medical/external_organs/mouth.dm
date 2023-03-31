@@ -13,7 +13,6 @@
 	iconsdamage = "head"
 	head_icon_needed = 1
 	mask_color = "#ffffff"
-	no_draw = TRUE
 
 /datum/organ/external/mouth/proc/get_teeth() //returns collective amount of teeth
 	var/amt = 0

@@ -1,7 +1,7 @@
 
 var/global/normal_ooc_colour = "#666699"
 /obj/pigforrandy
-	icon = 'icons/chat_for_randy.dmi'
+	icon = 'chat_for_randy.dmi'
 	icon_state = "pigforrandy"
 
 /client/verb/ooc(msg as text)
@@ -10,6 +10,7 @@ var/global/normal_ooc_colour = "#666699"
 
 	if(!mob)	return
 	if(IsGuestKey(key))
+		src << "Guests may not use OOC."
 		return
 
 	msg = sanitize(msg)
@@ -18,7 +19,9 @@ var/global/normal_ooc_colour = "#666699"
 
 	if(!holder)
 		if(silenceofpigs)
-			if(!comradelist.Find(src.ckey) && !villainlist.Find(src.ckey))
+			if(comradelist.Find(src.ckey) || villainlist.Find(src.ckey))
+				src << "worked"
+			else
 				to_chat(src, "<span class='hitbold'>Silence, pig!</span>")
 				return
 		if(!dooc_allowed && (mob.stat == DEAD))
@@ -103,7 +106,7 @@ var/global/normal_ooc_colour = "#666699"
 					to_chat(C, "<span class='oocnew'><font color='[display_colour]'><b>LOBBY: [display_name]: [msg]</b></font></span>")
 /*
 			if(!C.prefs.nameglow)
-				if(display_name == "LeserZ")
+				if(display_name == "ThuxTK")
 					to_chat(C, "<span class='thuxooc'>[icon2html(a, C)]<b>OOC: [display_name]: [msg]</b></span>")
 				else
 					if(display_name == "Aedaris" || display_name == "Comicao1")
@@ -117,7 +120,7 @@ var/global/normal_ooc_colour = "#666699"
 							else
 								to_chat(C, "<span class='glowooc'><font color='[display_colour]'><b>OOC: [display_name]: [msg]</b></font></span>")
 			else
-				if(display_name == "LeserZ")
+				if(display_name == "ThuxTK")
 					to_chat(C, "<span class='thuxooc'>[icon2html(a, C)]<b>OOC: [display_name]: [msg]</b></span>")
 				else
 					if(display_name == "Aedaris" || display_name == "Comicao1")

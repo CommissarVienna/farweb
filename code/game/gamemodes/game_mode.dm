@@ -279,33 +279,51 @@ Implants;
 		set_security_level(SEC_LEVEL_BLUE)*/
 
 
-/datum/game_mode/proc/get_players_for_antag(var/override_jobbans=0)
+/datum/game_mode/proc/get_players_for_role(var/role, override_jobbans=0)
 	var/list/players = list()
 	var/list/candidates = list()
+	//var/list/drafted = list()
+	//var/datum/mind/applicant = null
+
+	var/roletext
+	switch(role)
+		if(BE_CHANGELING)	roletext="changeling"
+		if(BE_TRAITOR)		roletext="traitor"
+		if(BE_OPERATIVE)	roletext="operative"
+		if(BE_WIZARD)		roletext="wizard"
+		if(BE_REV)			roletext="revolutionary"
+		if(BE_CULTIST)		roletext="cultist"
+		if(BE_NINJA)		roletext="ninja"
+		if(BE_RAIDER)		roletext="raider"
+		if(BE_ALIEN)		roletext="borer"
+
+//		if(BE_MEME)			roletext="meme"
 
 	// Assemble a list of active players without jobbans.
 	for(var/mob/new_player/player in player_list)
-		if(player.client && player.ready)
-			players += player
+		if( player.client && player.ready )
+			if(!jobban_isbanned(player, "Syndicate") && !jobban_isbanned(player, roletext))
+				players += player
 
 	// Shuffle the players list so that it becomes ping-independent.
 	players = shuffle(players)
 
 	// Get a list of all the people who want to be the antagonist for this round
 	for(var/mob/new_player/player in players)
-		if(player.client.prefs.be_antag == TRUE)
-			log_debug("[player.key] wants to be antag.")
+		if(role)
+			log_debug("[player.key] had [roletext] enabled, so we are drafting them.")
 			candidates += player.mind
 			players -= player
 
-	// If we don't have enough antags, draft people.
+	// If we don't have enough antags, draft people who voted for the round.
 	if(candidates.len < recommended_enemies)
-		for(var/mob/new_player/player in players)
-			log_debug("[player.key] forced to be antag.")
-			candidates += player.mind
-			players -= player
-			if(candidates.len >= recommended_enemies)
-				break
+		for(var/key in round_voters)
+			for(var/mob/new_player/player in players)
+				if(player.ckey == key)
+					log_debug("[player.key] voted for this round, so we are drafting them.")
+					candidates += player.mind
+					players -= player
+					break
 
 	// Remove candidates who want to be antagonist but have a job that precludes it
 	if(restricted_jobs)
@@ -313,6 +331,58 @@ Implants;
 			for(var/job in restricted_jobs)
 				if(player.assigned_role == job)
 					candidates -= player
+
+	/*if(candidates.len < recommended_enemies)
+		for(var/mob/new_player/player in players)
+			if(player.client && player.ready)
+				if(!(player.client.prefs.be_special & role)) // We don't have enough people who want to be antagonist, make a seperate list of people who don't want to be one
+					if(!jobban_isbanned(player, "Syndicate") && !jobban_isbanned(player, roletext)) //Nodrak/Carn: Antag Job-bans
+						drafted += player.mind
+
+	if(restricted_jobs)
+		for(var/datum/mind/player in drafted)				// Remove people who can't be an antagonist
+			for(var/job in restricted_jobs)
+				if(player.assigned_role == job)
+					drafted -= player
+
+	drafted = shuffle(drafted) // Will hopefully increase randomness, Donkie
+
+	while(candidates.len < recommended_enemies)				// Pick randomlly just the number of people we need and add them to our list of candidates
+		if(drafted.len > 0)
+			applicant = pick(drafted)
+			if(applicant)
+				candidates += applicant
+				log_debug("[applicant.key] was force-drafted as [roletext], because there aren't enough candidates.")
+				drafted.Remove(applicant)
+
+		else												// Not enough scrubs, ABORT ABORT ABORT
+			break
+
+	if(candidates.len < recommended_enemies && override_jobbans) //If we still don't have enough people, we're going to start drafting banned people.
+		for(var/mob/new_player/player in players)
+			if (player.client && player.ready)
+				if(jobban_isbanned(player, "Syndicate") || jobban_isbanned(player, roletext)) //Nodrak/Carn: Antag Job-bans
+					drafted += player.mind
+
+	if(restricted_jobs)
+		for(var/datum/mind/player in drafted)				// Remove people who can't be an antagonist
+			for(var/job in restricted_jobs)
+				if(player.assigned_role == job)
+					drafted -= player
+
+	drafted = shuffle(drafted) // Will hopefully increase randomness, Donkie
+
+	while(candidates.len < recommended_enemies)				// Pick randomlly just the number of people we need and add them to our list of candidates
+		if(drafted.len > 0)
+			applicant = pick(drafted)
+			if(applicant)
+				candidates += applicant
+				drafted.Remove(applicant)
+				log_debug("[applicant.key] was force-drafted as [roletext], because there aren't enough candidates.")
+
+		else												// Not enough scrubs, ABORT ABORT ABORT
+			break
+	*/
 
 	return candidates		// Returns: The number of people who had the antagonist role set to yes, regardless of recomended_enemies, if that number is greater than recommended_enemies
 							//			recommended_enemies if the number of people with that role set to yes is less than recomended_enemies,

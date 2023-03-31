@@ -51,7 +51,7 @@
 /mob/observer/virtual/Destroy()
 	moved_event.unregister(host, src, /atom/movable/proc/move_to_turf_or_null)
 	all_virtual_listeners -= src
-	host?.virtual_mob -= src
+	host.virtual_mob -= src
 	host = null
 	qdel(attack_delayer)
 	qdel(click_delayer)
@@ -221,7 +221,6 @@
 //unset redraw_mob to prevent the mob from being redrawn at the end.
 /mob/proc/equip_to_slot_if_possible(obj/item/W as obj, slot, del_on_fail = 0, disable_warning = 0, redraw_mob = 1, delay=0)
 	if(!istype(W)) return 0
-	W.unwield(src)
 
 	if(!W.mob_can_equip(src, slot, disable_warning))
 		if(del_on_fail)
@@ -489,7 +488,121 @@ var/list/slot_equipment_priority = list( \
 			return "\blue [copytext(msg, 1, 37)]... <a href='byond://?src=\ref[src];flavor_more=1'>More...</a>"
 	else
 		return 0
+/*
+/mob/verb/abandon_mob()
+	set name = "GotoHell"
+	set category = "OOC"
+	if(master_mode != "holywar")
+		if (!( abandon_allowed ))
+			to_chat(src, "Respawn is disabled.")
+			return
+		if ((stat != 2 || !( ticker )))
+			to_chat(src, "<B>You must be dead to use this!</B>")
+			return
+	//	if (ticker.mode.name == "meteor" || ticker.mode.name == "epidemic") //BS12 EDIT
+	//		usr << "\blue Respawn is disabled for this roundtype."
+	//		return
+	//	else
+		var/deathtime = world.time - src.timeofdeath
+		var/deathtimeminutes = round(deathtime / 600)
+		var/pluralcheck = "minute"
+		if(deathtimeminutes == 0)
+			pluralcheck = ""
+		else if(deathtimeminutes == 1)
+			pluralcheck = " [deathtimeminutes] minute and"
+		else if(deathtimeminutes > 1)
+			pluralcheck = " [deathtimeminutes] minutes and"
+		var/deathtimeseconds = round((deathtime - deathtimeminutes * 600) / 10,1)
+		usr << "You have been dead for[pluralcheck] [deathtimeseconds] seconds."
 
+
+		if (deathtime < 6000)
+			to_chat(src, "You must wait 10 minutes to escape from the limbo!")
+			return
+
+		log_game("[usr.name]/[usr.key] used abandon mob.")
+
+		to_chat(src, " <B>Make sure to play a different personality!</B>")
+
+		if(!client)
+			log_game("[usr.key] AM failed due to disconnect.")
+			return
+		client.screen.Cut()
+		if(!client)
+			log_game("[usr.key] AM failed due to disconnect.")
+			return
+
+		var/mob/new_player/M = new /mob/new_player()
+		if(!client)
+			log_game("[usr.key] AM failed due to disconnect.")
+			qdel(M)
+			return
+
+		M.key = key
+		M.old_key = key
+		M.old_job = job
+		M.client.color = null
+		M.client.lobbyPig()
+	else
+		if ((stat != 2 || !( ticker )))
+			usr << "\blue <B>You must be dead to use this!</B>"
+			return
+		var/deathtime = world.time - src.timeofdeath
+		var/deathtimeminutes = round(deathtime / 600)
+		var/pluralcheck = "minute"
+		if(deathtimeminutes == 0)
+			pluralcheck = ""
+		else if(deathtimeminutes == 1)
+			pluralcheck = " [deathtimeminutes] minute and"
+		else if(deathtimeminutes > 1)
+			pluralcheck = " [deathtimeminutes] minutes and"
+		var/deathtimeseconds = round((deathtime - deathtimeminutes * 600) / 10,1)
+		to_chat(usr, "You have been dead for[pluralcheck] [deathtimeseconds] seconds.")
+
+		if (deathtime < 1200)
+			to_chat(usr, "You must wait 2 minutes to escape from the limbo!")
+			return
+		to_chat(usr, "<B>Make sure to play a different soldier!</B>")
+		client.screen.Cut()
+		var/mob/new_player/M = new /mob/new_player()
+		M.key = key
+		M.old_key = key
+		M.old_job = job
+		M.client.color = null
+		M.client.lobbyPig()
+	return
+*/
+/*
+/client/verb/changes()
+	set name = "Changelog"
+	set category = "OOC"
+	getFiles(
+		'html/postcardsmall.jpg',
+		'html/somerights20.png',
+		'html/88x31.png',
+		'html/bug-minus.png',
+		'html/cross-circle.png',
+		'html/hard-hat-exclamation.png',
+		'html/image-minus.png',
+		'html/image-plus.png',
+		'html/music-minus.png',
+		'html/music-plus.png',
+		'html/tick-circle.png',
+		'html/wrench-screwdriver.png',
+		'html/spell-check.png',
+		'html/burn-exclamation.png',
+		'html/chevron.png',
+		'html/chevron-expand.png',
+		'html/changelog.css',
+		'html/changelog.js',
+		'html/changelog.html'
+		)
+	src << browse('html/changelog.html', "window=changes;size=675x650")
+	if(prefs.lastchangelog != changelog_hash)
+		prefs.lastchangelog = changelog_hash
+		prefs.save_preferences()
+		winset(src, "rpane.changelog", "background-color=none;font-style=;")
+*/
 /mob/verb/observe()
 	set name = "Observe"
 	set category = "OOC"
@@ -627,6 +740,7 @@ var/list/slot_equipment_priority = list( \
 		pulling = null
 
 /mob/proc/start_pulling(var/atom/movable/AM)
+
 	if ( !AM || !usr || src==AM || !isturf(src.loc) )	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
 		return
 
@@ -771,45 +885,41 @@ note dizziness decrements automatically in the mob's Life() proc.
 //Updates canmove, lying and icons. Could perhaps do with a rename but I can't think of anything to describe it.
 //Robots and brains have their own version so don't worry about them
 /mob/proc/update_canmove()
-	var/ko = weakened || paralysis || stat || (status_flags & FAKEDEATH)
-	var/bed = !(buckled && istype(buckled, /obj/structure/stool/bed/chair))
-	if(ko || stunned)
-		drop_r_hand()
-		drop_l_hand()
-	else
-		lying = 0
-		canmove = 1
-	if(buckled && (!istype(buckled, /mob/living/carbon/human) && !istype(buckled, /obj/structure/stool/bed/chair/wheelchair)))
-		lying = 90 * bed
-		anchored = buckled
-	else
-		if((ko || resting) && !lying && !istype(buckled, /mob/living/carbon/human))
-			fall(ko)
-	canmove = !(ko || resting || stunned || buckled && (!istype(buckled, /mob/living/carbon/human)) && !istype(buckled, /obj/structure/stool/bed/chair/wheelchair))
+        var/ko = weakened || paralysis || stat || (status_flags & FAKEDEATH)
+        var/bed = !(buckled && istype(buckled, /obj/structure/stool/bed/chair))
+        if(ko || stunned)
+                drop_r_hand()
+                drop_l_hand()
+        else
+                lying = 0
+                canmove = 1
+        if(buckled && (!istype(buckled, /mob/living/carbon/human) && !istype(buckled, /obj/structure/stool/bed/chair/wheelchair)))
+                lying = 90 * bed
+                anchored = buckled
+        else
+                if((ko || resting) && !lying && !istype(buckled, /mob/living/carbon/human))
+                        fall(ko)
+        canmove = !(ko || resting || stunned || buckled && (!istype(buckled, /mob/living/carbon/human)) && !istype(buckled, /obj/structure/stool/bed/chair/wheelchair))
 
-	density = !lying
-	if(ishuman(src))//Check if they're a human.
-		if(lying && lying != lying_prev)//Check if they fell over.
-			if(!istype(src.loc, /turf/space))//Check if they're not in space.
-				playsound(src, "bodyfall", 50)//Good now play fallsound.
-	if(!istype(buckled, /mob/living/carbon/human))
-		layer = initial(layer)
-	if(lying)
-		layer = 3.9
-	if(ishuman(src))
-		var/mob/living/carbon/human/H = src
-		if(H.isLeaning)
-			density = 0
-			layer = layer-0.1
-			if(istype(buckled, /mob/living/carbon/human))
-				lying = 0
-	update_transform()
-	lying_prev = lying
-	if(update_icon) //forces a full overlay update
-		update_icon = 0
-		regenerate_icons()
-	update_vision_cone()
-	return canmove
+        density = !lying
+        if(!istype(buckled, /mob/living/carbon/human))
+                layer = initial(layer)
+        if(lying)
+                layer = 3.9
+        if(ishuman(src))
+                var/mob/living/carbon/human/H = src
+                if(H.isLeaning)
+                        density = 0
+                        layer = layer-0.1
+                        if(istype(buckled, /mob/living/carbon/human))
+                                lying = 0
+        update_transform()
+        lying_prev = lying
+        if(update_icon) //forces a full overlay update
+                update_icon = 0
+                regenerate_icons()
+        update_vision_cone()
+        return canmove
 
 
 /mob/proc/fall(var/forced)
@@ -817,10 +927,10 @@ note dizziness decrements automatically in the mob's Life() proc.
 	drop_r_hand()
 
 /mob/proc/facedir(var/ndir)
-	if(!canface() || client?.moving || world.time < client?.move_delay)
+	if(!canface() || client?.moving || world.time < client.move_delay)
 		return 0
 	set_dir(ndir)
-	client?.move_delay += movement_delay()
+	client.move_delay += movement_delay()
 	if(istype(src, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = src
 		var/datum/organ/external/head/E = H.get_organ("head")
@@ -855,15 +965,11 @@ note dizziness decrements automatically in the mob's Life() proc.
 /mob/proc/IsAdvancedToolUser()//This might need a rename but it should replace the can this mob use things check
 	return 0
 
-//This proc knocks a mob over, and makes them drop what they're holding, making them have to get back up.
-//Anywhere you see Stun(1) Weaken(1) replace it with this proc.
-/mob/proc/KnockDown()
-	Stun(1)
-	Weaken(1)
 
 /mob/proc/Stun(amount)
-	if(ismonster(src))
+	if(ismonster(src)){
 		return
+	}
 	if(status_flags & CANSTUN)
 		stunned = max(max(stunned,amount),0) //can't go below 0, getting a low amount of stun doesn't lower your current stun
 		//facing_dir = null
@@ -882,11 +988,13 @@ note dizziness decrements automatically in the mob's Life() proc.
 	return
 
 /mob/proc/Weaken(amount)
-	if(ismonster(src))
+	if(ismonster(src)){
 		return
+	}
 	if(status_flags & CANWEAKEN)
 		weakened = max(max(weakened,amount),0)
 		update_canmove()	//updates lying, canmove and icons
+		resting = 1
 	return
 
 /mob/proc/SetWeakened(amount)
@@ -942,11 +1050,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 	return
 
 /mob/proc/SetResting(amount)
-	if(resting != amount)
-		resting = max(amount,0)
-		lying = amount
-		update_canmove()
-		update_icons()
+	resting = max(amount,0)
 	return
 
 /mob/proc/AdjustResting(amount)
@@ -1136,7 +1240,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 /mob/living/carbon/human/mouse_fixeye()
 	if(src.special == "weirdgait")
-		to_chat(src, "<span class='combat'>[pick(fnord)] I'm stuck!</span>")
+		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] I'm stuck!</span>")
 		return
 	..()
 

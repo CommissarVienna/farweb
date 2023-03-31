@@ -258,6 +258,9 @@
 		if ( istype(W,/obj/item/clothing/mask/cigarette ) )
 			user << "This item does not fit."
 			return
+		if ( istype(W,/obj/item/clothing/head/syndicatefake ) )
+			user << "This item does not fit."
+			return
 //		if ( istype(W,/obj/item/clothing/head/powered ) )
 //			user << "This item does not fit."
 //			return

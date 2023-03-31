@@ -12,10 +12,12 @@
 	var/atom/target = null
 	var/datum/wires/explosive/c4/wires = null
 	var/open_panel = 0
+	var/image_overlay = null
 	var/planted = FALSE
 
 /obj/item/weapon/plastique/New()
 	wires = new(src)
+	image_overlay = image(icon, "plastic-explosive2")
 	..()
 
 /obj/item/weapon/plastique/attackby(var/obj/item/I, var/mob/user)
@@ -54,10 +56,7 @@
 			//log_admin("ATTACK: [user] ([user.ckey]) planted [src] on [target] ([target:ckey]).")
 			message_admins("ATTACK: [user] ([user.ckey])(<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>) planted [src] on [target] ([target:ckey]).", 2)
 			log_attack("[user] ([user.ckey]) planted [name] on [target.name] ([target:ckey])")
-		icon_state = "plastic-explosive2"
-		pixel_x = 0
-		pixel_y = 0
-		plane = 22
+		target.overlays += image_overlay
 		planted = TRUE
 
 /obj/item/weapon/plastique/proc/calltimer()
@@ -74,7 +73,7 @@
 
 /obj/item/weapon/plastique/proc/explode(var/turf/location)
 	if(target)
-
+		target.overlays -= image_overlay
 		if(isliving(target))
 			var/mob/living/Li = target
 			Li.gib()
@@ -89,7 +88,7 @@
 
 /obj/item/weapon/plastique/thanati/explode(var/turf/location)
 	if(target)
-
+		target.overlays -= image_overlay
 		if(isliving(target))
 			var/mob/living/Li = target
 			Li.gib()

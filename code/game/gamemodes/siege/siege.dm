@@ -54,7 +54,7 @@
 			new /mob/living/carbon/human/skinless(T)
 		for(var/mob/living/carbon/human/F in siegerslist)
 			to_chat(F, "<span class='excomm'>AMBUSH!!!</span>")
-			F << sound(pick('sound/lfwbambimusic/ambush1.ogg','sound/lfwbambimusic/ambush2.ogg','sound/lfwbambimusic/ambush3.ogg','sound/lfwbambimusic/ambush4.ogg','sound/lfwbambimusic/ambush5.ogg','sound/lfwbambimusic/ambush6.ogg'))
+			F << sound(pick('ambush1.ogg','ambush2.ogg','ambush3.ogg','ambush4.ogg','ambush5.ogg','ambush6.ogg'))
 		camp_attack = world.time
 	if(flagdropped)
 		for(var/mob/living/carbon/human/F in siegerslist)

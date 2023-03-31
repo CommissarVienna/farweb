@@ -53,6 +53,7 @@
 	else
 		return null
 
+var/list/global/init_obj = list()
 
 /atom/movable/proc/initialize()
 	return

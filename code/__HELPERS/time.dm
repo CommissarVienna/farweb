@@ -65,4 +65,4 @@ proc/isDay(var/month, var/day)
 proc/secondsToMintues(var/number)
 	if(!isnum(number))
 		return number
-	return round(number / 60)
+	return number / 60

@@ -190,7 +190,7 @@
 	w_class = 2.0
 	attack_verb = list("attacked", "hit", "bludgeoned")
 	operation_sound = 'sound/lfwbsounds/bones.ogg'
-	operation_sound_fail = 'sound/effects/bone_crack.ogg'
+	operation_sound_fail = 'sound/lfwbsounds/bone_crack.ogg'
 
 /obj/item/weapon/surgery_tool/speculum
 	name = "speculum"
@@ -238,9 +238,9 @@
 	var/canDoIt = 0
 	var/list/roll_result = roll3d6(user, SKILL_MEDIC, null)
 	switch(roll_result[GP_RESULT])
-		if(GP_CRITSUCC)
+		if(GP_CRITSUCCESS)
 			canDoIt = 1
-		if(GP_SUCC)
+		if(GP_SUCCESS)
 			canDoIt = 1
 
 	if((affected.status & ORGAN_ARTERY))//Fix arteries first,
@@ -300,9 +300,9 @@
 				var/mayHeal = 0
 				var/list/roll_resulto = roll3d6(user, SKILL_MEDIC, 2)
 				switch(roll_resulto[GP_RESULT])
-					if(GP_CRITSUCC)
+					if(GP_CRITSUCCESS)
 						mayHeal = 1
-					if(GP_SUCC)
+					if(GP_SUCCESS)
 						mayHeal = 1
 				if(do_after(user, 30))
 					if(mayHeal)

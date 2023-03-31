@@ -5,7 +5,7 @@
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "torch"
 	item_state = "torch0"
-	drop_sound = 'sound/items/wooden_drop.ogg'
+	drop_sound = 'wooden_drop.ogg'
 
 	hand_on = "torch1"
 	hand_off = "torch0"
@@ -71,12 +71,12 @@
 
 
 /obj/item/weapon/flame/torch/turn_off()
-	playsound(src.loc, 'sound/effects/torch_snuff.ogg', 50, 0)
+	playsound(src.loc, 'torch_snuff.ogg', 50, 0)
 	playsound(src, null, 0, channel=26, wait=0, repeat=0)
 	..()
 
 /obj/item/weapon/flame/torch/turn_on()
-	playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
+	playsound(src.loc, 'torch_light.ogg', 50, 0)
 	..()
 
 /obj/item/weapon/flame/torch/dropped(var/mob/user)
@@ -113,18 +113,15 @@
 	breakable = 1
 
 	var/lit = 0
-	var/f_force = 7
+	var/f_force = 3
 	var/r_range = 6
-	var/c_color = "#bf915c"
+	var/c_color = "#ff7a7a"
 	var/on_state = "fireplace1"
 	var/off_state = "fireplace0"
 	var/fire_left = null //tempo até apagar
-	var/obj/particleMain = null
-	var/particlePath = /obj/particles/fireplace
-	var/loop = 1 //1 = max / -1 = min
 
 /obj/structure/fireplace/New()
-	. = ..()
+	..()
 	fire_left = rand(20 MINUTES, 48 MINUTES)
 	processing_objects.Add(src)
 	turn_on()
@@ -141,71 +138,19 @@
 	fire_left = max(0, fire_left-2 SECONDS)
 	if(fire_left == 0 && lit)
 		turn_off()
-	/* //BEWARE OF THE MADMAN
-	spawn(6)
-		normalLoop()
-		spawn(6)
-			normalLoop()
-			spawn(6)
-				normalLoop()
-
-/obj/structure/fireplace/proc/normalLoop()
-	if(fire_left && lit)
-		if(loop == 1)
-			set_light(r_range, max(2, f_force-2), c_color)
-			loop = -1
-			return
-		if(loop == -1)
-			loop = 1
-			set_light(r_range, f_force, c_color)
-			return
-	*/
-
-/obj/particles
-	var/mainParticle = null
-	vis_flags = VIS_INHERIT_PLANE
-
-/obj/particles/fireplace/New()
-	..()
-	mouse_opacity = 0
-	var/particles/fireplace/F = new
-	src.pixel_y = 4
-	src.plane = 22
-	src.filters += list(filter(type = "outline", size = 0.1, color = "#FF3300"), filter(type = "bloom", threshold = rgb(255, 128, 255), size = 3, offset = 2, alpha = 255))
-	particles += F
-	mainParticle = F
-
-
-/obj/particles/fireplace2/New()
-	..()
-	mouse_opacity = 0
-	var/particles/fireplace2/F = new
-	src.pixel_y = 4
-	src.plane = 22
-	src.filters += list(filter(type = "outline", size = 0.1, color = "#FF3300"), filter(type = "bloom", threshold = rgb(255, 128, 255), size = 3, offset = 2, alpha = 255))
-	particles += F
-	mainParticle = F
 
 /obj/structure/fireplace/proc/turn_on()
-	playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 1)
+	playsound(src.loc, 'torch_light.ogg', 50, 1)
 	icon_state = on_state
 	set_light(r_range, f_force, c_color)
 	fire_left = rand(38 MINUTES, 48 MINUTES)
 	lit = 1
-	if(!particleMain && ispath(particlePath))
-		particleMain = new particlePath(src.loc)
-	var/obj/particles/fireplace/P = particleMain
-	if(P)
-		P.mainParticle:spawning = 1
 
 /obj/structure/fireplace/proc/turn_off()
-	playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 1)
+	playsound(src.loc, 'torch_snuff.ogg', 75, 1)
 	icon_state = off_state
 	set_light(0)
 	lit = 0
-	var/obj/particles/fireplace/P = particleMain
-	if(P)
-		P.mainParticle:spawning = 0
 
 /obj/structure/fireplace/attackby(var/obj/item/I, var/mob/user)
 	if(istype(I, /obj/item/weapon/flame))
@@ -230,11 +175,6 @@
 	icon_state = "fireplace20"
 	on_state =  "fireplace21"
 	off_state = "fireplace20"
-	particlePath = /obj/particles/fireplace2
-
-/obj/structure/fireplace/alt/New()
-	..()
-	particleMain.pixel_x = 3
 
 /obj/structure/fireplace/alt2
 	icon = 'icons/obj/weapons.dmi'
@@ -242,13 +182,8 @@
 	on_state =  "pyreplace1"
 	off_state = "pyreplace0"
 	c_color = "#ff7a7a"
-	f_force = 7
-	r_range = 6
-	particlePath = /obj/particles/fireplace2
-
-/obj/structure/fireplace/alt2/New()
-	..()
-	particleMain.pixel_x = 1
+	f_force = 2
+	r_range = 4
 
 /obj/structure/fireplace/wallplace
 	on_state = "wfireplace1"
@@ -256,7 +191,6 @@
 	icon_state = "wfireplace0"
 	density = 0
 	plane = 21
-	particlePath = null
 
 /obj/structure/fireplace/wallplace/north
 	pixel_y = 22
@@ -273,7 +207,7 @@
 
 /obj/structure/fireplace/alt/Old
 	c_color = "#ff4f4f"
-	f_force = 7
+	f_force = 3
 	r_range = 6
 
 /obj/structure/torchwall
@@ -348,7 +282,7 @@
 				if(T.lit)
 					user.visible_message("<span class='notice'>[user] lights [src]</span>", \
 					"<span class='notice'>You light [src]</span>")
-					playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
+					playsound(src.loc, 'torch_light.ogg', 50, 0)
 					src.on = TRUE
 					src.checkfire()
 					user.update_inv_r_hand()
@@ -406,7 +340,7 @@
 		on = FALSE
 		spent = TRUE
 		checkfire()
-		playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 0)
+		playsound(src.loc, 'torch_snuff.ogg', 75, 0)
 
 /obj/structure/campfire/proc/checkfire(var/come_off=0)//COME_OFF PRA TALVEZ JA VIR DESLIGADA
 	if(spent) return
@@ -452,7 +386,7 @@
 	if(!fire_left)
 		on = FALSE
 		checkfire()
-		playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 0)
+		playsound(src.loc, 'torch_snuff.ogg', 75, 0)
 
 /obj/structure/campfire/firepool/New()
 	fire_left = rand(50, 80)
@@ -471,7 +405,7 @@
 				T.lit = TRUE
 				user.visible_message("<span class='notice'>[user] lights [T]</span>", \
 				"<span class='notice'>You light [T]</span>")
-				playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
+				playsound(src.loc, 'torch_light.ogg', 50, 0)
 
 				user.update_inv_r_hand()
 				user.update_inv_l_hand()
@@ -485,7 +419,7 @@
 
 				user.visible_message("<span class='notice'>[user] lights [C]</span>", \
 				"<span class='notice'>You light [C]</span>")
-				playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
+				playsound(src.loc, 'torch_light.ogg', 50, 0)
 				user.update_inv_r_hand()
 				user.update_inv_l_hand()
 
@@ -511,7 +445,7 @@
 			if(T.lit)
 				user.visible_message("<span class='notice'>[user] lights [src]</span>", \
 				"<span class='notice'>You light [src]</span>")
-				playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
+				playsound(src.loc, 'torch_light.ogg', 50, 0)
 				src.on = TRUE
 				src.checkfire()
 				user.update_inv_r_hand()
@@ -525,7 +459,7 @@
 			if(C.lit)
 				user.visible_message("<span class='notice'>[user] lights [src]</span>", \
 				"<span class='notice'>You light [src]</span>")
-				playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
+				playsound(src.loc, 'torch_light.ogg', 50, 0)
 				src.on = TRUE
 				src.checkfire()
 				user.update_inv_r_hand()
@@ -538,4 +472,4 @@
 	if(src.on)
 		src.on = FALSE
 		src.checkfire()
-		playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 0)
+		playsound(src.loc, 'torch_snuff.ogg', 75, 0)

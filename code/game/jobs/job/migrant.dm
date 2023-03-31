@@ -38,10 +38,10 @@ var/set_mig_spawn_pc
 		if(ticker.eof.id == "migrantess")
 			H.gender = FEMALE
 		if(H.ckey in outlaw)
-			H.add_verb(/mob/living/carbon/human/proc/toggle_outlaw)
+			H.verbs += /mob/living/carbon/human/proc/toggle_outlaw
 		H.lying = 1
 		if(master_mode == "holywar")
-			H.add_verb(/mob/living/carbon/human/proc/migequipwar)
+			H.verbs += /mob/living/carbon/human/proc/migequipwar
 			if(pcteam > thteam)
 				H.religion = "Thanati"
 				to_chat(H, "You got rebalanced to the Thanati team.")
@@ -63,7 +63,7 @@ var/set_mig_spawn_pc
 					if(HH.client)
 						HH.update_all_team_icons()*/
 		else if(master_mode == "minimig")
-			H.add_verb(/mob/living/carbon/human/proc/migequip)
+			H.verbs += /mob/living/carbon/human/proc/migequip
 			if(pcteam > thteam)
 				H.religion = "Thanati"
 				to_chat(H, "You got rebalanced to the Thanati team.")
@@ -77,14 +77,15 @@ var/set_mig_spawn_pc
 				pcteam++
 				pcteams += H
 		else
-			H.add_verb(/mob/living/carbon/human/proc/migequip)
+			H.verbs += /mob/living/carbon/human/proc/migequip
+		H.updatePig()
 		//return 1
 
 /mob/living/carbon/human/var/toggle_outlaw
 
 /mob/living/carbon/human/proc/toggle_outlaw()
 	set hidden = 0
-	set category = "gpc"
+	set category = "Migrant"
 	set name = "ToggleOutlaw"
 	set desc="Choose your outlaw class!"
 	if(master_mode != "minimig")
@@ -118,7 +119,7 @@ var/mob/FortLordHand
 
 /mob/living/carbon/human/proc/migequip()
 	set hidden = 0
-	set category = "gpc"
+	set category = "Migrant"
 	set name = "ChoosemigrantClass"
 	set desc="Choose your migrant class!"
 	var/list/migclasses = list("Adventurer", "Bard","Courier","Mushroomcutter", "Cook", "Peasant","Miner","Thief","Acrobat","Healer", "Alchemist","Reporter","Pathfinder","Blacksmith","Hunter","Swineherd","Fisher","Prostitute","Pcheloved")
@@ -151,13 +152,11 @@ var/mob/FortLordHand
 	if(prob(4))
 		var/rareClass = pick("Town Guard","Martial Artist","Vampire Hunter")
 		saved_migclasses.Add(rareClass)
-	H.remove_verb(/mob/living/carbon/human/proc/migequip)
+	H.verbs -= /mob/living/carbon/human/proc/migequip
 	var/list/classtotals = list("(Random)")
 	classtotals += saved_migclasses
 	if(!expedition_leader_pc && src.religion == "Gray Church" || !expedition_leader_th && src.religion == "Thanati")
 		classtotals.Add("Expedition Leader")
-	if(ticker.eof.id == "crusade" && H.religion == "Gray Church" && H.gender == MALE)
-		classtotals = list("Crusader")
 	sleep(10)
 	//H.migclass = input(H,"Select a migrant class..","MIGRANTS",H.migclass) in list(firstmig,secondmig,thirdmig,fourthmig, fifthmig, sixthmig)
 	H.migclass = input(H,"Select a migrant class..","MIGRANTS",H.migclass) in classtotals
@@ -207,10 +206,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_FISH, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
 			H.my_skills.CHANGE_SKILL(SKILL_COOK, rand(4,7))
-			H.my_stats.change_stat(STAT_ST, 1)
-			H.my_stats.change_stat(STAT_HT, 1)
-			H.my_stats.change_stat(STAT_DX, 0)
-			H.my_stats.change_stat(STAT_IN, 0)
+			H.my_stats.st = 11
+			H.my_stats.ht = rand(10,11)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(9,10)
 			H.add_perk(/datum/perk/ref/strongback)
 			H.add_perk(/datum/perk/illiterate)
 			H.terriblethings = TRUE
@@ -230,13 +229,12 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MUSIC, rand(14,15))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
 			H.my_skills.CHANGE_SKILL(SKILL_COOK, rand(4,7))
-			H.my_stats.change_stat(STAT_ST, 0)
-			H.my_stats.change_stat(STAT_HT, -1)
-			H.my_stats.change_stat(STAT_DX, 3)
-			H.my_stats.change_stat(STAT_IN, 4)
-			H.add_verb(list(/mob/living/carbon/human/proc/remembersong,
-			/mob/living/carbon/human/proc/sing))
-
+			H.my_stats.st = 10
+			H.my_stats.ht = rand(8,9)
+			H.my_stats.dx = rand(11,13)
+			H.my_stats.it = rand(13,14)
+			H.verbs += /mob/living/carbon/human/proc/remembersong
+			H.verbs += /mob/living/carbon/human/proc/sing
 			H.add_perk(/datum/perk/singer)
 		if("Courier")
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/cargohat(H), slot_head)
@@ -256,15 +254,16 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(12,13))
 			H.my_skills.CHANGE_SKILL(SKILL_COOK, rand(4,7))
 			H.my_skills.CHANGE_SKILL(SKILL_SWIM, rand(11,12))
-			H.my_stats.change_stat(STAT_HT, 0)
-			H.my_stats.change_stat(STAT_DX, 1)
-			H.my_stats.change_stat(STAT_IN, 1)
+			H.my_stats.st = 10
+			H.my_stats.ht = rand(9,10)
+			H.my_stats.dx = rand(10,11)
+			H.my_stats.it = rand(10,11)
 			H.add_perk(/datum/perk/ref/strongback)
 			H.add_perk(/datum/perk/ref/cavetravel)
 			H.terriblethings = TRUE
 		if("Lord")
 			if(FortLords)
-				to_chat(src, "<span class='combatbold'>[pick(fnord)] There can't be two lords!</span>")
+				to_chat(src, "<span class='combatbold'>[pick(nao_consigoen)] There can't be two lords!</span>")
 				return
 			FortLords = H
 			H.equip_to_slot_or_del(new /obj/item/weapon/claymore/bastard(H), slot_l_hand)
@@ -285,10 +284,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_COOK, rand(4,7))
 			H.my_skills.CHANGE_SKILL(SKILL_SWORD, rand(0,2))
 			H.my_skills.CHANGE_SKILL(SKILL_UNARM, rand(0,2))
-			H.my_stats.change_stat(STAT_ST, 2)
-			H.my_stats.change_stat(STAT_HT, 1)
-			H.my_stats.change_stat(STAT_DX, 2)
-			H.my_stats.change_stat(STAT_IN, 1)
+			H.my_stats.st = rand(11,12)
+			H.my_stats.ht = 11
+			H.my_stats.dx = rand(11,12)
+			H.my_stats.it = rand(10,12)
 			H.add_perk(/datum/perk/morestamina)
 			H.add_perk(/datum/perk/heroiceffort)
 			H.add_perk(/datum/perk/ref/strongback)
@@ -305,7 +304,7 @@ var/mob/FortLordHand
 				rings_account[C] = C.money_account
 		if("Lord Hand")
 			if(FortLordHand)
-				to_chat(src, "<span class='combatbold'>[pick(fnord)] There can't be two hands!</span>")
+				to_chat(src, "<span class='combatbold'>[pick(nao_consigoen)] There can't be two hands!</span>")
 				return
 			FortLordHand = H
 			H.equip_to_slot_or_del(new /obj/item/weapon/claymore/bastard(H), slot_l_hand)
@@ -325,12 +324,14 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_COOK, rand(4,7))
 			H.my_skills.CHANGE_SKILL(SKILL_UNARM, rand(0,2))
 			H.my_skills.CHANGE_SKILL(SKILL_SWORD, rand(0,2))
-			H.my_stats.change_stat(STAT_ST, 1)
-			H.my_stats.change_stat(STAT_HT, 1)
-			H.my_stats.change_stat(STAT_DX, 1)
-			H.my_stats.change_stat(STAT_IN, 1)
+			H.my_stats.st = rand(11,12)
+			H.my_stats.ht = 11
+			H.my_stats.dx = rand(10,12)
+			H.my_stats.it = rand(10,12)
 			var/turf/T = get_turf(FortLords)
 			H.forceMove(T)
+			H.my_stats.dx = rand(10,12)
+			H.my_stats.it = rand(10,12)
 			H.add_perk(/datum/perk/morestamina)
 			H.add_perk(/datum/perk/ref/strongback)
 			H.add_perk(/datum/perk/heroiceffort)
@@ -361,9 +362,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
 			H.my_skills.CHANGE_SKILL(SKILL_COOK, rand(9,9))
 			H.my_skills.CHANGE_SKILL(SKILL_UNARM, rand(0,1))
-			H.my_stats.change_stat(STAT_HT, 3)
-			H.my_stats.change_stat(STAT_DX, 1)
-			H.my_stats.change_stat(STAT_IN, 0)
+			H.my_stats.st = 10
+			H.my_stats.ht = rand(10,12)
+			H.my_stats.dx = rand(11,13)
+			H.my_stats.it = rand(9,10)
 			H.add_perk(/datum/perk/illiterate)
 		if("Mushroomcutter")
 			H.equip_to_slot_or_del(new /obj/item/weapon/hatchet(H), slot_l_hand)
@@ -383,10 +385,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_UNARM, rand(0,1))
 			H.my_skills.CHANGE_SKILL(SKILL_SWING, rand(0,2))
-			H.my_stats.change_stat(STAT_ST, 1)
-			H.my_stats.change_stat(STAT_HT, 1)
-			H.my_stats.change_stat(STAT_DX, -1)
-			H.my_stats.change_stat(STAT_IN, -1)
+			H.my_stats.st = rand(10,11)
+			H.my_stats.ht = rand(9,11)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(9,10)
 			H.add_perk(/datum/perk/illiterate)
 		if("Peasant")
 			H.equip_to_slot_or_del(new /obj/item/weapon/minihoe(H), slot_l_hand)
@@ -409,10 +411,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_UNARM, rand(0,1))
-			H.my_stats.change_stat(STAT_ST, 3)
-			H.my_stats.change_stat(STAT_HT, 1)
-			H.my_stats.change_stat(STAT_DX, -2)
-			H.my_stats.change_stat(STAT_IN, -2)
+			H.my_stats.st = rand(12,14)
+			H.my_stats.ht = rand(11,13)
+			H.my_stats.dx = rand(7,8)
+			H.my_stats.it = rand(7,8)
 			H.add_perk(/datum/perk/illiterate)
 		if("Priest")
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/bishop/advisor(H), slot_wear_suit)
@@ -423,9 +425,7 @@ var/mob/FortLordHand
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/amulet/holy/cross/copper(H), slot_amulet)
 			H.voicetype = "noble"
 			H.my_skills.job_stats("Bishop")
-			var/datum/job/chaplain/B = new /datum/job/chaplain
-			H.my_stats.job_stats(B)
-			qdel(B)
+			H.my_stats.job_stats("Bishop")
 			H.my_skills.CHANGE_SKILL(SKILL_MELEE, 5)
 			H.my_skills.CHANGE_SKILL(SKILL_RANGE, 5)
 			H.my_skills.CHANGE_SKILL(SKILL_FARM,  0)
@@ -435,23 +435,22 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_COOK, rand(4,7))
 			H.my_skills.CHANGE_SKILL(SKILL_ENGINE, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_SURG, rand(0,0))
-			H.my_stats.change_stat(STAT_ST, 0)
-			H.my_stats.change_stat(STAT_HT, 0)
-			H.my_stats.change_stat(STAT_DX, 0)
-			H.my_stats.change_stat(STAT_IN, 1)
-			H.add_verb(list(/mob/living/carbon/human/proc/excommunicate,
-			/mob/living/carbon/human/proc/callmeeting,
-			/mob/living/carbon/human/proc/marriage,
-			/mob/living/carbon/human/proc/banish,
-			/mob/living/carbon/human/proc/undeadead,
-			/mob/living/carbon/human/proc/sins,
-			/mob/living/carbon/human/proc/coronation,
-			/mob/living/carbon/human/proc/reward,
-			/mob/living/carbon/human/proc/eucharisty,
-			/mob/living/carbon/human/proc/ClearName))
-
+			H.my_stats.st = 10
+			H.my_stats.ht = rand(9,10)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(10,11)
+			H.verbs += /mob/living/carbon/human/proc/excommunicate
+			H.verbs += /mob/living/carbon/human/proc/callmeeting
+			H.verbs += /mob/living/carbon/human/proc/marriage
+			H.verbs += /mob/living/carbon/human/proc/banish
+			H.verbs += /mob/living/carbon/human/proc/undeadead
+			H.verbs += /mob/living/carbon/human/proc/sins
+			H.verbs += /mob/living/carbon/human/proc/coronation
+			H.verbs += /mob/living/carbon/human/proc/reward
+			H.verbs += /mob/living/carbon/human/proc/eucharisty
+			H.verbs += /mob/living/carbon/human/proc/ClearName
 			H.add_event("nobleblood", /datum/happiness_event/noble_blood)
-			H.updateStatPanel()
+			H.updatePig()
 		if("Hunter")
 			H.equip_to_slot_or_del(new /obj/item/weapon/crossbow(H), slot_back2)
 			H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/migrant(H), slot_back)
@@ -472,10 +471,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(6,6))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(7,8))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(11,12))
-			H.my_stats.change_stat(STAT_ST, 1)
-			H.my_stats.change_stat(STAT_HT, 1)
-			H.my_stats.change_stat(STAT_DX, 0)
-			H.my_stats.change_stat(STAT_IN, 0)
+			H.my_stats.st = rand(10,11)
+			H.my_stats.ht = rand(9,11)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(9,10)
 			H.add_perk(/datum/perk/illiterate)
 			H.terriblethings = TRUE
 		if("Prostitute")
@@ -502,10 +501,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_SURG, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(7,9))
-			H.my_stats.change_stat(STAT_ST, -1)
-			H.my_stats.change_stat(STAT_HT, -1)
-			H.my_stats.change_stat(STAT_DX, 1)
-			H.my_stats.change_stat(STAT_IN, -1)
+			H.my_stats.st = rand(8,9)
+			H.my_stats.ht = rand(8,9)
+			H.my_stats.dx = rand(10,11)
+			H.my_stats.it = rand(8,9)
 			H.virgin = FALSE
 			H.add_perk(/datum/perk/illiterate)
 		if("Swineherd")
@@ -524,10 +523,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
-			H.my_stats.change_stat(STAT_ST, 1)
-			H.my_stats.change_stat(STAT_HT, 0)
-			H.my_stats.change_stat(STAT_DX, 0)
-			H.my_stats.change_stat(STAT_IN, -2)
+			H.my_stats.st = rand(10,11)
+			H.my_stats.ht = rand(8,10)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(8,9)
 			H.add_perk(/datum/perk/illiterate)
 		if("Cook")
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/chefhat(H), slot_head)
@@ -552,9 +551,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_SURG, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
-			H.my_stats.change_stat(STAT_HT, -1)
-			H.my_stats.change_stat(STAT_DX, -1)
-			H.my_stats.change_stat(STAT_IN, 0)
+			H.my_stats.st = 10
+			H.my_stats.ht = rand(8,9)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(9,10)
 /*		if("Mercenary")
 			/*for(var/obj/effect/landmark/L in landmarks_list)
 				if (L.name == "Mercenary")
@@ -642,10 +642,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_MINE, rand(13,15))
-			H.my_stats.change_stat(STAT_ST, 2)
-			H.my_stats.change_stat(STAT_HT, 1)
-			H.my_stats.change_stat(STAT_DX, -2)
-			H.my_stats.change_stat(STAT_IN, -1)
+			H.my_stats.st = rand(11,13)
+			H.my_stats.ht = rand(10,11)
+			H.my_stats.dx = rand(7,8)
+			H.my_stats.it = rand(8,9)
 			H.stat = CONSCIOUS
 			H.nutrition = 300
 			H.can_stand = 1
@@ -666,7 +666,7 @@ var/mob/FortLordHand
 			H.update_inv_back()
 			H.update_inv_handcuffed()
 			H.update_inv_wear_mask()
-			H.updateStatPanel()
+			H.updatePig()
 			H.add_perk(/datum/perk/ref/strongback)
 			H.add_perk(/datum/perk/illiterate)
 		if("Expedition Leader")
@@ -693,17 +693,17 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(10,10))
 			H.my_skills.CHANGE_SKILL(SKILL_SURVIV, rand(11,14))
 			H.my_skills.CHANGE_SKILL(SKILL_SWIM, rand(11,12))
-			H.my_stats.change_stat(STAT_ST, 1)
-			H.my_stats.change_stat(STAT_HT, 1)
-			H.my_stats.change_stat(STAT_DX, 0)
-			H.my_stats.change_stat(STAT_IN, 2)
+			H.my_stats.st = 11
+			H.my_stats.ht = rand(10,11)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(11,12)
 			H.add_perk(/datum/perk/ref/strongback)
 			H.add_perk(/datum/perk/pathfinder)
 
-			H.add_verb(list(/mob/living/carbon/human/proc/pathfinder_track,
-			/mob/living/carbon/human/proc/pathfinder_trackself,
-			/mob/living/carbon/human/proc/set_mig_spawn,
-			/mob/living/carbon/human/proc/announceEx))
+			H.verbs += /mob/living/carbon/human/proc/pathfinder_track
+			H.verbs += /mob/living/carbon/human/proc/pathfinder_trackself
+			H.verbs += /mob/living/carbon/human/proc/set_mig_spawn
+			H.verbs += /mob/living/carbon/human/proc/announceEx
 
 			H.terriblethings = TRUE
 		if("Thief")
@@ -725,9 +725,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_STEAL, rand(13,14))
-			H.my_stats.change_stat(STAT_HT, 0)
-			H.my_stats.change_stat(STAT_DX, 3)
-			H.my_stats.change_stat(STAT_IN, 1)
+			H.my_stats.st = 10
+			H.my_stats.ht = rand(9,10)
+			H.my_stats.dx = rand(12,13)
+			H.my_stats.it = rand(9,11)
 			//H.jewish = TRUE
 			H.add_perk(/datum/perk/ref/value)
 		if("Pcheloved")
@@ -746,9 +747,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_COOK, rand(11,11))
 			H.my_skills.CHANGE_SKILL(SKILL_SURVIV, rand(11,12))
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(6,9))
-			H.my_stats.change_stat(STAT_HT, -1)
-			H.my_stats.change_stat(STAT_DX, 0)
-			H.my_stats.change_stat(STAT_IN, 1)
+			H.my_stats.st = 10
+			H.my_stats.ht = rand(8,10)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(10,11)
 			H.add_perk(/datum/perk/bees)
 			new /obj/structure/bee_hive(H.loc)
 		if("Engineer")
@@ -766,9 +768,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
-			H.my_stats.change_stat(STAT_ST, 2)
-			H.my_stats.change_stat(STAT_DX, -2)
-			H.my_stats.change_stat(STAT_IN, 1)
+			H.my_stats.st = rand(11,13)
+			H.my_stats.ht = rand(9,10)
+			H.my_stats.dx = rand(7,8)
+			H.my_stats.it = rand(10,11)
 		if("Acrobat")
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/migrant(H), slot_w_uniform)
 			H.equip_to_slot_or_del(new /obj/item/weapon/throwingknife/silver(H), slot_r_store)
@@ -785,10 +788,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(14,16))
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(5,7))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
-			H.my_stats.change_stat(STAT_ST, -1)
-			H.my_stats.change_stat(STAT_HT, -2)
-			H.my_stats.change_stat(STAT_DX, 4)
-			H.my_stats.change_stat(STAT_IN, -2)
+			H.my_stats.st = 9
+			H.my_stats.ht = rand(7,8)
+			H.my_stats.dx = rand(13,15)
+			H.my_stats.it = rand(7,9)
 			H.acrobat = 1
 			H.add_perk(/datum/perk/ref/jumper)
 			H.add_perk(/datum/perk/illiterate)
@@ -809,9 +812,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(13,13))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
-			H.my_stats.change_stat(STAT_HT, -1)
-			H.my_stats.change_stat(STAT_IN, 2)
-			H.my_stats.change_stat(STAT_DX, -2)
+			H.my_stats.st = 10
+			H.my_stats.ht = 9
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(11,12)
 			H.terriblethings = TRUE
 		if("Alchemist")
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/migrant(H), slot_w_uniform)
@@ -834,10 +838,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_ALCH, rand(14,17))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
-			H.my_stats.change_stat(STAT_ST, -1)
-			H.my_stats.change_stat(STAT_HT, -1)
-			H.my_stats.change_stat(STAT_DX, -2)
-			H.my_stats.change_stat(STAT_IN, 4)
+			H.my_stats.st = 9
+			H.my_stats.ht = rand(8,9)
+			H.my_stats.dx = rand(7,8)
+			H.my_stats.it = rand(13,15)
 			H.terriblethings = TRUE
 		if("Reporter")
 			H.equip_to_slot_or_del(new /obj/item/clothing/glasses/metro(H), slot_glasses)
@@ -854,9 +858,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_SURG, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
-			H.my_stats.change_stat(STAT_HT, 0)
-			H.my_stats.change_stat(STAT_DX, 0)
-			H.my_stats.change_stat(STAT_IN, 1)
+			H.my_stats.st = 10
+			H.my_stats.ht = rand(9,10)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(10,11)
 			H.terriblethings = TRUE
 		if("Pathfinder")
 			H.equip_to_slot_or_del(new /obj/item/clothing/mask/horsehead(H), slot_wear_mask)
@@ -873,11 +878,14 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(7,7))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(12,13))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
-			H.my_stats.change_stat(STAT_IN, 1)
+			H.my_stats.st = 10
+			H.my_stats.ht = rand(9,10)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(10,11)
 			H.add_perk(/datum/perk/pathfinder)
-			H.add_verb(list(/mob/living/carbon/human/proc/pathfinder_track,
-			/mob/living/carbon/human/proc/pathfinder_trackself))
-			H.updateStatPanel()
+			H.verbs += /mob/living/carbon/human/proc/pathfinder_track
+			H.verbs += /mob/living/carbon/human/proc/pathfinder_trackself
+			H.updatePig()
 		if("Blacksmith")
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/apron(H), slot_wear_suit)
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/migrant(H), slot_w_uniform)
@@ -897,10 +905,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_SMITH, rand(13,13))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
-			H.my_stats.change_stat(STAT_ST, 2)
-			H.my_stats.change_stat(STAT_HT, 1)
-			H.my_stats.change_stat(STAT_DX, -1)
-			H.my_stats.change_stat(STAT_IN, -1)
+			H.my_stats.st = rand(11,13)
+			H.my_stats.ht = rand(10,11)
+			H.my_stats.dx = rand(8,9)
+			H.my_stats.it = rand(8,9)
 		if("Gemcutter")
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/migrant(H), slot_w_uniform)
 			H.equip_to_slot_or_del(new /obj/item/weapon/chisel(H), slot_l_hand)
@@ -919,10 +927,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(4,6))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(8,11))
-			H.my_stats.change_stat(STAT_ST, 0)
-			H.my_stats.change_stat(STAT_HT, 0)
-			H.my_stats.change_stat(STAT_DX, 1)
-			H.my_stats.change_stat(STAT_IN, 2)
+			H.my_stats.st = rand(9,11)
+			H.my_stats.ht = rand(10,12)
+			H.my_stats.dx = rand(10,13)
+			H.my_stats.it = rand(10,13)
 			H.add_perk(/datum/perk/gemcutting)
 		if("Crusader")
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/iron_plate/crusader(H), slot_wear_suit)
@@ -953,34 +961,37 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
 			H.my_skills.CHANGE_SKILL(SKILL_SWORD, 3)
 			H.my_skills.CHANGE_SKILL(SKILL_UNARM, rand(1,2))
-			H.my_stats.change_stat(STAT_ST, 3)
-			H.my_stats.change_stat(STAT_HT, 4)
-			H.my_stats.change_stat(STAT_DX, 0)
-			H.my_stats.change_stat(STAT_IN, 1)
+			H.my_stats.st = 13
+			H.my_stats.ht = rand(12,14)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(10,11)
 		if("Monk")
 			H.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(11,11))
 			H.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(5,5))
+			H.my_skills.CHANGE_SKILL(SKILL_FARM, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_COOK, rand(4,7))
 			H.my_skills.CHANGE_SKILL(SKILL_MASON, 8)
 			H.my_skills.CHANGE_SKILL(SKILL_CRAFT, 8)
-			H.my_skills.CHANGE_SKILL(SKILL_SURG, 5)
-			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, 5)
-			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, 1)
+			H.my_skills.CHANGE_SKILL(SKILL_ENGINE, rand(0,0))
+			H.my_skills.CHANGE_SKILL(SKILL_SURG, rand(5,5))
+			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(5,5))
+			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(01,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
-			H.my_stats.change_stat(STAT_ST, 1)
-			H.my_stats.change_stat(STAT_DX, 1)
-			H.my_stats.change_stat(STAT_IN, 1)
+			H.my_stats.st = 11
+			H.my_stats.ht = rand(9,10)
+			H.my_stats.dx = rand(10,11)
+			H.my_stats.it = rand(10,11)
 			H.religion = "Gray Church"
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/chaplain(H), slot_w_uniform)
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/hood/monk(H), slot_wear_suit)
 			H.equip_to_slot_or_del(new /obj/item/weapon/melee/classic_baton/staff(H), slot_l_hand)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/amulet/holy/cross/old(H), slot_amulet)
-			H.add_verb(list(/mob/living/carbon/human/proc/marriage,
-			/mob/living/carbon/human/proc/banish,
-			/mob/living/carbon/human/proc/undeadead,
-			/mob/living/carbon/human/proc/sins,
-			/mob/living/carbon/human/proc/eucharisty))
-			H.updateStatPanel()
+			H.verbs += /mob/living/carbon/human/proc/marriage
+			H.verbs += /mob/living/carbon/human/proc/banish
+			H.verbs += /mob/living/carbon/human/proc/undeadead
+			H.verbs += /mob/living/carbon/human/proc/sins
+			H.verbs += /mob/living/carbon/human/proc/eucharisty
+			H.updatePig()
 		if("Martial Artist")
 			H.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(9,9))
 			H.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(5,5))
@@ -989,16 +1000,16 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_CRAFT, 8)
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
 			H.my_skills.CHANGE_SKILL(SKILL_UNARM, rand(9,9))
-			H.my_stats.change_stat(STAT_ST, 1)
-			H.my_stats.change_stat(STAT_HT, 1)
-			H.my_stats.change_stat(STAT_DX, 2)
-			H.my_stats.change_stat(STAT_IN, 0)
+			H.my_stats.st = 11
+			H.my_stats.ht = rand(10,11)
+			H.my_stats.dx = rand(11,12)
+			H.my_stats.it = rand(9,10)
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/hydroponics(H), slot_w_uniform)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/headband(H), slot_head)
 			H.add_perk(/datum/perk/ref/strongback)
 			H.add_perk(/datum/perk/morestamina)
 			H.add_perk(/datum/perk/ref/slippery)
-			H.updateStatPanel()
+			H.updatePig()
 //////////////////////////////
 //////////////////////////////
 //////OUTLAWS/////////////////
@@ -1020,11 +1031,11 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(11,12))
-			H.my_stats.change_stat(STAT_ST, 1)
-			H.my_stats.change_stat(STAT_HT, 1)
-			H.my_stats.change_stat(STAT_DX, 3)
+			H.my_stats.st = rand(10,11)
+			H.my_stats.ht = rand(10,11)
+			H.my_stats.dx = rand(12,13)
 			H.terriblethings = TRUE
-			H.my_stats.change_stat(STAT_IN, 0)
+			H.my_stats.it = rand(9,10)
 			H.my_skills.CHANGE_SKILL(SKILL_STEAL, rand(14,16))
 			H.bandit = TRUE
 			for(var/obj/effect/landmark/L in landmarks_list)
@@ -1049,10 +1060,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(12,13))
-			H.my_stats.change_stat(STAT_ST, 1)
-			H.my_stats.change_stat(STAT_HT, 3)
-			H.my_stats.change_stat(STAT_DX, 0)
-			H.my_stats.change_stat(STAT_IN, -1)
+			H.my_stats.st = rand(10,11)
+			H.my_stats.ht = rand(12,13)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(8,9)
 			H.my_skills.CHANGE_SKILL(SKILL_STEAL, rand(1,2))
 			H.bandit = FALSE
 			for(var/obj/effect/landmark/L in landmarks_list)
@@ -1083,10 +1094,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(9,9))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(11,12))
-			H.my_stats.change_stat(STAT_ST, 2)
-			H.my_stats.change_stat(STAT_HT, 2)
-			H.my_stats.change_stat(STAT_DX, 2)
-			H.my_stats.change_stat(STAT_IN, 1)
+			H.my_stats.st = 12
+			H.my_stats.ht = 12
+			H.my_stats.dx = rand(11,12)
+			H.my_stats.it = rand(10,11)
 		if("Rogue")
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/migrant(H), slot_w_uniform)
 			var/weapon = pick("mace","sword")
@@ -1115,10 +1126,10 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_SURG, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
-			H.my_stats.change_stat(STAT_ST, 1)
-			H.my_stats.change_stat(STAT_HT, 1)
-			H.my_stats.change_stat(STAT_DX, 3)
-			H.my_stats.change_stat(STAT_IN, -1)
+			H.my_stats.st = 11
+			H.my_stats.ht = rand(10,11)
+			H.my_stats.dx = rand(12,13)
+			H.my_stats.it = rand(8,10)
 			H.bandit = TRUE
 			for(var/obj/effect/landmark/L in landmarks_list)
 				if (L.name == "Bandit")
@@ -1182,13 +1193,13 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
 			H.my_skills.CHANGE_SKILL(SKILL_STEAL, rand(8,9))
-			H.my_stats.change_stat(STAT_ST, 3)
-			H.my_stats.change_stat(STAT_HT, 2)
-			H.my_stats.change_stat(STAT_DX, -1)
-			H.my_stats.change_stat(STAT_IN, -2)
+			H.my_stats.st = rand(12,13)
+			H.my_stats.ht = rand(11,13)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(7,9)
 			H.create_kg()
 			//H.jewish = TRUE
-			H.updateStatPanel()
+			H.updatePig()
 		if("Town Guard")
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/migrant(H), slot_w_uniform)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/jackboots(H), slot_shoes)
@@ -1243,13 +1254,13 @@ var/mob/FortLordHand
 			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
 			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(10,11))
-			H.my_stats.change_stat(STAT_ST, 2)
-			H.my_stats.change_stat(STAT_HT, 2)
-			H.my_stats.change_stat(STAT_DX, 0)
-			H.my_stats.change_stat(STAT_IN, -1)
+			H.my_stats.st = rand(11,12)
+			H.my_stats.ht = rand(11,12)
+			H.my_stats.dx = rand(9,10)
+			H.my_stats.it = rand(8,9)
 			H.create_kg()
 			//H.jewish = TRUE
-			H.updateStatPanel()
+			H.updatePig()
 	if(!H.shoes)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/leatherboots(H), slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/weapon/flame/torch/on(H), slot_r_hand)
@@ -1295,6 +1306,10 @@ var/mob/FortLordHand
 	H.sleeping = 0
 	if(H.back)
 		H.equip_to_slot_or_del(new /obj/item/weapon/kitchen/utensil/spoon(H.back), slot_in_backpack)
+	H.my_stats.initst = H.my_stats.st
+	H.my_stats.initht = H.my_stats.ht
+	H.my_stats.initdx = H.my_stats.dx
+	H.my_stats.initit = H.my_stats.it
 	H.update_inv_head()
 	H.update_inv_wear_suit()
 	H.update_inv_gloves()
@@ -1311,25 +1326,28 @@ var/mob/FortLordHand
 	H.update_inv_back()
 	H.update_inv_handcuffed()
 	H.update_inv_wear_mask()
-	H.updateStatPanel()
+	H.updatePig()
 	H.special_load()
 	H.create_kg()
-	if(H.ckey in patreons)
-		job_master.handle_patreon(H)
 	if(FAT in H.mutations)
-		H.my_stats.change_stat(STAT_ST, 1)
-		H.my_stats.change_stat(STAT_DX, -2)
-		H.my_stats.change_stat(STAT_HT, 1)
-	if(H.gender == FEMALE && !H.has_penis())
-		H.my_stats.change_stat(STAT_ST, -1)
-	if(H.age >= 50)
-		H.my_stats.change_stat(STAT_ST, -1)
-		H.my_stats.change_stat(STAT_HT, -1)
-		H.my_stats.change_stat(STAT_IN, 2)
-		H.my_stats.change_stat(STAT_PR, 2)
-	if(H.age <= 16)
-		H.my_stats.set_stat(STAT_ST, rand(7,9))
-		H.my_stats.set_stat(STAT_HT, rand(8,10))
+		H.my_stats.ht += rand(0,1)
+		H.my_stats.dx -= rand(1,2)
+		H.my_stats.st += rand(0,1)
+		if(H.gender == FEMALE && !H.has_penis())
+			H.my_stats.st -=1
+		if(H.age >= 50)
+			H.my_stats.st -= rand(0,1)
+			H.my_stats.ht -= rand(0,1)
+			H.my_stats.it += rand(0,2)
+		if(H.age <= 16)
+			if(H.my_stats.st > 9)
+				H.my_stats.st = 9
+			if(H.my_stats.ht > 10)
+				H.my_stats.ht = 10
+	H.my_stats.initdx = H.my_stats.dx
+	H.my_stats.initit = H.my_stats.it
+	H.my_stats.initht = H.my_stats.ht
+	H.my_stats.initst = H.my_stats.st
 	H << sound(pick('sound/lfwbambi/ambimo2.ogg','sound/lfwbambi/ambicha1.ogg'), repeat = 0, wait = 1, volume = 75, channel = 25)
 
 /mob/living/carbon/human/proc/applyVice(var/givenVice)
@@ -1350,8 +1368,8 @@ var/mob/FortLordHand
 	switch(province)
 		if("Ravenheart")
 			if(prob(35))
-				src.my_stats.change_stat(STAT_HT, 1)
-				src.my_stats.change_stat(STAT_WP, -1)
+				src.my_stats.ht += 1
+				src.my_stats.wp -= rand(1,2)
 				if(src.my_skills.GET_SKILL(SKILL_SURVIV) < 7)
 					src.my_skills.ADD_SKILL(SKILL_SURVIV, 1)
 			if(prob(75))
@@ -1364,8 +1382,8 @@ var/mob/FortLordHand
 			return //didnt think of anything yet
 		if("Deadeye")
 			if(prob(35))
-				src.my_stats.change_stat(STAT_DX, 1)
-				src.my_stats.change_stat(STAT_PR, 1)
+				src.my_stats.dx += 1
+				src.my_stats.pr += 1
 				var/pickskill = pick("sneak","lockpick","pickpocket")
 				switch(pickskill)
 					if("sneak")
@@ -1388,7 +1406,7 @@ var/mob/FortLordHand
 				name = real_name
 			voicetype = "gink"
 			if(prob(100))
-				src.my_stats.change_stat(STAT_ST, -1)
-				src.my_stats.change_stat(STAT_DX, 1)
+				src.my_stats.st -= 1
+				src.my_stats.dx += 1
 			if(prob(35))
 				src.equip_to_slot_or_del(new /obj/item/clothing/head/ricehat(src.back), slot_in_backpack)

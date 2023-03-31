@@ -91,7 +91,7 @@
 			src.victim = M
 			icon_state = M.pulse ? "table2-active" : "table2-idle"
 			spawn(M.pulse)
-				playsound(src, 'sound/effects/heartbeatmonitor.ogg', 50, 0)
+				playsound(src, 'heartbeatmonitor.ogg', 50, 0)
 			return 1
 	src.victim = null
 	icon_state = "table2-idle"
@@ -108,7 +108,7 @@
 	if (C.client)
 		C.client.perspective = EYE_PERSPECTIVE
 		C.client.eye = src
-	C.SetResting(TRUE)
+	C.resting = 1
 	C.loc = src.loc
 	for(var/obj/O in src)
 		O.loc = src.loc

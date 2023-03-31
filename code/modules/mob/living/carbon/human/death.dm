@@ -9,6 +9,7 @@ var/holy_battle_end = FALSE
 
 /mob/living/carbon/human/gib()
 	death(1)
+	gibbed_people += "\n &#8226; [src.real_name] ([src.old_job]) : [src.old_key]\n"
 	var/area/dunwell/AffectedArea = get_area(src)
 	firstvictimCheck()
 	if(AffectedArea == /area/dunwell/station)
@@ -39,7 +40,7 @@ var/holy_battle_end = FALSE
 		if(prob(100 - E.get_damage()))
 			// Override the current limb status and don't cause an explosion
 			E.droplimb(1,1)
-	src << 'sound/death_sound.ogg'
+	src << 'death_sound.ogg'
 	ghostize(1)
 	if(!pain_dropped)
 		new /obj/structure/wraith_pain(src.loc)
@@ -82,7 +83,7 @@ var/holy_battle_end = FALSE
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src
-	src << 'sound/death_sound.ogg'
+	src << 'death_sound.ogg'
 	if(!pain_dropped)
 		new /obj/structure/wraith_pain(src.loc)
 		pain_dropped = TRUE
@@ -113,7 +114,7 @@ var/holy_battle_end = FALSE
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src
-	sound_to(src, sound('sound/death_sound.ogg', repeat = 0, wait = 0, volume = 50))
+	sound_to(src, sound('death_sound.ogg', repeat = 0, wait = 0, volume = 50))
 	flick("dust-h", animation)
 	ghostize(1)
 	if(!pain_dropped)
@@ -131,7 +132,9 @@ var/holy_battle_end = FALSE
 	if(healths)		healths.icon_state = "health5"
 
 	stat = DEAD
-	add_verb(list(/mob/living/proc/succumb,/mob/living/proc/ghost))
+	if(get_pain() >= 180 && prob(25))
+		handle_shit()
+		handle_piss()
 	dizziness = 0
 	if(!pain_dropped)
 		new /obj/structure/wraith_pain(src.loc)
@@ -195,7 +198,7 @@ var/holy_battle_end = FALSE
 							H.unlock_medal("Tzchernobog Devotee", 0, "Fought for Tzchernobog in the Holy war and won.", "10")
 						else
 							H.client.ChromieWinorLoose(H.client, -1)
-					world << 'sound/effects/war_banner.ogg'
+					world << 'war_banner.ogg'
 					ticker.declare_completion()
 		else
 			if(!isbomber && th_casualties < 40 && !holy_battle_end && !deathcounted)
@@ -213,7 +216,7 @@ var/holy_battle_end = FALSE
 							H.unlock_medal("God's Martyr", 0, "Fought for the Comatic in the Holy war and won.", "9")
 						else
 							H.client.ChromieWinorLoose(H.client, -1)
-					world << 'sound/effects/war_banner.ogg'
+					world << 'war_banner.ogg'
 					ticker.declare_completion()
 
 	if(src.job == "Baron")
@@ -221,7 +224,7 @@ var/holy_battle_end = FALSE
 			if(H?.outsider == FALSE && H?.mind?.special_role != "tiamatrait" && !H?.siegesoldier)
 				H?.add_event("deadbaron", /datum/happiness_event/misc/barondead)
 	if(april_fools)
-		playsound(src.loc, pick('sound/shittyjoke/worm_death.ogg'), 60, 0, -1)
+		playsound(src.loc, pick('worm_death.ogg'), 60, 0, -1)
 
 	for(var/mob/living/carbon/human/HHHH in mob_list)
 		if(excomunicated)
@@ -247,7 +250,7 @@ var/holy_battle_end = FALSE
 					if(prob(80))
 						HHH.emote(pick("scream","cry"))
 						HHH.stat = 1
-	sound_to(src, sound('sound/death_sound.ogg', repeat = 0, wait = 0, volume = 50))
+	src << 'death_sound.ogg'
 	if(src.client)
 		blinded = 0
 		client?.screen -= global_hud?.blind//blind.layer = 0
@@ -273,6 +276,33 @@ var/holy_battle_end = FALSE
 
 	if(species) species.handle_death(src)
 
+	//Handle brain slugs.
+	var/datum/organ/external/head = get_organ("head")
+	var/mob/living/simple_animal/borer/B
+
+	for(var/I in head.implants)
+		if(istype(I,/mob/living/simple_animal/borer))
+			B = I
+	if(B)
+		if(!B.ckey && ckey && B.controlling)
+			B.ckey = ckey
+			B.controlling = 0
+		if(B.host_brain.ckey)
+			ckey = B.host_brain.ckey
+			B.host_brain.ckey = null
+			B.host_brain.name = "host brain"
+			B.host_brain.real_name = "host brain"
+
+		verbs -= /mob/living/carbon/proc/release_control
+
+	//Check for heist mode kill count.
+	if(ticker.mode && ( istype( ticker.mode,/datum/game_mode/heist) ) )
+		//Check for last assailant's mutantrace.
+		/*if( LAssailant && ( istype( LAssailant,/mob/living/carbon/human ) ) )
+			var/mob/living/carbon/human/V = LAssailant
+			if (V.dna && (V.dna.mutantrace == "vox"))*/ //Not currently feasible due to terrible LAssailant tracking.
+		//world << "Vox kills: [vox_kills]"
+		vox_kills++ //Bad vox. Shouldn't be killing humans.
 
 	if(is_dreamer(src))
 		spawn(150)
@@ -333,46 +363,44 @@ var/holy_battle_end = FALSE
 				M.north_team -= src
 				M.north_count++
 
-	sound_to(src, sound('sound/death_sound.ogg', repeat = 0, wait = 0, volume = 50))
+	sound_to(src, sound('death_sound.ogg', repeat = 0, wait = 0, volume = 50))
 
 	//tod = worldtime2text()		//weasellos time of death patch
 	//if(mind)	mind.store_memory("Time of death: [tod]", 0)
 	if(ticker && ticker.mode)
+//		world.log << "k"
 		ticker.mode.check_win()		//Calls the rounds wincheck, mainly for wizard, malf, and changeling now
 
-	if(special == "screamercurse" && !iszombie(src))
+/*	if(virtual)
+		usr << "\red <b>You died. Game over. Returning to the real world...</b>"
+		sleep(80)
+		return_VR()
+*/
+	if(special == "screamercurse" && !istype(species, /datum/species/human/zombie))
 		becoming_zombie = TRUE
 		zombify = 500
-
-
-	if(prob(50))
-		spawn(50)
-		handle_shit()
-		handle_piss()
 
 	return ..(gibbed)
 
 
 
-/mob/living/carbon/human/proc/makeSkeleton(var/true_skeleton = FALSE)
-	if(isskeleton(src))	return
+/mob/living/carbon/human/proc/makeSkeleton()
+	if("Skeleton" in src.species)	return
 	if(iszombie(src)) return
 
 	if(f_style)
 		f_style = "Shaved"
 	if(h_style)
 		h_style = "Bald"
-	update_hair()
-	if(true_skeleton)
-		src.set_species("Skeleton")
+	update_hair(0)
+
+	src.set_species("Skeleton")
 	mutations.Add(NOCLONE)
-	mutations.Add(SKELETON)
 	status_flags |= DISFIGURED
-	update_body()
+	update_body(0)
 	src.vessel.total_volume = 0
-	if(src.vessel.reagent_list.len)
-		var/datum/reagent/blood/B = pick(src.vessel.reagent_list)
-		B.volume = 0
+	var/datum/reagent/blood/B = pick(src.vessel.reagent_list)
+	B.volume = 0
 
 /*	for(var/obj/item/weapon/reagent_containers/food/snacks/organ/O in src.organ_storage)
 		qdel(O)*/
@@ -385,11 +413,11 @@ var/holy_battle_end = FALSE
 		f_style = "Shaved"		//we only change the icon_state of the hair datum, so it doesn't mess up their UI/UE
 	if(h_style)
 		h_style = "Bald"
-	update_hair()
+	update_hair(0)
 
 	mutations.Add(HUSK)
 	status_flags |= DISFIGURED	//makes them unknown without fucking up other stuff like admintools
-	update_body()
+	update_body(0)
 	return
 
 /mob/living/carbon/human/proc/Drain()

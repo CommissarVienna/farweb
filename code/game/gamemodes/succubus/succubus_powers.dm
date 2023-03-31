@@ -38,10 +38,8 @@ mob/proc/succubus_enslave(var/mob/living/carbon/human/target, var/silent = FALSE
 /mob/living/carbon/human/proc/teleportSlaves()
 	set hidden = 0
 	set name = "teleportSlaves"
-	set desc = "Teleport Slaves"
-	set category = "gpc"
 	if(src?.mind?.succubus?.skillCooldown)
-		to_chat(src, "<span class='combat'>[pick(fnord)] It's not ready yet!</span>")
+		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] It's not ready yet!</span>")
 		return
 	to_chat(src, "<span class='jogtowalk'>[pick("You teleport your slaves near yourself.","You bring your slaves to you.","You bring your slaves near you.")]</span>")
 	src?.mind?.succubus?.skillCooldown = TRUE
@@ -54,12 +52,10 @@ mob/proc/succubus_enslave(var/mob/living/carbon/human/target, var/silent = FALSE
 /mob/living/carbon/human/proc/killSlave()
 	set hidden = 0
 	set name = "killSlave"
-	set desc = "Kill Slave"
-	set category = "gpc"
 	if(src.stat)
 		return
 	if(src?.mind?.succubus?.skillCooldown)
-		to_chat(src, "<span class='combat'>[pick(fnord)] It's not ready yet!</span>")
+		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] It's not ready yet!</span>")
 		return
 	var/mob/living/carbon/human/selection = input("Kill someone!", "SLAVE LIST", null, null) as null|anything in src.mind.succubus.succubusSlaves
 	if(!selection)
@@ -79,8 +75,6 @@ mob/proc/succubus_enslave(var/mob/living/carbon/human/target, var/silent = FALSE
 /mob/living/carbon/human/proc/punishSlave()
 	set hidden = 0
 	set name = "punishSlave"
-	set desc = "punish Slave"
-	set category = "gpc"
 	var/mob/living/carbon/human/selection = input("PUNISH someone!", "SLAVE LIST", null, null) as null|anything in src.mind.succubus.succubusSlaves
 	if(!selection)
 		to_chat(src, "<span class='jogtowalk'>[pick("You change your mind.","Maybe Later.","They will get to keep their dignity for another night.")]</span>")

@@ -24,31 +24,31 @@ var/list/datum/power/changeling/powerinstances = list()
 	name = "Expose Tentacles"
 	desc = "Makes you stronger and more resistant to damage."
 	genomecost = 0
-	verbpath = /mob/proc/extend_tentacles
+	verbpath = /mob/verb/extend_tentacles
 
 /datum/power/changeling/changhunt
 	name = "Hunt"
 	desc = "Hunt them."
 	genomecost = 0
-	verbpath = /mob/proc/changhunt
+	verbpath = /mob/verb/changhunt
 
 /datum/power/changeling/infestweb
 	name = "Infested the Web"
 	desc = "Infest the Lifeweb."
 	genomecost = 0
-	verbpath = /mob/proc/infestweb
+	verbpath = /mob/verb/infestweb
 
 /datum/power/changeling/lump
 	name = "Lump"
 	desc = "Shit a lump."
 	genomecost = 0
-	verbpath = /mob/proc/lump
+	verbpath = /mob/verb/lump
 
 /datum/power/changeling/learn
 	name = "Learn"
 	desc = "Learn from the Associates."
 	genomecost = 0
-	verbpath = /mob/proc/learn
+	verbpath = /mob/verb/learn
 
 /datum/power/changeling/transform
 	name = "Transform"

@@ -11,7 +11,7 @@
 	throw_speed = 1
 	throw_range = 2
 	w_class = 1.0
-	drop_sound = list('sound/effects/phy_coin_h_01.ogg','sound/effects/phy_coin_h_02.ogg','sound/effects/phy_coin_h_03.ogg','sound/effects/phy_coin_h_04.ogg')
+	drop_sound = list('phy_coin_h_01.ogg','phy_coin_h_02.ogg','phy_coin_h_03.ogg','phy_coin_h_04.ogg')
 	var/singularvalue = 1
 	var/access = list()
 	access = access_crate_cash
@@ -152,7 +152,7 @@
 
 //////////SILVER///////////
 /obj/item/weapon/spacecash/silver
-	icon = 'icons/obj/gold4.dmi'
+	icon = 'gold4.dmi'
 	item_state = "scoin"
 	singularvalue = 4
 	silver = TRUE

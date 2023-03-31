@@ -3,7 +3,6 @@
 	maxHealth = 120
 	health = 120
 	item_worth = 80
-	is_npc = TRUE //So they don't have the shit about yellow saliva.
 	var/cycle_pause = 15
 	var/atom/target
 	var/attacksound
@@ -17,7 +16,7 @@
 
 /datum/species/skinless
 	name = "skinless"
-	icobase = 'icons/mob/flesh/subhuman.dmi'
+	icobase = 'icons/monsters/subhuman.dmi'
 	primitive = /mob/living/carbon/human/skinless
 	unarmed_type = /datum/unarmed_attack
 	secondary_unarmed_type = /datum/unarmed_attack
@@ -36,7 +35,6 @@
 		src.sound2()
 		src.emote("screams violently!")
 		playsound(loc, selectedSound, 100, 1, 0, 0)
-	npc_pick_up()
 	return ..()
 
 /mob/living/carbon/human/skinless/Life()
@@ -52,13 +50,11 @@
 	set_species("skinless")
 	gender = MALE
 	src.real_name = random_name(src.gender)
-	gender = pick(MALE,FEMALE)
-	switch(gender)//You make things harder than it needs to be. Instead of using a regex to cut off their last name... why not just use the convient first name's list that the get random name proc already goes through.
-		if(MALE)
-			real_name = pick(first_names_male)
-		else
-			real_name = pick(first_names_female)
-	real_name = "[real_name] Skinless"
+	var/regex/R = regex("(^\\S+) (.*$)")
+	R.Find(src.real_name)
+	var/first_name = R.group[1]
+	src.name = "[first_name] Skinless"
+	src.real_name = "[first_name] Skinless"
 	a_intent = "harm"
 	src.zone_sel = new /obj/screen/zone_sel( null )
 	var/skinless = pick("knife","club","spear")
@@ -74,11 +70,16 @@
 	if(prob(60))
 		src.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/iron_cuirass(src), slot_wear_suit)
 	potenzia = rand(16, 25)
+	my_stats.initst = rand(12,13)
+	my_stats.initht = rand(10,13)
+	my_stats.initdx = rand(10,11)
+	my_stats.st = my_stats.initst
+	my_stats.ht = my_stats.initht
+	my_stats.dx = my_stats.initdx
 	my_skills.CHANGE_SKILL(SKILL_MELEE, 11)
 	sleep(10)
 	if(!mind)
 		mind = new /datum/mind(src)
-	hand = 0
 	// main loop
 	spawn while(stat != 2 && bot)
 		sleep(cycle_pause)
@@ -175,8 +176,9 @@
 				if(src.r_hand || src.l_hand)
 					if(r_hand)
 						W.attackby(r_hand, src)
-					else if(l_hand)
-						W.attackby(l_hand, src)
+					else
+						if(l_hand)
+							W.attackby(l_hand, src)
 				else
 					W.attack_hand(src)
 				return 1
@@ -197,13 +199,11 @@
 			return FALSE
 
 		zone_sel.selecting = pick(zone_allowed)
-		if (stat) //I don't want any zombie skinless chasing me around.
+		if (stat == DEAD)
 			return FALSE
 		if(resting)
 			mob_rest()
 			return
-
-		npc_pick_up()
 
 		stamina++
 		if(stamina >= maxstamina)
@@ -226,7 +226,7 @@
 				if(!(C in view(src, viewrange)))
 					dist += 3
 
-				if (C.stat == DEAD || istype(C, /mob/living/carbon/human/skinless) || !can_see(src,C,viewrange) || C.consyte)
+				if (C.stat == 2 || istype(C, /mob/living/carbon/human/skinless) || !can_see(src,C,viewrange) || C.consyte)
 					continue
 				if(C.stunned || C.paralysis || C.weakened)
 					target = C
@@ -237,6 +237,7 @@
 
 		// if we have found a target
 		if(target)
+
 			if(stamina >= 40)
 				if(prob(5))
 					jump_act(target, src)
@@ -258,9 +259,9 @@
 						continue
 					if(istype(A, /obj/multiz/stairs/))
 						continue
-					if(A.density  && src.my_stats.get_stat(STAT_ST) >= 20)
+					if(A.density  && src.my_stats.st >= 20)
 						qdel(A)
-				if(T.density && src.my_stats.get_stat(STAT_ST) >= 20)
+				if(T.density && src.my_stats.st >= 20)
 					qdel(T)
 
 			// change the target if there is another human that is closer
@@ -308,21 +309,9 @@
 
 			return 1
 
-		var/obj/machinery/door/airlock/A = locate() in get_step_rand(src)//NPC's do not play nice with dense airlocks. If it is locked they will walk into it forever
-		if(A && A.density)
-			if(A.locked)
-				dir = get_dir(src,target) // still face to the target
-				frustration++
-				return 1
-			else
-				step_rand(src)
-				dir = get_dir(src,target) // still face to the target
-				frustration++
-				return 1
-		else
-			step_rand(src)
-			dir = get_dir(src,target) // still face to the target
-			frustration++
-			return 1
+		// if we couldn't do anything, take a random step
+		step_rand(src)
+		dir = get_dir(src,target) // still face to the target
+		frustration++
 
 		return 1

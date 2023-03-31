@@ -543,7 +543,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/pickup(mob/user)
 	if(!firstpick)
 		firstpick = TRUE
-		playsound(src.loc, pick('sound/effects/itm_ingredient_mushroom_up_01.ogg','sound/effects/itm_ingredient_mushroom_up_02.ogg','sound/effects/itm_ingredient_mushroom_up_03.ogg','sound/effects/itm_ingredient_mushroom_up_04.ogg'), 70, 0)
+		playsound(src.loc, pick('itm_ingredient_mushroom_up_01.ogg','itm_ingredient_mushroom_up_02.ogg','itm_ingredient_mushroom_up_03.ogg','itm_ingredient_mushroom_up_04.ogg'), 70, 0)
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/morfiannik
 	name = "Morfiannik"

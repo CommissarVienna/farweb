@@ -67,7 +67,7 @@
 
 /obj/item/weapon/storage/pill_bottle/mentats
 	name = "Mentats pills"
-	icon = 'icons/obj/chemical.dmi'
+	icon = 'chemical.dmi'
 	icon_state = "mentats_can"
 
 /obj/item/weapon/storage/pill_bottle/mentats/New()
@@ -80,7 +80,7 @@
 
 /obj/item/weapon/storage/pill_bottle/buffout
 	name = "Buffout pills"
-	icon = 'icons/obj/chemical.dmi'
+	icon = 'chemical.dmi'
 	icon_state = "buff_canister"
 
 /obj/item/weapon/storage/pill_bottle/buffout/New()
@@ -94,7 +94,7 @@
 /obj/item/weapon/storage/pill_bottle/changa
 	name = "Changa pills"
 	desc = "A label reads: <b>BANNED in <i>29<i> FORTRESSES in EVERGREEN.</b> CAUSES EXTREME RAGE AND HYPERVENTILATION. DO NOT GIVE TO KIDS UNDER 6 YEARS OLD."
-	icon = 'icons/obj/chemical.dmi'
+	icon = 'chemical.dmi'
 	icon_state = "buff_canister"
 
 /obj/item/weapon/storage/pill_bottle/changa/New()
@@ -107,7 +107,7 @@
 
 /obj/item/weapon/storage/pill_bottle/mdma
 	name = "mdma pills"
-	icon = 'icons/obj/chemical.dmi'
+	icon = 'chemical.dmi'
 	icon_state = "buff_canister"
 
 /obj/item/weapon/storage/pill_bottle/mdma/New()
@@ -121,7 +121,7 @@
 
 /obj/item/weapon/storage/pill_bottle/mice69
 	name = "mice69 pills"
-	icon = 'icons/obj/chemical.dmi'
+	icon = 'chemical.dmi'
 	icon_state = "buff_canister"
 
 /obj/item/weapon/storage/pill_bottle/mice69/New()

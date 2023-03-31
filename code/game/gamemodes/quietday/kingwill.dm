@@ -107,7 +107,7 @@
 
 	for(var/mob/dead/observer/G in player_list)
 		spawn(0)
-			G << 'sound/webbers/console_interact7.ogg'
+			G << 'console_interact7.ogg'
 			switch(alert(G,"Do you want to join a Tribunal Ordinator Squad?","You have thiry seconds to comply.","Yes","No"))
 				if("Yes")
 					if((world.time-time_passed)>300)//If more than 30 game seconds passed.

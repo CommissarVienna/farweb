@@ -96,7 +96,7 @@
 
 /obj/structure/lifeweb/statue/pillar/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/weapon/chisel) && !chiseled)
-		playsound(src, 'sound/weapons/obj_stone_generic_switch_enter_01.ogg', 80, 0,0)
+		playsound(src, 'obj_stone_generic_switch_enter_01.ogg', 80, 0,0)
 		var/list/styles = list("Style I", "Style II", "Style III", "(Return)")
 		var/styletype = input(user,"Select a column appearance style.","[src]") in styles
 		switch(styletype)
@@ -108,7 +108,7 @@
 				icon_state = "column3"
 			if("(Return)")
 				return
-		playsound(src, 'sound/weapons/obj_stone_generic_switch_enter_01.ogg', 80, 0,0)
+		playsound(src, 'obj_stone_generic_switch_enter_01.ogg', 80, 0,0)
 		chiseled = TRUE
 		user.visible_message("<span class='passive'>\The [user] chisels \the [src]</span>")
 		return

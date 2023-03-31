@@ -55,41 +55,6 @@ var/global/max_players = 90
 			C = M.client
 		cmd_admin_pm(C,null)
 		return
-	if(href_list["_src_"] == "stat")
-		if(href_list["spload"] == "1")
-			statpanel_loaded = TRUE
-			init_panel()
-		if(href_list["modernbrowser"] == "1")
-			statpanel_loaded = TRUE
-		if(href_list["buttonpig"] == "1")
-			src << 'sound/uibutton.ogg'
-			who()
-		if(href_list["buttonchrome"] == "1")
-			src << 'sound/uibutton.ogg'
-			if(current_button == "chrome")
-				return
-			current_button = "chrome"
-			newtext(html_verbs[current_button])
-		if(href_list["buttonoptions"] == "1")
-			src << 'sound/uibutton.ogg'
-			if(current_button == "options")
-				return
-			current_button = "options"
-			newtext(html_verbs[current_button])
-		if(href_list["buttonnote"] == "1")
-			src << 'sound/uibutton.ogg'
-			if(current_button == "note")
-				return
-			current_button = "note"
-			newtext(mob.noteUpdate())
-		if(href_list["buttondynamic"])
-			src << 'sound/uibutton.ogg'
-			if(current_button == href_list["buttondynamic"])
-				return
-			current_button = href_list["buttondynamic"]
-			newtext(html_verbs[current_button])
-
-
 
 	//Logs all hrefs
 	if(config && config.log_hrefs && href_logfile)
@@ -101,7 +66,6 @@ var/global/max_players = 90
 		if("prefs")		return prefs.process_link(usr,href_list)
 		if("vars")		return view_var_Topic(href,href_list,hsrc)
 		if("chat")		return chatOutput.Topic(href, href_list)
-
 
 	..()	//redirect to hsrc.Topic()
 
@@ -140,11 +104,13 @@ var/global/max_players = 90
 	///////////
 /client/New(TopicData)
 	TopicData = null							//Prevent calls to client.Topic from connect
+	chatOutput = new /datum/chatOutput(src)
+	force_dark_theme()
 
 	// CARREGAR GOONCHAT
 	if(connection != "seeker")					//Invalid connection type.]
 		return null
-	if(byond_build < 1586 || byond_version < 514)		//Out of date client.
+	if(byond_build < 1556 || byond_version < 514)		//Out of date client.
 		src << link("https://nopm.xyz/resources/byond_young.png")
 		del(src)
 		return
@@ -156,16 +122,26 @@ var/global/max_players = 90
 	///////////////////////
 	//DETECTOR DE GRINGOS//
 	///////////////////////
+#ifdef FARWEB_LIVE
 	if(!IsGuestKey(key))
 		var/list/locinfo = get_loc_info()
 		if(!Country_Code)
 			Country_Code = locinfo["country_code"]
+
+	/*if(private_party && !check_ckey_whitelisted(ckey(key)))
+		src << link("https://nopm.xyz/resources/not_invited.png")
+		del(src) OOPS PUNHETADA NOPM NADA PRA SE VER POR AQUI
+		return*/
 
 	if(ckey in bans)
 		src << link("https://nopm.xyz/resources/lifeweb_completed.png")
 		del(src)
 		return
 
+	if(clients.len >= max_players && !holder)
+		src << link("https://nopm.xyz/resources/pool_overpop.png")
+		qdel(src)
+		return
 	if(!JoinDate)
 		var/list/http[] = world.Export("http://www.byond.com/members/[src.ckey]?format=text")
 		var/Joined = 0000-00-00
@@ -175,13 +151,12 @@ var/global/max_players = 90
 			Joined = copytext(String, JoinPos, JoinPos+10)
 			src.JoinDate = Joined
 
-	// if(!ckeywhitelistweb.Find(src.ckey))
-	// 	notInvited()
-	// 	return
+	if((!src.JoinDate || text2num(copytext(src.JoinDate, 1, 5)) >= 2020) && !ckeywhitelistweb.Find(src.ckey))
+		notInvited()
+		return
 	// Change the way they should download resources.
 	//src.preload_rsc = "https://www.dropbox.com/s/kfe9yimm9oi2ooj/MACACHKA.zip?dl=1"
-	statpanel_loaded = FALSE
-	chatOutput = new /datum/chatOutput(src)
+#endif
 	to_chat(src, "<span class='highlighttext'> If your screen is dark and you can't interact with the menu, just wait. You must be downloading resources..</span>")
 	to_chat(src, "<span class='highlighttext'>\n If the stat panel fails to load, press F5 while your mouse is over it.</span>")
 	clients += src
@@ -391,8 +366,8 @@ var/global/max_players = 90
 		//'nano/templates/chem_heater.tmpl',
 		'sound/music/OS13_combat.ogg',
 		'sound/music/haruspex-combat.ogg',
-		'sound/music/OS13_combat.ogg',
-		'sound/music/ravenheart_combat1.ogg',
+		'OS13_combat.ogg',
+		'ravenheart_combat1.ogg',
 		'sound/lfwbsounds/bloodlust1.ogg',
 		'sound/fortress_suspense/suspense1.ogg',
 		'sound/fortress_suspense/suspense2.ogg',
@@ -823,5 +798,5 @@ var/global/max_players = 90
 
 /client/proc/notInvited()
 	src << link("https://nopm.xyz/resources/not_invited.png")
-	src << 'sound/not_invited.ogg'
+	src << 'not_invited.ogg'
 	del(src)

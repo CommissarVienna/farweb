@@ -5,9 +5,10 @@
 /mob/living/carbon/update_transform()
 	var/matrix/M = matrix()
 	if(lying && !species?.prone_icon) //Only rotate them if we're not drawing a specific icon for being prone.
-	//	M.Turn(90)
+		M.Turn(90)
 		M.Scale(size_multiplier)
-		M.Translate(0, 16*(size_multiplier-1))
+		M.Translate(1,-6)
+		src.dir = SOUTH
 	else
 		M.Scale(size_multiplier)
 		M.Translate(0, 16*(size_multiplier-1))

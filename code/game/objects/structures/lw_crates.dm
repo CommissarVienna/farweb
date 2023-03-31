@@ -33,11 +33,11 @@
 		if(!(req_access & idcard.access)) return
 		if(locked)
 			locked = FALSE
-			playsound(src.loc, 'sound/lfwbsounds/iron_crate_open.ogg', 40, 1, -3)
+			playsound(src.loc, 'iron_crate_open.ogg', 40, 1, -3)
 			update_icon()
 		else
 			locked = TRUE
-			playsound(src.loc, 'sound/lfwbsounds/iron_crate_close.ogg', 40, 1, -3)
+			playsound(src.loc, 'iron_crate_close.ogg', 40, 1, -3)
 			update_icon()
 
 /obj/structure/merchant_crates/update_icon()

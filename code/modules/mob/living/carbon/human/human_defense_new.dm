@@ -376,6 +376,24 @@
 			if(prob(2))
 				affecting.embed(I)
 
+		if(victim?.isVampire && I.silver)
+			if(armor == ARMOR_SOFTEN)
+				return
+			else
+				victim.Weaken(4)
+				victim.apply_damage(damage*1.5, BRUTE, affecting)
+				flash_pain()
+				victim.rotate_plane(1)
+				if(prob(40))
+					victim.vessel.remove_reagent("blood",25)
+				if(prob(50))
+					victim.emote("SCREECHES in pain!")
+					playsound(victim.loc, pick('sound/effects/vamphit1.ogg', 'sound/effects/vamphit2.ogg', 'sound/effects/vamphit3.ogg'), 75, 0, -1)
+					if(!victim.ExposedFang)
+						playsound(victim.loc, ('sound/effects/fangs1.ogg'), 50, 0, -1)
+						victim.visible_message("<span class='combatbold'>[victim]</span> <span class='combat'>exposes fangs!</span>")
+						victim.ExposedFang = TRUE
+						victim.update_body()
 	return 1
 
 /mob/living/carbon/human/proc/shouldIStun(var/force = 0)

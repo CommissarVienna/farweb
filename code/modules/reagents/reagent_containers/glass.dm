@@ -86,13 +86,13 @@
 			var/mob/living/M = target
 			if(user.zone_sel.selecting == "mouth")
 				if(!reagents.total_volume)
-					to_chat(user, "<span class='combatbold'>[pick(fnord)]</span> <span class='combat'>\the<span class='combatbold'>[src]</span> is empty!</span>")
+					to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)]</span> <span class='combat'>\the<span class='combatbold'>[src]</span> is empty!</span>")
 					return
 				if(user == M)
 					to_chat(user,"<span class='passive'> You drink from <span class='passivebold'>[src]</span>.</span>")
 					if(reagents.total_volume)
 						reagents.reaction(M, INGEST, override = amount_per_transfer_from_this)
-						playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(10,50), 1)
+						playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(10,50), 1)
 						spawn(5)
 							reagents.trans_to(M, amount_per_transfer_from_this)
 				else
@@ -101,7 +101,7 @@
 					user.visible_message("<span class='combat'><span class='combatbold'>[user]</span> feeds \the <span class='combatbold'>[M]</span> with \the <span class='combatbold'>[src]</span>.</span>")
 					if(reagents.total_volume)
 						reagents.reaction(M, INGEST)
-						playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(10,50), 2)
+						playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(10,50), 2)
 						spawn(5)
 							reagents.trans_to(M, amount_per_transfer_from_this)
 				return
@@ -154,6 +154,9 @@
 			var/trans = src.reagents.trans_to(target, amount_per_transfer_from_this)
 			to_chat(user, "\blue You transfer [trans] units of the solution to [target].")
 
+		//Safety for dumping stuff into a ninja suit. It handles everything through attackby() and this is unnecessary.
+		else if(istype(target, /obj/item/clothing/suit/space/space_ninja))
+			return
 
 		else if(reagents.total_volume)
 			if(istype(target, /turf/simulated/floor/open))
@@ -177,7 +180,7 @@
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		..()
-		if(istype(W, /obj/item/weapon/pen))
+		if(istype(W, /obj/item/weapon/pen) || istype(W, /obj/item/device/flashlight/pen))
 			var/tmp_label = sanitize(input(user, "Enter a label for [src.name]","Label",src.label_text))
 			if(length(tmp_label) > 10)
 				user << "\red The label can be at most 10 characters long."
@@ -185,7 +188,7 @@
 				user << "\blue You set the label to \"[tmp_label]\"."
 				src.label_text = tmp_label
 				src.update_name_label()
-
+	
 	on_reagent_change()
 		update_icon()
 
@@ -206,12 +209,6 @@
 			src.name = src.base_name
 		else
 			src.name = "[src.base_name] ([src.label_text])"
-
-
-/obj/item/weapon/reagent_containers/glass/throw_impact(atom/hit_atom, speed)
-	..(hit_atom, speed)
-	if(src.reagents.total_volume)
-		src.add_fluid_by_transfer(get_turf(src), src.reagents.total_volume)
 
 /obj/item/weapon/reagent_containers/glass/beaker
 	name = "beaker"
@@ -366,7 +363,7 @@
 /obj/item/weapon/reagent_containers/glass/dispenser
 	name = "reagent glass"
 	desc = "A reagent glass."
-	icon = 'icons/obj/icons/obj/chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "beaker0"
 	amount_per_transfer_from_this = 10
 	flags = FPRINT | TABLEPASS | OPENCONTAINER

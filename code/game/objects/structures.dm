@@ -3,7 +3,7 @@ obj/structure
 	var/breakable
 	var/parts
 	var/list/drops = list(/obj/item/weapon/stone, /obj/item/weapon/stone)
-	var/list/break_sounds = list('sound/effects/npc_human_pickaxe_01.ogg','sound/effects/npc_human_pickaxe_02.ogg','sound/effects/npc_human_pickaxe_03.ogg','sound/effects/npc_human_pickaxe_05.ogg')
+	var/list/break_sounds = list('npc_human_pickaxe_01.ogg','npc_human_pickaxe_02.ogg','npc_human_pickaxe_03.ogg','npc_human_pickaxe_05.ogg')
 
 	var/hitstake = 0
 	var/hits = 10
@@ -44,17 +44,17 @@ obj/structure/ex_act(severity)
 			mod_hit -= 2
 		if(SKILL_STAFF)
 			mod_hit += 2
-	var/list/roll_result = roll3d6(H, H.my_stats.get_stat(STAT_ST), mod_hit, FALSE, TRUE)
+	var/list/roll_result = roll3d6(H, H.my_stats.st, mod_hit, FALSE, TRUE)
 	switch(roll_result[GP_RESULT])
-		if(GP_CRITSUCC)
+		if(GP_CRITSUCCESS)
 			H.visible_message("<span class='passivebold'>[H] hits [src] with [W]</span>")
 			hitstake += 2
 			W.damageItem("SOFT")
-		if(GP_SUCC)
+		if(GP_SUCCESS)
 			H.visible_message("<span class='passive'>[H] hits [src] with [W]</span>")
 			hitstake += 1
 			W.damageItem("SOFT")
-		if(GP_FAIL)
+		if(GP_FAILED)
 			H.visible_message("<span class='combat'>[H] hits [src] with [W]</span>")
 			W.damageItem("SOFT")
 		if(GP_CRITFAIL)

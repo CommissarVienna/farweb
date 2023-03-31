@@ -15,7 +15,7 @@
 	if (C.client)
 		C.client.perspective = EYE_PERSPECTIVE
 		C.client.eye = src
-	C.SetResting(TRUE)
+	C.resting = 1
 	C.loc = src.loc
 	for(var/obj/O in src)
 		O.loc = src.loc
@@ -51,5 +51,5 @@
 				var/obj/structure/morgueplate/M = locate() in H.loc
 				if(M)
 					H.buried = TRUE
-					src.name = "Here lies[H.real_name]"
-					src.desc = "The body of [H.real_name]"
+					src.name = "Aqui Jaz [H.real_name]"
+					src.desc = "Corpo de [H.real_name]"

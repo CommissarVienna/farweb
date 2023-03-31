@@ -38,7 +38,7 @@
 		var/obj/item/stack/sheet/leather/L = W
 		L.use(1)
 		new /obj/item/stack/sheet/leather(src)
-		playsound(src, 'sound/effects/newchem_insert.ogg', 80, 1)
+		playsound(src, 'newchem_insert.ogg', 80, 1)
 		return
 	else
 		..()
@@ -54,16 +54,16 @@
 	if(Shoemaker.stat != 0)	return
 
 	if(!Shoemaker.check_perk(/datum/perk/shoemaking))
-		to_chat(usr, "<span class='combatbold'>[pick(fnord)] How do I use this?</span>")
+		to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)] How do I use this?</span>")
 		return
 
 	if(src.contents.len >= 1)
-		playsound(src, 'sound/effects/fabric_production.ogg', 80, 1)
+		playsound(src, 'fabric_production.ogg', 80, 1)
 		if(do_after(user, 28))
 			onCooldown = TRUE
 			var/obj/item/I = pick(src.contents)
 			qdel(I)
-			playsound(src, 'sound/effects/mach1.ogg', 80, 1)
+			playsound(src, 'mach1.ogg', 80, 1)
 			spawn(10)
 				onCooldown = FALSE
 				new /obj/item/clothing/shoes/lw/geschef(src.loc)
@@ -72,7 +72,7 @@
 		else
 			return
 	else
-		to_chat(usr, "<span class='combatbold'>[pick(fnord)] I have ([contents.len]/5) amounts of leather!</span>")
+		to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)] I have ([contents.len]/5) amounts of leather!</span>")
 		return
 	..()
 

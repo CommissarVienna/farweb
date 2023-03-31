@@ -14,4 +14,3 @@
 	tendon_prob = 0
 	head_icon_needed = 1
 	hasVocal = TRUE
-	no_draw = TRUE

@@ -513,4 +513,4 @@
 
 /obj/structure/stool/bed/chair/wheelchair/Move()
 	..()
-	playsound(src.loc, 'sound/misc/rollermove.ogg', 50, 1)
+	playsound(src.loc, 'rollermove.ogg', 50, 1)

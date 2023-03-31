@@ -13,7 +13,7 @@
 /obj/item/clothing/glasses/hud/health
 	name = "Health Scanner HUD"
 	desc = "A heads-up display that scans the humans in view and provides accurate data about their health status."
-	icon_state = "disease"
+	icon_state = "healthhud"
 	proc
 		RoundHealth(health)
 
@@ -73,6 +73,12 @@
 				holder.icon_state = "hudxeno"
 			else if(foundVirus)
 				holder.icon_state = "hudill"
+			else if(patient.has_brain_worms())
+				var/mob/living/simple_animal/borer/B = patient.has_brain_worms()
+				if(B.controlling)
+					holder.icon_state = "hudbrainworm"
+				else
+					holder.icon_state = "hudhealthy"
 			else
 				holder.icon_state = "hudhealthy"
 			C.images += holder

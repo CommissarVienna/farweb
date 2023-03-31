@@ -295,12 +295,12 @@
 /obj/item/weapon/reagent_containers/food/snacks/candy/attack_self(mob/user as mob)
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		if(H.my_stats.get_stat(STAT_IN) <= 3)
-			to_chat(user, "<span class='combat'>[pick(fnord)] [pick("WHAT???","FUNNY!!","CANDY!!!","HOW??","HUNGRY!!")]!</span>")
+		if(H.my_stats.it <= 3)
+			to_chat(user, "<span class='combat'>[pick(nao_consigoen)] [pick("WHAT???","FUNNY!!","CANDY!!!","HOW??","HUNGRY!!")]!</span>")
 			return
-		if(H.my_stats.get_stat(STAT_PR) <= 5)
-			to_chat(user, "<span class='combat'>[pick(fnord)], this will be harder than what I expected to be!</span>")
-			var/mod2 = (H.my_stats.get_stat(STAT_PR) + H.my_stats.get_stat(STAT_IN)) / 2
+		if(H.my_stats.pr <= 5)
+			to_chat(user, "<span class='combat'>[pick(nao_consigoen)], this will be harder than what I expected to be!</span>")
+			var/mod2 = (H.my_stats.pr + H.my_stats.it) / 2
 			if(do_after(user, rand(5,30-mod2)))
 				goto CANDY
 			return
@@ -312,12 +312,12 @@
 			playsound(user, "open_candy.ogg", 50, 0)
 			update_icon()
 	else
-		to_chat(user, "<span class='combat'>[pick(fnord)] it is already open!</span>")
+		to_chat(user, "<span class='combat'>[pick(nao_consigoen)] it is already open!</span>")
 	return
 
 /obj/item/weapon/reagent_containers/food/snacks/candy/attack(mob/M as mob, mob/user as mob, def_zone)
 	if(!candy_open)
-		to_chat(user, "<span class='combat'>[pick(fnord)] I need to open it before eating!</span>")
+		to_chat(user, "<span class='combat'>[pick(nao_consigoen)] I need to open it before eating!</span>")
 		return
 	..()
 
@@ -908,7 +908,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/bananaphone
 	name = "Banana Phone"
 	desc = "Ring ring ring ring ring..."
-	icon = 'icons/obj/items.dmi'
+	icon = 'items.dmi'
 	icon_state = "banana" //needs a new icon.
 	bitesize = 5
 	var/obj/item/device/radio/banana/bananaphone
@@ -921,7 +921,7 @@
 
 	On_Consume()
 		if(!reagents.total_volume)
-			usr << sound('sound/ambience/bananaphone.ogg',1)
+			usr << sound('bananaphone.ogg',1)
 	hear_talk(mob/M as mob, msg)
 		if(bananaphone)
 			bananaphone.hear_talk(M, msg)
@@ -2876,7 +2876,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/poo
 	name = "poo"
 	desc = "It's a poo. How disgusting!"
-	icon = 'icons/obj/poop.dmi'
+	icon = 'poop.dmi'
 	icon_state = "poop2"
 	item_state = "poop"
 	maybecomeflesh = 1
@@ -3199,6 +3199,14 @@
 		var/turf/spawnloc = foodloc(user, src)
 		new /obj/item/weapon/reagent_containers/food/snacks/clownburger(spawnloc)
 		user << "You make a clownburger ."
+		qdel(W)
+		qdel(src)
+
+	//Bun + beret = mimeburger
+	else if(istype(W,/obj/item/clothing/head/beret))
+		var/turf/spawnloc = foodloc(user, src)
+		new /obj/item/weapon/reagent_containers/food/snacks/mimeburger(spawnloc)
+		user << "You make a mimeburger ."
 		qdel(W)
 		qdel(src)
 

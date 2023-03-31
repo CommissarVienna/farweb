@@ -116,7 +116,7 @@
 			emote("agonyscream")
 		emote("collapse")
 		Paralyse(10)
-		SetResting(TRUE)
+		resting = TRUE
 
 	//Check arms and legs for existence
 	var/limbs_count = 4

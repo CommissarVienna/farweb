@@ -10,7 +10,7 @@
 	parry_chance = -10
 	weight = 34
 	hitsound= 'sound/weapons/club.ogg'
-	wielded_icon = TRUE
+	wielded_icon = "sledge-wielded"
 	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
 
 /obj/item/weapon/carverhammer

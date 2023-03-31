@@ -10,4 +10,3 @@
 	vital = 1
 	iconsdamage = "chest"
 	mask_color = "#03beb5"
-	no_draw = TRUE

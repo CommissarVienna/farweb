@@ -5,7 +5,6 @@
 	department_head = null
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = 3, STAT_DX = -1, STAT_HT = 0, STAT_IN = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "The merchant and yourself."
@@ -38,7 +37,6 @@
 	department_head = null
 	department_flag = MEDSCI
 	faction = "Station"
-	stats_mods = list(STAT_ST = 3, STAT_DX = -1, STAT_HT = 0, STAT_IN = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "The merchant and yourself."
@@ -72,7 +70,6 @@
 	department_head = null
 	department_flag = MEDSCI
 	faction = "Station"
-	stats_mods = list(STAT_ST = 3, STAT_DX = -1, STAT_HT = 0, STAT_IN = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "The merchant and yourself."
@@ -106,7 +103,6 @@
 	department_head = list("Captain")
 	department_flag = CIVILIAN
 	faction = "Station"
-	stats_mods = list(STAT_ST = -1, STAT_DX = 1, STAT_HT = -2, STAT_IN = -1)
 	total_positions = 3
 	spawn_positions = 3
 	supervisors = "the Blacksmith."
@@ -121,7 +117,7 @@
 			return 0
 		..()
 		H.set_species("Child")
-		H.equip_to_slot_or_del(new /obj/item/clothing/under/urchin(H), slot_w_uniform)
+		H.equip_to_slot_or_del(new /obj/item/clothing/under/child_jumpsuit(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/cheap(H), slot_wrist_r)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/child/shoes(H), slot_shoes)
 		H.equip_to_slot_or_del(new /obj/item/clothing/suit/yapron(H), slot_wear_suit)

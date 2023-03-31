@@ -32,7 +32,7 @@
 			var/turf/T = get_turf(user)
 			new condomtype(T)
 	else
-		to_chat(user, "<span class='combat'>[pick(fnord)] it is already open!</span>")
+		to_chat(user, "<span class='combat'>[pick(nao_consigoen)] it is already open!</span>")
 	return
 
 /obj/item/condom_wrapper/small
@@ -120,7 +120,7 @@
 	if(istype(I, /obj/item/condom) && attacker.zone_sel.selecting == "groin" && !src.ConDom)
 		var/obj/item/condom/C = I
 		if(src.potenzia < C.minsize || src.potenzia > C.maxsize)
-			to_chat(src, "<span class='combatbold'>[pick(fnord)] Won't fit!</span>")
+			to_chat(src, "<span class='combatbold'>[pick(nao_consigoen)] Won't fit!</span>")
 			return
 		if(do_after(attacker, 10))
 			attacker.drop_from_inventory(I)
@@ -200,7 +200,7 @@ var/list/cuckoldlist = list()
 
 	var/mob/living/carbon/human/H = usr
 	var/mob/living/carbon/human/P = H.partner
-	var/datum/organ/external/temp = H.organs_by_name[BP_R_HAND]
+	var/datum/organ/external/temp = H.organs_by_name["r_hand"]
 	var/hashands = (temp && temp.is_usable())
 	if (!hashands)
 		temp = H.organs_by_name[BP_L_HAND]
@@ -404,23 +404,26 @@ var/list/cuckoldlist = list()
 
 		if(P.job == "Successor" && ticker.eof.id == "blessedflesh")
 			H.client.ChromieWinorLoose(H.client, 1)
-			H.my_stats.change_stat(STAT_WP , 3)
-			P.my_stats.change_stat(STAT_WP , 2)
-			src.my_stats.change_stat(STAT_ST, 10)
-			src.my_stats.change_stat(STAT_HT, 10)
-			src.my_stats.change_stat(STAT_DX, 10)
+			H.my_stats.wp += pick(2,4)
+			P.my_stats.wp += pick(1,2)
+			H.my_stats.st += pick(9,10)
+			H.my_stats.ht += pick(9,10)
+			H.my_stats.dx += pick(9,10)
+			H.my_stats.im += pick(10,12)
 
 		if(H?.mind?.succubus)
 			H.succubus_enslave(P)
 			if(P.check_event(H.real_name))
 				if(H.stat != DEAD)
-					P.my_stats.clear_mod("succubus\ref[H]")
+					P.my_stats.st += 3
+					P.my_stats.dx += 3
 				P.clear_event("[H.real_name]")
 		if(P?.mind?.succubus)
 			P.succubus_enslave(H)
 			if(H.check_event(P.real_name))
 				if(P.stat != DEAD)
-					H.my_stats.clear_mod("succubus\ref[P]")
+					H.my_stats.st += 3
+					H.my_stats.dx += 3
 				H.clear_event("[P.real_name]")
 		H.visible_message("<span class='erpbold'>[H]</span> <span class='cumzone'>[message]</span>")
 		if (istype(P.loc, /obj/structure/closet))
@@ -428,23 +431,15 @@ var/list/cuckoldlist = list()
 		H.lust = 5
 		H.resistenza += 50
 		orgasms += 1
-		if(P.mind && H.mind && (!ismonster(H) && !H.bot && !istype(H, /mob/living/carbon/human/skinless) && P.stat != DEAD))
-			var/has_husband = FALSE
-			for(var/datum/relation/family/R in P.mind.relations)
-				if(R.name == "Husband")
-					has_husband = TRUE
-				if(R.relation_holder == H.mind && R.name == "Husband")
-					break
-				else if (has_husband)
-					/*var/cucktest*/
-					if(H.has_penis())
-						/*cucktest = "<span class='combatbold'>[R.relation_holder.current.real_name]</span> <span class='combat'>(cucked by</span> <span class='combatbold'>[H.real_name]</span><span class='combat'>)</span>"*/
-						if(!R.relation_holder.current.CuckedBy.Find(H))
-							R.relation_holder.current.CuckedBy.Add(H)
-					/*if(cucktest in cuckoldlist)
-						break
+		if(H.mind && P.mind)
+			if((H.mind.husband || H.mind.wife) || (P.mind.wife || P.mind.husband))
+				if(H.mind.husband != P.real_name || H.mind.wife != P.real_name || P.mind.wife != H.real_name || P.mind.husband != H.real_name)
+					var/cucktest
+					if(H.gender == MALE || H.isFemboy())
+						cucktest = "<b>[H.real_name] </b> cucked <b>[H.mind.wife] </b> with <b>[P.real_name]</b>"
+					else
+						cucktest = "<b>[H.real_name] </b> cucked <b>[H.mind.husband] </b> with <b>[P.real_name]</b>"
 					cuckoldlist.Add(cucktest)
-					break*/
 		/*
 		if(H.client.married != P.ckey || P.client.married != H.ckey)
 			var/cucktest

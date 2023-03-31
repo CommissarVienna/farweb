@@ -744,10 +744,10 @@ var/static/list/global_skills
 /*     STATS, ST, HT, IT, DEX             */
 /******************************************/
 /mob/living/carbon
-	var/datum/stat_holder/my_stats = null
+	var/datum/stats/my_stats = null
 	proc
 		init_stats()
-			var/datum/stat_holder/newStats = new
+			var/datum/stats/newStats = new
 			newStats.host = src
 			newStats.rand_stats()
 			my_stats = newStats
@@ -857,67 +857,382 @@ proc/strToDamageModifierItem(var/strength, var/ht)
 		if(31 to INFINITY)
 			return 80
 
-
-/datum/stat_holder
+/datum/stats
 	var/mob/living/carbon/human/host = null
-	var/datum/stat_mod/list/stat_mods = list()
-	var/list/stats = list(
-	STAT_ST  = 10,
-	STAT_DX  = 10,
-	STAT_HT  = 10,
-	STAT_IN  = 10,
-	STAT_PR  = 0,
-	STAT_WP  = 1,
-	STAT_IM  = 0,
-	STAT_SPD = 0)
+	var/st		 = 0
+	var/ht		 = 0
+	var/dx		 = 0
+	var/it		 = 0
+	var/wp		 = 1
+	var/pr		 = 0
+	var/im       = 0
+	var/spd		 = 0
+	var/initst	 = 0
+	var/initht	 = 0
+	var/initdx	 = 0
+	var/initit	 = 0
+	var/initwp	 = 0
+	var/initpr	 = 0
+	var/initim   = 0
+	proc
+		get_stat(var/x)
+			switch(x)
+				if(STAT_ST)
+					return st
+				if(STAT_DX)
+					return dx
+				if(STAT_HT)
+					return ht
+				if(STAT_PR)
+					return pr
+				if(STAT_IN)
+					return it
+				if(STAT_WP)
+					return wp
+				if(STAT_IM)
+					return im
+				if(STAT_SPD)
+					return spd
+		rand_stats()
+			st = rand(8,10)
+			ht = rand(9,10)
+			dx = rand(9,10)
+			it = rand(8,10)
+			pr = rand(9,12)
+			im = rand(8,10)
+			initst = st
+			initht = ht
+			initdx = dx
+			initit = it
+			initwp = wp
+			initpr = pr
+			initim = im
 
-/datum/stat_holder/proc/get_stat(var/x)
-	switch(x)
-		if(STAT_PR)
-			return round(max(stats[STAT_PR] + stats[STAT_IN],0))
-		if(STAT_IM)
-			return round(max(stats[STAT_HT] + stats[STAT_IM],0))
-		else
-			return round(max(stats[x],0))
+		job_stats(var/job)
+			if(job)
+				switch(job)
+					if("Baron")
+						st = rand(11,12)
+						ht = rand(10,11)
+						dx = rand(10,12)
+						it = rand(10,11)
+					if("Patriarch")
+						st = 11
+						ht = rand(9,10)
+						dx = rand(9,10)
+						it = rand(11,12)
+					if("Hand")
+						st = rand(11,12)
+						ht = rand(10,11)
+						dx = rand(10,12)
+						it = rand(10,11)
+					if("Guest")
+						st = rand(10,11)
+						ht = rand(9,10)
+						dx = rand(9,10)
+						it = rand(10,11)
+					if("Heir")
+						st = rand(10,11)
+						ht = 9
+						dx = rand(9,10)
+						it = rand(10,12)
 
-/datum/stat_holder/proc/change_stat(var/stat, var/amount)
-	if(stats[stat] != null)
-		stats[stat] += amount
-	if(stats[stat] < 0)
-		stats[stat] = 0
+					if("Successor")
+						st = rand(8,9)
+						ht = rand(8,9)
+						dx = rand(10,11)
+						it = rand(10,12)
 
-/datum/stat_holder/proc/set_stat(var/stat, var/amount)
-	if(stats[stat] != null)
-		stats[stat] = amount
-	if(stats[stat] < 0)
-		stats[stat] = 0
+					if("Jester")
+						st = rand(7,9)
+						ht = rand(7,8)
+						dx = rand(13,20)
+						it = rand(8,12)
+						pr = rand(11,15)
 
-/datum/stat_holder/proc/job_stats(var/job)
+					if("Meister")
+						st = 10
+						ht = rand(8,9)
+						dx = rand(7,8)
+						it = rand(15,18)
+						pr = rand(11,15)
 
-	if(job && istype(job, /datum/job))
-		var/datum/job/J = job
-		for(var/i in 1 to J.stats_mods.len)
-			stats[i] += J.stats_mods[i]
+					if("Meisters Disciple")
+						st = rand(6,7)
+						ht = rand(6,7)
+						dx = rand(9,10)
+						it = rand(10,12)
+					if("Prophet")
+						st = rand(5,6)
+						ht = rand(4,5)
+						dx = rand(13,18)
+						it = rand(10,12)
 
-	host.special_load()
-	if(FAT in host.mutations)
-		change_stat(STAT_ST, 1)
-		change_stat(STAT_DX, -2)
-		change_stat(STAT_HT, 1)
-	if(host.gender == FEMALE && !host.has_penis())
-		change_stat(STAT_ST, -1)
-	if(host.age >= 50)
-		change_stat(STAT_ST, -1)
-		change_stat(STAT_HT, -1)
-		change_stat(STAT_IN, 2)
-		change_stat(STAT_PR, 2)
-	if(host.age <= 16)
-		set_stat(STAT_ST, rand(7,9))
-		set_stat(STAT_HT, rand(8,10))
+					if("Squire")
+						st = 9
+						ht = rand(7,8)
+						dx = rand(9,10)
+						it = rand(8,9)
+						pr = rand(9,10)
 
-/datum/stat_holder/proc/rand_stats()
-	for(var/i in 1 to 4)
-		change_stat(i,BASE_STAT_CHANGE)
+					if("Nun")
+						st = rand(8,9)
+						ht = rand(8,9)
+						dx = rand(10,11)
+						it = 11
+						pr = rand(9,13)
+
+					if("Scuff")
+						st = 8
+						ht = rand(7,8)
+						dx = rand(9,10)
+						it = rand(10,11)
+
+					if("Urchin")
+						st = rand(7,8)
+						ht = rand(6,7)
+						dx = rand(9,11)
+						it = rand(7,9)
+						pr = rand(10,11)
+
+					if("Mortus")
+						st = rand(11,12)
+						ht = rand(11,12)
+						dx = rand(9,10)
+						it = rand(11,12)
+						pr = rand(9,10)
+
+					if("Tribunal Veteran")
+						st = rand(11,12)
+						ht = rand(8,9)
+						dx = rand(5,8)
+						it = rand(7,10)
+						pr = rand(11,17)
+
+					if("Servant")
+						st = rand(6,7)
+						ht = rand(6,7)
+						dx = rand(10,12)
+						it = rand(7,9)
+
+					if("Apprentice")
+						st = rand(8,9)
+						ht = rand(7,8)
+						dx = rand(10,12)
+						it = rand(8,9)
+
+					if("Innkeeper")
+						st = 11
+						ht = rand(9,11)
+						dx = rand(9,10)
+						it = rand(9,10)
+					if("Soiler")
+						st = rand(11,12)
+						ht = rand(10,11)
+						dx = rand(7,8)
+						it = rand(7,8)
+						pr = rand(8,9)
+
+					if("Bookkeeper")
+						st = rand(10,11)
+						ht = rand(7,9)
+						dx = rand(12,13)
+						it = rand(12,13)
+						pr = rand(13,15)
+
+					if("Butler")
+						st = rand(10,11)
+						ht = rand(8,9)
+						dx = rand(10,11)
+						it = rand(10,13)
+						pr = rand(13,15)
+
+					if("Innkeeper Wife")
+						st = 10
+						ht = rand(8,9)
+						dx = rand(9,11)
+						it = rand(7,10)
+						pr = rand(9,13)
+
+					if("Sitzfrau")
+						st = rand(8,9)
+						ht = rand(8,9)
+						dx = rand(10,12)
+						it = rand(11,13)
+						pr = rand(9,13)
+
+					if("Maid")
+						st = rand(8,9)
+						ht = rand(8,9)
+						dx = rand(10,11)
+						it = rand(8,9)
+						pr = rand(9,13)
+
+					if("Hump")
+						st = rand(11,13)
+						ht = rand(11,12)
+						dx = rand(8,9)
+						it = rand(6,9)
+						pr = rand(9,12)
+
+					if("Grayhound")
+						st = rand(11,12)
+						ht = rand(10,11)
+						dx = rand(9,10)
+						it = rand(8,9)
+						pr = rand(9,12)
+
+					if("Misero")
+						st = rand(12,13)
+						ht = rand(11,12)
+						dx = rand(9,10)
+						it = rand(3,5)
+						pr = rand(8,10)
+
+					if("Weaponsmith")
+						st = rand(11,13)
+						ht = rand(10,11)
+						dx = rand(8,9)
+						it = rand(9,10)
+						pr = rand(8,10)
+
+					if("Pusher")
+						st = 11
+						ht = rand(8,9)
+						dx = rand(7,9)
+						it = rand(9,10)
+						pr = rand(10,12)
+
+					if("Metalsmith")
+						st = rand(11,13)
+						ht = rand(10,11)
+						dx = rand(8,9)
+						it = rand(9,10)
+						pr = rand(8,10)
+
+					if("Armorsmith")
+						st = rand(11,13)
+						ht = rand(10,11)
+						dx = rand(8,9)
+						it = rand(9,10)
+						pr = rand(8,9)
+
+					if("Amuser" || "Baroness")
+						st = rand(8,9)
+						ht = rand(8,10)
+						dx = rand(9,10)
+						it = rand(8,12)
+						pr = rand(8,11)
+
+					if("Serpent")
+						st = 10
+						ht = rand(9,10)
+						dx = rand(9,10)
+						it = rand(11,13)
+						pr = rand(9,12)
+
+					if("Esculap")
+						st = 11
+						ht = rand(10,11)
+						dx = rand(9,10)
+						it = rand(13,15)
+						pr = rand(11,13)
+
+					if("Chemsister")
+						st = rand(8,9)
+						ht = rand(8,9)
+						dx = rand(9,10)
+						it = rand(11,12)
+						pr = rand(9,12)
+
+					if("Tiamat")
+						st = rand(12,13)
+						ht = rand(13,14)
+						dx = rand(9,10)
+						it = rand(9,10)
+						pr = rand(11,13)
+
+					if("Baroness Bodyguard")
+						st = rand(11,12)
+						ht = rand(10,11)
+						dx = rand(11,12)
+						it = rand(9,10)
+						pr = rand(9,10)
+
+					if("Mercenary")
+						st = rand(11,12)
+						ht = rand(11,12)
+						dx = rand(9,10)
+						it = rand(8,10)
+						pr = rand(10,13)
+
+					if("Sheriff")
+						st = rand(10,11)
+						ht = rand(9,10)
+						dx = rand(9,10)
+						it = rand(9,10)
+						pr = rand(14,18)
+					if("Marduk")
+						st = rand(16,18)
+						ht = rand(15,17)
+						dx = rand(11,13)
+						it = rand(11,13)
+					if("Practicus")
+						st = rand(12,13)
+						ht = rand(11,12)
+						dx = rand(9,10)
+						it = rand(9,10)
+						pr = rand(11,12)
+					if("Incarn")
+						st = 11
+						ht = rand(10,11)
+						dx = rand(9,10)
+						it = rand(9,10)
+						pr = rand(11,13)
+
+					if("Inquisitor")
+						st = rand(11,12)
+						ht = rand(11,12)
+						dx = rand(11,12)
+						it = rand(12,14)
+						pr = rand(13,15)
+
+					if("Bishop")
+						st = 10
+						ht = rand(9,10)
+						dx = rand(8,9)
+						it = rand(11,12)
+
+					if("Bum")
+						st = rand(7,8)
+						ht = rand(7,8)
+						dx = rand(7,9)
+						it = rand(7,9)
+			host.special_load()
+			if(FAT in host.mutations)
+				host.my_stats.ht += rand(0,1)
+				host.my_stats.dx -= rand(1,2)
+				host.my_stats.st += rand(0,1)
+			if(host.gender == FEMALE && !host.has_penis())
+				host.my_stats.st -=1
+			if(host.age >= 50)
+				host.my_stats.st -= rand(0,1)
+				host.my_stats.ht -= rand(0,1)
+				host.my_stats.it += rand(0,2)
+				host.my_stats.pr += rand(0,2)
+			if(host.age <= 16)
+				if(host.my_stats.st > 9)
+					host.my_stats.st = 9
+				if(host.my_stats.ht > 10)
+					host.my_stats.ht = 10
+			initst = st
+			initht = ht
+			initdx = dx
+			initit = it
+			initwp = wp
+			initpr = pr
+			initim = im
+
 
 /**************************************
 ************HUMAN MY NIGGA*************
@@ -1092,11 +1407,13 @@ proc/statcheck(var/stat, var/requirement, var/show_message, var/mob/user, var/me
 			return 1
 
 /mob/living/carbon/human/proc/gainWP(var/displaymsg, var/wpgain)
-	if(src.special == "doublewp" && wpgain > 0)
+	if(src.special == "doublewp")
 		wpgain = wpgain * 2
-	src.my_stats.change_stat(STAT_WP , wpgain)
+		src.my_stats.wp += wpgain
+	else
+		src.my_stats.wp += wpgain
 	if(displaymsg)
-		src << 'sound/effects/wisewoman.ogg'
+		src << 'wisewoman.ogg'
 		if(wpgain < 0)
 			to_chat(src, "<span class='combatbold'>LOST [wpgain]WP!</span>")
 		else
@@ -1130,7 +1447,7 @@ proc/statcheck(var/stat, var/requirement, var/show_message, var/mob/user, var/me
 			learn_bonus += D.teaching_mod
 
 	learning_mod += learn_bonus
-	var/list/roll_result = roll3d6(src,my_stats.get_stat(STAT_IN), learning_mod, TRUE,TRUE)
+	var/list/roll_result = roll3d6(src,my_stats.it, learning_mod, TRUE,TRUE)
 	var/margin = roll_result[GP_MARGIN]
 	margin += learn_bonus + learning_mod - skill_value
 	if(margin <= 0)
@@ -1140,7 +1457,7 @@ proc/statcheck(var/stat, var/requirement, var/show_message, var/mob/user, var/me
 	if(S.combat_skill)
 		margin = max(round(margin / 2), 1)
 	switch(roll_result[GP_RESULT])
-		if(GP_CRITSUCC)
+		if(GP_CRITSUCCESS)
 			mind.learning_collector[skill] += (margin * 2)
 			if(H)
 				to_chat(src, "<span class='passivebold'>Oh, I get it!</span>")
@@ -1148,14 +1465,14 @@ proc/statcheck(var/stat, var/requirement, var/show_message, var/mob/user, var/me
 				var/text_skill = skill2typerson(round((mind.learning_collector[skill]) / (max(1, skill_value))))
 				to_chat(src, "<span class='passivebold'>Oh, I get it!</span>")
 				to_chat(src, "<span class='passivebold'><div class='box'>I understand: [text_skill]</span></span>")
-		if(GP_SUCC)
+		if(GP_SUCCESS)
 			mind.learning_collector[skill] += margin
 			if(H)
 				to_chat(src, "<span class='passive'>Oh, I get it.</span>")
 			else if(D)
 				var/text_skill = skill2typerson(round((mind.learning_collector[skill]) / (max(1, skill_value))))
 				to_chat(src, "<span class='passive'><div class='box'>I understand: [text_skill]</span></span>")
-		if(GP_FAIL)
+		if(GP_FAILED)
 			if(H)
 				to_chat(src, "<span class='combat'>It's hard to understand.</span>")
 				H.want_punch(src)
@@ -1270,14 +1587,14 @@ proc/skill2typerson(var/amount)
 			my_skills.prepare_learn.Remove(to_delete)
 
 /mob/living/carbon/human/proc/spendWP()
-	if(my_stats.get_stat(STAT_WP) <= 0)	return
+	if(my_stats.wp <= 0)	return
 	if(willpower_active)
 		to_chat(src, "I already am spending my willpower.")
 		return
 	var/wpPicked
 
 	var/multiplier = 1
-	var/list/WPList = list("+1 ST" = STAT_ST,"+1 DX" = STAT_DX,"+1 IN" = STAT_IN, "+1 HT" = STAT_HT, "+2 PR" = STAT_PR, "+4 IM" = STAT_IM, "Resist Disgust")
+	var/list/WPList = list("+1 ST","+1 DX","+1 IN", "+1 HT", "+2 PR", "+4 IM", "Resist Disgust")
 	if(src.check_perk(/datum/perk/heroiceffort))
 		multiplier = 2
 		WPList += "Stamina Effort"
@@ -1289,42 +1606,63 @@ proc/skill2typerson(var/amount)
 		to_chat(src, "I already am spending my willpower.")
 		return
 
-	var/wp_target //this is shit
-	var/amount
-	if(WPList[wpPicked]) //this means we have a stat
-		wp_target = WPList[wpPicked]
-		amount = text2num(copytext(wpPicked,2,3)) //this is even worse
-		var/list/stat_list = list(
-		STAT_ST  = 0,
-		STAT_DX  = 0,
-		STAT_HT  = 0,
-		STAT_IN  = 0,
-		STAT_PR  = 0,
-		STAT_WP  = 0,
-		STAT_IM  = 0,
-		STAT_SPD = 0)
-		stat_list[wp_target] = amount*multiplier
-		src.my_stats.add_mod("spent_WP", stat_list, time = 1200, override = TRUE, override_timer = TRUE)
-		willpower_active = num2text(amount*multiplier) + copytext(wpPicked,3,0)
-		spawn(1200)
-			willpower_active = ""
-			to_chat(src, "The Willpower effect wears off.")
-		gainWP(1, -1)
-		spawn(5)
-			src << 'sound/effects/wpspent.ogg'
-	else
-		switch(wpPicked)
-			if("Resist Disgust")
-				src.resisting_disgust = TRUE
-				willpower_active = "Resisting Disgust"
-				spawn(1200)
-					src.resisting_disgust = FALSE
-					willpower_active = ""
-					to_chat(src, "The Willpower effect wears off.")
-			if("Stamina Effort")
-				src.stamina_loss = max(0, stamina_loss-50)
-			if("(CANCEL)")
-				return
-		gainWP(1, -1)
-		spawn(5)
-			src << 'sound/effects/wpspent.ogg'
+	switch(wpPicked)
+		if("+1 ST")
+			src.my_stats.st += 1*multiplier
+			willpower_active = TRUE
+			spawn(1200)
+				src.my_stats.st -= 1*multiplier
+				willpower_active = FALSE
+				to_chat(src, "The Willpower effect wears off.")
+		if("+1 DX")
+			src.my_stats.dx += 1*multiplier
+			willpower_active = TRUE
+			spawn(1200)
+				src.my_stats.dx -= 1*multiplier
+				willpower_active = FALSE
+				to_chat(src, "The Willpower effect wears off.")
+		if("+1 HT")
+			src.my_stats.ht += 1*multiplier
+			willpower_active = TRUE
+			spawn(1200)
+				src.my_stats.ht -= 1*multiplier
+				willpower_active = FALSE
+				to_chat(src, "The Willpower effect wears off.")
+		if("+1 IN")
+			src.my_stats.it += 1*multiplier
+			if(mind)
+				mind.learning_modif += 1*multiplier
+				mind.teaching_modif += 1*multiplier
+			willpower_active = TRUE
+			spawn(1200)
+				src.my_stats.it -= 1*multiplier
+				if(mind)
+					mind.learning_modif -= 1*multiplier
+					mind.teaching_modif -= 1*multiplier
+				willpower_active = FALSE
+				to_chat(src, "The Willpower effect wears off.")
+		if("+2 PR")
+			src.my_stats.pr += 2*multiplier
+			willpower_active = TRUE
+			spawn(1200)
+				src.my_stats.pr -= 2*multiplier
+				to_chat(src, "The Willpower effect wears off.")
+		if("+4 IM")
+			src.my_stats.im += 4*multiplier
+			willpower_active = TRUE
+			spawn(1200)
+				src.my_stats.im -= 4*multiplier
+				willpower_active = FALSE
+				to_chat(src, "The Willpower effect wears off.")
+		if("Resist Disgust")
+			src.resisting_disgust = TRUE
+			spawn(1200)
+				src.resisting_disgust = FALSE
+				to_chat(src, "The Willpower effect wears off.")
+		if("Stamina Effort")
+			src.stamina_loss = max(0, stamina_loss-50)
+		if("(CANCEL)")
+			return
+	gainWP(1, -1)
+	spawn(5)
+		src << 'wpspent.ogg'

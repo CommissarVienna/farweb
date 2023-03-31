@@ -54,7 +54,7 @@
 
 	if(istype(W,/obj/item/weapon/pickaxe) && open)
 		to_chat(user, "<span class='combatbold'>You hit [src]!</span>")
-		playsound(user.loc, pick('sound/effects/npc_human_pickaxe_01.ogg','sound/effects/npc_human_pickaxe_02.ogg','sound/effects/npc_human_pickaxe_03.ogg','sound/effects/npc_human_pickaxe_05.ogg'), 25, 1, -1)
+		playsound(user.loc, pick('npc_human_pickaxe_01.ogg','npc_human_pickaxe_02.ogg','npc_human_pickaxe_03.ogg','npc_human_pickaxe_05.ogg'), 25, 1, -1)
 		if(src.z <= 1)
 			to_chat(user, "<span class='bname'>TOO HARD!!!</span>")
 			return

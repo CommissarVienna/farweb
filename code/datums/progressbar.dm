@@ -26,7 +26,7 @@
 	qdel(bar)
 	. = ..()
 
-/datum/progressbar/proc/update(i)
+/datum/progressbar/proc/update(progress)
 //	log_debug("Update [progress] - [goal] - [(progress / goal)] - [((progress / goal) * 100)] - [round(((progress / goal) * 100), 5)]")
 
 	if (!user || !user.client)
@@ -38,7 +38,9 @@
 			shown = 0
 		client = user.client
 
-	bar.icon_state = "[i]"
+	progress = Clamp(progress, 0, goal)
+	//bar.icon_state = "prog_bar_[round(((progress / goal) * 100), 5)]"
+	bar.icon_state = "[round(((progress / goal) * 100), 5)]"
 	if (!shown)
 		user.client.images += bar
 		shown = 1

@@ -35,7 +35,7 @@
 	if(prob(10))
 		playsound(src, pick('sound/effects/strygh_life1.ogg','sound/effects/strygh_life2.ogg'), 25, 0, -1)
 	if(prob(50))
-		playsound(src, 'sound/effects/chameleon_step.ogg', 25, 0, -1)
+		playsound(src, 'chameleon_step.ogg', 25, 0, -1)
 
 /mob/living/simple_animal/hostile/retaliate/creature/Found(mob/living/carbon)
 	..()

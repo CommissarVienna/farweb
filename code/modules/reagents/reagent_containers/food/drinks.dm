@@ -6,7 +6,7 @@
 	desc = "yummy"
 	icon = 'icons/obj/drinks.dmi'
 	icon_state = null
-	drop_sound = 'sound/effects/drop_glass.ogg'
+	drop_sound = 'drop_glass.ogg'
 	flags = FPRINT | TABLEPASS | OPENCONTAINER
 	var/gulp_size = 5 //This is now officially broken ... need to think of a nice way to fix it.
 	possible_transfer_amounts = list(5,10,25)
@@ -46,7 +46,7 @@
 				if(HH.royalty)
 					if(smerd)
 						HH.add_event("royalty", /datum/happiness_event/misc/realcup)
-			playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(50,60), 0)
+			playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(50,60), 0)
 			return 1
 
 		else if( istype(M, /mob/living/carbon/human) )
@@ -73,7 +73,7 @@
 				spawn(600)
 					R.add_reagent(refill, fillevel)
 
-			playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(50,60), 0)
+			playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(50,60), 0)
 			return 1
 
 		return 0
@@ -330,7 +330,7 @@
 	icon = 'icons/obj/drinks.dmi'
 	icon_state = "wooden"
 	volume = 30
-	drop_sound = 'sound/items/woodmugtable.ogg'
+	drop_sound = 'woodmugtable.ogg'
 	smerd = 1
 
 	update_icon()
@@ -357,7 +357,7 @@
 	icon = 'icons/obj/drinks.dmi'
 	icon_state = "goblet_silver"
 	volume = 30
-	drop_sound = 'sound/items/woodmugtable.ogg'
+	drop_sound = 'woodmugtable.ogg'
 	item_worth = 20
 	smerd = FALSE
 	silver = TRUE
@@ -386,7 +386,7 @@
 	icon = 'icons/obj/drinks.dmi'
 	icon_state = "goblet_gold"
 	volume = 30
-	drop_sound = 'sound/items/woodmugtable.ogg'
+	drop_sound = 'woodmugtable.ogg'
 	item_worth = 50
 	smerd = FALSE
 
@@ -395,7 +395,7 @@
 	icon = 'icons/obj/drinks.dmi'
 	icon_state = "skullcup"
 	volume = 30
-	drop_sound = 'sound/items/bone_drop.ogg'
+	drop_sound = 'bone_drop.ogg'
 	item_worth = 5
 
 	update_icon()

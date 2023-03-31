@@ -49,7 +49,7 @@
 
 			if(G.state>1)
 				if(!GM.loc == get_turf(src))
-					to_chat(user, "<span class='combat'>[GM.name] needs to be on the toilet.</span>")
+					user << "<span class='notice'>[GM.name] needs to be on the toilet.</span>"
 					return
 				if(open && !swirlie)
 					user.visible_message("<span class='danger'>[user] starts to give [GM.name] a swirlie!</span>", "<span class='notice'>You start to give [GM.name] a swirlie!</span>")
@@ -63,7 +63,7 @@
 					user.visible_message("<span class='danger'>[user] slams [GM.name] into the [src]!</span>", "<span class='notice'>You slam [GM.name] into the [src]!</span>")
 					GM.adjustBruteLoss(8)
 			else
-				to_chat(user, "<span class='combat'>You need a tighter grip.</span>")
+				user << "<span class='notice'>You need a tighter grip.</span>"
 
 /obj/structure/urinal
 	name = "urinal"
@@ -122,7 +122,7 @@
 
 	on = TRUE
 	update_icon()
-	playsound(src.loc, 'sound/effects/visor.ogg', 30, 1, -1)
+	playsound(src.loc, 'visor.ogg', 30, 1, -1)
 	if (M.loc == loc)
 		wash(M)
 	for (var/atom/movable/G in src.loc)
@@ -266,7 +266,7 @@
 		var/turf/tile = loc
 		loc.clean_blood()
 		for(var/obj/effect/E in tile)
-			if(istype(E,/obj/effect/decal/cleanable) || istype(E,/obj/effect/overlay))
+			if(istype(E,/obj/effect/rune) || istype(E,/obj/effect/decal/cleanable) || istype(E,/obj/effect/overlay))
 				qdel(E)
 
 /obj/machinery/shower/proc/call_update_shower()
@@ -296,11 +296,11 @@
 	if(get_dist(src,M) >= 2)
 		return
 	if(broken)
-		to_chat(H, "<span class='combatbold'>[pick(fnord)] it's broken!</span>")
+		to_chat(H, "<span class='combatbold'>[pick(nao_consigoen)] it's broken!</span>")
 		return
 
 	if(M.wear_mask && M.wear_mask.flags & MASKCOVERSMOUTH)
-		to_chat(M, "<span class='combat'>[pick(fnord)] my mask is in the way!</span>")
+		to_chat(M, "<span class='combat'>[pick(nao_consigoen)] my mask is in the way!</span>")
 		return
 
 	var/datum/reagents/reagents = new/datum/reagents(3)
@@ -323,7 +323,7 @@
 		return
 
 	if(broken)
-		to_chat(M, "<span class='combatbold'>[pick(fnord)] it's broken!</span>")
+		to_chat(M, "<span class='combatbold'>[pick(nao_consigoen)] it's broken!</span>")
 		return
 
 	if(!Adjacent(M))
@@ -367,7 +367,7 @@
 				to_chat(user, "<span class='passive'>You begin repairing \the [src]...</span>")
 				if(do_after(user, 30))
 					broken = FALSE
-		to_chat(user, "<span class='combatbold'>[pick(fnord)] it's broken!</span>")
+		to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)] it's broken!</span>")
 		return
 
 	if (istype(O, /obj/item/weapon/reagent_containers))

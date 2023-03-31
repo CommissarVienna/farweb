@@ -7,7 +7,7 @@
 /turf/simulated/wall/r_wall/hell
 	name = "HELL"
 	desc = "You will never get out."
-	icon = 'icons/turf/hell.dmi'
+	icon = 'hell.dmi'
 	icon_state = "wall14"
 	walltype = "wall"
 

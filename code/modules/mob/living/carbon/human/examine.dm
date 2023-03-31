@@ -53,7 +53,7 @@
 
 		var/msg = "<div class='firstdivexamineplyr'><div class='boxexamineplyr'><span class='statustext'>Oh, this is "
 
-		if( skipjumpsuit && skipface || isStealth()) //big suits/masks/helmets make it hard to tell their gender
+		if( skipjumpsuit && skipface || stealth || brothelstealth) //big suits/masks/helmets make it hard to tell their gender
 			t_He = "It"
 			t_his = "its"
 			t_him = "it"
@@ -80,7 +80,7 @@
 
 		var/mob/living/carbon/human/M = usr
 		var/mob/living/carbon/human/P = src
-		if(isStealth())
+		if(stealth || brothelstealth)
 			msg += "<span class='uppertext'>R a t</span>!\n"
 		else
 			msg += "<span class='uppertext'>[src.name]</span>!\n"
@@ -141,39 +141,38 @@
 			msg += {"</span>[src.desc]\n<span class='bname'>Penis size: [potenzia]cm.</span></div></div>"}
 			to_chat(usr, msg)
 			return 1
-		if(isStealth())
+		if(stealth || brothelstealth)
 			msg += "<span class='uppertext'>I can't recognize it.</span>"
 		else
 			if(!isobserver(usr))
-				if(job == "Bum" && !skipface && istype(src, /mob/living/carbon/human/bumbot))
+				if(job == "Bum" && !skipface && !stealth && !brothelstealth || istype(src, /mob/living/carbon/human/bumbot))
 					msg += "<span class='statustext'>I always knew [decapitalize(t_him)] as some </span> <span class='uppertext'>bum.</span>"
 				else
-					if(job && !P.outsider && !skipface || job == "Sheriff") // MUDAR CASO OP DEMAIS			else
+					if(job && !P.outsider && !skipface && !stealth && !brothelstealth || job == "Sheriff") // MUDAR CASO OP DEMAIS			else
 						msg += "<span class='statustext'>I always knew [decapitalize(t_him)] as a </span> <span class='uppertext'>[display_job()].</span>"
 					else
-						if(P.bandit && !skipface)
+						if(P.bandit && !skipface && !stealth && !brothelstealth)
 							msg += "<span class='statustext'>I always knew [decapitalize(t_him)] as a </span> <span class='uppertext'>bandit!</span>"
 						else
-							if(P.outsider && M.outsider && !skipface)
+							if(P.outsider && M.outsider && !skipface && !stealth && !brothelstealth)
 								if(P.province != "Wanderer")
 									if(M == P || P == M)
 										msg += "<span class='statustext'>I always knew [decapitalize(t_him)] as a </span> <span class='uppertext'>[display_job()].</span>"
 									else
-										if(M.province == P.province)
+										if(M.province == P.province && !skipface && !stealth && !brothelstealth)
 											msg += "<span class='statustext'>I always knew [decapitalize(t_him)] as a </span> <span class='uppertext'>[display_job()].</span><span class='statustext'> [t_He] is from </span><span class='uppertext'>[P.province],</span><span class='statustext'> same as me!</span>"
 										else
 											msg += "<span class='statustext'>I always knew [decapitalize(t_him)] as a </span> <span class='uppertext'>[display_job()].</span><span class='statustext'> [t_He] is from </span><span class='uppertext'>[P.province]</span>"
 			else
 				msg += "<span class='statustext'>I always knew [decapitalize(t_him)] as a </span> <span class='uppertext'>[display_job()].</span>"
 		if(ishuman(P))
-			if(P.lip_style && !skipface && !isStealth())
+			if(P.lip_style && !skipface && !stealth && !brothelstealth)
 				msg += "\n<span class='bname'>Mmhmm, [t_his] lips look sexy!</span>"
+		if(excomunicated && !skipface && !stealth && !brothelstealth || src.seen_me_doing_heresy.Find(usr) && !skipface && !stealth && !brothelstealth)
+			msg += "<span class='excommun'>[t_He] [t_is] A DIRTY HERETIC!</span>"
 
-		if(!skipface && !isStealth() && (M.seen_heresy.Find(ref(src))|| excomunicated) && !skipface)
-			msg += "\n<span class='excommun'>[t_He] [t_is] A DIRTY HERETIC!</span>"
-
-		if(bandit && !skipface && !isStealth())
-			msg += "\n<br><span class='excommun'>[t_He] [t_is] A BANDIT!</span>"
+		if(bandit && !skipface && !stealth && !brothelstealth)
+			msg += "<br><span class='excommun'>[t_He] [t_is] A BANDIT!</span>"
 
 		if(master_mode == "holywar")
 			if(ishuman(P) && ishuman(M))
@@ -183,7 +182,7 @@
 					else
 						msg += "<br><span class='excommun'>[t_He] [t_is] THE ENEMY!</span>"
 
-		if(isStealth())
+		if(stealth || brothelstealth)
 			msg += "<span class='uppertext'>\n[t_He] is camouflaged.</span>"
 		else
 
@@ -340,8 +339,8 @@
 							msg += "\n<span class='baronboldoutlined'>It's my brother in faith. Glory to the Overlord!</span>"
 
 		if(!isobserver(usr))
-			if(ishuman(P) && ishuman(M) && M.mind)
-				for(var/datum/relation/family/R in M.mind?.relations)//NPC's don't have fucking minds.
+			if(ishuman(P) && ishuman(M))
+				for(var/datum/relation/family/R in M.mind.relations)
 					if(R?.relation_holder?.current == src)
 						msg += "\n<span class='baronboldoutlined'>It's my [R.name]!</span>"
 
@@ -351,14 +350,14 @@
 					if(M != P && P != M)
 						M.rotate_plane()
 
-		if(ishuman(P) && !isStealth())
+		if(ishuman(P) && !stealth && !brothelstealth)
 			if(ishuman(M))
-				if((M.my_stats.get_stat(STAT_IN) >= 8 && M.my_stats.get_stat(STAT_PR) >= 12) || M.my_skills.GET_SKILL(SKILL_OBSERV) >= 2)
+				if((M.my_stats.it >= 8 && M.my_stats.pr >= 12) || M.my_skills.GET_SKILL(SKILL_OBSERV) >= 2)
 					msg += "<p style='margin : 0; padding-top:0;font-size:12px;'><span class='moodboxtext'>[t_He] is around <b>[P.height]cm</b> tall.</span></p>"
-				if((M.my_stats.get_stat(STAT_IN) >= 10 && M.my_stats.get_stat(STAT_PR) >= 14) || M.my_skills.GET_SKILL(SKILL_OBSERV) >= 3)
+				if((M.my_stats.it >= 10 && M.my_stats.pr >= 14) || M.my_skills.GET_SKILL(SKILL_OBSERV) >= 3)
 					if(P.combat_mode)
 						msg += "<p style='margin : 0; padding-top:0;font-size:12px;'><span class='combatbold'>[t_He] is aware.</span></p>"
-		if(!isobserver(usr) && !isStealth())
+		if(!isobserver(usr) && !stealth && !brothelstealth)
 			if(ishuman(M))
 				var/totaldifference = null
 				if(P.height > M.height)
@@ -434,7 +433,7 @@
 		/* else if(getBrainLoss() >= 60)
 			msg += "\n[t_He] [t_has] a stupid expression on [t_his] face." */
 
-		if((has_brain()) && !is_npc && stat != DEAD)
+		if((has_brain()) && stat != DEAD)
 			if(!key)
 				msg += "\n<span class='cavedoze'>Yellow saliva drips from [t_his] mouth, cave doze perhaps?</span>"
 			else if(!client)
@@ -561,17 +560,17 @@
 			msg += "\n<span class='combatglow'><b>THEIR GROIN IS DESTROYED!</b></span>\n"
 
 		if(right_eye_fucked && !left_eye_fucked && !istype(src.glasses, /obj/item/clothing/glasses/Reyepatch))
-			msg += "\n<span class='combatglow'><b>[t_chis] right eye is destroyed!</b></span>\n"
+			msg += "\n<span class='combatglow'><b>His right eye is destroyed!</b></span>\n"
 		else if(!right_eye_fucked && left_eye_fucked && !istype(src.glasses, /obj/item/clothing/glasses/Leyepatch))
-			msg += "\n<span class='combatglow'><b>[t_chis] left eye is destroyed!</b></span>\n"
+			msg += "\n<span class='combatglow'><b>His left eye is destroyed!</b></span>\n"
 		else if(right_eye_fucked && left_eye_fucked)
-			msg += "\n<span class='combatglow'><b>[t_chis] eyes is destroyed!</b></span>\n"
+			msg += "\n<span class='combatglow'><b>His eyes is destroyed!</b></span>\n"
 
 		if(reagents.has_reagent("cocaine"))
-			msg += "\n<span class='combatglow'><b>[t_chis] pupils are widened.</b></span>\n"
+			msg += "\n<span class='combatglow'><b>His pupils are widened.</b></span>\n"
 
 		if(pale)
-			msg += "\n<span class='combatglow'><b>[t_He] look pale.</b></span>\n"
+			msg += "\n<span class='combatglow'><b>They look pale.</b></span>\n"
 
 		if(happiness <= MOOD_LEVEL_SAD2)
 			msg += "\n<span class='statustext'>[t_He] looks sad.</span>"
@@ -585,27 +584,33 @@
 		if(decaylevel == 4)
 			msg += "\n<span class='combat'>[t_He] [t_is] mostly dessicated now, with only bones remaining of what used to be a person.</span>"
 
+		if(print_flavor_text())
+			msg += "\n[print_flavor_text()]"
 		if(ishuman(M) && ishuman(P))
-			var/Pmystatsst = P.my_stats.get_stat(STAT_ST)
-			var/Mmystatsst = M.my_stats.get_stat(STAT_ST)
+			var/Pmystatsst = P.my_stats.st
+			var/Mmystatsst = M.my_stats.st
 
 			if(is_dreamer(usr))
-				Mmystatsst = M.my_stats.get_stat(STAT_ST)
+				Mmystatsst = initial(M.my_stats.initst)
 
-			if(!isobserver(usr) && !isStealth())
+			if(!isobserver(usr) && !stealth && !brothelstealth)
 				if(Pmystatsst > Mmystatsst && Pmystatsst < (Mmystatsst + 5))
-					msg += "\n<span class='combat'>[t_He] looks stronger than you.</span>"
+					msg += "<span class='combat'>[t_He] looks stronger than you.</span>"
 
 				if(Pmystatsst > (Mmystatsst + 5))
-					msg += "\n<span class='combatglow'><b>[t_He] looks a lot stronger than you.</b></span>"
+					msg += "<span class='combatglow'><b>[t_He] looks a lot stronger than you.</b></span>"
 
 				if(Pmystatsst == Mmystatsst)
-					msg += "\n<span class='combat'>[t_He] looks as strong as you.</span>"
+					msg += "<span class='combat'>[t_He] looks as strong as you.</span>"
 
 				if(Pmystatsst < Mmystatsst)
-					msg += "\n<span class='passiveglow'>[t_He] looks weaker than you.</span>"
+					msg += "<span class='passiveglow'>[t_He] looks weaker than you.</span>"
 
 		msg += "\n</span>"
+		if (pose)
+			if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )
+				pose = addtext(pose,".") //Makes sure all emotes end with a period.
+			msg += "\n[t_He] is [pose]"
 		if(distance <= 1 && ishuman(src))
 			msg += "<hr class='linexd'>"
 			var/datum/organ/external/head/H = get_organ("head")

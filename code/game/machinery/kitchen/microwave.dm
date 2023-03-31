@@ -76,7 +76,7 @@
 	else if(istype(O, /obj/item/weapon/flame))
 		var/obj/item/weapon/flame/F = O
 		if(F.lit)
-			playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
+			playsound(src.loc, 'torch_light.ogg', 50, 0)
 			cook()
 		return
 
@@ -87,13 +87,13 @@
 		if (istype(O,/obj/item/stack) && O:amount>1)
 			new O.type (src)
 			O:use(1)
-			playsound(src.loc, pick('sound/effects/itm_ingredient_mushroom_up_01.ogg','sound/effects/itm_ingredient_mushroom_up_02.ogg','sound/effects/itm_ingredient_mushroom_up_03.ogg','sound/effects/itm_ingredient_mushroom_up_04.ogg'), 70, 0)
+			playsound(src.loc, pick('itm_ingredient_mushroom_up_01.ogg','itm_ingredient_mushroom_up_02.ogg','itm_ingredient_mushroom_up_03.ogg','itm_ingredient_mushroom_up_04.ogg'), 70, 0)
 			user.visible_message("<span class='passivebold'>[user]</span> <span class='passive'>has added one of [O] on the [src].</span>")
 		else
 		//	user.before_take_item(O)	//This just causes problems so far as I can tell. -Pete
 			user.drop_item()
 			O.loc = src
-			playsound(src.loc, pick('sound/effects/itm_ingredient_mushroom_up_01.ogg','sound/effects/itm_ingredient_mushroom_up_02.ogg','sound/effects/itm_ingredient_mushroom_up_03.ogg','sound/effects/itm_ingredient_mushroom_up_04.ogg'), 70, 0)
+			playsound(src.loc, pick('itm_ingredient_mushroom_up_01.ogg','itm_ingredient_mushroom_up_02.ogg','itm_ingredient_mushroom_up_03.ogg','itm_ingredient_mushroom_up_04.ogg'), 70, 0)
 			user.visible_message("<span class='passivebold'>[user]</span> <span class='passive'>adds [O] on the [src].</span>")
 	else if(istype(O,/obj/item/weapon/reagent_containers/glass) || \
 	        istype(O,/obj/item/weapon/reagent_containers/food/drinks) || \
@@ -262,7 +262,7 @@
 	src.operating = 0 // Turn it off again aferwards
 	src.icon_state = "oven0"
 	src.visible_message("<span class='bname'>Dish is ready!</span>")
-	playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 0)
+	playsound(src.loc, 'torch_snuff.ogg', 75, 0)
 
 /obj/machinery/microwave/proc/dispose()
 	for (var/obj/O in contents)

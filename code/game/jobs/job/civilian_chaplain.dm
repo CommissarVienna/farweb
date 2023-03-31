@@ -9,7 +9,6 @@ var/global/Inquisitor_Type = "Null"
 	department_head = list("The God")
 	department_flag = ENGSEC
 	faction = "Station"
-	stats_mods = list(STAT_ST = 0, STAT_DX = -1, STAT_HT = 0, STAT_IN = 2)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the god king"
@@ -32,27 +31,27 @@ var/global/Inquisitor_Type = "Null"
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/brown(H), slot_shoes)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/eng(H), slot_wrist_r)
 		H.equip_to_slot_or_del(new /obj/item/clothing/head/amulet/epitrachelion(H), slot_amulet)
-		H.add_verb(list(/mob/living/carbon/human/proc/excommunicate, \
-		/mob/living/carbon/human/proc/callmeeting, \
-		/mob/living/carbon/human/proc/marriage, \
-		/mob/living/carbon/human/proc/banish, \
-		/mob/living/carbon/human/proc/undeadead, \
-		/mob/living/carbon/human/proc/sins, \
-		/mob/living/carbon/human/proc/coronation, \
-		/mob/living/carbon/human/proc/reward, \
-		/mob/living/carbon/human/proc/eucharisty, \
-		/mob/living/carbon/human/proc/ClearName, \
-		/mob/living/carbon/human/proc/epitemia))
-		H.updateStatPanel()
+		H.verbs += /mob/living/carbon/human/proc/excommunicate
+		H.verbs += /mob/living/carbon/human/proc/callmeeting
+		H.verbs += /mob/living/carbon/human/proc/marriage
+		H.verbs += /mob/living/carbon/human/proc/banish
+		H.verbs += /mob/living/carbon/human/proc/undeadead
+		H.verbs += /mob/living/carbon/human/proc/sins
+		H.verbs += /mob/living/carbon/human/proc/coronation
+		H.verbs += /mob/living/carbon/human/proc/reward
+		H.verbs += /mob/living/carbon/human/proc/eucharisty
+		H.verbs += /mob/living/carbon/human/proc/ClearName
+		H.verbs += /mob/living/carbon/human/proc/epitemia
+		H.updatePig()
 		H.create_kg()
 		//H << sound('sound/music/train_music.ogg', repeat = 0, wait = 0, volume = 20, channel = 3)
 		return 1
 
 /mob/living/carbon/human/proc/excommunicate()
 	set hidden = 0
-	set category = "cross"
+	set category = "Power of Faith"
 	set name = "Excommunicate"
-	set desc="Excommunicate"
+	set desc="Excommunicates someone, Anathema!"
 	var/input = sanitize_uni(input(usr, "Enter the name of the excommunicated member.", "What?", "") as text|null)
 	if(!input)
 		return
@@ -91,12 +90,13 @@ var/global/Inquisitor_Type = "Null"
 		message_admins("[key_name_admin(src)] has created a excomm report", 1)
 
 	else
-		to_chat(H, "<span class='excomm'>[pick(fnord)] I can't. I must go to the church.</span>")
+		to_chat(H, "<span class='excomm'>[pick(nao_consigoen)] I can't. I must go to the church.</span>")
 
 /mob/living/carbon/human/proc/epitemia()
 	set hidden = 0
-	set category = "cross"
-	set desc="Epitemia"
+	set category = "Power of Faith"
+	set name = "Epitemia"
+	set desc="Epitemia, Anathema!"
 	var/input = sanitize_uni(input(usr, "Enter the name of the sinful member.", "What?", "") as text|null)
 	if(!input)
 		return
@@ -125,9 +125,9 @@ var/global/Inquisitor_Type = "Null"
 
 /mob/living/carbon/human/proc/banish()
 	set hidden = 0
-	set category = "cross"
-	set desc="Bannish Undead"
+	set category = "Power of Faith"
 	set name = "BannishtheUndead"
+	set desc="Bannishes the undead beings!"
 
 	if(stamina_loss >= 100)
 		return
@@ -152,9 +152,9 @@ var/global/Inquisitor_Type = "Null"
 
 /mob/living/carbon/human/proc/sins()
 	set hidden = 0
+	set category = "Power of Faith"
 	set name = "RobofSins"
 	set desc="Rob of Sins"
-	set category = "cross"
 
 	if(stat) return
 
@@ -168,7 +168,7 @@ var/rewarded = 0
 
 /mob/living/carbon/human/proc/reward()
 	set hidden = 0
-	set category = "cross"
+	set category = "Power of Faith"
 	set name = "RewardtheInquisitor"
 	set desc="Reward the Inquisitor"
 
@@ -192,11 +192,11 @@ var/rewarded = 0
 		if(H.job == "Inquisitor" && H.mind)
 			rewarded = 1
 			Inquisitor_Points += 9
-			H.remove_verb(/mob/living/carbon/human/proc/reward)
+			H.verbs -= /mob/living/carbon/human/proc/reward
 
 /mob/living/carbon/human/proc/coronation()
 	set hidden = 0
-	set category = "cross"
+	set category = "Power of Faith"
 	set name = "Coronation"
 	set desc="Coronation"
 
@@ -208,9 +208,9 @@ var/rewarded = 0
 				if(src.lastarea && istype(lastarea, /area/dunwell/station/church) || src.lastarea && istype(lastarea, /area/dunwell/station/bridge))
 					src.visible_message("<font color ='#649568'><b>[src]</b> draws a bloody cross in [H.real_name]'s forehead")
 					if(do_after(src, 15))
-						/*H?.client?.ChromieWinorLoose(src.client, 1)*/
+						H?.client?.ChromieWinorLoose(src.client, 1)
 						world << sound('sound/AI/bell_toll_02_lp.ogg')
-						to_chat(world, "<h1 class='ravenheartfortress'>Firethorn Fortress</span>")
+						to_chat(world, "<h1 class='ravenheartfortress'>Fortaleza de Firethorn</span>")
 						to_chat(world, "<span class='excomm'>By the will of the blood and cross [H.real_name] is coronated the new Baron!</span>")
 						world << sound('sound/AI/bell_toll.ogg')
 						to_chat(world, "<br>")
@@ -223,9 +223,9 @@ var/rewarded = 0
 /mob/living/carbon/human/proc/eucharisty()
 	set hidden = 0
 	set hidden = 0
-	set category = "cross"
+	set category = "Power of Faith"
 	set name = "Eucharisty"
-	set desc="Eucharisty"
+	set desc="Make your flesh a weapon."
 
 	if(src.get_active_hand() == /obj/item/weapon/organ)
 		var/obj/item/weapon/organ/O = src.get_active_hand()
@@ -246,9 +246,9 @@ var/rewarded = 0
 
 /mob/living/carbon/human/proc/undeadead()
 	set hidden = 0
-	set category = "cross"
+	set category = "Power of Faith"
 	set name = "BannishSpirits"
-	set desc="Bannish Spirits"
+	set desc="Bannishes the wraith beings!"
 
 	if(stamina_loss >= 100)
 		return
@@ -272,9 +272,9 @@ var/rewarded = 0
 
 /mob/living/carbon/human/proc/callmeeting()
 	set hidden = 0
-	set category = "cross"
+	set category = "Power of Faith"
 	set name = "CallforChurchMeeting"
-	set desc="Call for Church Meeting"
+	set desc="Invites the station for a meeting!"
 	var/mob/living/carbon/human/H = usr
 
 	if(stat) return
@@ -312,13 +312,13 @@ var/rewarded = 0
 		log_admin("[key_name(src)] has called for a meeting at the church")
 		message_admins("[key_name_admin(src)] has called for a meeting at the church", 1)
 	else
-		to_chat(H, "<span class='excomm'>[pick(fnord)] I can't. I must go to the church.</span>")
+		to_chat(H, "<span class='excomm'>[pick(nao_consigoen)] I can't. I must go to the church.</span>")
 
 /mob/living/carbon/human/proc/marriage()
 	set hidden = 0
-	set category = "cross"
+	set category = "Power of Faith"
 	set name = "Marriage"
-	set desc="Marriage!"
+	set desc="Gather everyone for a Marriage!"
 	var/list/keys = list()
 	var/mob/living/carbon/human/MM = usr
 
@@ -344,7 +344,7 @@ var/rewarded = 0
 			var/married2key
 			if(H.real_name == married1)
 				married1key = H.client.ckey
-				/*H.client.ChromieWinorLoose(H.client, 1)*/
+				H.client.ChromieWinorLoose(H.client, 1)
 				H.client.married = married2key
 				for(var/mob/living/carbon/human/H1 in mob_list)
 					if(H.client.married == H1.client.ckey)
@@ -354,7 +354,7 @@ var/rewarded = 0
 					M1 = H
 			if(H.real_name == married2key)
 				married2key = H.client.ckey
-				/*H.client.ChromieWinorLoose(H.client, 1)*/
+				H.client.ChromieWinorLoose(H.client, 1)
 				H.client.married = married1key
 				for(var/mob/living/carbon/human/H2 in mob_list)
 					if(H.client.married == H2.client.ckey)
@@ -363,7 +363,7 @@ var/rewarded = 0
 				if(ticker.mode.config_tag == "siege")
 					M2 = H
 
-		to_chat(world, "<span class='ravenheartfortress'>Firethorn Fortres</span>")
+		to_chat(world, "<span class='ravenheartfortress'>Fortaleza de Firethorn</span>")
 		to_chat(world, "<span class='excomm'>By the bonds of the Cross, [married1] and [married2] are united unto Death! Rejoice!</span>")
 		world << sound('sound/AI/bell_toll.ogg')
 		to_chat(world, "<br>")
@@ -384,13 +384,13 @@ var/rewarded = 0
 						S.result = SIEGE_DRAW_MARRIAGE
 						roundendready = TRUE
 	else
-		to_chat(MM, "<span class='excomm'>[pick(fnord)] I can't. I must go to the church.</span>")
+		to_chat(MM, "<span class='excomm'>[pick(nao_consigoen)] I can't. I must go to the church.</span>")
 
 /mob/living/carbon/human/proc/ClearName()
 	set hidden = 0
-	set category = "cross"
+	set category = "Power of Faith"
 	set name = "ClearName"
-	set desc="Clear NickName"
+	set desc="Clear Name"
 
 	if(stat) return
 	var/list/list_M = list()
@@ -408,7 +408,7 @@ var/rewarded = 0
 			M.nickname = FALSE
 			return
 		else
-			to_chat(src, "<span class='combat'>They don't have a nickname!</span>")
+			to_chat(src, "<span class='combat'>They name is clear!</span>")
 			return
 
 /datum/job/inquisitor
@@ -418,7 +418,6 @@ var/rewarded = 0
 	department_head = list("Church")
 	department_flag = ENGSEC
 	faction = "Station"
-	stats_mods = list(STAT_ST = 2, STAT_DX = 2, STAT_HT = 2, STAT_IN = 3)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the bishop"
@@ -450,7 +449,7 @@ var/rewarded = 0
 			H.terriblethings = TRUE
 			H.add_perk(/datum/perk/ref/strongback)
 			H.add_perk(/datum/perk/heroiceffort)
-			H.add_verb(/mob/living/carbon/human/proc/interrogate)
+			H.verbs += /mob/living/carbon/human/proc/interrogate
 			H.create_kg()
 		if(Inquisitor_Type == "Holy War Veterans")
 			H.voicetype = "sketchy"
@@ -469,9 +468,9 @@ var/rewarded = 0
 			H.terriblethings = TRUE
 			H.add_perk(/datum/perk/ref/strongback)
 			H.add_perk(/datum/perk/heroiceffort)
-			H.add_verb(/mob/living/carbon/human/proc/interrogate)
+			H.verbs += /mob/living/carbon/human/proc/interrogate
 			H.create_kg()
-			H.my_stats.change_stat(STAT_ST , 1)
+			H.my_stats.st += rand(0,1)
 			H.my_skills.ADD_SKILL(SKILL_MELEE, 1)
 			H.my_skills.ADD_SKILL(SKILL_CLIMB, rand(1,2))
 		if(Inquisitor_Type == "Master")
@@ -492,14 +491,14 @@ var/rewarded = 0
 			H.add_perk(/datum/perk/heroiceffort)
 			H.add_perk(/datum/perk/ancitech)
 			H.add_perk(/datum/perk/chemical)
-			H.my_stats.change_stat(STAT_IN , 2)
+			H.my_stats.it += 2
 			H.my_skills.ADD_SKILL(SKILL_MASON, rand(2,3))
 			H.my_skills.ADD_SKILL(SKILL_MEDIC, rand(2,3))
 			H.my_skills.ADD_SKILL(SKILL_SURG, rand(2,3))
 			H.my_skills.ADD_SKILL(SKILL_CRAFT, rand(2,3))
 			H.my_skills.ADD_SKILL(SKILL_RANGE, -5)
 			H.my_skills.ADD_SKILL(SKILL_MELEE, 5)
-			H.add_verb(/mob/living/carbon/human/proc/interrogate)
+			H.verbs += /mob/living/carbon/human/proc/interrogate
 			H.create_kg()
 		if(Inquisitor_Type == "Fanatic")
 			H.voicetype = "sketchy"
@@ -516,13 +515,13 @@ var/rewarded = 0
 			H.terriblethings = TRUE
 			H.add_perk(/datum/perk/ref/strongback)
 			H.add_perk(/datum/perk/heroiceffort)
-			H.add_verb(/mob/living/carbon/human/proc/interrogate)
+			H.verbs += /mob/living/carbon/human/proc/interrogate
 
 			for(var/datum/organ/external/E in H.organs)
 				E.pain_disability_threshold += E.pain_disability_threshold * 2
 
-			H.my_stats.change_stat(STAT_ST , 1)
-			H.my_stats.change_stat(STAT_HT , 4)
+			H.my_stats.st += rand(1,1)
+			H.my_stats.ht += rand(3,4)
 
 			H.create_kg()
 		else
@@ -544,7 +543,7 @@ var/rewarded = 0
 			H.terriblethings = TRUE
 			H.add_perk(/datum/perk/ref/strongback)
 			H.add_perk(/datum/perk/heroiceffort)
-			H.add_verb(/mob/living/carbon/human/proc/interrogate)
+			H.verbs += /mob/living/carbon/human/proc/interrogate
 			H.create_kg()
 
 		spawn(30)
@@ -570,9 +569,8 @@ var/rewarded = 0
 
 
 /mob/living/carbon/human/proc/interrogate()
-	set category = "gpc"
+	set category = "Inquisition"
 	set name = "Interrogate"
-	set desc = "Interrogate"
 	if(stat) return
 	var/turf/T = get_step(src, dir)
 	if(src?.mind?.cooldown_interrogate > world.time)
@@ -592,12 +590,12 @@ var/rewarded = 0
 			continue
 
 		var/mod_interro
-		mod_interro += src.my_stats.get_stat(STAT_WP)
+		mod_interro += src.my_stats.wp
 		var/mod_H
 		mod_H -= (H.get_pain() / 10)
-		mod_H += H.my_stats.get_stat(STAT_WP)
-		var/list/roll_interro = roll3d6(src, (src.my_stats.get_stat(STAT_IN) - 5), mod_interro, TRUE,TRUE)
-		var/list/roll_H = roll3d6(H, src.my_stats.get_stat(STAT_WP), mod_H, TRUE,TRUE)
+		mod_H += H.my_stats.wp
+		var/list/roll_interro = roll3d6(src, (src.my_stats.it - 5), mod_interro, TRUE,TRUE)
+		var/list/roll_H = roll3d6(H, src.my_stats.wp, mod_H, TRUE,TRUE)
 
 		if(roll_interro[GP_RESULT] > roll_H[GP_RESULT])
 			H.emote("torturescream",1, null, 0)
@@ -690,7 +688,6 @@ var/rewarded = 0
 	department_head = list("Bishop and the Holy Inquisition")
 	department_flag = ENGSEC
 	faction = "Station"
-	stats_mods = list(STAT_ST = 3, STAT_DX = 0, STAT_HT = 2, STAT_IN = 0)
 	total_positions = 2
 	spawn_positions = 2
 	jobdesc = "Hardly as charming and well spoken as your mentor, you&#8217;re a powerful tool in his arsenal. The entire details of your purpose in Firethorn is still unclear. Your superiors told you it was a simple investigation into uncertain claims, but you can&#8217;t help but feel they&#8217;re holding something back from you. You may not yet understand how to talk past the forked tongue of the snake, but you certainly know how to cut it off. And that&#8217;s exactly what you&#8217;re here to do."
@@ -732,8 +729,8 @@ var/rewarded = 0
 			H.add_perk(/datum/perk/ref/strongback)
 			H.add_perk(/datum/perk/morestamina)
 			H.terriblethings = TRUE
-			H.my_stats.change_stat(STAT_ST , 1)
-			H.my_stats.change_stat(STAT_HT , 1)
+			H.my_stats.st += rand(1,2)
+			H.my_stats.ht += rand(1,2)
 			H.my_skills.ADD_SKILL(SKILL_MELEE, 2)
 			H.my_skills.ADD_SKILL(SKILL_RANGE, 2)
 			H.my_skills.ADD_SKILL(SKILL_CLIMB, rand(1,2))
@@ -761,7 +758,6 @@ var/rewarded = 0
 	department_head = list("Bishop and the Holy Inquisition")
 	department_flag = ENGSEC
 	faction = "Station"
-	stats_mods = list(STAT_ST = -1, STAT_DX = 1, STAT_HT = -1, STAT_IN = 1)
 	total_positions = 2
 	spawn_positions = 2
 	jobdesc = "As a sister of the church, you are a symbol of purity. You help the sick and downtrodden, and are trusted by all residents within the fortress. You use this trust to extract information from those you care for, and report sinners and evildoers to the Holy Father. Trust and care are your information."

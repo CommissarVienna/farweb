@@ -16,6 +16,7 @@
 		H.combat_mode_icon.icon_state = "cmbt0"
 		H << 'sound/webbers/ui_toggleoff.ogg'
 		H << sound(null, repeat = 0, wait = 0, volume = src?.client?.prefs?.music_volume, channel = 12)
+		H.my_stats.pr -= 2
 		var/list/sounds_list = H.client.SoundQuery()
 		for(var/playing_sound in sounds_list)
 			var/sound/found = playing_sound
@@ -28,20 +29,21 @@
 				var/obj/item/clothing/mask/gas/church/G = wear_mask
 				G.icon_state = G.off_state
 				G.item_state = G.off_state
-				H.update_inv_head()
-				H.update_inv_wear_mask()
+				H.update_inv_head(0)
+				H.update_inv_wear_mask(0)
 	else
 		H.combat_mode = 1
 		H.combat_mode_icon.icon_state = "cmbt1"
 		H << 'sound/webbers/ui_toggle.ogg'
+		H.my_stats.pr += 2
 		var/area/A = get_area(src)
 		if(src.wear_mask)
 			if(istype(wear_mask,/obj/item/clothing/mask/gas/church))
 				var/obj/item/clothing/mask/gas/church/G = wear_mask
 				G.icon_state = G.on_state
 				G.item_state = G.on_state
-				H.update_inv_head()
-				H.update_inv_wear_mask()
+				H.update_inv_head(0)
+				H.update_inv_wear_mask(0)
 
 
 		var/list/sounds_list = H.client.SoundQuery()
@@ -52,24 +54,24 @@
 				found.status = SOUND_UPDATE
 				H << found
 
-		var/sound/S = sound(pick('sound/fortress_suspense/suspense1.ogg','sound/fortress_suspense/suspense2.ogg','sound/fortress_suspense/suspense3.ogg','sound/fortress_suspense/suspense4.ogg','sound/fortress_suspense/suspense5.ogg','sound/fortress_suspense/suspense6.ogg','sound/fortress_suspense/suspense7.ogg','sound/fortress_suspense/suspense8.ogg'), repeat = 1, wait = 0, volume = src?.client?.prefs?.music_volume, channel = 12)
+		var/sound/S = sound(pick('suspense1.ogg','suspense2.ogg','suspense3.ogg','suspense4.ogg','suspense5.ogg','suspense6.ogg','suspense7.ogg','suspense8.ogg'), repeat = 1, wait = 0, volume = src?.client?.prefs?.music_volume, channel = 12)
 		S.environment = A.sound_env
 
 		if(is_dreamer(H))
 			S = sound('sound/lfwbsounds/bloodlust1.ogg', repeat = 1, wait = 0, volume = src?.client?.prefs?.music_volume, channel = 12)
 		else if(H.religion == "Thanati")
-			S = sound('sound/fortress_suspense/suspense_thanati.ogg', repeat = 1, wait = 0, volume = src?.client?.prefs?.music_volume, channel = 12)
+			S = sound('suspense_thanati.ogg', repeat = 1, wait = 0, volume = src?.client?.prefs?.music_volume, channel = 12)
 		else if(H.job == "Jester")
-			S = sound('sound/music/jester_combat.ogg', repeat = 1, wait = 0, volume = src?.client?.prefs?.music_volume, channel = 12)
-		else if(H.mind?.changeling)
+			S = sound('jester_combat.ogg', repeat = 1, wait = 0, volume = src?.client?.prefs?.music_volume, channel = 12)
+		else if(H.mind.changeling)
 			S = sound('sound/lfwbsounds/they_combat.ogg', repeat = 1, wait = 0, volume = src?.client?.prefs?.music_volume, channel = 12)
 		else if(H.combat_musicoverlay)
 			S = sound(H.combat_musicoverlay, repeat = 1, wait = 0, volume = src?.client?.prefs?.music_volume, channel = 12)
 		else
-			S = sound(pick('sound/fortress_suspense/suspense1.ogg','sound/fortress_suspense/suspense2.ogg','sound/fortress_suspense/suspense3.ogg','sound/fortress_suspense/suspense4.ogg','sound/fortress_suspense/suspense5.ogg','sound/fortress_suspense/suspense6.ogg','sound/fortress_suspense/suspense7.ogg','sound/fortress_suspense/suspense8.ogg'), repeat = 1, wait = 0, volume = src?.client?.prefs?.music_volume, channel = 12)
+			S = sound(pick('suspense1.ogg','suspense2.ogg','suspense3.ogg','suspense4.ogg','suspense5.ogg','suspense6.ogg','suspense7.ogg','suspense8.ogg'), repeat = 1, wait = 0, volume = src?.client?.prefs?.music_volume, channel = 12)
 
 		if(april_fools)
-			playsound(src.loc, 'sound/SHITTYJOKE/worm_attack.ogg', 60, 0, -1)
+			playsound(src.loc, 'worm_attack.ogg', 60, 0, -1)
 			src.say("Atacar!")
 
 		H << S
@@ -100,7 +102,7 @@
 /mob/proc/surrender()//Surrending. I need to put this in a different file.
 	if(stat == CONSCIOUS )
 		visible_message("<p style='font-size:20px'><span class='passivebold'>[src] surrenders!</span></p>")
-		SetResting(TRUE)
+		resting = 1
 		playsound(src, 'sound/effects/surrender.ogg', 90, 0)
 		var/atom/movable/overlay/animation = new /atom/movable/overlay( loc )
 		animation.pixel_y = 16
@@ -116,22 +118,17 @@
 	if(resting && !stunned && !weakened && (can_stand || buckled))//The incapacitated proc includes resting for whatever fucking stupid reason I hate SS13 code so fucking much.
 		visible_message("<span class='passivebold'>[usr]</span> <span class='passive'>is trying to get up.</span> ")
 		if(do_after(src, 15))
-			SetResting(FALSE)
-			lying = 0
-			update_transform()
-			update_canmove()
+			resting = 0
 			update_vision_cone()
-			update_canmove()
 		return
 
 	else if(!resting)
-		SetResting(TRUE)
+		resting = 1
 		update_transform()
-		//sleep(10)
-	//	playsound(src, "bodyfall", 50, 1)
+		sleep(10)
+		playsound(src, "bodyfall", 50, 1)
 		visible_message("<span class='passivebold'>[usr]</span> <span class='passive'>falls over.</span> ")
 		update_transform()
-		update_canmove()
 		//if(ishuman(src))
 			//var/mob/living/carbon/human/H = src
 			//H.update_bloody_wounds()

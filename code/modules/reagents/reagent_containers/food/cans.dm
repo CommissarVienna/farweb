@@ -49,7 +49,7 @@
 				to_chat(M, "<span class='combat'>I can't use that, I must drink it with my mouth.</span>")
 				return 0
 
-			playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(50,60), 0)
+			playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(50,60), 0)
 			return 1
 		else if( istype(M, /mob/living/carbon/human) )
 			for(var/mob/O in viewers(world.view, user))
@@ -74,7 +74,7 @@
 				spawn(600)
 					R.add_reagent(refill, fillevel)
 
-			playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(50,60), 0)
+			playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(50,60), 0)
 			return 1
 
 		return 0

@@ -32,7 +32,7 @@ var/datum/padla/Padla = null
 		to_chat(world, "<br>")
 		to_chat(world, "<span class='ravenheartfortress'>Firethorn Fortress</span>")
 		to_chat(world, "<span class='excomm'>The warlock has made another padla!</span>")
-		world << sound(pick('sound/effects/padla.ogg','sound/effects/padla2.ogg','sound/effects/padla3.ogg','sound/effects/padla4.ogg'))
+		world << sound(pick('padla.ogg','padla2.ogg','padla3.ogg','padla4.ogg'))
 		to_chat(world, "<br>")
 
 /datum/padla/proc/doPadla()

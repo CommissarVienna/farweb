@@ -8,7 +8,7 @@ var/stateSuck = NENHUM
 
 /obj/machinery/lifeweb/pillarr
 	name = "lifeweb machinery"
-	icon = 'icons/obj/LW2.dmi'
+	icon = 'LW2.dmi'
 	icon_state = "ch0"
 	desc = ""
 	density = 1
@@ -89,7 +89,7 @@ var/stateSuck = NENHUM
 
 /obj/machinery/lifeweb/control/New()
 	..()
-	var/icon/I = icon(icon = 'icons/obj/LW2.dmi', icon_state = "lifeweb_control_o")
+	var/icon/I = icon(icon = 'LW2.dmi', icon_state = "lifeweb_control_o")
 
 	overlays += I
 	set_light(2, 6, 2.8, 1, "#FAA019")
@@ -134,7 +134,7 @@ var/stateSuck = NENHUM
 			if(istype(H,/mob/living/carbon/human/monster))
 				powerOutput -= 10
 
-			playsound(src.loc, pick('sound/LW2/squirm1.ogg','sound/LW2/squirm2.ogg','sound/LW2/squirm3.ogg','sound/LW2/squirm4.ogg','sound/LW2/squirm5.ogg'), 100, 0, 0)
+			playsound(src.loc, pick('squirm1.ogg','squirm2.ogg','squirm3.ogg','squirm4.ogg','squirm5.ogg'), 100, 0, 0)
 
 			var/list/batteries = list()
 			for(var/obj/machinery/web_recharger/WR in chargers)

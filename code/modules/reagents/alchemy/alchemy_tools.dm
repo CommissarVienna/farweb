@@ -26,7 +26,7 @@
 		if(F.lit)
 			processing_objects.Add(src)
 			is_on = 1
-			playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 1)
+			playsound(src.loc, 'torch_light.ogg', 50, 1)
 			if(istype(user, /mob/living/carbon))
 				alchemist = user
 
@@ -45,7 +45,7 @@
 /obj/item/weapon/retort/attack_hand(mob/user as mob)
 	if(is_on)
 		is_on = 0
-		playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 1)
+		playsound(src.loc, 'torch_snuff.ogg', 75, 1)
 		powder = null
 		alchemist = null
 		processing_objects.Remove(src)

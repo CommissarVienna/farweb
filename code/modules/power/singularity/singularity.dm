@@ -443,7 +443,7 @@ var/global/list/uneatable = list(
 	return
 
 
-/*
+
 /obj/machinery/singularity/narsie //Moving narsie to a child object of the singularity so it can be made to function differently. --NEO
 	name = "Nar-Sie"
 	desc = "Your mind begins to bubble and ooze as it tries to comprehend what it sees."
@@ -564,4 +564,3 @@ var/global/list/uneatable = list(
 	if(defer_powernet_rebuild != 2)
 		defer_powernet_rebuild = 0
 	return
-*/

@@ -16,7 +16,6 @@
 	has_tendons = 1
 	has_finger = 1
 	mask_color = "#1187ce"
-	above_layer = LEFT
 	process()
 		..()
 		process_grasp(owner.l_hand, "left hand")

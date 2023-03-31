@@ -142,7 +142,7 @@ var/list/rings = list()
 	var/mining_points = 0		//For redeeming at mining equipment lockers
 	var/registered_name = "Unknown" // The name registered_name on the card
 	slot_flags = SLOT_ID
-	drop_sound = 'sound/effects/ring_drop.ogg'
+	drop_sound = 'ring_drop.ogg'
 
 	var/blood_type = "\[UNSET\]"
 	var/dna_hash = "\[UNSET\]"

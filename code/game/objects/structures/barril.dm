@@ -17,9 +17,7 @@ particles/fire
 	color = "yellow"
 
 /obj/structure/barril
-	name = "burning barrel"
 	icon = 'icons/obj/structures.dmi'
-	desc = "Shit's on fire yo."
 	icon_state = "barril"
 	density = 1
 	anchored = 1

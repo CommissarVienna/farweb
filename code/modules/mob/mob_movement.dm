@@ -259,7 +259,7 @@
 			if(isobj(mob.pulling))
 				var/obj/O = mob.pulling
 				if(O.heavy && !H.check_perk(/datum/perk/docker))
-					H.adjustStaminaLoss(15-H.my_stats.get_stat(STAT_ST), 25-H.my_stats.get_stat(STAT_ST))
+					H.adjustStaminaLoss(15-H.my_stats.st, 25-H.my_stats.st)
 			mob.dir = turn(mob.dir, 180)
 			mob.update_vision_cone()
 

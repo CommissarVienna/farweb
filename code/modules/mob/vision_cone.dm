@@ -75,18 +75,7 @@ mob/living/carbon/human/update_vision_cone()
 			src.fov.dir = src.dir
 			src.fov_mask.dir = src.dir
 			src.fov_mask_two.dir = src.dir
-
-		if(istype(src.head, /obj/item/clothing/head))
-			var/obj/item/clothing/head/H = src.head
-			if(H.blocks_vision)
-				src.fov.icon_state = "helmet"
-				src.fov_mask_two.icon_state = "helmet_mask"
-		else if(istype(src.wear_mask, /obj/item/clothing/mask))
-			var/obj/item/clothing/mask/M = src.wear_mask
-			if(M.blocks_vision)
-				src.fov.icon_state = "helmet"
-				src.fov_mask_two.icon_state = "helmet_mask"
-		else if(right_eye_fucked && !left_eye_fucked)
+		if(right_eye_fucked && !left_eye_fucked)
 			src.fov.icon_state = "right_eye"
 			src.fov_mask_two.icon_state = "right_eye_mask"
 		else if(!right_eye_fucked && left_eye_fucked)
@@ -95,6 +84,11 @@ mob/living/carbon/human/update_vision_cone()
 		else if(right_eye_fucked && left_eye_fucked)
 			src.fov.icon_state = "helmet"
 			src.fov_mask_two.icon_state = "helmet_mask"
+		else if(istype(src.head, /obj/item/clothing/head/helmet))
+			var/obj/item/clothing/head/helmet/H = src.head
+			if(H.blocks_vision)
+				src.fov.icon_state = "helmet"
+				src.fov_mask_two.icon_state = "helmet_mask"
 		else if(istype(src.glasses, /obj/item/clothing/glasses/Leyepatch))
 			src.fov.icon_state = "left_eye"
 			src.fov_mask_two.icon_state = "left_eye_mask"

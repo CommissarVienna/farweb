@@ -3,7 +3,7 @@
 
 		if(H == usr && H.religion == "Thanati")
 			var/list/A = list()
-			playsound(C, 'sound/webbers/sigil.ogg', 100)
+			playsound(C, 'sigil.ogg', 100)
 			for(var/obj/effect/decal/cleanable/thanati/C/THANATI in world)
 				if(THANATI.x == usr.x && THANATI.y == usr.y && THANATI.z == usr.z)
 					continue
@@ -12,7 +12,7 @@
 			usr.x = ATOMO.x
 			usr.y = ATOMO.y
 			usr.z = ATOMO.z
-			playsound(ATOMO	, 'sound/webbers/sigil.ogg', 100)
+			playsound(ATOMO	, 'sigil.ogg', 100)
 			return
 
 		if(H.religion == "Thanati")

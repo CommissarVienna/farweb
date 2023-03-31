@@ -8,7 +8,6 @@
 /datum/happiness_event/noble_blood
 	description = "<span class='goodmood'>• <span class='passivebold'>Noble blood flows through my veins!</span>\n"
 	happiness = 2
-	
 
 //nutrition
 /datum/happiness_event/nutrition/fat
@@ -41,7 +40,7 @@
 	happiness = -12
 
 /datum/happiness_event/nutrition/humanflesh
-	description = "<span class='badmood'>• I've eaten human flesh!</span>\n"
+	description = "<span class='badmood'>• I've ate human flesh!</span>\n"
 	happiness = -4
 	timeout = 3000
 

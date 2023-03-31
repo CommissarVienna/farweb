@@ -18,7 +18,7 @@
 		on = !on
 		icon_state = "hardhat[on]_[item_color]"
 		item_state = "hardhat[on]_[item_color]"
-		playsound(src.loc, 'sound/effects/lightswitch.ogg', 30, 1, -1)
+		playsound(src.loc, 'lightswitch.ogg', 30, 1, -1)
 		user.update_inv_head(0)
 
 		if(on)

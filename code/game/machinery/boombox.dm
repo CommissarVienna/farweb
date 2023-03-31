@@ -13,7 +13,7 @@
 	if(coolboombox.Find(ckey(user.key)))
 		..()
 	else
-		to_chat(user, "<span class='combat'>[pick(fnord)] I'm stuck!</span>")
+		to_chat(user, "<span class='combat'>[pick(nao_consigoen)] I'm stuck!</span>")
 
 /obj/item/weapon/ghettobox/special/update_icon()
 	if(playing)
@@ -24,7 +24,7 @@
 /obj/item/weapon/ghettobox/special/RightClick(mob/user)
 	var/dat = ""
 	if(!coolboombox.Find(ckey(user.key)))
-		to_chat(user, "<span class='combat'>[pick(fnord)] I'm stuck!</span>")
+		to_chat(user, "<span class='combat'>[pick(nao_consigoen)] I'm stuck!</span>")
 		return
 	if(writing)
 		dat += "Memory scan completed. <br>Writing from scan of [retard_name] mind... Please Stand By."

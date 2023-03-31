@@ -13,20 +13,20 @@
 /turf/simulated/wall/r_wall/cave/white
 	name = "cave wall"
 	desc = "this one is slightly lighter."
-	icon = 'icons/turf/cave2.dmi'
+	icon = 'cave2.dmi'
 
 /turf/simulated/wall/r_wall/cave/white/hard
 	name = "hard cave wall"
 	cantbreak = TRUE
 	climbable = FALSE
-	icon = 'icons/turf/cave2.dmi'
+	icon = 'cave2.dmi'
 
 
 /turf/simulated/wall/r_wall/cave/white/hard/surface
 	name = "hard surface wall"
 	cantbreak = TRUE
 	climbable = FALSE
-	icon = 'icons/turf/cave_snow.dmi'
+	icon = 'cave_snow.dmi'
 
 
 /turf/simulated/wall/r_wall/cave/examine()
@@ -79,7 +79,7 @@
 								new /obj/item/weapon/stone(SS.loc)
 								new /obj/item/weapon/stone(SS.loc)
 					SS.ChangeTurfNew(turf_above)
-			playsound(src,pick('sound/effects/dustdrop.ogg','sound/effects/fx_dust_a_01.ogg','sound/effects/fx_dust_a_02.ogg','sound/effects/fx_dust_a_03.ogg'),75,1,8)
+			playsound(src,pick('dustdrop.ogg','fx_dust_a_01.ogg','fx_dust_a_02.ogg','fx_dust_a_03.ogg'),75,1,8)
 			for(var/turf/simulated/floor/T in range(src,6))
 				T.overlays += image(icon='icons/mining.dmi',icon_state="dustofdanger", layer = 5)
 				spawn(11)
@@ -87,7 +87,7 @@
 			return TRUE
 		else
 			if(prob(90))
-				playsound(src,pick('sound/effects/dustdrop.ogg','sound/effects/fx_dust_a_01.ogg','sound/effects/fx_dust_a_02.ogg','sound/effects/fx_dust_a_03.ogg'),75,1,8)
+				playsound(src,pick('dustdrop.ogg','fx_dust_a_01.ogg','fx_dust_a_02.ogg','fx_dust_a_03.ogg'),75,1,8)
 				for(var/turf/simulated/floor/T in range(src,2))
 					T.overlays += image(icon='icons/mining.dmi',icon_state="dustofdanger", layer = 5)
 					spawn(11)
@@ -103,10 +103,10 @@
 
 /turf/simulated/wall/proc/climbWall(mob/living/carbon/human/user as mob)
 	if(!climbable)
-		to_chat(user, "<span class='combatbold'>[pick(fnord)] I can't even imagine climbing this!</span>")
+		to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)] I can't even imagine climbing this!</span>")
 		return
 	if(!check_both_hands_empty(user))
-		to_chat(user, "<span class='combatbold'>[pick(fnord)] My hands must be empty!</span>")
+		to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)] My hands must be empty!</span>")
 		return
 	if(user.stat)
 		return
@@ -138,7 +138,7 @@
 				if(istype(above,/turf/simulated/floor/lifeweb/stone/ladder))
 					var/turf/simulated/floor/lifeweb/stone/ladder/L = above
 					if(!L.opened)
-						to_chat(user, "<span class='combatbold'>[pick(fnord)]</span><span class='combat'> there's a closed manhole above me!</span>")
+						to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)]</span><span class='combat'> there's a closed manhole above me!</span>")
 						return
 				to_chat(user, "<span class='passive'>You start climbing [src].</span>")
 				var/mob/living/carbon/human/H = user
@@ -149,7 +149,7 @@
 				if(do_after(user, 42-H.my_skills.GET_SKILL(SKILL_CLIMB)))
 					var/list/rolled = roll3d6(H,SKILL_CLIMB,null)
 					switch(rolled[GP_RESULT])
-						if(GP_FAIL)
+						if(GP_FAILED)
 							to_chat(user, "<span class='hitbold'>You failed to climb [src]!</span>")
 							if(user.special == "notafraid")
 								to_chat(user, "You land softly.")
@@ -200,7 +200,7 @@
 								H.ear_deaf = max(H.ear_deaf,6)
 								H.CU()
 							return
-						if(GP_SUCC, GP_CRITSUCC)
+						if(GP_SUCCESS, GP_CRITSUCCESS)
 							user.forceMove(locate(src.x, src.y, targetZ()))
 							to_chat(user, "<span class='passive'>You climb [src].</span>")
 							playsound(user.loc, 'sound/effects/climb.ogg', 40, 1)
@@ -209,7 +209,7 @@
 
 /turf/simulated/wall/proc/climbWallHelp(mob/living/carbon/human/user as mob, var/mob/living/carbon/human/assailant, var/obj/item/weapon/grab/W)
 	if(!climbable)
-		to_chat(assailant, "<span class='combatbold'>[pick(fnord)] I can't even imagine climbing this!</span>")
+		to_chat(assailant, "<span class='combatbold'>[pick(nao_consigoen)] I can't even imagine climbing this!</span>")
 		return
 	if(!user.resting || !user.lying)
 		return
@@ -242,23 +242,23 @@
 		var/obj/item/weapon/pickaxe/P = W
 		if(cantbreak)
 			to_chat(user, "<span class='bname'>TOO HARD!!!</span>")
-			playsound(W.loc, pick('sound/effects/npc_human_pickaxe_01.ogg','sound/effects/npc_human_pickaxe_02.ogg','sound/effects/npc_human_pickaxe_03.ogg','sound/effects/npc_human_pickaxe_05.ogg'), 25, 1, -1)
+			playsound(W.loc, pick('npc_human_pickaxe_01.ogg','npc_human_pickaxe_02.ogg','npc_human_pickaxe_03.ogg','npc_human_pickaxe_05.ogg'), 25, 1, -1)
 			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 			return
 		var/list/roll_result = roll3d6(user,SKILL_MINE, -3, FALSE)
 		switch(roll_result[GP_RESULT])
-			if(GP_SUCC, GP_CRITSUCC)
+			if(GP_SUCCESS, GP_CRITSUCCESS)
 				to_chat(user, "<span class='passive'>You hit [src]!</span>")
-				playsound(W.loc, pick('sound/effects/npc_human_pickaxe_01.ogg','sound/effects/npc_human_pickaxe_02.ogg','sound/effects/npc_human_pickaxe_03.ogg','sound/effects/npc_human_pickaxe_05.ogg'), 25, 1, -1)
-				var/mining_hits = P.mining_power + round((user.my_stats.get_stat(STAT_ST) - 10)/2)
+				playsound(W.loc, pick('npc_human_pickaxe_01.ogg','npc_human_pickaxe_02.ogg','npc_human_pickaxe_03.ogg','npc_human_pickaxe_05.ogg'), 25, 1, -1)
+				var/mining_hits = P.mining_power + round((user.my_stats.st - 10)/2)
 				if(mining_hits < 1)
 					mining_hits = 1
-				if(roll_result[GP_RESULT] == GP_CRITSUCC)
+				if(roll_result[GP_RESULT] == GP_CRITSUCCESS)
 					mining_hits *= 2
 				hitstaken += mining_hits
-			if(GP_FAIL, GP_CRITFAIL)
+			if(GP_FAILED, GP_CRITFAIL)
 				to_chat(user, "<span class='combat'>You hit [src]!</span>")
-				playsound(W.loc, pick('sound/effects/npc_human_pickaxe_01.ogg','sound/effects/npc_human_pickaxe_02.ogg','sound/effects/npc_human_pickaxe_03.ogg','sound/effects/npc_human_pickaxe_05.ogg'), 25, 1, -1)
+				playsound(W.loc, pick('npc_human_pickaxe_01.ogg','npc_human_pickaxe_02.ogg','npc_human_pickaxe_03.ogg','npc_human_pickaxe_05.ogg'), 25, 1, -1)
 				if(roll_result[GP_RESULT] == GP_CRITFAIL)
 					P.durability -= 5
 
@@ -302,7 +302,7 @@
 /turf/simulated/wall/r_wall/cave/RightClick(mob/living/carbon/human/user)
 	if(istype(user.get_active_hand(), /obj/item/weapon/pickaxe) && user.my_skills.GET_SKILL(SKILL_MINE) >= 3)
 		to_chat(user, "<span class='combatbold'>You hit [src]!</span>")
-		playsound(user.loc, pick('sound/effects/npc_human_pickaxe_01.ogg','sound/effects/npc_human_pickaxe_02.ogg','sound/effects/npc_human_pickaxe_03.ogg','sound/effects/npc_human_pickaxe_05.ogg'), 25, 1, -1)
+		playsound(user.loc, pick('npc_human_pickaxe_01.ogg','npc_human_pickaxe_02.ogg','npc_human_pickaxe_03.ogg','npc_human_pickaxe_05.ogg'), 25, 1, -1)
 		if(cantbreak || siegeblocked || src.z >= 6)
 			to_chat(user, "<span class='bname'>TOO HARD!!!</span>")
 			return
@@ -365,7 +365,7 @@
 
 /turf/simulated/wall/r_wall/charon
 	New()
-		turfs.Add(src)
+		return 0
 
 /turf/simulated/wall/r_wall/charon/relativewall()
 	return 0

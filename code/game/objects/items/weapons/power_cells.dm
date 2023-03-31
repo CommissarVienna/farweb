@@ -26,7 +26,7 @@
 
 /obj/item/weapon/cell/web
 	name = "battery cell"
-	icon = 'icons/obj/LW2.dmi'
+	icon = 'LW2.dmi'
 	icon_state = "bbattery"
 	item_state = "lfwbcell"
 	w_class = 4.0

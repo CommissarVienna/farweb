@@ -138,7 +138,7 @@
 	//visible_message("<font color ='#649568'><b>[src]</b> sua frio em desespero.")
 	to_chat(src, "<font color ='#649568'>Cold sweat drips down your face!</font>")
 	if(firefear)
-		src << 'sound/webbers/red_fear.ogg'
+		src << 'red_fear.ogg'
 	else if (src.gender == MALE)
 		playsound(src.loc, pick('sound/voice/maletired1.ogg','sound/voice/maletired2.ogg','sound/voice/maletired3.ogg'), 90, 0, -1)
 	else

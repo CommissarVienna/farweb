@@ -1,7 +1,7 @@
 /obj/structure/writersdesk
 	name = "Typewriter"
 	desc = "A desk with various tools to write a book"
-	icon = 'icons/obj/structures.dmi'
+	icon = 'structures.dmi'
 	icon_state = "writers"
 	density = 1
 	anchored = 1
@@ -42,7 +42,7 @@
 
 	establish_db_connection()
 	if(!dbcon.IsConnected())
-		to_chat(user, "<span class='combatbold'>[pick(fnord)]</span> Bookcases are not working properly, contact your local god-king!</font>")
+		to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)]</span> Bookcases are not working properly, contact your local god-king!</font>")
 		return
 
 	var/DBQuery/x_query = dbcon.NewQuery("INSERT INTO `erro_library` (`sqltitle`, `sqlauthor`, `sqlcontent`,`sqlcategory`) VALUES ([dbcon.Quote(sqltitle)], [dbcon.Quote(sqlauthor)],[dbcon.Quote(sqlcontent)],'[sqlcategory]')")

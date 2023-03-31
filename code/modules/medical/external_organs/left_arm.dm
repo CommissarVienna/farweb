@@ -14,7 +14,6 @@
 	tendon_prob = 20
 	has_tendons = 1
 	mask_color = "#ffe600"
-	above_layer = LEFT
 	process()
 		..()
 		process_grasp(owner.l_hand, "left hand")

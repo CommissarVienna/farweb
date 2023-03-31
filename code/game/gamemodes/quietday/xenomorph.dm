@@ -20,7 +20,7 @@
 	return
 
 /datum/game_mode/xenomorph/pre_setup()
-	var/list/possible_xenos = get_players_for_antag()
+	var/list/possible_xenos = get_players_for_role(BE_TRAITOR)
 	var/max_xenos = 2
 
 	for(var/j = 0, j < max_xenos, j++)

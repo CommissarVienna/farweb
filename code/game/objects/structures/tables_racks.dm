@@ -784,7 +784,7 @@
 	if(get_dist(src,user) <= 1)
 		if(narrow == 1)
 			if(!(ishuman(usr)  && istype(usr:species, /datum/species/human/alien)))
-				to_chat(user,"<span class='combatbold'>[pick(fnord)] the table is too narrow!</span>")
+				to_chat(user,"<span class='combatbold'>[pick(nao_consigoen)] the table is too narrow!</span>")
 				return
 
 		if(user.stat)
@@ -1056,7 +1056,6 @@
 		step(O, get_dir(O, src))
 	return
 
-/*
 /obj/structure/rack/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if (istype(W, /obj/item/weapon/wrench))
 		new /obj/item/weapon/rack_parts( src.loc )
@@ -1068,7 +1067,7 @@
 	user.drop_item()
 	if(W && W.loc)	W.loc = src.loc
 	return
-*/
+
 /obj/structure/rack/meteorhit(obj/O as obj)
 	qdel(src)
 

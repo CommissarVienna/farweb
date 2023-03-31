@@ -27,7 +27,7 @@
 			return ..()
 
 		if(istype(A,/mob/living/carbon/alien))
-			playsound(src, pick('sound/webbers/minialien_walk.ogg'), 75, 0)
+			playsound(src, pick('minialien_walk.ogg'), 75, 0)
 
 
 		if(istype(M, /mob/living/carbon/human)) //human footsteps
@@ -75,11 +75,6 @@
 
 			for(var/obj/structure/stool/bed/weeds/W in H.loc.contents)
 				footstepsound = "dirtfootsteps"
-				break
-
-			for(var/obj/structure/bridge_small/B in H.loc.contents)
-				footstepsound = "footsteps_metal"
-				break
 
 			if(istype(H.shoes, /obj/item/clothing/shoes/lw/clown_shoes))
 				footstepsound = "clownstep"
@@ -122,24 +117,24 @@
 					if(H.footstep >= 1)//Every two steps.
 						H.footstep = 0
 						if(metal_sound)
-							playsound(src, pick('sound/effects/footsteps/step_baremetal1.ogg','sound/effects/footsteps/step_baremetal2.ogg','sound/effects/footsteps/step_baremetal3.ogg','sound/effects/footsteps/step_baremetal4.ogg'), 75, 0)
+							playsound(src, pick('step_baremetal1.ogg','step_baremetal2.ogg','step_baremetal3.ogg','step_baremetal4.ogg'), 75, 0)
 						else
 							if(istype(H?.species, /datum/species/human/alien))
-								playsound(src, pick('sound/webbers/alien_step1.ogg','sound/webbers/alien_step2.ogg', 'sound/webbers/alien_step3.ogg', 'sound/webbers/alien_step4.ogg'), 75, 0)
+								playsound(src, pick('alien_step1.ogg','alien_step2.ogg', 'alien_step3.ogg', 'alien_step4.ogg'), 75, 0)
 							else
-								playsound(src, pick('sound/effects/footsteps/barestep1.ogg','sound/effects/footsteps/barestep2.ogg'), 75, 0)
+								playsound(src, pick('barestep1.ogg','barestep2.ogg'), 75, 0)
 					else
 						H.footstep++
 				else
 					if(H.footstep >= 6)
 						H.footstep = 0
 						if(metal_sound)
-							playsound(src, pick('sound/effects/footsteps/step_baremetal1.ogg','sound/effects/footsteps/step_baremetal2.ogg','sound/effects/footsteps/step_baremetal3.ogg','sound/effects/footsteps/step_baremetal4.ogg'), 75, 0)
+							playsound(src, pick('step_baremetal1.ogg','step_baremetal2.ogg','step_baremetal3.ogg','step_baremetal4.ogg'), 75, 0)
 						else
 							if(istype(H?.species, /datum/species/human/alien))
-								playsound(src, pick('sound/webbers/alien_step1.ogg','sound/webbers/alien_step2.ogg', 'sound/webbers/alien_step3.ogg', 'sound/webbers/alien_step4.ogg'), 75, 0)
+								playsound(src, pick('alien_step1.ogg','alien_step2.ogg', 'alien_step3.ogg', 'alien_step4.ogg'), 75, 0)
 							else
-								playsound(src, pick('sound/effects/footsteps/barestep1.ogg','sound/effects/footsteps/barestep2.ogg'), 75, 0)
+								playsound(src, pick('barestep1.ogg','barestep2.ogg'), 75, 0)
 					else
 						H.footstep++
 
@@ -204,7 +199,7 @@
 		for(var/obj/effect/decal/cleanable/blood/B in contents)
 			if(!B.blood_DNA)
 				B.blood_DNA = list()
-			if(!(M.dna.unique_enzymes in B.blood_DNA))
+			if(!B.blood_DNA[M.dna.unique_enzymes])
 				B.blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 				B.virus2 = virus_copylist(M.virus2)
 			return 1 //we bloodied the floor

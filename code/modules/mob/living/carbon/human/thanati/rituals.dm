@@ -67,8 +67,8 @@ proc/isRitualPlace(var/turf/place)
 	return
 
 proc/debug(var/text, var/mob/living/carbon/human/H,)
-	H.my_stats.change_stat(STAT_ST , 2)
-	H.updateStatPanel()
+	H.my_stats.st += 2
+	H.updatePig()
 
 //N = NORTH
 //NE = NORTHEAST

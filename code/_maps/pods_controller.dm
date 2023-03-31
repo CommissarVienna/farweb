@@ -124,7 +124,7 @@ datum/shuttle_controller/emergency_shuttle/process()
 
 			a.autosay("The Fortress will be abandoned in T - [round(emergency_shuttle.timeleft()/60)] min. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 
-			world << 'sound/machines/pods_launch_countdown.ogg'
+			world << 'pods_launch_countdown.ogg'
 			if(timeleft() - 60 > 60)
 				last60 = timeleft() - 60
 			else
@@ -140,7 +140,7 @@ datum/shuttle_controller/emergency_shuttle/process()
 
 			a.autosay("The Fortress will be abandoned in T - [round(emergency_shuttle.timeleft()/60)] seconds. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 
-			world << 'sound/machines/pods_launch_countdown.ogg'
+			world << 'pods_launch_countdown.ogg'
 			if(timeleft() - 10 > 10)
 				last60 = timeleft() - 10
 			else
@@ -157,14 +157,14 @@ datum/shuttle_controller/emergency_shuttle/process()
 
 				a.autosay("The Fortress will be abandoned in T - [round(emergency_shuttle.timeleft(),1)] seconds. His Lordship baron [lordShip] and his confidants are awaited on the Babylon.", "CTTU")
 
-				world << 'sound/machines/pods_launch_countdown.ogg'
+				world << 'pods_launch_countdown.ogg'
 
 			if(last60 <= 6 && !launchmessage)
 				world << 'sound/AI/5.ogg'
 				launchmessage = TRUE
 				spawn(5)
-					world << 'sound/machines/pods_launched.ogg'
-					world << 'sound/machines/podsfly.ogg'
+					world << 'pods_launched.ogg'
+					world << 'podsfly.ogg'
 					a.autosay("The Babylon has been launched. Firethorn has been abandoned.", "CTTU")
 
 			last60 = timeleft() - 5

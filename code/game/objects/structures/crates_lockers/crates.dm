@@ -32,7 +32,7 @@
 				s.start()
 				return 2
 
-	playsound(src.loc, pick('sound/effects/drsc_treasure_open_01.ogg','sound/effects/drsc_treasure_open_02.ogg'), 40, 1, -3)
+	playsound(src.loc, pick('drsc_treasure_open_01.ogg','drsc_treasure_open_02.ogg'), 40, 1, -3)
 	for(var/obj/O in src)
 		O.loc = get_turf(src)
 	icon_state = icon_opened
@@ -45,7 +45,7 @@
 	if(!src.can_close())
 		return 0
 
-	playsound(src.loc, pick('sound/effects/drsc_treasure_close_01.ogg','sound/effects/drsc_treasure_close_02.ogg'), 40, 1, -3)
+	playsound(src.loc, pick('drsc_treasure_close_01.ogg','drsc_treasure_close_02.ogg'), 40, 1, -3)
 	var/itemcount = 0
 	for(var/obj/O in get_turf(src))
 		if(itemcount >= storage_capacity)
@@ -547,8 +547,11 @@
 			new/obj/item/weapon/skull(src)
 			new/obj/item/weapon/bone(src)
 			new/obj/item/weapon/bone(src)
-		if(12, 13)
+		if(12)
 			new/obj/item/weapon/claymore/rusty(src)
+		if(13)
+			mobtrap = 1
+			trapspawn = /mob/living/carbon/human/monster/skeleton/ancestor
 		if(14)
 			new/obj/item/weapon/gun/projectile/newRevolver/duelista(src)
 			new/obj/item/stack/bullets/Newduelista(src)
@@ -580,7 +583,7 @@
 		if(src.opened)
 			return 0
 		if(prob(45))
-			playsound(src.loc, pick('sound/effects/drsc_treasure_open_01.ogg','sound/effects/drsc_treasure_open_02.ogg'), 100, 1, -3)
+			playsound(src.loc, pick('drsc_treasure_open_01.ogg','drsc_treasure_open_02.ogg'), 100, 1, -3)
 			visible_message("<span class='bname'>[user]</span> <span class='combat'> opens \the [src]!")
 			for(var/obj/O in src)
 				O.loc = get_turf(src)
@@ -610,7 +613,7 @@
 	if(!src.can_close())
 		return 0
 
-	playsound(src.loc, pick('sound/effects/drsc_treasure_close_01.ogg','sound/effects/drsc_treasure_close_02.ogg'), 40, 1, -3)
+	playsound(src.loc, pick('drsc_treasure_close_01.ogg','drsc_treasure_close_02.ogg'), 40, 1, -3)
 	var/itemcount = 0
 	for(var/obj/O in get_turf(src))
 		if(itemcount >= storage_capacity)

@@ -80,7 +80,7 @@
 			miss_chance_mod = -50
 	return miss_chance_mod
 
-proc/specialty_check(var/mob/living/carbon/human/attacker, var/obj/item/I)
+/mob/living/carbon/human/proc/specialty_check(var/mob/living/carbon/human/attacker, var/obj/item/I)
 	if(istype(I, /obj/item/weapon))
 		var/obj/item/weapon/W = I
 		var/specialty_mod = null

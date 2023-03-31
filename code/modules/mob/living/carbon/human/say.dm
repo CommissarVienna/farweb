@@ -99,6 +99,12 @@
 	if(affecting.hasVocal && affecting.VocalTorn)
 		message = NoChords(message, 100)
 
+	if(province == "Salar" || h_style == "Forelock")
+		message = salarTalk(message)
+
+	if(province == "Wei-Ji Burrows" || voicetype == "gink")
+		message = ginkTalk(message)
+
 	if(speech_problem_flag)
 		var/list/handle_r = handle_speech_problems(message)
 		message = handle_r[1]
@@ -267,6 +273,9 @@
 
 /mob/living/carbon/human/say_understands(var/mob/other,var/datum/language/speaking = null)
 
+	if(has_brain_worms()) //Brain worms translate everything. Even mice and alien speak.
+		return 1
+
 	if(species.can_understand(other))
 		return 1
 
@@ -301,8 +310,7 @@
 
 /mob/living/carbon/human/var/truthcooldown = 0
 /mob/living/carbon/human/proc/tellTheTruth()
-	set desc = "Tell the truth"
-	set category = "gpc"
+	set name = "tellTheTruth"
 	set background = 1
 	if(truthcooldown)
 		return
@@ -322,7 +330,7 @@
 		return mind.changeling.mimicing
 	if(GetSpecialVoice())
 		return GetSpecialVoice()
-	if(isStealth())
+	if(stealth || brothelstealth)
 		return "R a t"
 	if(disguising_voice)
 		return "[ageAndGender2Desc(src.age, src.gender)] #[disguise_number]"

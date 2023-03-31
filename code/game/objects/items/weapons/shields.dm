@@ -1,6 +1,6 @@
 /obj/item/weapon/shield
 	name = "shield"
-	drop_sound = 'sound/effects/metalshield_drop.ogg'
+	drop_sound = 'metalshield_drop.ogg'
 	parry_chance = 35
 
 /obj/item/weapon/shield/riot
@@ -329,7 +329,7 @@
 			CELL.charge = max(0, CELL.charge - 10)
 
 /obj/item/weapon/shield/generator/RightClick(mob/living/carbon/human/user as mob)
-	playsound(src.loc, 'sound/effects/shield2.ogg', 25, 0, -1)
+	playsound(src.loc, 'shield2.ogg', 25, 0, -1)
 	if(CELL.charge && active)
 		active = 0
 		processing_objects.Remove(src)
@@ -386,24 +386,46 @@
 	item_worth = 80
 	w_class = 1.0
 	origin_tech = "magnets=3;syndicate=4"
-	var/area_locked
 
 /obj/item/weapon/cloaking_device/brothel
 	name = "brothel camouflage generator"
 	desc = "Use this to become invisible to the human eyesocket, theft of cloaking devices will be prosecuted by law.."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "bracecamb"
-	area_locked = /area/dunwell/station/brothel
+
+/obj/item/weapon/cloaking_device/brothel/RightClick(mob/user as mob)
+	var/mob/living/carbon/human/H = user
+	src.active = !( src.active )
+	playsound(src.loc, 'console_interact1.ogg', 25, 0, -1)
+	if (src.active)
+		to_chat(user, "The cloaking device is now active.")
+		H.brothelstealth = 1
+		H.update_icons()
+	else
+		to_chat(user, "The cloaking device is now inactive.")
+		H.brothelstealth = 0
+		H.update_icons()
+	src.add_fingerprint(user)
+	return
+/obj/item/weapon/cloaking_device/brothel/dropped(mob/user as mob)
+	var/mob/living/carbon/human/H = user
+	if(src.active)
+		to_chat(user, "The cloaking device is now inactive.")
+		src.active = 0
+		H.brothelstealth = 0
+		H.update_icons()
 
 /obj/item/weapon/cloaking_device/RightClick(mob/user as mob)
 	var/mob/living/carbon/human/H = user
 	src.active = !( src.active )
-	playsound(src.loc, 'sound/webbers/console_interact1.ogg', 25, 0, -1)
+	playsound(src.loc, 'console_interact1.ogg', 25, 0, -1)
 	if (src.active)
 		to_chat(user, "The cloaking device is now active.")
+		H.stealth = 1
 		H.update_icons()
 	else
 		to_chat(user, "The cloaking device is now inactive.")
+		H.stealth = 0
 		H.update_icons()
 	src.add_fingerprint(user)
 	return
@@ -412,6 +434,7 @@
 	if(src.active)
 		to_chat(user, "The cloaking device is now inactive.")
 		src.active = 0
+		H.stealth = 0
 		H.update_icons()
 
 /obj/item/weapon/cloaking_device/emp_act(severity)

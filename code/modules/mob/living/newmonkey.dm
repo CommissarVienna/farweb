@@ -5,7 +5,7 @@
 	item_worth = 10
 	name = "Monkey"
 	real_name = "Monkey"
-	attacksound = 'sound/voice/monkey1.ogg'
+	attacksound = 'monkey1.ogg'
 	viewrange = 4
 
 /mob/living/carbon/human/monster/newmonkey/macaco
@@ -68,7 +68,7 @@
 
 /datum/unarmed_attack/newmonkey
 	attack_verb = list("hits","slash")
-	attack_sound = 'sound/weapons/bite.ogg'
+	attack_sound = 'bite.ogg'
 	miss_sound = 'sound/weapons/slashmiss.ogg'
 	damage = 2
 	sharp = 0
@@ -79,9 +79,12 @@
     set_species("newmonkey")
     src.zone_sel = new /obj/screen/zone_sel( null )
     potenzia = rand(16, 25)
-    my_stats.change_stat(STAT_ST, -4)
-    my_stats.change_stat(STAT_HT, -5)
-    my_stats.change_stat(STAT_DX, -1)
+    my_stats.initst = rand(4,6)
+    my_stats.initht = rand(3,5)
+    my_stats.initdx = rand(7,10)
+    my_stats.st = my_stats.initst
+    my_stats.ht = my_stats.initht
+    my_stats.dx = my_stats.initdx
     my_skills.CHANGE_SKILL(SKILL_MELEE, rand(1,2))
     src.gender = pick(FEMALE, MALE)
     sleep(10)
@@ -95,7 +98,7 @@
 /mob/living/carbon/human/monster/newmonkey/Move()
 	if(resting || stat)
 		return ..()
-	var/selectedSound = pick('sound/voice/monkey1.ogg','sound/voice/monkey2.ogg','sound/voice/monkey3.ogg','sound/voice/monkey4.ogg','sound/voice/monkey5.ogg','sound/voice/monkey6.ogg')
+	var/selectedSound = pick('monkey1.ogg','monkey2.ogg','monkey3.ogg','monkey4.ogg','monkey5.ogg','monkey6.ogg')
 	if(prob(35))
 		playsound(loc, selectedSound, 75, 0)
 	return ..()
@@ -107,7 +110,7 @@
 /obj/structure/monkey_chamber
 	name = "Macachka Chamber"
 	desc = "What could be inside?"
-	icon = 'icons/obj/monkeycage.dmi'
+	icon = 'monkeycage.dmi'
 	icon_state = "macaco-inside"
 	density = TRUE
 	var/icon_empty = "macaco-empty"

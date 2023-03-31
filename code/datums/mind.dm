@@ -240,6 +240,9 @@ datum/mind
 			text = "<i><b>[text]</b></i>: "
 			if (istype(current, /mob/living/carbon/monkey) || H.is_loyalty_implanted(H)|| H.is_mentor_implanted(H))
 				text += "<B>LOYAL EMPLOYEE</B>|cultist"
+			else if (src in ticker.mode.cult)
+				text += "<a href='?src=\ref[src];cult=clear'>employee</a>|<b>CULTIST</b>"
+				text += "<br>Give <a href='?src=\ref[src];cult=tome'>tome</a>|<a href='?src=\ref[src];cult=amulet'>amulet</a>."
 /*
 				if (objectives.len==0)
 					text += "<br>Objectives are empty! Set to sacrifice and <a href='?src=\ref[src];cult=escape'>escape</a> or <a href='?src=\ref[src];cult=summon'>summon</a>."
@@ -438,6 +441,12 @@ datum/mind
 						return
 
 					switch(new_obj_type)
+						if("download")
+							new_objective = new /datum/objective/download
+							new_objective.explanation_text = "Download [target_number] research levels."
+						if("capture")
+							new_objective = new /datum/objective/capture
+							new_objective.explanation_text = "Accumulate [target_number] capture points."
 						if("absorb")
 							new_objective = new /datum/objective/absorb
 							new_objective.explanation_text = "Absorb [target_number] compatible genomes."
@@ -506,9 +515,9 @@ datum/mind
 					H.mind.antag_datums = D
 					H.my_skills.CHANGE_SKILL(SKILL_MELEE, 7)
 					H.my_skills.CHANGE_SKILL(SKILL_RANGE, 7)
-					H.my_stats.change_stat(STAT_ST , 10)
-					H.my_stats.change_stat(STAT_DX , 8)
-					H.my_stats.change_stat(STAT_HT , 15)
+					H.my_stats.st = rand(19,24)
+					H.my_stats.dx = rand(18,25)
+					H.my_stats.ht = rand(22,30)
 					H.verbs += /mob/living/carbon/human/proc/dreamer
 
 		else if (href_list["soulbreaker"])
@@ -531,9 +540,9 @@ datum/mind
 					new_character.name = pick(pick_the_name)
 					new_character.age = rand(24,45)
 					new_character.voicetype = "strong"
-					new_character.my_stats.change_stat(STAT_ST , 5)
-					new_character.my_stats.change_stat(STAT_DX , 4)
-					new_character.my_stats.change_stat(STAT_HT , 5)
+					new_character.my_stats.st = rand(10,16)
+					new_character.my_stats.dx = rand(10,15)
+					new_character.my_stats.ht = rand(10,16)
 					new_character.religion = "Allah"
 					spawnpoint = pick(1,2,3,4)
 					if(spawnpoint == 1)
@@ -833,7 +842,7 @@ datum/mind
 					T.usable = FALSE
 					T.icon_state = "floater2"
 					T.density = 0
-/*
+
 		var/mob/living/carbon/human/H = current
 		if (istype(H))
 			var/obj/item/weapon/tome/T = new(H)
@@ -852,7 +861,7 @@ datum/mind
 
 		if (!ticker.mode.equip_cultist(current))
 			H << "Spawning an amulet from your Master failed."
-*/
+
 	proc/make_Rev()
 		if (ticker.mode.head_revolutionaries.len>0)
 			// copy targets
@@ -880,7 +889,11 @@ datum/mind
 	//	fail |= !ticker.mode.equip_traitor(current, 1)
 		fail |= !ticker.mode.equip_revolutionary(current)
 
-
+	proc/make_Borer()
+		if(!(src in ticker.mode.borers))
+			ticker.mode.borers += src
+			special_role = "borer"
+			ticker.mode.forge_borer_objectives(src)
 	// check whether this mind's mob has been brigged for the given duration
 	// have to call this periodically for the duration to work properly
 	proc/is_brigged(duration)

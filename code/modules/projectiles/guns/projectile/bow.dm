@@ -54,8 +54,8 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "crossbow0"
 	item_state = "crossbow"
-	drop_sound = 'sound/weapons/crossbow_sheath.ogg'
-	drawsound = 'sound/weapons/crossbow_unsheath.ogg'
+	drop_sound = 'crossbow_sheath.ogg'
+	drawsound = 'crossbow_unsheath.ogg'
 	w_class = 5.0
 	flags =  FPRINT | TABLEPASS | CONDUCT |  USEDELAY
 	slot_flags = SLOT_BACK
@@ -78,7 +78,7 @@
 			arrow.loc = src
 			user.visible_message("[user] slides [arrow] into [src].","You slide [arrow] into [src].")
 			icon_state = "crossbow1"
-			playsound(src.loc, 'sound/weapons/bow_draw.ogg', 40, 0)
+			playsound(src.loc, 'bow_draw.ogg', 40, 0)
 			return
 	else
 		..()
@@ -110,7 +110,7 @@
 	current_user = user
 
 	user.visible_message("[user] begins to draw back the string of [src].","You begin to draw back the string of [src].")
-	playsound(src.loc, 'sound/weapons/bow_string.ogg', 40, 0)
+	playsound(src.loc, 'bow_string.ogg', 40, 0)
 	if(do_after(user, 40))
 		tension = max_tension
 		icon_state = "crossbow1"
@@ -151,7 +151,7 @@
 		return
 
 	user.visible_message("<span class='danger'>[user] releases [src] and sends [arrow] streaking toward [target]!</span>","<span class='danger'>You release [src] and send [arrow] streaking toward [target]!</span>")
-	playsound(src.loc, 'sound/weapons/crossbow_fire.ogg', 40, 0)
+	playsound(src.loc, 'crossbow_fire.ogg', 40, 0)
 
 	var/obj/item/weapon/arrow/A = arrow
 	A.loc = get_turf(user)

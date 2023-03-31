@@ -129,7 +129,7 @@
 		return
 	cooldown = TRUE
 	to_chat(user, "You hug the plushie.")
-	playsound(src.loc, 'sound/CRUDOX_CROU.ogg', rand(60,90), 1, -1)
+	playsound(src.loc, 'CRUDOX_CROU.ogg', rand(60,90), 1, -1)
 	spawn(20)
 		cooldown = FALSE
 /*

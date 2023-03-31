@@ -37,7 +37,7 @@
 				if(!is_satchel)
 					var/mob/living/carbon/human/user = usr
 					if((src == user.back || src == user.back2)&& !is_satchel)
-						to_chat(user, "<span class ='combat'>[pick(fnord)] I can't reach my [src]!</span>")
+						to_chat(user, "<span class ='combat'>[pick(nao_consigoen)] I can't reach my [src]!</span>")
 						return
 			orient2hud(M)          // dunno why it wasn't before
 			if(M.s_active)
@@ -65,7 +65,7 @@
 			if(!is_satchel)
 				var/mob/user = usr
 				if((src == user.back) && !is_satchel)
-					to_chat(user, "<span class ='combat'>[pick(fnord)] I can't reach my [src]!</span>")
+					to_chat(user, "<span class ='combat'>[pick(nao_consigoen)] I can't reach my [src]!</span>")
 					return
 			else
 				if(over_object == usr && in_range(src, usr) || usr.contents.Find(src))
