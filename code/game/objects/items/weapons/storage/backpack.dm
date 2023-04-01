@@ -3,7 +3,7 @@
  * Backpack
  */
 
-/obj/item/weapon/storage/backpack
+/obj/item/storage/backpack
 	name = "backpack"
 	desc = "You wear this on your back and put items into it."
 	icon_state = "backpack"
@@ -13,32 +13,31 @@
 	slot_flags = SLOT_BACK	//ERROOOOO
 	max_w_class = 3
 	max_combined_w_class = 21
-	var/RightLeft = FALSE
 	var/diffcolor = null
 
-/obj/item/weapon/storage/backpack/equipped/(mob/user, var/slot)
+/obj/item/storage/backpack/equipped/(mob/user, var/slot)
 	if((slot_back || slot_back2) && !is_satchel)
 		src.close(user)
 
-/obj/item/weapon/storage/backpack/attack_hand(mob/user)
+/obj/item/storage/backpack/attack_hand(mob/user)
 	if(!ishuman(user))
 		if(src == user.back && !is_satchel)  // you have to hold backpacks, sorry my guys
-			to_chat(user, "<span class ='combat'>[pick(nao_consigoen)] I can't reach my [src]!</span>")
+			to_chat(user, "<span class ='combat'>[pick(fnord)] I can't reach my [src]!</span>")
 			return
 	else
 		var/mob/living/carbon/human/H = user
 		if((src == H.back || src == H.back2) && !is_satchel)  // you have to hold backpacks, sorry my guys
-			to_chat(H, "<span class ='combat'>[pick(nao_consigoen)] I can't reach my [src]!</span>")
+			to_chat(H, "<span class ='combat'>[pick(fnord)] I can't reach my [src]!</span>")
 			return
 
 	..()
 
-/obj/item/weapon/storage/backpack/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/storage/backpack/attackby(obj/item/W as obj, mob/user as mob)
 	playsound(src.loc, "rustle", 50, 1, -5)
 	..()
 
 
-/obj/item/weapon/storage/backpack/coinbag
+/obj/item/storage/backpack/coinbag
 	name = "coin bag"
 	slot_flags = SLOT_BELT
 	icon = 'icons/obj/clothing/amulets.dmi'
@@ -49,16 +48,16 @@
 	neck_use = TRUE
 	storage_slots = 4
 
-/obj/item/weapon/storage/backpack/coinbag/guest/New()
+/obj/item/storage/backpack/coinbag/guest/New()
 	..()
-	new/obj/item/weapon/spacecash/gold/c20(src)
-	new/obj/item/weapon/spacecash/gold/c10(src)
+	new/obj/item/spacecash/gold/c20(src)
+	new/obj/item/spacecash/gold/c10(src)
 
 /*
  * Backpack Types
  */
 
-/obj/item/weapon/storage/backpack/holding
+/obj/item/storage/backpack/holding
 	name = "bag of holding"
 	desc = "A backpack that opens into a localized pocket of Blue Space."
 	origin_tech = "bluespace=4"
@@ -70,16 +69,16 @@
 		..()
 		return
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
+	attackby(obj/item/W as obj, mob/user as mob)
 		if(crit_fail)
 			user << "\red The Bluespace generator isn't working."
 			return
-		if(istype(W, /obj/item/weapon/storage/backpack/holding) && !W.crit_fail)
+		if(istype(W, /obj/item/storage/backpack/holding) && !W.crit_fail)
 			user << "\red The Bluespace interfaces of the two devices conflict and malfunction."
 			qdel(W)
 			return
 			/* //BoH+BoH=Singularity, commented out.
-		if(istype(W, /obj/item/weapon/storage/backpack/holding) && !W.crit_fail)
+		if(istype(W, /obj/item/storage/backpack/holding) && !W.crit_fail)
 			investigate_log("has become a singularity. Caused by [user.key]","singulo")
 			user << "\red The Bluespace interfaces of the two devices catastrophically malfunction!"
 			qdel(W)
@@ -103,7 +102,7 @@
 			crit_fail = 1
 			icon_state = "brokenpack"
 
-/obj/item/weapon/storage/backpack/holding/belt //It is here instead of belts so it works with all the BoH code.
+/obj/item/storage/backpack/holding/belt //It is here instead of belts so it works with all the BoH code.
 	name = "belt of holding"
 	desc = "An experimental belt that opens into a small, localized pocket of Blue Space."
 	icon_state = "holdingbelt"
@@ -114,16 +113,25 @@
 
 	slot_flags = SLOT_BELT
 
-/obj/item/weapon/storage/backpack/lord
+/obj/item/storage/backpack/lord
 	name = "baron's cloak"
 	desc = "A fancy dark cloak for the lord."
 	icon_state = "lord"
-	item_state = "baroncloak"
+	item_state = "lord_cloak"
 	storage_slots = 3
 	is_satchel = TRUE
 	RightLeft = TRUE
 
-/obj/item/weapon/storage/backpack/new_cut
+/obj/item/storage/backpack/mortus
+	name = "mortician's cloak"
+	desc = "The cloak of death. Used by morticians to take bums to the web."
+	icon_state = "ath"
+	item_state = "ath"
+	storage_slots = 3
+	is_satchel = TRUE
+	RightLeft = TRUE
+
+/obj/item/storage/backpack/new_cut
 	name = "New Cut's gang cloak"
 	desc = "A fancy dark cloak for the lord."
 	icon_state = "new_cut"
@@ -132,7 +140,7 @@
 	is_satchel = TRUE
 	RightLeft = TRUE
 
-/obj/item/weapon/storage/backpack/new_cut_alt
+/obj/item/storage/backpack/new_cut_alt
 	name = "New Cut's gang cloak"
 	desc = "A fancy dark cloak for the lord."
 	icon_state = "new_cut_alt"
@@ -142,7 +150,7 @@
 	RightLeft = TRUE
 
 
-/obj/item/weapon/storage/backpack/capelp
+/obj/item/storage/backpack/capelp
 	name = "leather cape"
 	desc = "A fancy leather cape."
 	icon_state = "capelp"
@@ -151,11 +159,11 @@
 	is_satchel = TRUE
 	diffcolor = "#800000"
 
-/obj/item/weapon/storage/backpack/capelp/New()
+/obj/item/storage/backpack/capelp/New()
 	. = ..()
 	diffcolor = pick("#800000", "#ff8c69", "#753843", "#722f37")
 
-/obj/item/weapon/storage/backpack/consyte
+/obj/item/storage/backpack/consyte
 	name = "consyte's cloak"
 	icon_state = "consyte"
 	item_state = "consyte"
@@ -164,7 +172,7 @@
 	RightLeft = TRUE
 
 
-/obj/item/weapon/storage/backpack/merccloak
+/obj/item/storage/backpack/merccloak
 	name = "black's cloak"
 	desc = "A fancy dark cloak for the mercenaries."
 	icon_state = "ath"
@@ -173,7 +181,7 @@
 	is_satchel = TRUE
 	RightLeft = TRUE
 
-/obj/item/weapon/storage/backpack/svalinncloak
+/obj/item/storage/backpack/svalinncloak
 	name = "svalinn cloak"
 	desc = "A fancy leather cloak."
 	icon_state = "svalinn-cloak"
@@ -181,7 +189,7 @@
 	storage_slots = 2
 	is_satchel = TRUE
 
-/obj/item/weapon/storage/backpack/coldpack
+/obj/item/storage/backpack/coldpack
 	name = "coldpack"
 	desc = "Portable freezer."
 	icon_state = "fridge"
@@ -189,7 +197,7 @@
 	storage_slots = 6
 	is_satchel = FALSE
 
-/obj/item/weapon/storage/backpack/bfather
+/obj/item/storage/backpack/bfather
 	name = "lord's cloak"
 	desc = "A fancy red cloak for the lord."
 	icon_state = "bfather"
@@ -197,7 +205,7 @@
 	storage_slots = 3
 	is_satchel = TRUE
 
-/obj/item/weapon/storage/backpack/count
+/obj/item/storage/backpack/count
 	name = "count's cloak"
 	desc = "A fancy brown cloak for the lord."
 	icon_state = "count"
@@ -205,7 +213,7 @@
 	storage_slots = 3
 	is_satchel = TRUE
 
-/obj/item/weapon/storage/backpack/count/countess
+/obj/item/storage/backpack/count/countess
 	name = "countess's cloak"
 	desc = "A fancy black cloak for the lord."
 	icon_state = "countess"
@@ -214,7 +222,7 @@
 	is_satchel = TRUE
 	RightLeft = TRUE
 
-/obj/item/weapon/storage/backpack/santabag
+/obj/item/storage/backpack/santabag
 	name = "Santa's Gift Bag"
 	desc = "Space Santa uses this to deliver toys to all the nice children in space in Christmas! Wow, it's pretty big!"
 	icon_state = "giftbag0"
@@ -224,41 +232,41 @@
 	max_w_class = 3
 	max_combined_w_class = 400 // can store a ton of shit!
 
-/obj/item/weapon/storage/backpack/cultpack
+/obj/item/storage/backpack/cultpack
 	name = "trophy rack"
 	desc = "It's useful for both carrying extra gear and proudly declaring your insanity."
 	icon_state = "cultpack"
 
-/obj/item/weapon/storage/backpack/clown
+/obj/item/storage/backpack/clown
 	name = "Giggles von Honkerton"
 	desc = "It's a backpack made by Honk! Co."
 	icon_state = "clownpack"
 	item_state = "clownpack"
 
-/obj/item/weapon/storage/backpack/medic
+/obj/item/storage/backpack/medic
 	name = "medical backpack"
 	desc = "It's a backpack especially designed for use in a sterile environment."
 	icon_state = "medicalpack"
 	item_state = "medicalpack"
 
-/obj/item/weapon/storage/backpack/security
+/obj/item/storage/backpack/security
 	name = "security backpack"
 	desc = "It's a very robust backpack."
 	icon_state = "securitypack"
 	item_state = "securitypack"
 
-/obj/item/weapon/storage/backpack/captain
+/obj/item/storage/backpack/captain
 	name = "captain's backpack"
 	desc = "It's a special backpack made exclusively for Nanotrasen officers."
 	icon_state = "captainpack"
 	item_state = "captainpack"
 
-/obj/item/weapon/storage/backpack/industrial
+/obj/item/storage/backpack/industrial
 	name = "backpack"
 	icon_state = "engiepack"
 	item_state = "backpack_eng"
 
-/obj/item/weapon/storage/backpack/migrant
+/obj/item/storage/backpack/migrant
 	name = "backpack"
 	icon_state = "engiepack"
 	item_state = "engiepack"
@@ -281,7 +289,7 @@
  * Satchel Types
  */
 
-/obj/item/weapon/storage/backpack/satchel
+/obj/item/storage/backpack/satchel
 	name = "leather satchel"
 	desc = "It's a very fancy satchel made with fine leather."
 	icon_state = "satchel"
@@ -289,25 +297,25 @@
 	is_satchel = TRUE
 	storage_slots = 4
 
-/obj/item/weapon/storage/backpack/satchel/smith/New()
+/obj/item/storage/backpack/satchel/smith/New()
 	. = ..()
 	if(prob(40))
-		src.contents += new/obj/item/weapon/ore/refined/lw/ironlw
-		src.contents += new/obj/item/weapon/ore/refined/lw/ironlw
-		src.contents += new/obj/item/weapon/ore/refined/lw/copperlw
-		src.contents += new/obj/item/weapon/ore/refined/lw/silverlw
+		src.contents += new/obj/item/ore/refined/lw/ironlw
+		src.contents += new/obj/item/ore/refined/lw/ironlw
+		src.contents += new/obj/item/ore/refined/lw/copperlw
+		src.contents += new/obj/item/ore/refined/lw/silverlw
 	else if(prob(20))
-		src.contents += new/obj/item/weapon/ore/refined/lw/ironlw
-		src.contents += new/obj/item/weapon/ore/refined/lw/goldlw
-		src.contents += new/obj/item/weapon/ore/refined/lw/copperlw
-		src.contents += new/obj/item/weapon/ore/refined/lw/silverlw
+		src.contents += new/obj/item/ore/refined/lw/ironlw
+		src.contents += new/obj/item/ore/refined/lw/goldlw
+		src.contents += new/obj/item/ore/refined/lw/copperlw
+		src.contents += new/obj/item/ore/refined/lw/silverlw
 	else
-		src.contents += new/obj/item/weapon/ore/refined/lw/ironlw
-		src.contents += new/obj/item/weapon/ore/refined/lw/ironlw
-		src.contents += new/obj/item/weapon/ore/refined/lw/copperlw
-		src.contents += new/obj/item/weapon/ore/refined/lw/ironlw
+		src.contents += new/obj/item/ore/refined/lw/ironlw
+		src.contents += new/obj/item/ore/refined/lw/ironlw
+		src.contents += new/obj/item/ore/refined/lw/copperlw
+		src.contents += new/obj/item/ore/refined/lw/ironlw
 
-/obj/item/weapon/storage/backpack/minisatchel
+/obj/item/storage/backpack/minisatchel
 	name = "leather satchel"
 	desc = "It's a very fancy satchel made with fine leather."
 	icon_state = "minisatchel"
@@ -315,29 +323,29 @@
 	is_satchel = TRUE
 	storage_slots = 3
 
-/obj/item/weapon/storage/backpack/minisatchel/francisco/New()
+/obj/item/storage/backpack/minisatchel/francisco/New()
 	. = ..()
 	storage_slots = 4
 	src.contents += new/obj/item/stack/bullets/Richter/six
 	src.contents += new/obj/item/stack/bullets/rifle/nine
 	src.contents += new/obj/item/device/camera
-	src.contents += new/obj/item/weapon/gun/projectile/newRevolver/duelista/richter
+	src.contents += new/obj/item/gun/projectile/newRevolver/duelista/richter
 
-/obj/item/weapon/storage/backpack/minisatchel/satchelthanati/New()
+/obj/item/storage/backpack/minisatchel/satchelthanati/New()
 	. = ..()
 	name = "bomb satchel"
 	desc = "Torn and weathered. Seems like it could fit a few sticks of dynamite."
 	storage_slots = 7
-	src.contents += new/obj/item/weapon/flame/candle/tnt/bundle
-	src.contents += new/obj/item/weapon/flame/candle/tnt/stick
-	src.contents += new/obj/item/weapon/flame/candle/tnt/stick
-	src.contents += new/obj/item/weapon/flame/candle/tnt/stick
-	src.contents += new/obj/item/weapon/flame/candle/tnt/stick
-	src.contents += new/obj/item/weapon/flame/candle/tnt/stick
-	src.contents += new/obj/item/weapon/flame/candle/tnt/stick
+	src.contents += new/obj/item/flame/candle/tnt/bundle
+	src.contents += new/obj/item/flame/candle/tnt/stick
+	src.contents += new/obj/item/flame/candle/tnt/stick
+	src.contents += new/obj/item/flame/candle/tnt/stick
+	src.contents += new/obj/item/flame/candle/tnt/stick
+	src.contents += new/obj/item/flame/candle/tnt/stick
+	src.contents += new/obj/item/flame/candle/tnt/stick
 
 
-/obj/item/weapon/storage/backpack/minisatchelchurch
+/obj/item/storage/backpack/minisatchelchurch
 	name = "leather satchel"
 	desc = "It's a very fancy satchel made with fine leather."
 	icon_state = "minisatchel2"
@@ -346,7 +354,7 @@
 	storage_slots = 6
 
 
-/obj/item/weapon/storage/backpack/minisatchelchurch2
+/obj/item/storage/backpack/minisatchelchurch2
 	name = "leather satchel"
 	desc = "It's a very fancy satchel made with fine leather."
 	icon_state = "minisatchel3"
@@ -355,7 +363,7 @@
 	storage_slots = 6
 
 
-/obj/item/weapon/storage/backpack/beltsatchelchurch
+/obj/item/storage/backpack/beltsatchelchurch
 	name = "leather satchel"
 	desc = "It's a very fancy satchel made with fine leather."
 	icon_state = "beltsatchel"
@@ -365,7 +373,7 @@
 	slot_flags = SLOT_BELT
 
 
-/obj/item/weapon/storage/backpack/beltsatchel
+/obj/item/storage/backpack/beltsatchel
 	name = "leather satchel"
 	desc = "It's a very fancy satchel made with fine leather."
 	icon_state = "beltsatchel2"
@@ -374,7 +382,7 @@
 	storage_slots = 3
 	slot_flags = SLOT_BELT
 
-/obj/item/weapon/storage/backpack/beltsatchelthanati
+/obj/item/storage/backpack/beltsatchelthanati
 	name = "bomb belt satchel"
 	desc = "Torn and weathered. You can make out the initials 'A.H'. Hmm."
 	icon_state = "beltsatchel2"
@@ -383,67 +391,67 @@
 	storage_slots = 7
 	slot_flags = SLOT_BELT
 
-/obj/item/weapon/storage/backpack/beltsatchelthanati/bomb/New()
+/obj/item/storage/backpack/beltsatchelthanati/bomb/New()
 	. = ..()
-	src.contents += new/obj/item/weapon/flame/candle/tnt/bundle
-	src.contents += new/obj/item/weapon/flame/candle/tnt/stick
-	src.contents += new/obj/item/weapon/flame/candle/tnt/stick
-	src.contents += new/obj/item/weapon/flame/candle/tnt/stick
-	src.contents += new/obj/item/weapon/flame/candle/tnt/stick
-	src.contents += new/obj/item/weapon/flame/candle/tnt/stick
-	src.contents += new/obj/item/weapon/flame/candle/tnt/stick
+	src.contents += new/obj/item/flame/candle/tnt/bundle
+	src.contents += new/obj/item/flame/candle/tnt/stick
+	src.contents += new/obj/item/flame/candle/tnt/stick
+	src.contents += new/obj/item/flame/candle/tnt/stick
+	src.contents += new/obj/item/flame/candle/tnt/stick
+	src.contents += new/obj/item/flame/candle/tnt/stick
+	src.contents += new/obj/item/flame/candle/tnt/stick
 
 
 
-/obj/item/weapon/storage/backpack/satchel_norm
+/obj/item/storage/backpack/satchel_norm
 	name = "satchel"
 	desc = "A trendy looking satchel."
 	icon_state = "satchel-norm"
 
-/obj/item/weapon/storage/backpack/satchel_eng
+/obj/item/storage/backpack/satchel_eng
 	name = "industrial satchel"
 	desc = "A tough satchel with extra pockets."
 	icon_state = "satchel-eng"
 	item_state = "engiepack"
 
-/obj/item/weapon/storage/backpack/satchel_med
+/obj/item/storage/backpack/satchel_med
 	name = "medical satchel"
 	desc = "A sterile satchel used in medical departments."
 	icon_state = "satchel-med"
 	item_state = "medicalpack"
 
-/obj/item/weapon/storage/backpack/satchel_vir
+/obj/item/storage/backpack/satchel_vir
 	name = "virologist satchel"
 	desc = "A sterile satchel with virologist colours."
 	icon_state = "satchel-vir"
 
-/obj/item/weapon/storage/backpack/satchel_chem
+/obj/item/storage/backpack/satchel_chem
 	name = "chemist satchel"
 	desc = "A sterile satchel with chemist colours."
 	icon_state = "satchel-chem"
 
-/obj/item/weapon/storage/backpack/satchel_gen
+/obj/item/storage/backpack/satchel_gen
 	name = "geneticist satchel"
 	desc = "A sterile satchel with geneticist colours."
 	icon_state = "satchel-gen"
 
-/obj/item/weapon/storage/backpack/satchel_tox
+/obj/item/storage/backpack/satchel_tox
 	name = "scientist satchel"
 	desc = "Useful for holding research materials."
 	icon_state = "satchel-tox"
 
-/obj/item/weapon/storage/backpack/satchel_sec
+/obj/item/storage/backpack/satchel_sec
 	name = "security satchel"
 	desc = "A robust satchel for security related needs."
 	icon_state = "satchel-sec"
 	item_state = "securitypack"
 
-/obj/item/weapon/storage/backpack/satchel_hyd
+/obj/item/storage/backpack/satchel_hyd
 	name = "hydroponics satchel"
 	desc = "A green satchel for plant related work."
 	icon_state = "satchel_hyd"
 
-/obj/item/weapon/storage/backpack/satchel_cap
+/obj/item/storage/backpack/satchel_cap
 	name = "captain's satchel"
 	desc = "An exclusive satchel for Nanotrasen officers."
 	icon_state = "satchel-cap"

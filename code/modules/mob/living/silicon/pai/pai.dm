@@ -20,7 +20,7 @@
 	var/speakQuery = "queries"
 
 
-	var/obj/item/weapon/pai_cable/cable		// The cable we produce and use when door or camera jacking
+	var/obj/item/pai_cable/cable		// The cable we produce and use when door or camera jacking
 
 	var/global/list/possible_say_verbs = list(
 		"Robotic" = list("states","declares","queries"),

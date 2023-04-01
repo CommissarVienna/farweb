@@ -128,7 +128,7 @@ macro "hotkeymode"
 		name = "Space"
 		command = ".swap_hand"
 	elem 
-		name = "CTRL+Space"
+		name = "SHIFT+x"
 		command = ".wield"
 	elem 
 		name = "Northeast"
@@ -225,7 +225,7 @@ macro "hotkeymode"
 		command = "MoveKey 8 0"
 	elem 
 		name = "C"
-		command = ".southwest"
+		command = "CombatModeToggle"
 	elem 
 		name = "D"
 		command = "MoveKey 4 1"
@@ -240,10 +240,10 @@ macro "hotkeymode"
 		command = "MoveKey 4 0"
 	elem 
 		name = "E"
-		command = "Activate-Held-Object"
+		command = "quick-equip"
 	elem 
 		name = "F"
-		command = "a-intent left"
+		command = ".fixeye"
 	elem 
 		name = "CTRL+F"
 		command = "a-intent left"
@@ -279,13 +279,13 @@ macro "hotkeymode"
 		command = ".asktostop"
 	elem 
 		name = "Q"
-		command = ".lookup"
+		command = ".northwest"
 	elem 
 		name = "CTRL+Q"
 		command = ".northwest"
 	elem 
 		name = "R"
-		command = "resist"
+		command = ".southwest"
 	elem 
 		name = "S"
 		command = "MoveKey 2 1"
@@ -321,16 +321,16 @@ macro "hotkeymode"
 		command = "MoveKey 1 0"
 	elem 
 		name = "X"
-		command = ".northwest"
+		command = ".swap_hand"
 	elem 
 		name = "CTRL+X"
 		command = ".northeast"
 	elem 
 		name = "Y"
-		command = "pray"
+		command = "pray""
 	elem 
 		name = "Z"
-		command = "CombatModeToggle"
+		command = "Activate-Held-Object"
 	elem 
 		name = "F1"
 		command = ".praiselord"

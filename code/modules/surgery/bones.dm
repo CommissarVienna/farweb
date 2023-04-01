@@ -4,8 +4,8 @@
 //////////////////////////////////////////////////////////////////
 datum/surgery_step/set_bone
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/bonesetter = 100,	\
-	/obj/item/weapon/wrench = 75		\
+	/obj/item/surgery_tool/bonesetter = 100,	\
+	/obj/item/wrench = 75		\
 	)
 
 	min_duration = 60
@@ -45,8 +45,8 @@ datum/surgery_step/set_bone
 
 /datum/surgery_step/finish_bone
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/bonegel = 100,	\
-	/obj/item/weapon/screwdriver = 75
+	/obj/item/surgery_tool/bonegel = 100,	\
+	/obj/item/screwdriver = 75
 	)
 	can_infect = 0
 	blood_level = 1
@@ -85,8 +85,8 @@ datum/surgery_step/set_bone
 
 /datum/surgery_step/fixing_fingers
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/bonesetter = 100,	\
-	/obj/item/weapon/wrench = 75		\
+	/obj/item/surgery_tool/bonesetter = 100,	\
+	/obj/item/wrench = 75		\
 	)
 	can_infect = 0
 	blood_level = 0
@@ -114,13 +114,13 @@ datum/surgery_step/set_bone
 
 	begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		user.visible_message("[user] is beginning to fix the bone in [target]'s [affected.display_name] fingers with \the [tool].", \
+		user.visible_message("[user] is beginning to fix the bone in [target]'s [affected.display_name] phalanges with \the [tool].", \
 		"You are beginning to fix the bone in [target]'s [affected.display_name] fingers with \the [tool].")
 		..()
 
 	end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		for(var/obj/item/weapon/organ/finger/F in affected.fingers)
+		for(var/obj/item/organ/finger/F in affected.fingers)
 			if(F.state == "BROKEN")
 				F.state = "OK"
 				user.visible_message("<span class='passive'> [user] fixed the bone in [target]'s [F.name] with \the [tool].</span>", \

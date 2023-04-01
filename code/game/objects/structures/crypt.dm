@@ -15,14 +15,14 @@
 	if (C.client)
 		C.client.perspective = EYE_PERSPECTIVE
 		C.client.eye = src
-	C.resting = 1
+	C.SetResting(TRUE)
 	C.loc = src.loc
 	for(var/obj/O in src)
 		O.loc = src.loc
 	src.add_fingerprint(user)
 
-/obj/structure/morgueslab/attackby(obj/item/weapon/W as obj, mob/living/carbon/user as mob)
-	if (istype(W, /obj/item/weapon/grab))
+/obj/structure/morgueslab/attackby(obj/item/W as obj, mob/living/carbon/user as mob)
+	if (istype(W, /obj/item/grab))
 		if(iscarbon(W:affecting))
 			take_victim(W:affecting,usr)
 			qdel(W)
@@ -42,14 +42,14 @@
 	anchored = 1
 	plane = 21
 
-/obj/structure/morgueplate/attackby(obj/item/weapon/W as obj, mob/living/carbon/user as mob)
+/obj/structure/morgueplate/attackby(obj/item/W as obj, mob/living/carbon/user as mob)
 	playsound(src.loc, 'sound/lfwbsounds/obj_stone_generic_switch_enter_01.ogg', 100, 1)
-	if (istype(W, /obj/item/weapon/chisel))
+	if (istype(W, /obj/item/chisel))
 		if(do_after(user, 20))
 			icon_state = "mplate1"
 			for(var/mob/living/carbon/human/H in range(1))
 				var/obj/structure/morgueplate/M = locate() in H.loc
 				if(M)
 					H.buried = TRUE
-					src.name = "Aqui Jaz [H.real_name]"
-					src.desc = "Corpo de [H.real_name]"
+					src.name = "Here lies [H.real_name]"
+					src.desc = "Body of [H.real_name]"

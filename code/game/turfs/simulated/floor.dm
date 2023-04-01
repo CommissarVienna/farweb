@@ -60,12 +60,6 @@ var/list/wood_icons = list("wood","wood-broken")
 	else
 		icon_regular_floor = icon_state
 
-//turf/simulated/floor/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-//	if ((istype(mover, /obj/machinery/vehicle) && !(src.burnt)))
-//		if (!( locate(/obj/machinery/mass_driver, src) ))
-//			return 0
-//	return ..()
-
 /turf/simulated/floor/MiddleClick(mob/user)
 	..()
 	var/mob/living/carbon/human/H = user
@@ -556,8 +550,8 @@ turf/simulated/floor/proc/update_icon()
 	if(!C || !user)
 		return 0
 
-	if(istype(C, /obj/item/weapon/grab) && get_dist(src,user)<2)
-		var/obj/item/weapon/grab/G = C
+	if(istype(C, /obj/item/grab) && get_dist(src,user)<2)
+		var/obj/item/grab/G = C
 		if(G.assailant.zone_sel.selecting == "head" && G.affecting.lying)
 			if(ishuman(G.affecting))
 				G.affecting.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been smashed on the floor by [G.assailant.name] ([G.assailant.ckey])</font>")

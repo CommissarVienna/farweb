@@ -2,7 +2,7 @@
 /datum/organ/internal/liver
 	name = "liver"
 	parent_organ = "vitals"
-	removed_type = /obj/item/weapon/reagent_containers/food/snacks/organ/liver
+	removed_type = /obj/item/reagent_containers/food/snacks/organ/liver
 
 	process()
 

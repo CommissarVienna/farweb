@@ -548,7 +548,7 @@
 	if (mymob.client)
 		if (mymob.client.gun_mode) // If in aim mode, correct the sprite
 			mymob.gun_setting_icon.dir = 2
-	for(var/obj/item/weapon/gun/G in mymob) // If targeting someone, display other buttons
+	for(var/obj/item/gun/G in mymob) // If targeting someone, display other buttons
 		if (G.target)
 			mymob.item_use_icon = new /obj/screen/gun/item(null)
 			if (mymob.client.target_can_click)
@@ -572,7 +572,9 @@
 	H.hovertext.maptext = ""
 	H.hovertext.maptext_height = 100
 	H.hovertext.maptext_width = 480
-	H.hovertext.screen_loc = "CENTER-7, CENTER+6"
+	H.hovertext.screen_loc = "CENTER-7, CENTER+7"
+	var/hoverglow = filter(type = "outline", size = 1, color = "#5e4546", flags = OUTLINE_SQUARE)
+	H.hovertext.filters += hoverglow
 
 	mymob.client.screen = null
 

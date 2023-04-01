@@ -33,7 +33,7 @@
 		var/fileHT = replacetext(fileST, "-HT-", "[H.my_stats.ht]")
 		var/fileDX = replacetext(fileHT, "-DX-", "[H.my_stats.dx]")
 		var/fileIT = replacetext(fileDX, "-INT-", "[H.my_stats.it]")
-		var/fileCR = replacetext(fileIT, "-CR-", "[owner.info.chromosomes]")
+		var/fileCR = replacetext(fileIT, "-CR-", "[owner.chromie_holder.chromie_number]")
 		var/filePR = replacetext(fileCR, "-PR-", "[H.my_stats.pr]")
 		var/fileIM = replacetext(filePR, "-IM-", "[H.my_stats.im]")
 		var/fileWP = replacetext(fileIM, "-WP-", "[H.my_stats.wp]")

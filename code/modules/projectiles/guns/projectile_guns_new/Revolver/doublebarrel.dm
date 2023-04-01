@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/projectile/newRevolver/duelista/doublebarrel
+/obj/item/gun/projectile/newRevolver/duelista/doublebarrel
 	name = "Double Barrel"
 	desc = "A double shot shotgun."
 	icon_state = "double"
@@ -8,13 +8,13 @@
 	w_class = 4.0
 	slot_flags = SLOT_BACK
 	force = 10
-	fire_sound = 'Shotgun2.ogg'
-	load_shell_sound = 'shotgun_reload.ogg'
-	opensound = 'shotgun_break.ogg'
+	fire_sound = 'sound/weapons/guns/fire/Shotgun2.ogg'
+	load_shell_sound = 'sound/weapons/shotgun_reload.ogg'
+	opensound = 'sound/weapons/guns/interact/shotgun_break.ogg'
 	mag_type = /obj/item/ammo_magazine/internal/cylinder/doublebarrel
 	maxAmmoSprite = 2
 
-/obj/item/weapon/gun/projectile/newRevolver/duelista/doublebarrel/sawnOff
+/obj/item/gun/projectile/newRevolver/duelista/doublebarrel/sawnOff
 	name = "Sawn-Off Double Barrel Shotgun"
 	desc = "A double shot shotgun. But sawn off."
 	icon_state = "sawed"

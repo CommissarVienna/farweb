@@ -40,7 +40,7 @@
 		for(var/mob/M in view())
 			playsound(M, pick('sound/effects/rat_life.ogg','sound/effects/rat_life2.ogg','sound/effects/rat_life3.ogg'), 40, 0)
 	for(var/obj/item/I in range(1,src))
-		if(istype(I, /obj/item/weapon/reagent_containers/food/snacks) || istype(I, /obj/item/trash))
+		if(istype(I, /obj/item/reagent_containers/food/snacks) || istype(I, /obj/item/trash))
 			if(prob(15))
 				visible_message("<span class='passivebold'>[src]</span><span class='passive'> eats \the [I]</span>")
 				eaten += 1
@@ -132,7 +132,7 @@
 /mob/living/simple_animal/mouse/Die()
 	layer = MOB_LAYER
 	playsound(src, 'sound/effects/rat_death.ogg', 40, 0, -1)
-	new /obj/item/weapon/reagent_containers/food/snacks/deadrat(src.loc)
+	new /obj/item/reagent_containers/food/snacks/deadrat(src.loc)
 	qdel(src)
 	..()
 

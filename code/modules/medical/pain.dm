@@ -21,36 +21,16 @@ mob/var/last_pain_message_custom = ""
 
 // partname is the name of a body part
 // amount is a num from 1 to 100
-mob/living/carbon/proc/pain(var/partname, var/amount, var/force, var/burning = 0)
-	if(stat >= 2) return
-	if(iszombie(src)) return
-	if(ismonster(src)) return
-	if(ishuman(src))
-		var/mob/living/carbon/human/HH = src
-		if(HH.consyte)
-			return
-	if(status_flags & STATUS_NO_PAIN) return
-	if(species && species.flags & NO_PAIN) return
-
-	if(reagents.has_reagent("paracetamol"))
-		return
-	if(reagents.has_reagent("tramadol"))
-		return
-	if(reagents.has_reagent("dentrine"))
-		return
-	if(reagents.has_reagent("oxycodone"))
-		return
-	if(reagents.has_reagent("morphine"))
-		return
-	if(analgesic)
+/mob/living/carbon/human/proc/pain(var/partname, var/amount, var/force, var/burning = 0)
+	if(!feel_pain_check()) //Check to see if they can actually feel pain at all first.
 		return
 	if(world.time < next_pain_time && !force)
 		return
 	if(amount > 10 && istype(src,/mob/living/carbon/human))
-		if(src:paralysis)
-			src:paralysis = max(0, src:paralysis-round(amount/10))
+		if(src.paralysis)
+			src.paralysis = max(0, src.paralysis-round(amount/10))
 	if(amount > 50 && prob(amount / 5))
-		src:drop_item()
+		src.drop_item()
 	var/msg
 	if(burning)
 		switch(amount)
@@ -75,7 +55,12 @@ mob/living/carbon/proc/pain(var/partname, var/amount, var/force, var/burning = 0
 				else
 					msg = "<span class='combatbold'><b>OH GOD! My [partname] is on fire!</b></span>"
 				if(prob(70))
+					if(ishuman(src))
+						var/mob/living/carbon/human/H = src
+						H.blur(1,50)
 					emote("agonyscream")
+					recoil(src)
+					shake_camera(src, 4, 1)
 	else
 		switch(amount)
 			if(1 to 10)
@@ -84,47 +69,42 @@ mob/living/carbon/proc/pain(var/partname, var/amount, var/force, var/burning = 0
 			if(10 to 20)
 				flash_weaker_pain()
 				msg = "<span class='bname'><small>My [partname] hurts.</small></span>"
-			if(20 to 30)
+			if(20 to 40)
 				flash_weak_pain()
 				msg = "<span class='bname'>My [partname] hurts badly!</span>"
-			if(30 to 10000)
+			if(40 to 10000)
 				flash_pain()
+				stuttering = max(10, stuttering) //Being in a lot of pain makes you stutter.
 				if(istype(src, /mob/living/carbon/human))
 					var/mob/living/carbon/human/H = src
 					msg = "<span class='combatbold'>[pick("OH [uppertext(H.god_text())]!","WHAT A PAIN!")] My [partname]!</span>"
 				else
 					msg = "<span class='combatbold'>[pick("OH GOD!","WHAT A PAIN!")] My [partname]!</span>"
 				if(prob(amount) && prob(20))
+					if(ishuman(src))
+						var/mob/living/carbon/human/H = src
+						H.blur(1,50)
 					emote("agonyscream")
+					recoil(src)
+					shake_camera(src, 4, 1)
 				if(ishuman(src) && src.client)
 					if(prob(15))
 						var/mob/living/carbon/human/H = src
 						H.blur(1,50)
 						to_chat(src, "You shiver in pain.")
 						if(src.gender == MALE)
-							playsound(src.loc, pick('painb.ogg','painb2.ogg','painb3.ogg','painb4.ogg','painb5.ogg','painb6.ogg','painb7.ogg','painb8.ogg'), 75, 0, -1)
+							playsound(src.loc, pick('sound/voice/painb.ogg','sound/voice/painb2.ogg','sound/voice/painb3.ogg','sound/voice/painb4.ogg','sound/voice/painb5.ogg','sound/voice/painb6.ogg','sound/voice/painb7.ogg','sound/voice/painb8.ogg'), 75, 0, -1)
 
 	if(msg && (msg != last_pain_message || prob(10)))
 		last_pain_message = msg
 		to_chat(src, msg)
-	next_pain_time = world.time + (100 - amount)
+	next_pain_time = world.time + 100 //This used to be world.time + 100 minus amount. But guess what, if amount is 100 pain then there is no cooldown and your guy's screams overlap each other and fire constantly. This is bad. Don't do this.
 
 
 // message is the custom message to be displayed
 // flash_strength is 0 for weak pain flash, 1 for strong pain flash
-mob/living/carbon/human/proc/custom_pain(var/message, var/flash_strength)
-	if(stat >= 1) return
-	if(iszombie(src)) return
-	if(ismonster(src)) return
-
-	if(species && species.flags & NO_PAIN) return
-	if(status_flags & STATUS_NO_PAIN) return
-
-	if(reagents.has_reagent("tramadol"))
-		return
-	if(reagents.has_reagent("oxycodone"))
-		return
-	if(analgesic)
+/mob/living/carbon/human/proc/custom_pain(var/message, var/flash_strength)
+	if(!feel_pain_check()) //Check to see if they can actually feel pain at all first.
 		return
 	var/msg = "<b>[message]</b>"
 	if(flash_strength >= 1)
@@ -136,23 +116,10 @@ mob/living/carbon/human/proc/custom_pain(var/message, var/flash_strength)
 		to_chat(src, msg)
 	next_pain_time_custom = world.time + 100
 
-mob/living/carbon/human/proc/handle_pain()
+/mob/living/carbon/human/proc/handle_pain()
 	// not when sleeping
-
-	if(species && species.flags & NO_PAIN) return
-	if(status_flags & STATUS_NO_PAIN) return
-
-	if(stat >= 2) return
-	if(iszombie(src)) return
-	if(reagents.has_reagent("dentrine"))
+	if(!feel_pain_check()) //Check to see if they can actually feel pain at all first.
 		return
-	if(reagents.has_reagent("tramadol"))
-		return
-	if(reagents.has_reagent("oxycodone"))
-		return
-	if(analgesic)
-		return
-
 	var/maxdam = 0
 	var/datum/organ/external/damaged_organ = null
 

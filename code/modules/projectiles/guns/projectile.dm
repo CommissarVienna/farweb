@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/projectile
+/obj/item/gun/projectile
 	desc = "A gun."
 	name = "gun"
 	icon_state = "revolver"
@@ -14,13 +14,13 @@
 	var/mag_type = /obj/item/ammo_magazine/internal/cylinder
 
 
-/obj/item/weapon/gun/projectile/New()
+/obj/item/gun/projectile/New()
 	..()
 	magazine = new mag_type(src)
 	update_icon()
 	return
 
-/obj/item/weapon/gun/projectile/proc/chamber_round()
+/obj/item/gun/projectile/proc/chamber_round()
 	if(chambered || !magazine)
 		return 0
 	else
@@ -33,12 +33,12 @@
 	return 0
 
 
-/obj/item/weapon/gun/projectile/process_chambered()
+/obj/item/gun/projectile/process_chambered()
 	var/obj/item/ammo_casing/AC = chambered //Find chambered round
 	if(isnull(AC) || !istype(AC))
 		return 0
 	AC.loc = get_turf(src) //Eject casing onto ground.
-	playsound(get_turf(src), pick('casingfall1.ogg','casingfall2.ogg','casingfall3.ogg'), 50, 1)
+	playsound(get_turf(src), pick('sound/weapons/guns/misc/casingfall1.ogg','sound/weapons/guns/misc/casingfall2.ogg','sound/weapons/guns/misc/casingfall3.ogg'), 50, 1)
 	chambered = null
 	chamber_round()
 
@@ -54,7 +54,7 @@
 	return 0
 
 
-/obj/item/weapon/gun/projectile/attackby(var/obj/item/A as obj, mob/user as mob, var/show_msg = 1)
+/obj/item/gun/projectile/attackby(var/obj/item/A as obj, mob/user as mob, var/show_msg = 1)
 	if(istype(A, mag_type) && !magazine)
 		user.drop_item(sound = 0)
 		magazine = A
@@ -68,8 +68,8 @@
 
 	else if(istype(magazine, /obj/item/ammo_magazine/internal))
 		var/num_loaded = 0
-		if(istype(src, /obj/item/weapon/gun/projectile/newRevolver))
-			var/obj/item/weapon/gun/projectile/newRevolver/N = src
+		if(istype(src, /obj/item/gun/projectile/newRevolver))
+			var/obj/item/gun/projectile/newRevolver/N = src
 			if(!N.open)
 				return
 		if(istype(A, /obj/item/ammo_magazine))
@@ -122,15 +122,15 @@
 
 	return 0
 
-/obj/item/weapon/gun/projectile/attack_self(mob/user)
+/obj/item/gun/projectile/attack_self(mob/user)
 	if(is_jammed)
 		unjam(user)
-	if(!istype(src, /obj/item/weapon/gun/projectile/revolver) || !istype(src, /obj/item/weapon/gun/projectile/newRevolver))
+	if(!istype(src, /obj/item/gun/projectile/revolver) || !istype(src, /obj/item/gun/projectile/newRevolver))
 		if(chamber_round())
 			user.visible_message("<span class='combatbold'>[user.name]</span><span class='combat'> cocks [src]!</span>")
 			playsound(src, cocksound, 80, 0)
 
-/obj/item/weapon/gun/projectile/MouseDrop(var/obj/over_object)
+/obj/item/gun/projectile/MouseDrop(var/obj/over_object)
 	var/mob/user = usr
 
 	if (!over_object || !(ishuman(usr)))
@@ -197,12 +197,12 @@
 	update_icon()
 	return
 
-/obj/item/weapon/gun/projectile/examine()
+/obj/item/gun/projectile/examine()
 	..()
 	usr << "Has [get_ammo()] round\s remaining."
 	return
 
-/obj/item/weapon/gun/projectile/proc/get_ammo(var/countchambered = 1)
+/obj/item/gun/projectile/proc/get_ammo(var/countchambered = 1)
 	var/boolets = 0 //mature var names for mature people
 	if (chambered && countchambered)
 		boolets++

@@ -1,4 +1,4 @@
-/datum/organ/external/hand/r_hand
+/datum/organ/external/extrem/hand/r_hand
 	name = "r_hand"
 	display_name = "right hand"
 	display_namebr = "mão direita"
@@ -16,6 +16,7 @@
 	has_tendons = 1
 	has_finger = 1
 	mask_color = "#a0b629"
+	above_layer = RIGHT
 	process()
 		..()
 		process_grasp(owner.r_hand, "right hand")

@@ -130,7 +130,7 @@
 /obj/effect/alien/resin/attack_paw()
 	return attack_hand()
 
-/obj/effect/alien/resin/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/effect/alien/resin/attackby(obj/item/W as obj, mob/user as mob)
 
 	var/aforce = W.force
 	health = max(0, health - aforce)
@@ -277,7 +277,7 @@
 				qdel(src)
 	return
 
-/obj/structure/stool/bed/weeds/attackby(var/obj/item/weapon/W, var/mob/user)
+/obj/structure/stool/bed/weeds/attackby(var/obj/item/W, var/mob/user)
 	if(W.attack_verb.len)
 		visible_message("\red <B>\The [src] have been [pick(W.attack_verb)] with \the [W][(user ? " by [user]." : ".")]")
 	else
@@ -285,8 +285,8 @@
 
 	var/damage = W.force / 4.0
 
-	if(istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	if(istype(W, /obj/item/weldingtool))
+		var/obj/item/weldingtool/WT = W
 
 		if(WT.remove_fuel(0, user))
 			damage = 15
@@ -418,7 +418,7 @@ var/global/global_eggs = 0
 
 /obj/effect/alien/egg/attackhand_right(mob/living/carbon/human/H)
 	if(status == BURST && istype(H.species, /datum/species/human/alien))
-		playsound(src.loc, pick('alien_creep.ogg', 'alien_creep2.ogg'), 50, 1)
+		playsound(src.loc, pick('sound/webbers/alien_creep.ogg', 'sound/webbers/alien_creep2.ogg'), 50, 1)
 		qdel(src)
 
 /obj/effect/alien/egg/proc/GetFacehugger()
@@ -441,17 +441,17 @@ var/global/global_eggs = 0
 		flick("egg_opening", src)
 		status = BURSTING
 		global_eggs = max(0, global_eggs-1)
-		playsound(src.loc, pick('eggshake.ogg'), 60, 1)
+		playsound(src.loc, pick('sound/webbers/eggshake.ogg'), 60, 1)
 		spawn(15)
 			status = BURST
 			child.loc = get_turf(src)
 
 			if(kill && istype(child))
 				child.Die()
-				playsound(src.loc, pick('death_egg.ogg'), 60, 1)
+				playsound(src.loc, pick('sound/webbers/death_egg.ogg'), 60, 1)
 
 			else
-				playsound(src.loc, pick('eggopen.ogg'), 60, 1)
+				playsound(src.loc, pick('sound/webbers/eggopen.ogg'), 60, 1)
 				for(var/mob/M in range(1,src))
 					if(CanHug(M))
 						child.Attach(M)
@@ -464,7 +464,7 @@ var/global/global_eggs = 0
 	return
 
 
-/obj/effect/alien/egg/attackby(var/obj/item/weapon/W, var/mob/user)
+/obj/effect/alien/egg/attackby(var/obj/item/W, var/mob/user)
 	if(health <= 0)
 		return
 	if(W.attack_verb.len)
@@ -473,8 +473,8 @@ var/global/global_eggs = 0
 		src.visible_message("\red <B>\The [src] has been attacked with \the [W][(user ? " by [user]." : ".")]")
 	var/damage = W.force / 4.0
 
-	if(istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	if(istype(W, /obj/item/weldingtool))
+		var/obj/item/weldingtool/WT = W
 
 		if(WT.remove_fuel(0, user))
 			damage = 15

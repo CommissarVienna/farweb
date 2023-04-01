@@ -8,12 +8,12 @@ obj/machinery/recharger
 	use_power = 1
 	idle_power_usage = 4
 	active_power_usage = 250
-	var/obj/item/weapon/charging = null
+	var/obj/item/charging = null
 
-obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
+obj/machinery/recharger/attackby(obj/item/G as obj, mob/user as mob)
 	if(istype(user,/mob/living/silicon))
 		return
-	if(istype(G, /obj/item/weapon/gun/energy) || istype(G, /obj/item/weapon/melee/baton) || istype(G, /obj/item/weapon/cell/crap))
+	if(istype(G, /obj/item/gun/energy) || istype(G, /obj/item/melee/baton) || istype(G, /obj/item/cell/crap))
 		if(charging)
 			return
 
@@ -27,8 +27,8 @@ obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
 			return
 
 
-		if (istype(G, /obj/item/weapon/gun/energy/taser/leet))
-			var/obj/item/weapon/gun/energy/taser/leet/T = G
+		if (istype(G, /obj/item/gun/energy/taser/leet))
+			var/obj/item/gun/energy/taser/leet/T = G
 			if(!T.power_supply)
 				to_chat(usr, "<span class='notice'>How are you going to charge a gun without a battery?</span>")
 				return
@@ -38,7 +38,7 @@ obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
 		charging = G
 		use_power = 2
 		update_icon()
-	else if(istype(G, /obj/item/weapon/wrench))
+	else if(istype(G, /obj/item/wrench))
 		if(charging)
 			user << "\red Remove the weapon first!"
 			return
@@ -52,8 +52,8 @@ obj/machinery/recharger/attack_hand(mob/user as mob)
 	if(charging)
 		charging.update_icon()
 		charging.loc = loc
-		if(istype(charging, /obj/item/weapon/cell/crap))
-			var/obj/item/weapon/cell/crap/C = charging
+		if(istype(charging, /obj/item/cell/crap))
+			var/obj/item/cell/crap/C = charging
 			C.updateicon()
 		charging = null
 		use_power = 1
@@ -75,8 +75,8 @@ obj/machinery/recharger/process()
 		return
 
 	if(charging)
-		if(istype(charging, /obj/item/weapon/gun/energy))
-			var/obj/item/weapon/gun/energy/E = charging
+		if(istype(charging, /obj/item/gun/energy))
+			var/obj/item/gun/energy/E = charging
 			if(E.power_supply.charge < E.power_supply.maxcharge)
 				E.power_supply.give(100)
 				icon_state = "recharger1"
@@ -84,8 +84,8 @@ obj/machinery/recharger/process()
 			else
 				icon_state = "recharger2"
 			return
-		if(istype(charging, /obj/item/weapon/melee/baton))
-			var/obj/item/weapon/melee/baton/B = charging
+		if(istype(charging, /obj/item/melee/baton))
+			var/obj/item/melee/baton/B = charging
 			if(B.charges < initial(B.charges))
 				B.charges++
 				icon_state = "recharger1"
@@ -93,8 +93,8 @@ obj/machinery/recharger/process()
 			else
 				icon_state = "recharger2"
 
-		if(istype(charging, /obj/item/weapon/cell/crap))
-			var/obj/item/weapon/cell/crap/C = charging
+		if(istype(charging, /obj/item/cell/crap))
+			var/obj/item/cell/crap/C = charging
 			if(C.charge < C.maxcharge)
 				icon_state = "recharger1"
 				use_power(C.give(100))
@@ -106,13 +106,13 @@ obj/machinery/recharger/emp_act(severity)
 		..(severity)
 		return
 
-	if(istype(charging,  /obj/item/weapon/gun/energy))
-		var/obj/item/weapon/gun/energy/E = charging
+	if(istype(charging,  /obj/item/gun/energy))
+		var/obj/item/gun/energy/E = charging
 		if(E.power_supply)
 			E.power_supply.emp_act(severity)
 
-	else if(istype(charging, /obj/item/weapon/melee/baton))
-		var/obj/item/weapon/melee/baton/B = charging
+	else if(istype(charging, /obj/item/melee/baton))
+		var/obj/item/melee/baton/B = charging
 		B.charges = 0
 	..(severity)
 
@@ -132,8 +132,8 @@ obj/machinery/recharger/wallcharger/process()
 		return
 
 	if(charging)
-		if(istype(charging, /obj/item/weapon/gun/energy))
-			var/obj/item/weapon/gun/energy/E = charging
+		if(istype(charging, /obj/item/gun/energy))
+			var/obj/item/gun/energy/E = charging
 			if(E.power_supply.charge < E.power_supply.maxcharge)
 				E.power_supply.give(100)
 				icon_state = "wrecharger1"
@@ -141,8 +141,8 @@ obj/machinery/recharger/wallcharger/process()
 			else
 				icon_state = "wrecharger2"
 			return
-		if(istype(charging, /obj/item/weapon/melee/baton))
-			var/obj/item/weapon/melee/baton/B = charging
+		if(istype(charging, /obj/item/melee/baton))
+			var/obj/item/melee/baton/B = charging
 			if(B.charges < initial(B.charges))
 				B.charges++
 				icon_state = "wrecharger1"

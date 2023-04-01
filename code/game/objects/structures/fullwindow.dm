@@ -56,7 +56,7 @@
 		anchored = 0
 		step(src, get_dir(AM, src))
 	if(health <= 0)
-		new /obj/item/weapon/shard(loc)
+		new /obj/item/shard(loc)
 		if(reinf) new /obj/item/stack/rods(loc)
 		qdel(src)
 

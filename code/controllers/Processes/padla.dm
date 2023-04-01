@@ -32,7 +32,7 @@ var/datum/padla/Padla = null
 		to_chat(world, "<br>")
 		to_chat(world, "<span class='ravenheartfortress'>Firethorn Fortress</span>")
 		to_chat(world, "<span class='excomm'>The warlock has made another padla!</span>")
-		world << sound(pick('padla.ogg','padla2.ogg','padla3.ogg','padla4.ogg'))
+		world << sound(pick('sound/effects/padla.ogg','sound/effects/padla2.ogg','sound/effects/padla3.ogg','sound/effects/padla4.ogg'))
 		to_chat(world, "<br>")
 
 /datum/padla/proc/doPadla()
@@ -57,17 +57,30 @@ var/datum/padla/Padla = null
 
 /datum/curses/padla/lust/Curse()
 	for(var/mob/living/carbon/human/H in player_list)
-		if(!H.check_perk(/datum/perk/ref/warlock) && H.age > 17)
+		if(!H.check_perk(/datum/perk/ref/warlock) && H.age > 17 && !H.stat && !H.sleeping)
 			H.add_event("lustpadla", /datum/happiness_event/misc/needsex)
 			spawn(5 SECONDS)
 				to_chat(H, "<span class='horriblestate' style='font-size: 150%;'><b><i>Your Lust Intensifies!</i></b></span>")
+
+
+/datum/curses/padla/teeth
+	name = "teeth padla"
+
+/datum/curses/padla/teeth/Curse()
+	for(var/mob/living/carbon/human/H in player_list)
+		if(!H.check_perk(/datum/perk/ref/warlock) && !H.stat && !H.sleeping) //Sleeping makes you immune to the warlock's padlas.
+			spawn(5 SECONDS)
+				if(prob(50))
+					var/datum/organ/external/mouth/MH = H.get_organ("mouth")
+					MH.knock_out_teeth(H.dir, set_num = 15)
+					to_chat(H, "<span class='horriblestate' style='font-size: 150%;'><b><i>MY TEETH FALL OUT!</i></b></span>")
 
 /datum/curses/padla/poo
 	name = "poo padla"
 
 /datum/curses/padla/poo/Curse()
 	for(var/mob/living/carbon/human/H in player_list)
-		if(!H.check_perk(/datum/perk/ref/warlock))
+		if(!H.check_perk(/datum/perk/ref/warlock)&& !H.stat && !H.sleeping)
 			H.bowels = rand(450, 500)
 
 /datum/curses/padla/piss
@@ -75,7 +88,7 @@ var/datum/padla/Padla = null
 
 /datum/curses/padla/piss/Curse()
 	for(var/mob/living/carbon/human/H in player_list)
-		if(!H.check_perk(/datum/perk/ref/warlock))
+		if(!H.check_perk(/datum/perk/ref/warlock) && !H.stat && !H.sleeping)
 			H.bladder = rand(450, 500)
 
 /datum/curses/padla/famine
@@ -83,7 +96,7 @@ var/datum/padla/Padla = null
 
 /datum/curses/padla/famine/Curse()
 	for(var/mob/living/carbon/human/H in player_list)
-		if(!H.check_perk(/datum/perk/ref/warlock))
+		if(!H.check_perk(/datum/perk/ref/warlock) && !H.stat && !H.sleeping)
 			H.nutrition = rand(50, 100)
 
 /datum/curses/padla/regurgitator

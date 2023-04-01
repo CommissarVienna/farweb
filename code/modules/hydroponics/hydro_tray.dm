@@ -572,7 +572,7 @@
 	if (O.is_open_container())
 		return 0
 
-	if(istype(O, /obj/item/weapon/wirecutters) || istype(O, /obj/item/weapon/surgery_tool/scalpel))
+	if(istype(O, /obj/item/wirecutters) || istype(O, /obj/item/surgery_tool/scalpel))
 
 		if(!seed)
 			user << "There is nothing to take a sample from in \the [src]."
@@ -600,9 +600,9 @@
 
 		return
 
-	else if(istype(O, /obj/item/weapon/reagent_containers/syringe))
+	else if(istype(O, /obj/item/reagent_containers/syringe))
 
-		var/obj/item/weapon/reagent_containers/syringe/S = O
+		var/obj/item/reagent_containers/syringe/S = O
 
 		if (S.mode == 1)
 			if(seed)
@@ -660,7 +660,7 @@
 		else
 			to_chat(user, "\The [src] already has seeds in it!")
 
-	else if (istype(O, /obj/item/weapon/minihoe))  // The minihoe
+	else if (istype(O, /obj/item/minihoe))  // The minihoe
 
 		if(weedlevel > 0)
 			user.visible_message("\red [user] starts uprooting the weeds.", "\red You remove the weeds from the [src].")
@@ -671,19 +671,19 @@
 			user << "\red This plot is completely devoid of weeds. It doesn't need uprooting."
 			playsound(O, pick('sound/weapons/pfork01.ogg','sound/weapons/pfork02.ogg','sound/weapons/pfork03.ogg'), 40, 0, -6)
 
-	else if (istype(O, /obj/item/weapon/storage/bag/plants))
+	else if (istype(O, /obj/item/storage/bag/plants))
 
 		attack_hand(user)
 
-		var/obj/item/weapon/storage/bag/plants/S = O
-		for (var/obj/item/weapon/reagent_containers/food/snacks/grown/G in locate(user.x,user.y,user.z))
+		var/obj/item/storage/bag/plants/S = O
+		for (var/obj/item/reagent_containers/food/snacks/grown/G in locate(user.x,user.y,user.z))
 			if(!S.can_be_inserted(G))
 				return
 			S.handle_item_insertion(G, 1)
 
-	else if ( istype(O, /obj/item/weapon/plantspray) )
+	else if ( istype(O, /obj/item/plantspray) )
 
-		var/obj/item/weapon/plantspray/spray = O
+		var/obj/item/plantspray/spray = O
 		user.drop_item(O)
 		toxins += spray.toxicity
 		pestlevel -= spray.pest_kill_str
@@ -695,7 +695,7 @@
 		check_level_sanity()
 		update_icon()
 
-	else if(istype(O, /obj/item/weapon/wrench))
+	else if(istype(O, /obj/item/wrench))
 
 		//If there's a connector here, the portable_atmospherics setup can handle it.
 		if(locate(/obj/machinery/atmospherics/portables_connector/) in loc)
@@ -791,10 +791,10 @@
 	return 1
 
 /obj/machinery/portable_atmospherics/hydroponics/soil/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if(istype(O, /obj/item/weapon/shovel))
+	if(istype(O, /obj/item/shovel))
 		user << "You clear up [src]!"
 		qdel(src)
-	else if(istype(O,/obj/item/weapon/shovel) || istype(O,/obj/item/weapon/tank))
+	else if(istype(O,/obj/item/shovel) || istype(O,/obj/item/tank))
 		return
 	else
 		..()

@@ -29,7 +29,6 @@
 
 /datum/happiness_event/nutrition/bithungry
 	description = "<span class='badmood'>• I'm getting a bit hungry.</span>\n"
-	happiness = -2
 
 /datum/happiness_event/nutrition/hungry
 	description = "<span class='badmood'>• I'm hungry.</span>\n"
@@ -40,7 +39,7 @@
 	happiness = -12
 
 /datum/happiness_event/nutrition/humanflesh
-	description = "<span class='badmood'>• I've ate human flesh!</span>\n"
+	description = "<span class='badmood'>• I've eaten human flesh!</span>\n"
 	happiness = -4
 	timeout = 3000
 
@@ -409,12 +408,8 @@
 	description = "<span class='badmood'>• I need a drink.</span>\n"
 	happiness = -15
 
-/datum/happiness_event/vice/ment
-	description = "<span class='badmood'>• I need mentats.</span>\n"
-	happiness = -15
-
-/datum/happiness_event/vice/buff
-	description = "<span class='badmood'>• I need buffout.</span>\n"
+/datum/happiness_event/vice/addict
+	description = ""
 	happiness = -15
 
 /datum/happiness_event/vice/heroin

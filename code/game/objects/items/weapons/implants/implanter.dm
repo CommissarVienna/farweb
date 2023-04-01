@@ -1,4 +1,4 @@
-/obj/item/weapon/implanter
+/obj/item/implanter
 	name = "implanter"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "implanter0"
@@ -6,12 +6,12 @@
 	throw_speed = 1
 	throw_range = 5
 	w_class = 2.0
-	var/obj/item/weapon/implant/imp = null
+	var/obj/item/implant/imp = null
 
-/obj/item/weapon/implanter/proc/update()
+/obj/item/implanter/proc/update()
 
 
-/obj/item/weapon/implanter/update()
+/obj/item/implanter/update()
 	if (src.imp)
 		src.icon_state = "implanter1"
 	else
@@ -19,7 +19,7 @@
 	return
 
 
-/obj/item/weapon/implanter/attack(mob/M as mob, mob/user as mob)
+/obj/item/implanter/attack(mob/M as mob, mob/user as mob)
 	if (!istype(M, /mob/living/carbon))
 		return
 	if (user && src.imp)
@@ -53,21 +53,21 @@
 
 
 
-/obj/item/weapon/implanter/loyalty
+/obj/item/implanter/loyalty
 	name = "implanter-loyalty"
 
-/obj/item/weapon/implanter/loyalty/New()
-	src.imp = new /obj/item/weapon/implant/loyalty( src )
+/obj/item/implanter/loyalty/New()
+	src.imp = new /obj/item/implant/loyalty( src )
 	..()
 	update()
 	return
 
 
-/obj/item/weapon/implanter/mentor
+/obj/item/implanter/mentor
 	name = "implanter-mentor protection"
 
-/obj/item/weapon/implanter/mentor/New()
-	src.imp = new /obj/item/weapon/implant/mentor( src )
+/obj/item/implanter/mentor/New()
+	src.imp = new /obj/item/implant/mentor( src )
 	..()
 	update()
 	return
@@ -76,37 +76,37 @@
 
 
 
-/obj/item/weapon/implanter/explosive
+/obj/item/implanter/explosive
 	name = "implanter (E)"
 
-/obj/item/weapon/implanter/explosive/New()
-	src.imp = new /obj/item/weapon/implant/explosive( src )
+/obj/item/implanter/explosive/New()
+	src.imp = new /obj/item/implant/explosive( src )
 	..()
 	update()
 	return
 
-/obj/item/weapon/implanter/adrenalin
+/obj/item/implanter/adrenalin
 	name = "implanter-adrenalin"
 
-/obj/item/weapon/implanter/adrenalin/New()
-	src.imp = new /obj/item/weapon/implant/adrenalin(src)
+/obj/item/implanter/adrenalin/New()
+	src.imp = new /obj/item/implant/adrenalin(src)
 	..()
 	update()
 	return
 
-/obj/item/weapon/implanter/compressed
+/obj/item/implanter/compressed
 	name = "implanter (C)"
 	icon_state = "cimplanter1"
 
-/obj/item/weapon/implanter/compressed/New()
-	imp = new /obj/item/weapon/implant/compressed( src )
+/obj/item/implanter/compressed/New()
+	imp = new /obj/item/implant/compressed( src )
 	..()
 	update()
 	return
 
-/obj/item/weapon/implanter/compressed/update()
+/obj/item/implanter/compressed/update()
 	if (imp)
-		var/obj/item/weapon/implant/compressed/c = imp
+		var/obj/item/implant/compressed/c = imp
 		if(!c.scanned)
 			icon_state = "cimplanter1"
 		else
@@ -115,17 +115,17 @@
 		icon_state = "cimplanter0"
 	return
 
-/obj/item/weapon/implanter/compressed/attack(mob/M as mob, mob/user as mob)
-	var/obj/item/weapon/implant/compressed/c = imp
+/obj/item/implanter/compressed/attack(mob/M as mob, mob/user as mob)
+	var/obj/item/implant/compressed/c = imp
 	if (!c)	return
 	if (c.scanned == null)
 		user << "Please scan an object with the implanter first."
 		return
 	..()
 
-/obj/item/weapon/implanter/compressed/afterattack(atom/A, mob/user as mob)
+/obj/item/implanter/compressed/afterattack(atom/A, mob/user as mob)
 	if(istype(A,/obj/item) && imp)
-		var/obj/item/weapon/implant/compressed/c = imp
+		var/obj/item/implant/compressed/c = imp
 		if (c.scanned)
 			user << "\red Something is already scanned inside the implant!"
 			return

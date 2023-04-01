@@ -5,8 +5,8 @@
 
 /datum/surgery_step/face
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/bonesetter = 100,	\
-	/obj/item/weapon/wrench = 75
+	/obj/item/surgery_tool/bonesetter = 100,	\
+	/obj/item/wrench = 75
 	)
 
 	difficulty = 1

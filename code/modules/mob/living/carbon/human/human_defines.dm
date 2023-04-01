@@ -47,7 +47,7 @@
 	var/age = 30		//Player's age (pure fluff)
 	var/b_type = "A+"	//Player's bloodtype
 
-	var/underwear = 0	//Which underwear the player wants
+	var/underwear = "" //Which underwear the player wants. Put the string of the underwear you wish to put on them.
 	var/backbag = "Nothing"//Which backpack type the player has chosen. Nothing, Satchel or Backpack.
 
 	//Equipment slots
@@ -75,7 +75,7 @@
 	var/fakeDREAMER = 0
 	var/icon/stand_icon = null
 	var/icon/lying_icon = null
-	var/vice
+	var/datum/vice/vice
 	var/voice = ""	//Instead of new say code calling GetVoice() over and over and over, we're just going to ask this variable, which gets updated in Life()
 	var/speech_problem_flag = 0
 
@@ -96,6 +96,7 @@
 
 	var/image/zombieimage = null
 	var/tdome_team = 0
+	var/is_npc = FALSE
 //////////////////////
 ///CONSYTE CONTENT!///
 //////////////////////
@@ -125,8 +126,6 @@
 	var/siegesoldier = FALSE
 	var/special = ""
 	var/lifeweb_locked = FALSE
-	var/stealth = 0 // PARA CAMUFLAGEM
-	var/brothelstealth = 0 // PARA CAMUFLAGEM
 	var/seen_key = null
 	var/seen_heart_key = ""
 	//var/jewish
@@ -154,7 +153,7 @@
 	var/province = "Wanderer"
 	var/terriblethings = FALSE
 	var/resisting_disgust = FALSE
-	var/willpower_active = FALSE
+	var/willpower_active
 	//DISGUISE VOICE
 	var/disguise_number = 1
 	var/disguising_voice = FALSE
@@ -194,10 +193,13 @@
 	var/obj/item/malabares = null
 	var/obj/item/beingaimedby = null
 	var/list/saved_migclasses //prevents reroll on disconnect.
-	var/list/seen_me_doing_heresy = list()
+	var/list/seen_heresy = list()
 	var/assignment = null //Used for displaying runtime job name. Like rings.
 	var/disgust_level = 0
 	var/can_reflect = TRUE
 	var/eye_closed = FALSE
 	var/right_eye_fucked = FALSE // better to code like this
 	var/left_eye_fucked = FALSE //better to code like this
+	default_buttons = list("verbs","emotes","craft")
+// OTHER SHIT
+	var/dreamerArchetype

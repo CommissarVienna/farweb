@@ -1,36 +1,4 @@
-/obj/structure/closet/secure_closet/captains
-	name = "Captain's Locker"
-	req_access = list(access_captain)
-	icon_state = "capsecure1"
-	icon_closed = "capsecure"
-	icon_locked = "capsecure1"
-	icon_opened = "capsecureopen"
-	icon_broken = "capsecurebroken"
-	icon_off = "capsecureoff"
 
-	New()
-		..()
-		sleep(2)
-		if(prob(50))
-			new /obj/item/weapon/storage/backpack/captain(src)
-		else
-			new /obj/item/weapon/storage/backpack/satchel_cap(src)
-		new /obj/item/clothing/suit/captunic(src)
-		new /obj/item/clothing/suit/captunic/capjacket(src)
-		new /obj/item/clothing/head/helmet/cap(src)
-		new /obj/item/clothing/under/rank/captain/green(src)
-		new /obj/item/clothing/under/rank/captain(src)
-		new /obj/item/clothing/suit/armor/vest(src)
-		new /obj/item/weapon/cartridge/captain(src)
-		new /obj/item/clothing/head/helmet/swat(src)
-		new /obj/item/clothing/shoes/lw/brown(src)
-		new /obj/item/device/radio/headset/heads/captain(src)
-		new /obj/item/clothing/gloves/captain(src)
-
-		new /obj/item/clothing/suit/armor/captain(src)
-		new /obj/item/weapon/melee/telebaton(src)
-		new /obj/item/clothing/under/dress/dress_cap(src)
-		return
 
 
 
@@ -50,10 +18,10 @@
 		new /obj/item/clothing/glasses/sunglasses(src)
 		new /obj/item/clothing/suit/armor/vest(src)
 		new /obj/item/clothing/head/helmet(src)
-		new /obj/item/weapon/cartridge/hop(src)
+		new /obj/item/cartridge/hop(src)
 		new /obj/item/device/radio/headset/heads/hop(src)
-		new /obj/item/weapon/storage/box/ids(src)
-		new /obj/item/weapon/storage/box/ids( src )
+		new /obj/item/storage/box/ids(src)
+		new /obj/item/storage/box/ids( src )
 
 		new /obj/item/device/flash(src)
 		return
@@ -101,67 +69,30 @@
 		..()
 		sleep(2)
 		if(prob(50))
-			new /obj/item/weapon/storage/backpack/security(src)
+			new /obj/item/storage/backpack/security(src)
 		else
-			new /obj/item/weapon/storage/backpack/satchel_sec(src)
+			new /obj/item/storage/backpack/satchel_sec(src)
 		new /obj/item/clothing/head/helmet/HoS(src)
-		new /obj/item/weapon/reagent_containers/hypospray/medipen/combat(src)
-		new /obj/item/clothing/suit/storage/vest/hos(src)
+		new /obj/item/reagent_containers/hypospray/medipen/combat(src)
 		new /obj/item/clothing/under/rank/head_of_security/jensen(src)
 		new /obj/item/clothing/under/rank/head_of_security/corp(src)
 		new /obj/item/clothing/suit/armor/hos/jensen(src)
 		new /obj/item/clothing/suit/armor/hos(src)
 		new /obj/item/clothing/head/helmet/HoS/dermal(src)
-		new /obj/item/weapon/cartridge/hos(src)
+		new /obj/item/cartridge/hos(src)
 		new /obj/item/device/radio/headset/heads/hos(src)
 		new /obj/item/clothing/glasses/sunglasses/sechud(src)
-		new /obj/item/weapon/shield/riot(src)
-		new /obj/item/weapon/storage/lockbox/loyalty(src)
-		new /obj/item/weapon/storage/box/flashbangs(src)
-		new /obj/item/weapon/storage/belt/security(src)
+		new /obj/item/shield/riot(src)
+		new /obj/item/storage/lockbox/loyalty(src)
+		new /obj/item/storage/box/flashbangs(src)
+		new /obj/item/storage/belt/security(src)
 		new /obj/item/device/flash(src)
-		new /obj/item/weapon/melee/baton(src)
+		new /obj/item/melee/baton(src)
 
 		new /obj/item/clothing/tie/holster/waist(src)
-		new /obj/item/weapon/melee/telebaton(src)
+		new /obj/item/melee/telebaton(src)
 		return
 
-
-
-/obj/structure/closet/secure_closet/warden
-	name = "Warden's Locker"
-	req_access = list(access_armory)
-	icon_state = "wardensecure1"
-	icon_closed = "wardensecure"
-	icon_locked = "wardensecure1"
-	icon_opened = "wardensecureopen"
-	icon_broken = "wardensecurebroken"
-	icon_off = "wardensecureoff"
-
-
-	New()
-		..()
-		sleep(2)
-		if(prob(50))
-			new /obj/item/weapon/storage/backpack/security(src)
-		else
-			new /obj/item/weapon/storage/backpack/satchel_sec(src)
-		new /obj/item/clothing/suit/armor/vest/security(src)
-		new /obj/item/weapon/reagent_containers/hypospray/medipen/combat(src)
-		new /obj/item/clothing/under/rank/warden(src)
-		new /obj/item/clothing/under/rank/warden/corp(src)
-		new /obj/item/clothing/suit/storage/vest/warden(src)
-		new /obj/item/clothing/head/helmet/warden(src)
-//		new /obj/item/weapon/cartridge/security(src)
-		new /obj/item/device/radio/headset/headset_sec(src)
-		new /obj/item/clothing/glasses/sunglasses/sechud(src)
-		new /obj/item/weapon/storage/box/flashbangs(src)
-		new /obj/item/weapon/storage/belt/security(src)
-		new /obj/item/weapon/reagent_containers/spray/pepper(src)
-		new /obj/item/weapon/melee/baton(src)
-		new /obj/item/weapon/gun/energy/taser(src)
-		new /obj/item/weapon/storage/box/holobadge(src)
-		return
 
 
 
@@ -179,12 +110,12 @@
 		..()
 		sleep(2)
 		if(prob(20))
-			new/obj/item/weapon/gun/energy/taser/leet/sparq(src)
-		new/obj/item/weapon/cell/crap/leet/sparq(src)
+			new/obj/item/gun/energy/taser/leet/sparq(src)
+		new/obj/item/cell/crap/leet/sparq(src)
 		if(prob(90))
 			new/obj/item/clothing/shoes/lw/jackboots(src)
 		if(prob(19))
-			new/obj/item/weapon/storage/backpack/minisatchel(src)
+			new/obj/item/storage/backpack/minisatchel(src)
 		new /obj/item/clothing/under/rank/security(src)
 		return
 
@@ -235,7 +166,7 @@
 		..()
 		sleep(2)
 		new /obj/item/clothing/under/det(src)
-		new /obj/item/weapon/reagent_containers/hypospray/medipen/combat(src)
+		new /obj/item/reagent_containers/hypospray/medipen/combat(src)
 		new /obj/item/clothing/under/det/black(src)
 		new /obj/item/clothing/under/det/slob(src)
 		new /obj/item/clothing/suit/storage/det_suit(src)
@@ -246,10 +177,9 @@
 		new /obj/item/clothing/head/det_hat(src)
 		new /obj/item/clothing/head/det_hat/black(src)
 		new /obj/item/clothing/shoes/lw/brown(src)
-		new /obj/item/weapon/storage/box/evidence(src)
+		new /obj/item/storage/box/evidence(src)
 		new /obj/item/device/radio/headset/headset_sec(src)
 		new /obj/item/device/detective_scanner(src)
-		new /obj/item/clothing/suit/storage/vest/detective(src)
 		new /obj/item/ammo_magazine/box/c38(src)
 		new /obj/item/ammo_magazine/box/c38(src)
 		new /obj/item/clothing/tie/holster/armpit(src)
@@ -275,8 +205,8 @@
 	New()
 		..()
 		sleep(2)
-		new /obj/item/weapon/reagent_containers/ld50_syringe/choral(src)
-		new /obj/item/weapon/reagent_containers/ld50_syringe/choral(src)
+		new /obj/item/reagent_containers/ld50_syringe/choral(src)
+		new /obj/item/reagent_containers/ld50_syringe/choral(src)
 		return
 
 
@@ -288,7 +218,6 @@
 	var/id = null
 
 	New()
-		new /obj/item/clothing/under/color/orange( src )
 		new /obj/item/clothing/shoes/lw/brown( src )
 		return
 
@@ -302,13 +231,12 @@
 		..()
 		sleep(2)
 		new /obj/item/clothing/shoes/lw/brown(src)
-		new /obj/item/weapon/paper/Court (src)
-		new /obj/item/weapon/paper/Court (src)
-		new /obj/item/weapon/paper/Court (src)
-		new /obj/item/weapon/pen (src)
+		new /obj/item/paper/Court (src)
+		new /obj/item/paper/Court (src)
+		new /obj/item/paper/Court (src)
+		new /obj/item/pen (src)
 		new /obj/item/clothing/suit/judgerobe (src)
-		new /obj/item/clothing/head/powdered_wig (src)
-		new /obj/item/weapon/storage/briefcase(src)
+		new /obj/item/storage/briefcase(src)
 		return
 
 /obj/structure/closet/secure_closet/wall

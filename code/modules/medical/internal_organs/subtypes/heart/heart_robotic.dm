@@ -4,7 +4,7 @@
 	damagelevel = 0.8
 	emplevel = list(40,15,10)
 	desc = "Mechanical"
-	removed_type = /obj/item/weapon/reagent_containers/food/snacks/organ/heart/prosthetic
+	removed_type = /obj/item/reagent_containers/food/snacks/organ/heart/prosthetic
 
 //quem foi o filho da puta que fez isso cara
 /datum/organ/internal/heart/robotic/process()

@@ -1,7 +1,7 @@
 /datum/organ/internal/stomach
 	name = "stomach"
 	parent_organ = "vitals"
-	removed_type = /obj/item/weapon/reagent_containers/food/snacks/organ/stomach
+	removed_type = /obj/item/reagent_containers/food/snacks/organ/stomach
 	var/list/stomach_contents = list()
 
 /datum/organ/internal/stomach/process()

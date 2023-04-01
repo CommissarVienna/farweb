@@ -62,8 +62,8 @@
 	if( !istype(user.loc, /turf) )	return	//can't do this stuff whilst inside objects and such
 
 	if(rotting)
-		if(istype(W, /obj/item/weapon/weldingtool) )
-			var/obj/item/weapon/weldingtool/WT = W
+		if(istype(W, /obj/item/weldingtool) )
+			var/obj/item/weldingtool/WT = W
 			if( WT.remove_fuel(0,user) )
 				user << "<span class='notice'>You burn away the fungi with \the [WT].</span>"
 				playsound(src.loc, 'sound/items/Welder.ogg', 10, 1)
@@ -78,14 +78,14 @@
 
 	//THERMITE related stuff. Calls src.thermitemelt() which handles melting simulated walls and the relevant effects
 	if( thermite )
-		if( istype(W, /obj/item/weapon/weldingtool) )
-			var/obj/item/weapon/weldingtool/WT = W
+		if( istype(W, /obj/item/weldingtool) )
+			var/obj/item/weldingtool/WT = W
 			if( WT.remove_fuel(0,user) )
 				thermitemelt(user)
 				return
 
-		else if( istype(W, /obj/item/weapon/melee/energy/blade) )
-			var/obj/item/weapon/melee/energy/blade/EB = W
+		else if( istype(W, /obj/item/melee/energy/blade) )
+			var/obj/item/melee/energy/blade/EB = W
 
 			EB.spark_system.start()
 			user << "<span class='notice'>You slash \the [src] with \the [EB]; the thermite ignites!</span>"
@@ -95,7 +95,7 @@
 			thermitemelt(user)
 			return
 
-	else if(istype(W, /obj/item/weapon/melee/energy/blade))
+	else if(istype(W, /obj/item/melee/energy/blade))
 		user << "<span class='notice'>This wall is too thick to slice through. You will need to find a different path.</span>"
 		return
 
@@ -104,7 +104,7 @@
 	//DECONSTRUCTION
 	switch(d_state)
 		if(0)
-			if (istype(W, /obj/item/weapon/wirecutters))
+			if (istype(W, /obj/item/wirecutters))
 				playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 				src.d_state = 1
 				src.icon_state = "r_wall-1"
@@ -113,7 +113,7 @@
 				return
 
 		if(1)
-			if (istype(W, /obj/item/weapon/screwdriver))
+			if (istype(W, /obj/item/screwdriver))
 				user << "<span class='notice'>You begin removing the support lines.</span>"
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 
@@ -140,8 +140,8 @@
 				return
 
 		if(2)
-			if( istype(W, /obj/item/weapon/weldingtool) )
-				var/obj/item/weapon/weldingtool/WT = W
+			if( istype(W, /obj/item/weldingtool) )
+				var/obj/item/weldingtool/WT = W
 				if( WT.remove_fuel(0,user) )
 
 					user << "<span class='notice'>You begin slicing through the metal cover.</span>"
@@ -159,7 +159,7 @@
 				return
 
 		if(3)
-			if (istype(W, /obj/item/weapon/crowbar))
+			if (istype(W, /obj/item/crowbar))
 
 				user << "<span class='notice'>You struggle to pry off the cover.</span>"
 				playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
@@ -174,7 +174,7 @@
 				return
 
 		if(4)
-			if (istype(W, /obj/item/weapon/wrench))
+			if (istype(W, /obj/item/wrench))
 
 				user << "<span class='notice'>You start loosening the anchoring bolts which secure the support rods to their frame.</span>"
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
@@ -189,8 +189,8 @@
 				return
 
 		if(5)
-			if( istype(W, /obj/item/weapon/weldingtool) )
-				var/obj/item/weapon/weldingtool/WT = W
+			if( istype(W, /obj/item/weldingtool) )
+				var/obj/item/weldingtool/WT = W
 				if( WT.remove_fuel(0,user) )
 
 					user << "<span class='notice'>You begin slicing through the support rods.</span>"
@@ -209,7 +209,7 @@
 				return
 
 		if(6)
-			if( istype(W, /obj/item/weapon/crowbar) )
+			if( istype(W, /obj/item/crowbar) )
 
 				user << "<span class='notice'>You struggle to pry off the outer sheath.</span>"
 				playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
@@ -225,7 +225,7 @@
 //vv OK, we weren't performing a valid deconstruction step or igniting thermite,let's check the other possibilities vv
 
 	//DRILLING
-	if (istype(W, /obj/item/weapon/pickaxe/diamonddrill))
+	if (istype(W, /obj/item/pickaxe/diamonddrill))
 
 		user << "<span class='notice'>You begin to drill though the wall.</span>"
 
@@ -280,7 +280,7 @@
 		return
 
 	//Poster stuff
-	else if(istype(W,/obj/item/weapon/contraband/poster))
+	else if(istype(W,/obj/item/contraband/poster))
 		place_poster(W,user)
 		return
 

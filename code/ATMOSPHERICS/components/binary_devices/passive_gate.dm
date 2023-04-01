@@ -164,8 +164,8 @@ obj/machinery/atmospherics/binary/passive_gate
 
 
 
-	attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
-		if (!istype(W, /obj/item/weapon/wrench))
+	attackby(var/obj/item/W as obj, var/mob/user as mob)
+		if (!istype(W, /obj/item/wrench))
 			return ..()
 		if (on)
 			user << "\red You cannot unwrench this [src], turn it off first."

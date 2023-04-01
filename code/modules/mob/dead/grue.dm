@@ -28,7 +28,7 @@
 		return
 	var/datum/organ/internal/heart/HE = locate() in H.internal_organs
 	if(HE)
-		H << 'grue_kill.ogg'
+		H << 'sound/lfwbsounds/grue_kill.ogg'
 		H.emote("cough")
 		to_chat(H, "<h2><span class='bname'>You have been eaten by a grue!</span></h2>")
 		HE.heart_attack()
@@ -54,5 +54,5 @@
 	dead_mob_list += src
 	stat = DEAD
 	density = 0
-	playsound(src.loc, pick('grue1.ogg','grue2.ogg','grue3.ogg','grue4.ogg'), 100, 0)
+	playsound(src.loc, pick('sound/lfwbsounds/grue1.ogg','sound/lfwbsounds/grue2.ogg','sound/lfwbsounds/grue3.ogg','sound/lfwbsounds/grue4.ogg'), 100, 0)
 	qdel(src)

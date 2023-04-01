@@ -14,8 +14,8 @@
 		INVOKE_ASYNC(src, .proc/handle_dreamer_hallucinations)
 		if(src.nutrition < 399)
 			src.nutrition = 400
-		if(src.hidratacao < THIRST_LEVEL_FILLED)
-			src.hidratacao = THIRST_LEVEL_FILLED
+		if(src.hydration < THIRST_LEVEL_FILLED)
+			src.hydration = THIRST_LEVEL_FILLED
 		src.becoming_zombie = 0
 		switch(src.happiness)
 			if(MOOD_LEVEL_HAPPY1 to MOOD_LEVEL_HAPPY2)
@@ -187,14 +187,14 @@
 		var/Onomatopeia = rand(0, 1)
 
 		var/file_US = file2text('code/game/gamemodes/dreamer/Frases_dreamerUS.txt')
-		var/frases_dreamer = null
+		var/phrases_dreamer = null
 
 		if(!waking_up)
-			frases_dreamer = pick(splittext(file_US, "\n"))
+			phrases_dreamer = pick(splittext(file_US, "\n"))
 		else
-			frases_dreamer = pick("It's time to wake up.")
+			phrases_dreamer = pick("It's time to wake up.")
 
-		var/ending_d = copytext(frases_dreamer, length(frases_dreamer)) // Ending das frases estabelecidas
+		var/ending_d = copytext(phrases_dreamer, length(phrases_dreamer)) // Ending das frases estabelecidas
 		var/ending_l = copytext(last_said, length(last_said)) //
 		var/icone_to_go = null
 		if(Onomatopeia == 0) //0 ele pega frase existente
@@ -202,16 +202,16 @@
 			if(ending_d == "!")
 				icone_to_go = "h2"
 				hasgone = 1
-				to_chat(src, "<span class='[src.mind.say_color]'>[capitalize(O.name)]</span> <span class='sayverb'>exclaims, </span>\"<span class='saybasic'><b>[frases_dreamer]</b></span>\"")
+				to_chat(src, "<span class='[src.mind.say_color]'>[capitalize(O.name)]</span> <span class='sayverb'>exclaims, </span>\"<span class='saybasic'><b>[phrases_dreamer]</b></span>\"")
 			if(ending_d == "?")
 				icone_to_go = "h1"
 				hasgone = 1
-				to_chat(src, "<span class='[src.mind.say_color]'>[capitalize(O.name)]</span> <span class='sayverb'>asks, </span>\"<span class='saybasic'>[frases_dreamer]</span>\"")
+				to_chat(src, "<span class='[src.mind.say_color]'>[capitalize(O.name)]</span> <span class='sayverb'>asks, </span>\"<span class='saybasic'>[phrases_dreamer]</span>\"")
 			else
 				if(hasgone)
 					return
 				icone_to_go = "h0"
-				to_chat(src, "<span class='[src.mind.say_color]'>[capitalize(O.name)]</span> <span class='sayverb'>says, </span>\"<span class='saybasic'>[frases_dreamer]</span>\"")
+				to_chat(src, "<span class='[src.mind.say_color]'>[capitalize(O.name)]</span> <span class='sayverb'>says, </span>\"<span class='saybasic'>[phrases_dreamer]</span>\"")
 		if(Onomatopeia == 1) //last word do cara
 			if(last_said == null)
 				return
@@ -263,7 +263,7 @@
 
 	var/file_US = file2text('code/game/gamemodes/dreamer/RadioDreamerUS.txt')
 
-	var/frases_dreamer = null
+	var/phrases_dreamer = null
 
 	for(var/mob/living/carbon/human/H in mob_list)
 		if(H == src)
@@ -274,7 +274,7 @@
 			continue
 		humanosnegros.Add(H)
 
-	frases_dreamer = pick(splittext(file_US, "\n"))
+	phrases_dreamer = pick(splittext(file_US, "\n"))
 
 	if(prob(11))
 		var/list/JUDAS = pick("[uppertext(src.real_name)], SHOW ME A WONDER!", "[src.real_name], has killed someone!")
@@ -302,17 +302,17 @@
 		var/obj/item/device/radio/headset/bracelet/a = new /obj/item/device/radio/headset/bracelet(null)
 
 		var/part_a = "<span class='comms'><span class='commsname'>[H.real_name]"
-		var/part_b = "</span> [icon2html(a, src)]\[[H.job]\]</b> <span class='message'>[frases_dreamer]"
+		var/part_b = "</span> [icon2html(a, src)]\[[H.job]\]</b> <span class='message'>[phrases_dreamer]"
 		var/part_c = "</span></span>"
-		var/ending = copytext(frases_dreamer, length(frases_dreamer)) // Ending das frases estabelecidas
+		var/ending = copytext(phrases_dreamer, length(phrases_dreamer)) // Ending das frases estabelecidas
 		if(ishuman(src))
 			if (ending != "!")
 				var/ageAndGender = ageAndGender2Desc(H.age, H.gender)
-				part_b = "</span> [icon2html(a, src)]<span class='commsbold'>\[[H.job]\  [ageAndGender]]</span> <span class='message'>says, \"[frases_dreamer]\"" // Tweaked for security headsets -- TLE
+				part_b = "</span> [icon2html(a, src)]<span class='commsbold'>\[[H.job]\  [ageAndGender]]</span> <span class='message'>says, \"[phrases_dreamer]\"" // Tweaked for security headsets -- TLE
 			else if (ending == "!")
 				var/ageAndGender = ageAndGender2Desc(H.age, H.gender)
 				var/verbage = pick("shouts", "yells")
-				part_b = "</span> [icon2html(a, src)]<span class='commsbold'>\[[H.job]\  [ageAndGender]]</span> <span class='commsbold'>[verbage], \"[frases_dreamer]\""
+				part_b = "</span> [icon2html(a, src)]<span class='commsbold'>\[[H.job]\  [ageAndGender]]</span> <span class='commsbold'>[verbage], \"[phrases_dreamer]\""
 
 		to_chat(src, part_a + part_b + part_c)
 		src << 'sound/lfwbsounds/radio_chatter.ogg'
@@ -360,14 +360,14 @@
 	src.consyte = 0
 	src.mind.special_role = "Waker"
 	src.combat_music = 'sound/lfwbsounds/bloodlust1.ogg'
-	src.my_skills.CHANGE_SKILL(SKILL_MELEE, 10)
-	src.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(1,2))
+	src.my_skills.change_skill(SKILL_MELEE, 10)
+	src.my_skills.change_skill(SKILL_RANGE, rand(1,2))
 	src.vice = "Graphomaniac"
-	src.my_stats.st = rand(19,24)
-	src.my_stats.dx = rand(16,20)
-	src.my_stats.ht = rand(17,19)
-	src.verbs += /mob/living/carbon/human/proc/dreamer
-	src.updatePig()
+
+	src.my_stats.change_stat(STAT_ST, 9)
+	src.my_stats.change_stat(STAT_DX, 6)
+	src.my_stats.change_stat(STAT_HT, 7)
+	src.add_verb(/mob/living/carbon/human/proc/dreamer)
 	src.status_flags |= STATUS_NO_PAIN
 	var/datum/antagonist/dreamer/M = new()
 	src.mind.antag_datums = M

@@ -21,7 +21,7 @@
 /********
 * photo *
 ********/
-/obj/item/weapon/photo
+/obj/item/photo
 	name = "photo"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "photo"
@@ -31,18 +31,18 @@
 	var/icon/img	//Big photo image
 	var/scribble	//Scribble on the back.
 
-/obj/item/weapon/photo/attack_self(mob/user as mob)
+/obj/item/photo/attack_self(mob/user as mob)
 	examine()
 
-/obj/item/weapon/photo/attackby(obj/item/weapon/P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/pen) || istype(P, /obj/item/toy/crayon))
+/obj/item/photo/attackby(obj/item/P as obj, mob/user as mob)
+	if(istype(P, /obj/item/pen) || istype(P, /obj/item/toy/crayon))
 		var/txt = sanitize(input(user, "What would you like to write on the back?", "Photo Writing", null)  as text)
 		txt = copytext(txt, 1, 128)
 		if(loc == user && user.stat == 0)
 			scribble = txt
 	..()
 
-/obj/item/weapon/photo/examine()
+/obj/item/photo/examine()
 	set src in oview(1)
 	if(in_range(usr, src))
 		show(usr)
@@ -50,7 +50,7 @@
 	else
 		usr << "<span class='notice'>It is too far away.</span>"
 
-/obj/item/weapon/photo/proc/show(mob/user as mob)
+/obj/item/photo/proc/show(mob/user as mob)
 	user << browse_rsc(img, "tmp_photo.png")
 	user << browse("<html><head><title>[name]</title></head>" \
 		+ "<body style='overflow:hidden'>" \
@@ -60,7 +60,7 @@
 	onclose(user, "[name]")
 	return
 
-/obj/item/weapon/photo/verb/rename()
+/obj/item/photo/verb/rename()
 	set name = "Rename photo"
 	set category = "Object"
 	set src in usr
@@ -76,14 +76,14 @@
 /**************
 * photo album *
 **************/
-/obj/item/weapon/storage/photo_album
+/obj/item/storage/photo_album
 	name = "Photo album"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "album"
 	item_state = "briefcase"
-	can_hold = list("/obj/item/weapon/photo",)
+	can_hold = list("/obj/item/photo",)
 
-/obj/item/weapon/storage/photo_album/MouseDrop(obj/over_object as obj)
+/obj/item/storage/photo_album/MouseDrop(obj/over_object as obj)
 
 	if((istype(usr, /mob/living/carbon/human) || (ticker && ticker.mode.name == "monkey")))
 		var/mob/M = usr
@@ -224,7 +224,7 @@
 	var/icon/temp = icon('icons/effects/96x96.dmi',"")
 	var/icon/black = icon('icons/turf/space.dmi', "black")
 
-	var/obj/item/weapon/photo/P = new/obj/item/weapon/photo()
+	var/obj/item/photo/P = new/obj/item/photo()
 
 	var/mobs = ""
 	for(var/i = 1; i <= 3; i++)
@@ -242,7 +242,7 @@
 			if(mobs != "")
 				if(ishuman(user))
 					var/mob/living/carbon/human/H = user
-					if(H.vice == "Photographer")
+					if(H.has_vice("Photographer"))
 						H.clear_event("vice")
 						H.viceneed = 0
 			P.info += get_mobs(T)[2]

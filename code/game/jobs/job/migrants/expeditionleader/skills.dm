@@ -1,6 +1,8 @@
 /mob/living/carbon/human/proc/set_mig_spawn()
 	set hidden = 0
 	set name = "SetMigSpawn"
+	set desc = "Set Migrant Arrival"
+	set category = "gpc"
 	var/area/A = get_area(src)
 	var/turf/T = get_turf(src)
 	if(!A)
@@ -20,6 +22,8 @@
 /mob/living/carbon/human/proc/announceEx()
 	set hidden = 0
 	set name = "announceEx"
+	set desc = "Announce (14 TILES)"
+	set category = "gpc"
 	var/input = sanitize(input(usr, "Type your announcement (PEOPLE IN 14 TILES OF RANGE WILL HEAR)", "Expedition Announcement", "") as message|null)
 	if(!input)
 		return
@@ -32,5 +36,5 @@
 		to_chat(H, "<h4><span class='passive'>\"[input]\"</span></h4>")
 		to_chat(H, "<br>")
 		var/distrange = get_dist(H, src)
-		var/closesound = pick('horn1.ogg','horn2.ogg')
+		var/closesound = pick('sound/effects/horn1.ogg','sound/effects/horn2.ogg')
 		H << sound(closesound, repeat = 0, wait = 0, volume = 80-distrange, channel = 12)

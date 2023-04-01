@@ -204,7 +204,7 @@
 		if (wound_damage() <= 30 && bleed_timer <= 0)
 			return 0	//Bleed timer has run out. Wounds with more than 30 damage don't stop bleeding on their own.
 
-		return (damage_type == BRUISE && wound_damage() >= 20 || damage_type == CUT && wound_damage() >= 5)
+		return (damage_type == BRUISE && wound_damage() >= 50 || damage_type == CUT && wound_damage() >= 5)
 
 /** WOUND DEFINITIONS **/
 

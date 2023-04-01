@@ -39,10 +39,10 @@
 	if(prob(40))
 		M.Move(locate(src.x, src.y, M.z+1))
 		M << "<span class='warning'>You swim back up.</span>"
-		playsound(M.loc, 'fst_water_jump_down_01.ogg', 40, 0)
+		playsound(M.loc, 'sound/effects/fst_water_jump_down_01.ogg', 40, 0)
 	else
 		M << "<span class='warning'>You fail to swim back up!</span>"
-		playsound(M.loc, pick('water_max1.ogg','water_max2.ogg'), 40, 0)
+		playsound(M.loc, pick('sound/effects/water_max1.ogg','sound/effects/water_max2.ogg'), 40, 0)
 
 /turf/simulated/floor/airless/ceiling
 	icon_state = "rockvault"
@@ -117,12 +117,12 @@
 /turf/simulated/floor/engine/ex_act(severity)
 	return ..(severity+1) //stronger than regular floors
 
-/turf/simulated/floor/engine/attackby(obj/item/weapon/C as obj, mob/user as mob)
+/turf/simulated/floor/engine/attackby(obj/item/C as obj, mob/user as mob)
 	if(!C)
 		return
 	if(!user)
 		return
-	if(istype(C, /obj/item/weapon/wrench))
+	if(istype(C, /obj/item/wrench))
 		user << "\blue Removing rods..."
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 80, 1)
 		if(do_after(user, 30))
@@ -398,38 +398,38 @@
 	icon = 'icons/turf/carpetlw.dmi'
 	icon_state = "carpet"
 	New()
-		return 0
+		turfs.Add(src)
 
 /turf/simulated/floor/carpet/beatifulcarpet8
 	icon = 'icons/turf/carpetlw.dmi'
 	icon_state = "carpet2"
 	New()
-		return 0
+		turfs.Add(src)
 
 /turf/simulated/floor/carpet/beatifulcarpet9
 	icon = 'icons/turf/carpetlw.dmi'
 	icon_state = "mcarpet"
 	New()
-		return 0
+		turfs.Add(src)
 
 /turf/simulated/floor/carpet/beatifulcarpet10
 	icon = 'icons/turf/carpetlw.dmi'
 	icon_state = "mcarpet2"
 	New()
-		return 0
+		turfs.Add(src)
 
 /turf/simulated/floor/carpet/beatifulcarpet11
 	icon = 'icons/turf/carpetlw.dmi'
 	icon_state = "hcarp"
 	New()
-		return 0
+		turfs.Add(src)
 
 
 /turf/simulated/floor/meister1
 	icon = 'icons/life/floors.dmi'
 	icon_state = "k1"
 	New()
-		return 0
+		turfs.Add(src)
 
 /turf/simulated/floor/shuttle1
 	icon = 'icons/life/floors.dmi'
@@ -629,8 +629,8 @@
 
 /turf/simulated/floor/lifeweb/attackby(obj/item/C as obj, mob/user as mob)
 	..()
-	if(istype(C, /obj/item/weapon/grab) && get_dist(src,user)<2)
-		var/obj/item/weapon/grab/G = C
+	if(istype(C, /obj/item/grab) && get_dist(src,user)<2)
+		var/obj/item/grab/G = C
 		if(G.assailant.zone_sel.selecting == "head" && G.affecting.lying)
 			if(ishuman(G.affecting))
 				G.affecting.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been smashed on the floor by [G.assailant.name] ([G.assailant.ckey])</font>")
@@ -800,30 +800,30 @@
 	icon_state = "surgery2"
 
 /turf/simulated/floor/lifeweb/soulbreaker
-	icon = 'soulwall2.dmi'
+	icon = 'icons/turf/soulwall2.dmi'
 	icon_state = ""
 
 
 /turf/simulated/floor/lifeweb/train
-	icon = 'train.dmi'
+	icon = 'icons/turf/train.dmi'
 	icon_state = "floor"
 
 /turf/simulated/floor/lifeweb/soulbreaker/two
-	icon = 'soulwall2.dmi'
+	icon = 'icons/turf/soulwall2.dmi'
 	icon_state = "darkfloor"
 
 /turf/simulated/floor/lifeweb/soulbreaker/three
-	icon = 'soulwall2.dmi'
+	icon = 'icons/turf/soulwall2.dmi'
 	icon_state = "SoulFloor"
 
 
 /turf/simulated/floor/lifeweb/soulbreaker/four
-	icon = 'soulwall2.dmi'
+	icon = 'icons/turf/soulwall2.dmi'
 	icon_state = "SoulFloorS"
 
 
 /turf/simulated/floor/lifeweb/soulbreaker/cluster
-	icon = 'soulwall2.dmi'
+	icon = 'icons/turf/soulwall2.dmi'
 	icon_state = "cluster"
 
 /turf/simulated/floor/lifeweb/soulbreaker/cluster/New()
@@ -924,8 +924,8 @@
 				src.ChangeTurf(/turf/simulated/floor/open)
 				return 1
 	return 1
-/turf/simulated/floor/lifeweb/stone/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/rag))
+/turf/simulated/floor/lifeweb/stone/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/rag))
 		return
 	if(istype(src, /turf/simulated/floor/lifeweb/stone/ladder))
 		return
@@ -938,14 +938,14 @@
 		else
 			totaldamage = W.force/12
 			W.damageItem("HARD")
-		if(istype(W, /obj/item/weapon/sledgehammer))
+		if(istype(W, /obj/item/sledgehammer))
 			totaldamage = W.force/2
 		take_damage(totaldamage)
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
 			H.adjustStaminaLoss(rand(3,5))
-			take_damage(H.my_stats.st)
-		playsound(src, pick('wallhit.ogg','wallhit2.ogg','wallhit3.ogg'), 80, 1)
+			take_damage(H.my_stats.get_stat(STAT_ST))
+		playsound(src, pick('sound/effects/wallhit.ogg','sound/effects/wallhit2.ogg','sound/effects/wallhit3.ogg'), 80, 1)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
 
@@ -984,7 +984,7 @@
 	var/opened = FALSE
 	var/open_state = "sewerhatch0"
 	var/default_state = "sewerhatch1"
-	icon = 'miscobjs.dmi'
+	icon = 'icons/obj/miscobjs.dmi'
 	icon_state = "sewerhatch1"
 	var/turf/below
 	New()
@@ -1023,10 +1023,10 @@
 	..()
 	icon_state = "stonecrafted[rand(1,4)]"
 
-/turf/simulated/floor/lifeweb/stone/handmade/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/weapon/chisel) && !chiseled)
+/turf/simulated/floor/lifeweb/stone/handmade/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/chisel) && !chiseled)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		playsound(src, 'obj_stone_generic_switch_enter_01.ogg', 80, 0,0)
+		playsound(src, 'sound/weapons/obj_stone_generic_switch_enter_01.ogg', 80, 0,0)
 		chiseled = TRUE
 		user.visible_message("<span class='passive'>\The [user] chisels \the [src]</span>")
 		icon_state = "newstone[rand(1,4)]"
@@ -1098,8 +1098,8 @@
 	if(istype(src, /turf/simulated/floor/plating/dirt2))
 		return
 	else
-		if(istype(C, /obj/item/weapon/shovel))
-			var/obj/item/weapon/shovel/S = C
+		if(istype(C, /obj/item/shovel))
+			var/obj/item/shovel/S = C
 			if(S.contents.len)
 				for(var/obj/item/I in S)
 					S.contents -= I
@@ -1124,6 +1124,9 @@
 	var/allowedExist = TRUE
 	//temperature = CAVEDIRT
 	var/diggable = 1
+	var/length = 25
+	var/sanity = 1
+
 /turf/simulated/floor/plating/dirt/ex_act(severity)
 	return
 
@@ -1145,6 +1148,70 @@
 						break;
 		dirt_gen_list += src
 	..()
+
+/turf/simulated/floor/plating/dirt/cave
+
+/turf/simulated/floor/plating/dirt/cave/New(loc, var/length, var/go_backwards = 1, var/exclude_dir = -1)
+	// If length (arg2) isn't defined, get a random length; otherwise assign our length to the length arg.
+	if(!length)
+		src.length = rand(25, 50)
+	else
+		src.length = length
+
+	// Get our directiosn
+	var/forward_cave_dir = pick(alldirs - exclude_dir)
+	// Get the opposite direction of our facing direction
+	var/backward_cave_dir = angle2dir(dir2angle(forward_cave_dir) + 180)
+
+	// Make our tunnels
+	make_tunnel(forward_cave_dir)
+	if(go_backwards)
+		make_tunnel(backward_cave_dir)
+	// Kill ourselves by replacing ourselves with a normal floor.
+	ChangeTurfNew(/turf/simulated/floor/plating/dirt)
+	..()
+
+/turf/simulated/floor/plating/dirt/proc/make_tunnel(var/dir)
+	var/area/A = get_area(src)
+	if(!istype(A, /area/dunwell/surface)) //Don't make tunnels where they're not needed.
+		return
+
+	var/turf/simulated/wall/r_wall/cave/tunnel = src
+	var/next_angle = pick(45, -45)
+
+	for(var/i = 0; i < length; i++)
+		if(!sanity)
+			break
+
+		var/list/L = list(45)
+		if(IsOdd(dir2angle(dir))) // We're going at an angle and we want thick angled tunnels.
+			L += -45
+
+		// Expand the edges of our tunnel
+		for(var/edge_angle in L)
+			var/turf/simulated/wall/r_wall/cave/edge = get_step(tunnel, angle2dir(dir2angle(dir) + edge_angle))
+			if(istype(edge))
+				ChangeTurfNew(/turf/simulated/floor/plating/dirt)
+
+		// Move our tunnel forward
+		tunnel = get_step(tunnel, dir)
+
+		if(istype(tunnel))
+			// Small chance to have forks in our tunnel; otherwise dig our tunnel.
+			if(i > 3 && prob(20))
+				new src.type(tunnel, rand(10, 15), 0, dir)
+			else
+				ChangeTurfNew(/turf/simulated/floor/plating/dirt)
+		else 
+			break
+
+		// Chance to change our direction left or right.
+		if(i > 2 && prob(33))
+			// We can't go a full loop though
+			next_angle = -next_angle
+			dir = angle2dir(dir2angle(dir) + next_angle)
+
+
 
 /obj/structure/lifeweb/s_stone/xsd
 	name = "side walk"
@@ -1214,11 +1281,11 @@
 			new /obj/structure/rack/lwtable/stone(src)
 
 
-/turf/simulated/floor/plating/snow/attackby(obj/item/weapon/shovel/W as obj, mob/user as mob)
+/turf/simulated/floor/plating/snow/attackby(obj/item/shovel/W as obj, mob/user as mob)
 	if(!W || !user)
 		return 0
 
-	if ((istype(W, /obj/item/weapon/shovel)))
+	if ((istype(W, /obj/item/shovel)))
 		var/turf/T = user.loc
 		if (!( istype(T, /turf) ))
 			return
@@ -1247,8 +1314,8 @@
 /turf/simulated/floor/plating/snow/gets_dug()
 	if(dug == 4)
 		return
-	new/obj/item/weapon/ore/glass(src)
-	new/obj/item/weapon/ore/glass(src)
+	new/obj/item/ore/glass(src)
+	new/obj/item/ore/glass(src)
 	dug += 1
 	icon_plating = "asteroid_dug"
 	icon_state = "asteroid_dug"

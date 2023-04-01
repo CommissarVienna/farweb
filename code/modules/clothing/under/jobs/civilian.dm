@@ -15,6 +15,7 @@
 	item_state = "fetish"
 	item_color = "hooker"
 	flags = FPRINT | TABLEPASS
+	body_parts_covered = UPPER_TORSO|ARMS
 
 /obj/item/clothing/suit/hooker/seductress
 	desc = "Romantic."
@@ -23,6 +24,7 @@
 	item_state = "seductress"
 	item_color = "hooker"
 	flags = FPRINT | TABLEPASS
+	body_parts_covered = UPPER_TORSO|ARMS
 
 /obj/item/clothing/suit/hooker/domina
 	desc = "You feel a sense of entitlement."
@@ -31,6 +33,7 @@
 	item_state = "domina"
 	item_color = "hooker"
 	flags = FPRINT | TABLEPASS
+	body_parts_covered = UPPER_TORSO|ARMS
 
 /obj/item/clothing/suit/hooker/pimp
 	name = "seducing red dress"
@@ -54,9 +57,9 @@
 /obj/item/clothing/under/rank/captain //Alright, technically not a 'civilian' but its better then giving a .dm file for a single define.
 	name = "noble garments"
 	desc = "Some clothes for snobby people."
-	icon_state = "baron"
+	icon_state = "meister"
 	item_state = "caparmor"
-	item_color = "baron"
+	item_color = "meister"
 	flags = FPRINT | TABLEPASS
 
 /obj/item/clothing/under/rank/captain/child //Alright, technically not a 'civilian' but its better then giving a .dm file for a single define.
@@ -181,8 +184,8 @@
 /obj/item/clothing/under/rank/janitor
 	desc = "Old uniform, usually wore by morticians."
 	name = "mortician garment"
-	icon_state = "janitor"
-	item_color = "janitor"
+	icon_state = "mortician"
+	item_color = "mortician"
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 10, rad = 0)
 	flags = FPRINT | TABLEPASS
 

@@ -13,7 +13,7 @@
 	var/state = 2
 	var/reinf = 0
 	var/basestate
-	var/shardtype = /obj/item/weapon/shard
+	var/shardtype = /obj/item/shard
 //	var/silicate = 0 // number of units of silicate
 //	var/icon/silicateIcon = null // the silicated icon
 
@@ -22,7 +22,7 @@
 	health -= Proj.damage
 	..()
 	if(health <= 0)
-		new /obj/item/weapon/shard(loc)
+		new /obj/item/shard(loc)
 		new /obj/item/stack/rods(loc)
 		qdel(src)
 	return
@@ -34,26 +34,26 @@
 			qdel(src)
 			return
 		if(2.0)
-			new /obj/item/weapon/shard(loc)
+			new /obj/item/shard(loc)
 			if(reinf) new /obj/item/stack/rods(loc)
 			qdel(src)
 			return
 		if(3.0)
 			if(prob(50))
-				new /obj/item/weapon/shard(loc)
+				new /obj/item/shard(loc)
 				if(reinf) new /obj/item/stack/rods(loc)
 				qdel(src)
 				return
 
 /obj/structure/window/blob_act()
-	new /obj/item/weapon/shard(loc)
+	new /obj/item/shard(loc)
 	if(reinf) new /obj/item/stack/rods(loc)
 	qdel(src)
 
 
 /obj/structure/window/meteorhit()
 	//world << "glass at [x],[y],[z] Mhit"
-	new /obj/item/weapon/shard( loc )
+	new /obj/item/shard( loc )
 	if(reinf) new /obj/item/stack/rods( loc)
 	qdel(src)
 
@@ -94,7 +94,7 @@
 		update_nearby_icons()
 		step(src, get_dir(AM, src))
 	if(health <= 0)
-		new /obj/item/weapon/shard(loc)
+		new /obj/item/shard(loc)
 		if(reinf) new /obj/item/stack/rods(loc)
 		qdel(src)
 
@@ -120,7 +120,7 @@
 	health -= damage
 	if(health <= 0)
 		user.visible_message("<span class='danger'>[user] smashes through [src]!</span>")
-		new /obj/item/weapon/shard(loc)
+		new /obj/item/shard(loc)
 		if(reinf) new /obj/item/stack/rods(loc)
 		qdel(src)
 	else	//for nicer text~
@@ -134,11 +134,11 @@
 	if(M.melee_damage_upper <= 0) return
 	attack_generic(M, M.melee_damage_upper)
 
-/obj/structure/window/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/window/attackby(obj/item/W as obj, mob/user as mob)
 	if(!istype(W)) return//I really wish I did not need this
 
-	if (istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
-		var/obj/item/weapon/grab/G = W
+	if (istype(W, /obj/item/grab) && get_dist(src,user)<2)
+		var/obj/item/grab/G = W
 		if (istype(G.affecting, /mob/living))
 			var/mob/living/M = G.affecting
 			var/state = G.state
@@ -160,7 +160,7 @@
 					hit(50)
 					visible_message("\red <big><b>[user] crushes [M] against \the [src]!</b></big>")
 			return
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/screwdriver))
 		if(reinf && state >= 1)
 			state = 3 - state
 			playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
@@ -175,7 +175,7 @@
 			update_nearby_icons()
 			playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
 			user << (anchored ? "<span class='notice'>You have fastened the window to the floor.</span>" : "<span class='notice'>You have unfastened the window.</span>")
-	else if(istype(W, /obj/item/weapon/crowbar) && reinf && state <= 1)
+	else if(istype(W, /obj/item/crowbar) && reinf && state <= 1)
 		state = 1 - state
 		playsound(loc, 'sound/items/Crowbar.ogg', 75, 1)
 		user << (state ? "<span class='notice'>You have pried the window into the frame.</span>" : "<span class='notice'>You have pried the window out of the frame.</span>")

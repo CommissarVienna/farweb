@@ -234,9 +234,9 @@
 				visible_message("<span class='warning'>[user] slipped off the edge of the [src].</span>")
 				usr.weakened += 3
 
-/obj/structure/railing/attackby(obj/item/weapon/W as obj,mob/user as mob)
-	if (istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
-		var/obj/item/weapon/grab/G = W
+/obj/structure/railing/attackby(obj/item/W as obj,mob/user as mob)
+	if (istype(W, /obj/item/grab) && get_dist(src,user)<2)
+		var/obj/item/grab/G = W
 		if(G.state<2)
 			if(ishuman(G.affecting))
 				G.affecting.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been smashed on a [src] by [G.assailant.name] ([G.assailant.ckey])</font>")

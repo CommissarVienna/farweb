@@ -35,7 +35,7 @@
 
 /mob/living/carbon/human/proc/miss_chance_check_melee(var/mob/living/carbon/human/attacker)
 	var/miss_chance_mod = 0
-	switch(attacker.my_skills.GET_SKILL(SKILL_MELEE))
+	switch(attacker.my_skills.get_skill(SKILL_MELEE))
 		if(0)
 			miss_chance_mod = 30
 		if(1)
@@ -80,14 +80,14 @@
 			miss_chance_mod = -50
 	return miss_chance_mod
 
-/mob/living/carbon/human/proc/specialty_check(var/mob/living/carbon/human/attacker, var/obj/item/I)
-	if(istype(I, /obj/item/weapon))
-		var/obj/item/weapon/W = I
+proc/specialty_check(var/mob/living/carbon/human/attacker, var/obj/item/I)
+	if(istype(I, /obj/item))
+		var/obj/item/W = I
 		var/specialty_mod = null
 		switch(W.weaponteaching)
 			if("SWORD")
-				if(attacker.my_skills.GET_SKILL(SKILL_SWORD))
-					switch(attacker.my_skills.GET_SKILL(SKILL_SWORD))
+				if(attacker.my_skills.get_skill(SKILL_SWORD))
+					switch(attacker.my_skills.get_skill(SKILL_SWORD))
 						if(1)
 							specialty_mod = -10
 						if(2)
@@ -99,8 +99,8 @@
 						if(5)
 							specialty_mod = -50
 			if("POLEARM")
-				if(attacker.my_skills.GET_SKILL(SKILL_STAFF))
-					switch(attacker.my_skills.GET_SKILL(SKILL_STAFF))
+				if(attacker.my_skills.get_skill(SKILL_STAFF))
+					switch(attacker.my_skills.get_skill(SKILL_STAFF))
 						if(1)
 							specialty_mod = -10
 						if(2)
@@ -112,8 +112,8 @@
 						if(5)
 							specialty_mod = -50
 			if("AXE")
-				if(attacker.my_skills.GET_SKILL(SKILL_SWING))
-					switch(attacker.my_skills.GET_SKILL(SKILL_SWING))
+				if(attacker.my_skills.get_skill(SKILL_SWING))
+					switch(attacker.my_skills.get_skill(SKILL_SWING))
 						if(1)
 							specialty_mod = -10
 						if(2)
@@ -125,8 +125,8 @@
 						if(5)
 							specialty_mod = -50
 			if("CLUB")
-				if(attacker.my_skills.GET_SKILL(SKILL_SWING))
-					switch(attacker.my_skills.GET_SKILL(SKILL_SWING))
+				if(attacker.my_skills.get_skill(SKILL_SWING))
+					switch(attacker.my_skills.get_skill(SKILL_SWING))
 						if(1)
 							specialty_mod = -10
 						if(2)
@@ -138,8 +138,8 @@
 						if(5)
 							specialty_mod = -50
 			if("SPEAR")
-				if(attacker.my_skills.GET_SKILL(SKILL_STAFF))
-					switch(attacker.my_skills.GET_SKILL(SKILL_STAFF))
+				if(attacker.my_skills.get_skill(SKILL_STAFF))
+					switch(attacker.my_skills.get_skill(SKILL_STAFF))
 						if(1)
 							specialty_mod = -10
 						if(2)
@@ -151,8 +151,8 @@
 						if(5)
 							specialty_mod = -50
 			if("KNIFE")
-				if(attacker.my_skills.GET_SKILL(SKILL_KNIFE))
-					switch(attacker.my_skills.GET_SKILL(SKILL_KNIFE))
+				if(attacker.my_skills.get_skill(SKILL_KNIFE))
+					switch(attacker.my_skills.get_skill(SKILL_KNIFE))
 						if(1)
 							specialty_mod = -10
 						if(2)

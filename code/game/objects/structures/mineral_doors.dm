@@ -115,14 +115,14 @@
 		else
 			icon_state = mineralType
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W,/obj/item/weapon/pickaxe))
-			var/obj/item/weapon/pickaxe/digTool = W
+	attackby(obj/item/W as obj, mob/user as mob)
+		if(istype(W,/obj/item/pickaxe))
+			var/obj/item/pickaxe/digTool = W
 			user << "You start digging the [name]."
 			if(do_after(user,digTool.digspeed*hardness) && src)
 				user << "You finished digging."
 				Dismantle()
-		else if(istype(W,/obj/item/weapon)) //not sure, can't not just weapons get passed to this proc?
+		else if(istype(W,/obj/item)) //not sure, can't not just weapons get passed to this proc?
 			hardness -= W.force/100
 			user << "You hit the [name] with your [W.name]!"
 			CheckHardness()
@@ -338,11 +338,11 @@
 		qdel(src)
 
 
-/obj/structure/mineral_door/wood/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/lockpick) && !lockpicking)
+/obj/structure/mineral_door/wood/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/lockpick) && !lockpicking)
 		do_lockpicking(user, W)
-	if(istype(W, /obj/item/weapon/key))
-		var/obj/item/weapon/key/K = W
+	if(istype(W, /obj/item/key))
+		var/obj/item/key/K = W
 		if(K.key_lock == src.key_lock)
 			if(locked)
 				locked = FALSE
@@ -352,7 +352,7 @@
 	else
 		..()
 
-/obj/structure/mineral_door/proc/do_lockpicking(var/mob/living/carbon/human/H, var/obj/item/weapon/lockpick/W)
+/obj/structure/mineral_door/proc/do_lockpicking(var/mob/living/carbon/human/H, var/obj/item/lockpick/W)
 	lockpicking = TRUE
 	to_chat(H, "<span class='jogtowalk'><i>You attempt to lockpick \the [src].</i></span>")
 	var/obj/screen/lockpicking/base/BASE = new ()
@@ -369,8 +369,8 @@
 		H.lockpickingObj = src
 		LockBASEs = BASE
 
-/obj/structure/mineral_door/metal/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/lockpick) && !lockpicking)
+/obj/structure/mineral_door/metal/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/lockpick) && !lockpicking)
 		do_lockpicking(user, W)
 	else
 		..()
@@ -431,9 +431,9 @@
 	locked = 1
 	key_lock = "residencesHUMP"
 
-/obj/structure/mineral_door/wood/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/key))
-		var/obj/item/weapon/key/K = W
+/obj/structure/mineral_door/wood/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/key))
+		var/obj/item/key/K = W
 		if(K.key_lock == src.key_lock)
 			if(locked)
 				locked = FALSE
@@ -442,7 +442,7 @@
 			playsound(loc, 'sound/effects/wboltswitch.ogg', 100, 0)
 			sound2()
 			return
-	if(istype(W,/obj/item/weapon))
+	if(istype(W,/obj/item))
 		hardness -= W.force/100
 		user << "You hit the [name] with your [W.name]!"
 		playsound(loc, 'sound/webbers/wdoorhit.ogg', 70, 0)

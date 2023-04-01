@@ -8,14 +8,14 @@
 	icon = 'icons/mining.dmi'
 	icon_state = "seastar"
 
-/obj/item/weapon/reagent_containers/food/snacks/fish/New()
+/obj/item/reagent_containers/food/snacks/fish/New()
 	..()
 	reagents.add_reagent("nutriment", 8)
 	reagents.add_reagent("water", 2)
 	bitesize = 5
 	life()
 
-/obj/item/weapon/reagent_containers/food/snacks/fish/proc/life()
+/obj/item/reagent_containers/food/snacks/fish/proc/life()
 	while(1)
 		sleep(5)
 		if(isturf(loc))
@@ -24,37 +24,37 @@
 				step(src, pick(NORTH, SOUTH, EAST, WEST))
 		continue
 
-/obj/item/weapon/reagent_containers/food/snacks/fish/fish1
+/obj/item/reagent_containers/food/snacks/fish/fish1
 	name = "fish"
-	icon = 'fish.dmi'
+	icon = 'icons/fish.dmi'
 	icon_state = "fish1_l"
 	filling_color = "#785210"
 	item_worth = 5
 
-/obj/item/weapon/reagent_containers/food/snacks/fish/fish2
+/obj/item/reagent_containers/food/snacks/fish/fish2
 	name = "fish"
-	icon = 'fish.dmi'
+	icon = 'icons/fish.dmi'
 	icon_state = "fish2_l"
 	filling_color = "#785210"
 	item_worth = 8
 
-/obj/item/weapon/reagent_containers/food/snacks/fish/fish3
+/obj/item/reagent_containers/food/snacks/fish/fish3
 	name = "fish"
-	icon = 'fish.dmi'
+	icon = 'icons/fish.dmi'
 	icon_state = "fish3_l"
 	filling_color = "#785210"
 	item_worth = 5
 
-/obj/item/weapon/reagent_containers/food/snacks/fish/fish4
+/obj/item/reagent_containers/food/snacks/fish/fish4
 	name = "fish"
-	icon = 'fish.dmi'
+	icon = 'icons/fish.dmi'
 	icon_state = "fish4_l"
 	filling_color = "#785210"
 	item_worth = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/fish/fish5
+/obj/item/reagent_containers/food/snacks/fish/fish5
 	name = "fish"
-	icon = 'fish.dmi'
+	icon = 'icons/fish.dmi'
 	icon_state = "fish5_l"
 	filling_color = "#785210"
 	item_worth = 10

@@ -3,7 +3,7 @@
 
 		if(H == usr && H.religion == "Thanati")
 			var/list/A = list()
-			playsound(C, 'sigil.ogg', 100)
+			playsound(C, 'sound/webbers/sigil.ogg', 100)
 			for(var/obj/effect/decal/cleanable/thanati/C/THANATI in world)
 				if(THANATI.x == usr.x && THANATI.y == usr.y && THANATI.z == usr.z)
 					continue
@@ -12,7 +12,7 @@
 			usr.x = ATOMO.x
 			usr.y = ATOMO.y
 			usr.z = ATOMO.z
-			playsound(ATOMO	, 'sigil.ogg', 100)
+			playsound(ATOMO	, 'sound/webbers/sigil.ogg', 100)
 			return
 
 		if(H.religion == "Thanati")
@@ -25,11 +25,11 @@
 			return
 		switch(H.job)
 			if("Incarn")
-				H.client.ChromieWinorLoose(H.client, -1)
+				H.client.ChromieWinorLoose(-1)
 			if("Inquisitor")
-				H.client.ChromieWinorLoose(H.client , -5)
+				H.client.ChromieWinorLoose(-5)
 			if("Bishop" || "Priest")
-				H.client.ChromieWinorLoose(H.client, -10)
+				H.client.ChromieWinorLoose(-10)
 		to_chat(H, "Your mind is filled with thoughts that you once saw as heretics, giving you an overwhelming desire to glorify the overlord.")
 		H.religion = "Thanati"
 		log_game("[H.real_name]([H?.key]) has been converted to Thanati by [usr]([usr?.key]).")

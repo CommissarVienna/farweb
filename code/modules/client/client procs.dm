@@ -55,6 +55,41 @@ var/global/max_players = 90
 			C = M.client
 		cmd_admin_pm(C,null)
 		return
+	if(href_list["_src_"] == "stat")
+		if(href_list["spload"] == "1")
+			statpanel_loaded = TRUE
+			init_panel()
+		if(href_list["modernbrowser"] == "1")
+			statpanel_loaded = TRUE
+		if(href_list["buttonpig"] == "1")
+			src << 'sound/uibutton.ogg'
+			who()
+		if(href_list["buttonchrome"] == "1")
+			src << 'sound/uibutton.ogg'
+			if(current_button == "chrome")
+				return
+			current_button = "chrome"
+			newtext(html_verbs[current_button])
+		if(href_list["buttonoptions"] == "1")
+			src << 'sound/uibutton.ogg'
+			if(current_button == "options")
+				return
+			current_button = "options"
+			newtext(html_verbs[current_button])
+		if(href_list["buttonnote"] == "1")
+			src << 'sound/uibutton.ogg'
+			if(current_button == "note")
+				return
+			current_button = "note"
+			newtext(mob.noteUpdate())
+		if(href_list["buttondynamic"])
+			src << 'sound/uibutton.ogg'
+			if(current_button == href_list["buttondynamic"])
+				return
+			current_button = href_list["buttondynamic"]
+			newtext(html_verbs[current_button])
+
+
 
 	//Logs all hrefs
 	if(config && config.log_hrefs && href_logfile)
@@ -66,6 +101,7 @@ var/global/max_players = 90
 		if("prefs")		return prefs.process_link(usr,href_list)
 		if("vars")		return view_var_Topic(href,href_list,hsrc)
 		if("chat")		return chatOutput.Topic(href, href_list)
+
 
 	..()	//redirect to hsrc.Topic()
 
@@ -104,14 +140,12 @@ var/global/max_players = 90
 	///////////
 /client/New(TopicData)
 	TopicData = null							//Prevent calls to client.Topic from connect
-	chatOutput = new /datum/chatOutput(src)
-	force_dark_theme()
 
 	// CARREGAR GOONCHAT
 	if(connection != "seeker")					//Invalid connection type.]
 		return null
 	if(byond_build < 1556 || byond_version < 514)		//Out of date client.
-		src << link("https://nopm.xyz/resources/byond_young.png")
+		src << link("https://wiki.nearweb.org/images/0/0a/Byond_young.png")
 		del(src)
 		return
 
@@ -122,24 +156,19 @@ var/global/max_players = 90
 	///////////////////////
 	//DETECTOR DE GRINGOS//
 	///////////////////////
-#ifdef FARWEB_LIVE
+#ifdef NEARWEB_LIVE
 	if(!IsGuestKey(key))
 		var/list/locinfo = get_loc_info()
 		if(!Country_Code)
 			Country_Code = locinfo["country_code"]
 
-	/*if(private_party && !check_ckey_whitelisted(ckey(key)))
-		src << link("https://nopm.xyz/resources/not_invited.png")
-		del(src) OOPS PUNHETADA NOPM NADA PRA SE VER POR AQUI
-		return*/
-
 	if(ckey in bans)
-		src << link("https://nopm.xyz/resources/lifeweb_completed.png")
+		src << link("https://wiki.nearweb.org/images/0/06/Lifeweb_completed.png")
 		del(src)
 		return
 
 	if(clients.len >= max_players && !holder)
-		src << link("https://nopm.xyz/resources/pool_overpop.png")
+		src << link("https://wiki.nearweb.org/images/0/00/Pool_overpop.png")
 		qdel(src)
 		return
 	if(!JoinDate)
@@ -151,12 +180,14 @@ var/global/max_players = 90
 			Joined = copytext(String, JoinPos, JoinPos+10)
 			src.JoinDate = Joined
 
-	if((!src.JoinDate || text2num(copytext(src.JoinDate, 1, 5)) >= 2020) && !ckeywhitelistweb.Find(src.ckey))
+	if((!ckeywhitelistweb.Find(src.ckey)))
 		notInvited()
 		return
 	// Change the way they should download resources.
 	//src.preload_rsc = "https://www.dropbox.com/s/kfe9yimm9oi2ooj/MACACHKA.zip?dl=1"
 #endif
+	statpanel_loaded = FALSE
+	chatOutput = new /datum/chatOutput(src)
 	to_chat(src, "<span class='highlighttext'> If your screen is dark and you can't interact with the menu, just wait. You must be downloading resources..</span>")
 	to_chat(src, "<span class='highlighttext'>\n If the stat panel fails to load, press F5 while your mouse is over it.</span>")
 	clients += src
@@ -187,7 +218,7 @@ var/global/max_players = 90
 		src.preload_rsc = 1
 	winset(src, "mapwindow.map", "zoom=[prefs.zoom_level];")
 
-#ifdef FARWEB_LIVE
+#ifdef NEARWEB_LIVE
 	info = dbdatums[ckey]
 	if(!info)
 		info = new /datum/dbinfo(src)
@@ -197,13 +228,6 @@ var/global/max_players = 90
 
 	. = ..()	//calls mob.Login()
 
-
-	/*if(custom_event_msg && custom_event_msg != "")
-		src << "<h1 class='alert'>Custom Event</h1>"
-		src << "<h2 class='alert'>A custom event is taking place. OOC Info:</h2>"
-		src << "<span class='alert'>[sanitize_uni(custom_event_msg)]</span>"
-		src << "<br>"*/
-
 	if( (world.address == address || !address) && !host )
 		host = key
 		world.update_status()
@@ -212,8 +236,6 @@ var/global/max_players = 90
 		add_admin_verbs()
 		admin_memo_show()
 
-	log_client_to_db()
-
 	send_resources()
 
 	if(prefs.lastchangelog != changelog_hash) //bolds the changelog button on the interface so we know there are updates.
@@ -221,7 +243,7 @@ var/global/max_players = 90
 	fit_viewport()
 	winshow(src, "http_post_browser", FALSE)
 
-#ifdef FARWEB_LIVE
+#ifdef NEARWEB_LIVE
 	if(authenticated)
 		chatOutput.start()
 #else
@@ -242,37 +264,19 @@ var/global/max_players = 90
 	return ..()
 
 /client/var/toggle_hand
-/*
-/client/proc/toggle_hand()
-	set hidden = 0
-	set category = "Lord"
-	set name = "Choose Lord Hand"
-	set desc="Choose your hand!"
-	var/client/target
-	//target = input("Escolhe um Hand","Lord Hand",target) in players
-	target = input("Coloque a CKEY do seu Hand.","Lord Hand",target)
-	if(target.toggle_hand)
-		src << "<b>[target]</b> <font color='red'> teve o convite cancelado.</font>"
-		target << "<b>[src]</b> <font color='red'> não quer mais você como hand.</font>"
-		target.toggle_hand = FALSE
-		return
-	else
-		src << "<b>[target]</b> <font color='red'> foi convidado para ser seu hand.</font>"
-		target << "<b>[src]</b> <font color='red'> te escolheu para ser o hand dele, entre de migrante para se juntar ao lorde!</font>"
-		target.toggle_hand = TRUE
-		return*/
 /client/proc/toggle_hand()
 	set hidden = 0
 	set category = "Lord"
 	set name = "Choose Lord Hand"
 	set desc="Choose your hand!"
 	var/list/keys = list()
-	for(var/mob/M in player_list)
-		keys += M.client
-	var/selection = input("Selecione um Hand!", "Lord Hand", null, null) as null|anything in sortKey(keys)
+	for(var/mob/new_player/M in player_list)
+		if(M != src.mob)
+			keys += M.client.prefs.real_name
+	var/selection = input("Select your Hand!", "Lord Hand", null, null) as null|anything in keys
 	if(!selection)
 		return
-	var/mob/M = selection:mob
+	var/mob/M = selection
 	if(M.client.toggle_hand)
 		to_chat(src, "<b>[selection]</b> <font color='red'> teve o convite cancelado.</font>")
 		to_chat(M, "<b>[src]</b> <font color='red'> não quer mais você como hand.</font>")
@@ -283,64 +287,6 @@ var/global/max_players = 90
 		to_chat(M, "<b>[src]</b> <font color='red'> te escolheu para ser o hand dele, entre de migrante para se juntar ao lorde!</font>")
 		M.client.toggle_hand = TRUE
 		return
-
-/client/proc/log_client_to_db()
-
-	if ( IsGuestKey(src.key) )
-		return
-
-	establish_db_connection()
-	if(!dbcon.IsConnected())
-		return
-
-	var/sql_ckey = sql_sanitize_text(src.ckey)
-
-	var/DBQuery/query = dbcon.NewQuery("SELECT id, datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = '[sql_ckey]'")
-	query.Execute()
-	var/sql_id = 0
-	while(query.NextRow())
-		sql_id = query.item[1]
-		player_age = text2num(query.item[2])
-		break
-
-	var/DBQuery/query_ip = dbcon.NewQuery("SELECT ckey FROM erro_player WHERE ip = '[address]'")
-	query_ip.Execute()
-	related_accounts_ip = ""
-	while(query_ip.NextRow())
-		related_accounts_ip += "[query_ip.item[1]], "
-		//break
-
-	var/DBQuery/query_cid = dbcon.NewQuery("SELECT ckey FROM erro_player WHERE computerid = '[computer_id]'")
-	query_cid.Execute()
-	related_accounts_cid = ""
-	while(query_cid.NextRow())
-		related_accounts_cid += "[query_cid.item[1]], "
-		//break
-
-	//Just the standard check to see if it's actually a number
-	if(sql_id)
-		if(istext(sql_id))
-			sql_id = text2num(sql_id)
-		if(!isnum(sql_id))
-			return
-
-	var/admin_rank = "Player"
-	if(src.holder)
-		admin_rank = src.holder.rank
-
-	var/sql_ip = sql_sanitize_text(src.address)
-	var/sql_computerid = sql_sanitize_text(src.computer_id)
-	var/sql_admin_rank = sql_sanitize_text(admin_rank)
-
-
-	if(sql_id)
-		//Player already identified previously, we need to just update the 'lastseen', 'ip' and 'computer_id' variables
-		var/DBQuery/query_update = dbcon.NewQuery("UPDATE erro_player SET lastseen = Now(), ip = '[sql_ip]', computerid = '[sql_computerid]', lastadminrank = '[sql_admin_rank]' WHERE id = [sql_id]")
-		query_update.Execute()
-	else
-		//New player!! Need to insert all the stuff
-		var/DBQuery/query_insert = dbcon.NewQuery("INSERT INTO erro_player (id, ckey, firstseen, lastseen, ip, computerid, lastadminrank) VALUES (null, '[sql_ckey]', Now(), Now(), '[sql_ip]', '[sql_computerid]', '[sql_admin_rank]')")
-		query_insert.Execute()
 
 #undef TOPIC_SPAM_DELAY
 #undef UPLOAD_LIMIT
@@ -362,12 +308,10 @@ var/global/max_players = 90
 		'html/loading.gif',
 		'html/search.js',
 		'html/panels.css',
-		//'nano/templates/chem_dispenser.tmpl',
-		//'nano/templates/chem_heater.tmpl',
 		'sound/music/OS13_combat.ogg',
 		'sound/music/haruspex-combat.ogg',
-		'OS13_combat.ogg',
-		'ravenheart_combat1.ogg',
+		'sound/music/OS13_combat.ogg',
+		'sound/music/ravenheart_combat1.ogg',
 		'sound/lfwbsounds/bloodlust1.ogg',
 		'sound/fortress_suspense/suspense1.ogg',
 		'sound/fortress_suspense/suspense2.ogg',
@@ -392,14 +336,12 @@ var/global/max_players = 90
 				work_chosen = "Bartender"
 			if(BOTANIST)
 				work_chosen = "Soiler"
-			if(CHEF)
-				work_chosen = "Innkeeper"
 			if(JANITOR)
 				work_chosen = "Misero"
 			if(QUARTERMASTER)
-				work_chosen = "Bookkeeper"
+				work_chosen = "Merchant"
 			if(CARGOTECH)
-				work_chosen = "Grayhound"
+				work_chosen = "Docker"
 			if(ENGINEER)
 				work_chosen = "Hump"
 			if(LAWYER)
@@ -455,7 +397,7 @@ var/global/max_players = 90
 			if(CONSYTE)
 				work_chosen = "Prophet"
 			if(INNKEEPERWIFE)
-				work_chosen = "Innkeeper Wife"
+				work_chosen = "Madam"
 			if(GUEST)
 				work_chosen = "Guest"
 			if(TRIBVET)
@@ -527,14 +469,12 @@ var/global/max_players = 90
 					work_chosen = "Bartender"
 				if(BOTANIST)
 					work_chosen = "Soiler"
-				if(CHEF)
-					work_chosen = "Innkeeper"
 				if(JANITOR)
 					work_chosen = "Misero"
 				if(QUARTERMASTER)
-					work_chosen = "Bookkeeper"
+					work_chosen = "Merchant"
 				if(CARGOTECH)
-					work_chosen = "Grayhound"
+					work_chosen = "Docker"
 				if(ENGINEER)
 					work_chosen = "Hump"
 				if(LAWYER)
@@ -594,7 +534,7 @@ var/global/max_players = 90
 				if(CONSYTE)
 					work_chosen = "Prophet"
 				if(INNKEEPERWIFE)
-					work_chosen = "Innkeeper Wife"
+					work_chosen = "Madam"
 				if(GUEST)
 					work_chosen = "Guest"
 				if(TRIBVET)
@@ -662,14 +602,12 @@ var/global/max_players = 90
 						work_chosen = "Bartender"
 					if(BOTANIST)
 						work_chosen = "Soiler"
-					if(CHEF)
-						work_chosen = "Innkeeper"
 					if(JANITOR)
 						work_chosen = "Misero"
 					if(QUARTERMASTER)
-						work_chosen = "Bookkeeper"
+						work_chosen = "Merchant"
 					if(CARGOTECH)
-						work_chosen = "Grayhound"
+						work_chosen = "Docker"
 					if(ENGINEER)
 						work_chosen = "Hump"
 					if(LAWYER)
@@ -729,7 +667,7 @@ var/global/max_players = 90
 					if(CONSYTE)
 						work_chosen = "Prophet"
 					if(INNKEEPERWIFE)
-						work_chosen = "Innkeeper Wife"
+						work_chosen = "Madam"
 					if(GUEST)
 						work_chosen = "Guest"
 					if(TRIBVET)
@@ -797,6 +735,6 @@ var/global/max_players = 90
 		winset(src, "name", "text='[mob.real_name]'")
 
 /client/proc/notInvited()
-	src << link("https://nopm.xyz/resources/not_invited.png")
-	src << 'not_invited.ogg'
+	src << link("https://wiki.nearweb.org/images/6/69/Not_invited.jpg")
+	src << 'sound/not_invited.ogg'
 	del(src)

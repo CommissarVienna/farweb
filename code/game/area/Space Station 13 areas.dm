@@ -13,7 +13,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 
 */
 
-#define CAVES list('cave_ambient2.ogg','sound/fwambi/Cave3.ogg','caves4.ogg', 'caves8.ogg', 'caves7.ogg', 'Cave4.ogg', 'caves3.ogg')
+#define CAVES list('sound/fwambi/cave_ambient2.ogg','sound/fwambi/Cave3.ogg','sound/fwambi/caves4.ogg', 'sound/fwambi/caves8.ogg', 'sound/fwambi/caves7.ogg', 'sound/music/Cave4.ogg', 'sound/lfwbambi/caves3.ogg')
 #define FORTRESS list('sound/lfwbambimusic/atrementous-city.ogg', 'sound/lfwbambimusic/curvedblade.ogg', 'sound/lfwbambimusic/dustareallherbeauties.ogg', 'sound/fwambi/ravenheart7.ogg', 'sound/fwambi/happy_temple.ogg', 'sound/fwambi/many_torches.ogg')
 
 
@@ -132,7 +132,7 @@ var/list/ghostteleportlocs = list()
 	fort = 0
 	forced_ambience = null
 	var/playsomething = null
-	var/playvolume = 0
+	var/playvolume = 40
 	var/repeat = 0
 	var/RoomTitle = null
 	var/RoomDesc = null
@@ -152,6 +152,8 @@ var/list/ghostteleportlocs = list()
 		if(!L.ckey)	return
 
 		L << sound(playsomething, repeat = repeat, wait = 0, volume = playvolume, channel = 21)
+	else
+		A << sound(null, repeat = repeat, wait = 0, volume = playvolume, channel = 21)
 
 /area/dunwell/Exited(A)
 	..()
@@ -162,6 +164,8 @@ var/list/ghostteleportlocs = list()
 		if(!L.ckey)	return
 
 		L << sound(null, repeat = 0, wait = 0, volume = 0, channel = 21)
+	else
+		A << sound(null, repeat = repeat, wait = 0, volume = playvolume, channel = 21)
 
 /area/dunwell/surface
 	name = "Surface"
@@ -226,7 +230,6 @@ var/list/ghostteleportlocs = list()
 			M.overlay_fullscreen("surface", /obj/screen/fullscreen/surface)
 			for(var/obj/I in M?.client?.usingPlanes)
 				if(I.plane == -10) continue //shitcode but if it's blur plane, don't blur it more.
-				if(I.plane == 18) continue //shitcode but if it's SHADOWCASTING plane, don't blur it more.
 				I.add_filter("color", 21, list("type" = "color", "color" = list(1.3,0,0,0, 0,1.3,0,0, 0,0,1.3,0, 0,0,0,1, 0.000,0,0,0)))
 				var/filter = I.get_filter("blur")
 				screen_blur(filter, 1, 50)
@@ -239,7 +242,6 @@ var/list/ghostteleportlocs = list()
 			M.clear_fullscreen("surface")
 			for(var/obj/I in M?.client?.usingPlanes)
 				if(I.plane == -10) continue //shitcode but if it's blur plane, don't blur it more.
-				if(I.plane == 16) continue //shitcode but if it's SHADOWCASTING plane, don't blur it more.
 				I?.remove_filter("color")
 
 /area/safespawnarea/inncoldstorage/New()
@@ -252,6 +254,9 @@ var/list/ghostteleportlocs = list()
 	name = "SafeSpawnArea"
 	forced_ambience = list('sound/lfwbambi/invasion.ogg', 'sound/lfwbambi/invasion.ogg')
 	ambience_vol = 100
+
+/area/dunwell
+	var/alarm_toggled = FALSE
 
 /area/dunwell/miniwar
 	name = "Mini War"
@@ -306,7 +311,6 @@ var/list/ghostteleportlocs = list()
 	forced_ambience = FORTRESS
 	ambience_vol = 20
 	single_ambience = FALSE
-	var/alarm_toggled = FALSE
 
 /area/dunwell/station
 	name = "Hallway"
@@ -321,7 +325,6 @@ var/list/ghostteleportlocs = list()
 	forced_ambience = FORTRESS
 	ambience_vol = 24
 	single_ambience = FALSE
-	var/alarm_toggled = FALSE
 
 
 
@@ -342,7 +345,7 @@ var/list/ghostteleportlocs = list()
 	name = "train station (Station)"
 	icon_state = "train_b"
 	nukesafe = TRUE
-	playsomething = 'loop_airy4.ogg'
+	playsomething = 'sound/machines/loop_airy4.ogg'
 	playvolume = 15
 	repeat = 1
 
@@ -350,7 +353,7 @@ var/list/ghostteleportlocs = list()
 	name = "train station (Fortress)"
 	icon_state = "train_f"
 	nukesafe = FALSE
-	playsomething = 'loop_airy4.ogg'
+	playsomething = 'sound/machines/loop_airy4.ogg'
 	playvolume = 15
 	repeat = 1
 
@@ -364,7 +367,7 @@ var/list/ghostteleportlocs = list()
 	fort = 1
 	has_gravity = 1
 	atmos = 0
-	forced_ambience = list('hostile_space.ogg')
+	forced_ambience = list('sound/lfwbambi/hostile_space.ogg')
 	ambience_vol = 24
 	single_ambience = FALSE
 /*
@@ -398,7 +401,7 @@ var/list/ghostteleportlocs = list()
 
 	has_gravity = 1
 	atmos = 0
-	forced_ambience = 'sound/lfwbambi/Cave4.ogg'
+	forced_ambience = 'sound/music/Cave4.ogg'
 	ambience_vol = 24
 	single_ambience = TRUE
 
@@ -454,9 +457,9 @@ var/list/ghostteleportlocs = list()
 	var/mob/living/carbon/human/L = A
 	if(!L.AreasEntered.Find(src))
 		if(L.religion == "Thanati")
-			to_chat(L, "<span class='jogtowalk'><i><b>Church</b> - Your body cringes, sickened by the idoletry lining the room of the incomplete Creator. Contempt fills you, as you alone understand that it is all lies. There is no salvation for you after all, and you intend to show that there is no salvation for them, either. The Overlord shall create a new universe, and redemption shall be gained upon the death of the last person witnessing this one. Praise Tzchernobog!</i></span>")
+			to_chat(L, "<span class='jogtowalk'><i><b>The Gray Church</b> - Your body cringes, sickened by the idoletry lining the room of the incomplete Creator. Contempt fills you, as you alone understand that it is all lies. There is no salvation for you after all, and you intend to show that there is no salvation for them, either. The Overlord shall create a new universe, and redemption shall be gained upon the death of the last person witnessing this one. Praise Tzchernobog!</i></span>")
 		else
-			to_chat(L, "<span class='jogtowalk'><i><b>Church</b> - Stone effigies and sculptures of God look down upon you, His illustrations that are weaved onto the sloped ceiling dance before you in the flickering light. The place of prayer, forgiveness to those who atone for their sins, and for all who have yet to seperate themselves from Him. God be saved.</i></span>")
+			to_chat(L, "<span class='jogtowalk'><i><b>The Gray Church</b> - Stone effigies and sculptures of God look down upon you, His illustrations that are weaved onto the sloped ceiling dance before you in the flickering light. The place of prayer, forgiveness to those who atone for their sins, and for all who have yet to seperate themselves from Him. God be saved.</i></span>")
 		L.AreasEntered.Add(src)
 
 /area/dunwell/station/church/bishopoffice
@@ -469,6 +472,7 @@ var/list/ghostteleportlocs = list()
 	name = "Church Harbor"
 	icon_state = "harbor"
 	hum = 1
+	playsomething = 'sound/ambience/harbor.ogg'
 
 /area/dunwell/station/church/harbor/Entered(A)
 	if(!istype(A,/mob/living))	return
@@ -476,7 +480,7 @@ var/list/ghostteleportlocs = list()
 	var/mob/living/L = A
 	if(!L.ckey)	return
 
-	L << sound('harbor.ogg', repeat = 1, wait = 1, volume = 40, channel = 21)
+	L << sound('sound/ambience/harbor.ogg', repeat = 1, wait = 1, volume = 40, channel = 21)
 
 /area/dunwell/station/church/harbor/Exited(A)
 	if(!istype(A,/mob/living))	return
@@ -532,7 +536,7 @@ var/list/ghostteleportlocs = list()
 	var/mob/living/L = A
 	if(!L.ckey)	return
 
-	L << sound(pick('loop_machineroom.ogg','loop_machineroom2.ogg','loop_machineroom3.ogg','loop_machineroom4.ogg'), repeat = 1, wait = 0, volume = 35, channel = 21)
+	L << sound(pick('sound/ambience/loop_machineroom.ogg','sound/ambience/loop_machineroom2.ogg','sound/ambience/loop_machineroom3.ogg','sound/ambience/loop_machineroom4.ogg'), repeat = 1, wait = 0, volume = 35, channel = 21)
 
 /area/dunwell/station/miser/trash/Exited(A)
 	if(!istype(A,/mob/living))	return
@@ -548,9 +552,11 @@ var/list/ghostteleportlocs = list()
 	icon_state = "misc2"
 	hum = 1
 	sound_env = TUNNEL_ENCLOSED
-	playsomething = 'loop_airy5.ogg'
+	playsomething = 'sound/machines/loop_airy5.ogg'
 	playvolume = 30
 	repeat = 1
+	RoomTitle = "Burrows"
+	RoomDesc = "You hear the wailing cries of beggars and the distraught. Those who have found no mercy from the streets find their home among the downtrodden scoundrels and vermin. The stench of this place almost makes you want to puke."
 
 
 /area/dunwell/station/bathroom
@@ -564,26 +570,12 @@ var/list/ghostteleportlocs = list()
 	icon_state = "camp2"
 	hum = 1
 	sound_env = UNDERWATER
-
-/area/dunwell/river/Entered(A)
-	if(!istype(A,/mob/living))	return
-
-	var/mob/living/L = A
-	if(!L.ckey)	return
-
-	L << sound('running_river.ogg', repeat = 1, wait = 1, volume = 75, channel = 21)
-
-/area/dunwell/river/Exited(A)
-	if(!istype(A,/mob/living))	return
-
-	var/mob/living/L = A
-	if(!L.ckey)	return
-
-	L << sound(null, repeat = 0, wait = 0, volume = 0, channel = 21)
+	playsomething = 'sound/lfwbambi/running_river.ogg'
+	playvolume = 75 
 
 /area/dunwell/realsurface
 	name = "Surface"
-	forced_ambience = list('surfacing.ogg')
+	forced_ambience = list('sound/lfwbambimusic/surfacing.ogg')
 	icon_state = "camp2"
 	has_gravity = 1
 	atmos = 0
@@ -600,7 +592,6 @@ var/list/ghostteleportlocs = list()
 			M.overlay_fullscreen("surface", /obj/screen/fullscreen/surface)
 			for(var/obj/I in M?.client?.usingPlanes)
 				if(I.plane == -10) continue //shitcode but if it's blur plane, don't blur it more.
-				if(I.plane == 18) continue //shitcode but if it's SHADOWCASTING plane, don't blur it more.
 				I.add_filter("color", 21, list("type" = "color", "color" = list(1.3,0,0,0, 0,1.3,0,0, 0,0,1.3,0, 0,0,0,1, 0.000,0,0,0)))
 				var/filter = I.get_filter("blur")
 				screen_blur(filter, 1, 50)
@@ -613,7 +604,6 @@ var/list/ghostteleportlocs = list()
 			M.clear_fullscreen("surface")
 			for(var/obj/I in M?.client?.usingPlanes)
 				if(I.plane == -10) continue //shitcode but if it's blur plane, don't blur it more.
-				if(I.plane == 16) continue //shitcode but if it's SHADOWCASTING plane, don't blur it more.
 				I?.remove_filter("color")
 
 /area/dunwell/realsurface/New()
@@ -659,6 +649,8 @@ var/list/ghostteleportlocs = list()
 	name = "Brothel"
 	icon_state = "brothel"
 	hum = 1
+	RoomTitle = "Den of Sin"
+	RoomDesc = "The smell of sin and vice overpowers you as you enter into the Pusher's domain. The stink of sweat, booze, sex, and violence is so thick in the air it makes your eyes water. This is no place for those of morals."
 
 
 /area/dunwell/station/brothel/Entered(A)
@@ -685,7 +677,7 @@ var/list/ghostteleportlocs = list()
 /area/dunwell/station/burrow/maintenance
 	name = "Maintenance"
 	icon_state = "wall"
-	playsomething = 'clank_loop.ogg'
+	playsomething = 'sound/ambience/clank_loop.ogg'
 	playvolume = 24
 	repeat = 1
 
@@ -721,7 +713,6 @@ var/list/ghostteleportlocs = list()
 	name = "Keep"
 	icon_state = "crown2"
 	hum = 1
-
 	RoomTitle = "Keep"
 	RoomDesc = "The modest fireplaces lining the walls cause a sense of warmth to wash over you. The cozy grandeur of being away from the perils of the outside is a luxury afforded only to aristocracy. But perhaps its the false sense of security that keeps drawing you back."
 
@@ -756,7 +747,7 @@ var/list/ghostteleportlocs = list()
 	name = "Great Hall"
 	icon_state = "crown"
 	RoomTitle = "Great Hall"
-	RoomDesc = "The Great Hall towers before you, forked banners with embellished trimmings covering its walls. Between each banner stands a tall candle, lit to illuminate the mosaics of past conquerors and victors before them. The Throne of Thorns sits high above the rest, its sovereign seated below the Draconic Visage, said to contain the spirits of its most esteemed rulers."
+	RoomDesc = "The Great Hall towers before you, forked banners with embellished trimmings covering its walls. Between each banner stands a tall candle, lit to illuminate the mosaics of past conquerors and victors before them. The Throne of the Tiamat sits high above the rest, its sovereign seated below the Draconic Visage, said to contain the spirits of its most esteemed rulers."
 
 /area/dunwell/station/bridge/hangar
 	name = "Hangar"
@@ -791,6 +782,8 @@ var/list/ghostteleportlocs = list()
 	name = "Sanctuary"
 	icon_state = "biobay4"
 	hum = 1
+	RoomTitle = "Sanctuary"
+	RoomDesc = "A place of healing, though the smell of blood and death is strong here. This place seeks to alleviate the ailments, rather than to cause them, though the success rate is highly variable."
 
 /area/dunwell/station/medbay/surga
 	name = "\improper Surgery Room A"
@@ -820,7 +813,7 @@ var/list/ghostteleportlocs = list()
 	var/mob/living/L = A
 	if(!L.ckey)	return
 
-	L << sound('harbor.ogg', repeat = 1, wait = 1, volume = 40, channel = 21)
+	L << sound('sound/ambience/harbor.ogg', repeat = 1, wait = 1, volume = 40, channel = 21)
 
 /area/dunwell/station/harbor/Exited(A)
 	if(!istype(A,/mob/living))	return
@@ -841,24 +834,28 @@ var/list/ghostteleportlocs = list()
 	hum = 1
 
 
+/area/dunwell/station/lifeweb
 	name = "Lifeweb room"
 	icon_state = "lifeweb"
 	hum = 1
+	playsomething = 'sound/ambience/lifeweb2b.ogg'
+	RoomTitle = "Lifeweb"
+	RoomDesc = "The overpowering mechanical sound of pipes and machinery blasts your eardrums. The chamber reeks of blood and death, as if it were a slaughterhouse. The lifeweb provides power, but at what cost?"
 
 
 /area/dunwell/station/lifeweb/Entered(A)
 	..()
 	if(!ishuman(A))	return
 	var/mob/living/carbon/human/H = A
-	H.Lifewebbed = TRUE
-	H << sound('lifeweb2b.ogg', repeat = 1, wait = 1, volume = 50, channel = 21)
+	if(H.job != "Mortus" && H.job != "Archmortus")
+		H.blur(time = -1)
 
 /area/dunwell/station/lifeweb/Exited(A)
 	..()
 	if(!ishuman(A))	return
 	var/mob/living/carbon/human/H = A
-	H.Lifewebbed = FALSE
-	H << sound(null, repeat = 0, wait = 0, volume = 0, channel = 21)
+	if(H.job != "Mortus" && H.job != "Archmortus")
+		H.remove_blur()
 
 //These are shuttle areas, they must contain two areas in a subgroup if you want to move a shuttle from one
 //place to another. Look at escape shuttle for example.
@@ -924,7 +921,7 @@ var/list/ghostteleportlocs = list()
 
 /area/shuttle/escape_pod1
 	name = "\improper Escape Pod A"
-	forced_ambience = list('charon_loop.ogg')
+	forced_ambience = list('sound/effects/charon_loop.ogg')
 	music = "music/escape.ogg"
 	luminosity = 0
 

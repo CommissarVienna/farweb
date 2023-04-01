@@ -1,11 +1,11 @@
-/obj/item/weapon/gun/projectile/newRevolver/duelista/neoclassic
+/obj/item/gun/projectile/newRevolver/duelista/neoclassic
 	name = "Neoclassic R&W10"
 	desc = "A classic revolver. Uses .38 ammo"
 	icon_state = "neoclassic"
 	item_state = "detective"
 	item_worth = 280
 	caliber = ".38"
-	w_class = 3.0
+	w_class = 3
 	origin_tech = "combat=2;materials=2"
 	mag_type = /obj/item/ammo_magazine/internal/cylinder/rev38
 	maxAmmoSprite = 4

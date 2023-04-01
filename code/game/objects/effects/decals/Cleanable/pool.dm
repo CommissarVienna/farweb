@@ -12,7 +12,10 @@
 	var/list/viruses = list()
 	var/basecolor="#b90000" // Color when wet.
 	var/list/datum/disease2/disease/virus2 = list()
-	var/list/stages = list(100,200,300,400)
+	var/stage1 = 100
+	var/stage2 = 200
+	var/stage3 = 300
+	var/stage4 = 400
 	var/stop
 	var/amount = 00
 
@@ -30,10 +33,14 @@
 	. = ..()
 	update_icon()
 	stop = world.time + 1000 //in 100(!) seconds the pool of blood should be at max size
-	stages[1] = stages[1] + world.time + 50
-	stages[2] = stages[2] + world.time + 50
-	stages[3] = stages[3] + world.time + 50
-	stages[4] = stages[4] + world.time + 50
+	stage1 += world.time + 50
+	stage2 += world.time + 50
+	stage3 += world.time + 50
+	stage4 += world.time + 50
+//	stages[1] = stages[1] + world.time + 50
+//	stages[2] = stages[2] + world.time + 50
+//	stages[3] = stages[3] + world.time + 50
+//	stages[4] = stages[4] + world.time + 50
 
 	processing_objects.Add(src)
 
@@ -49,19 +56,19 @@
 /obj/effect/decal/cleanable/bloodpool/process()
 	//sorry for the shitty yandare dev code, but its the only way without switches(broken) or maths(inneficient apparently)
 	if(locate(/mob/living/carbon/human) in src.loc)
-		if(world.time < src?.stages[1])
+		if(world.time < stage1)
 			icon_state = "pool1"
 			amount = 2
-		else if(src?.stages[1]>world.time && world.time<src?.stages[2])
+		else if(src?.stage1>world.time && world.time<src?.stage2)
 			icon_state = "pool2"
 			amount = 4
-		else if(src?.stages[2]>world.time && world.time<src?.stages[3])
+		else if(src?.stage2>world.time && world.time<src?.stage4)
 			icon_state = "pool3"
 			amount = 6
-		else if(src?.stages[3]>world.time && world.time<src?.stages[4])
+		else if(src?.stage3>world.time && world.time<src?.stage4)
 			icon_state = "pool4"
 			amount = 8
-		else if(src?.stages[4]>world.time && world.time<stop)
+		else if(src?.stage4>world.time && world.time<stop)
 			icon_state = "pool5"
 			amount = 10
 		else if(world.time>stop + 30)

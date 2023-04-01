@@ -32,23 +32,23 @@
 	kingwillamount1 = rand(1,14)
 	kingwillamount2 = rand(1,12)
 	kingwillamount3 = rand(1,8)
-	kingwillobj1 = pick(/obj/item/weapon/cloaking_device, /obj/item/weapon/reagent_containers/food/snacks/meat, /obj/item/weapon/reagent_containers/food/snacks/organ/lungs)
-	kingwillobj2 = pick(/obj/item/weapon/kitchen/utensil/knife, /obj/item/weapon/reagent_containers/syringe, /obj/item/weapon/reagent_containers/food/snacks/organ/heart)
-	kingwillobj3 = pick(/obj/item/weapon/grenade/syndieminibomb/frag, /obj/item/weapon/reagent_containers/food/snacks/organ/internal/penis)
+	kingwillobj1 = pick(/obj/item/cloaking_device, /obj/item/reagent_containers/food/snacks/meat, /obj/item/reagent_containers/food/snacks/organ/lungs)
+	kingwillobj2 = pick(/obj/item/kitchen/utensil/knife, /obj/item/reagent_containers/syringe, /obj/item/reagent_containers/food/snacks/organ/heart)
+	kingwillobj3 = pick(/obj/item/grenade/syndieminibomb/frag, /obj/item/reagent_containers/food/snacks/organ/internal/penis)
 	spawn (rand(3000, 4800))
 		for(var/obj/machinery/charon/C in world)
-			var/obj/item/weapon/paper/lord/NG = new (C.loc)
+			var/obj/item/paper/lord/NG = new (C.loc)
 			var/obj/kingw1 = new kingwillobj1
 			var/obj/kingw2 = new kingwillobj2
 			var/obj/kingw3 = new kingwillobj3
 			NG.info = "The God king demands a few gifts from the baron of Firethorn!"
 			NG.info += "<br>[kingwillamount1] [kingw1.name], [kingwillamount2] [kingw2.name], [kingwillamount3] [kingw3.name]"
-			NG.info += "You have 30 minutes to deliver everything through the Bookkeeper's barge before the tribunals are sent!"
+			NG.info += "You have 30 minutes to deliver everything through the Merchant's barge before the tribunals are sent!"
 			evermail_ref.receive(NG, 1)
 		spawn(30 MINUTES)
 			if(kingwilldone1 && kingwilldone2 && kingwilldone3)
 				for(var/obj/machinery/charon/C in world)
-					var/obj/item/weapon/paper/lord/NG = new (C.loc)
+					var/obj/item/paper/lord/NG = new (C.loc)
 					NG.info = "The God king has received the gifts!"
 					evermail_ref.receive(NG, 1)
 				to_chat(world, "<span class='ravenheartfortress'>Firethorn Fortress</span>")
@@ -59,11 +59,11 @@
 				spawn(1 MINUTES)
 					for(var/mob/living/carbon/human/H in mob_list)
 						if(istype(get_area(H), /area/dunwell/station/dining))
-							H.client.ChromieWinorLoose(H.client, 2)
+							H.client.ChromieWinorLoose(2)
 					ticker.declare_completion()
 			else
 				for(var/obj/machinery/charon/C in world)
-					var/obj/item/weapon/paper/lord/NG = new (C.loc)
+					var/obj/item/paper/lord/NG = new (C.loc)
 					NG.info = "The God king hasn't received the gifts, a Tribunal squad has been sent!"
 					evermail_ref.receive(NG, 1)
 				makeDeathsquad()
@@ -107,7 +107,7 @@
 
 	for(var/mob/dead/observer/G in player_list)
 		spawn(0)
-			G << 'console_interact7.ogg'
+			G << 'sound/webbers/console_interact7.ogg'
 			switch(alert(G,"Do you want to join a Tribunal Ordinator Squad?","You have thiry seconds to comply.","Yes","No"))
 				if("Yes")
 					if((world.time-time_passed)>300)//If more than 30 game seconds passed.
@@ -192,6 +192,6 @@
 	for(var/mob/new_player/player in player_list)
 		for(var/mob/new_player/player2 in player_list)
 			for(var/mob/new_player/player3 in player_list)
-				if(player.ready && player.client.work_chosen == "Baron" && player2.ready && player2.client.work_chosen == "Inquisitor"&& player3.ready && player3.client.work_chosen == "Bookkeeper")
+				if(player.ready && player.client.work_chosen == "Baron" && player2.ready && player2.client.work_chosen == "Inquisitor"&& player3.ready && player3.client.work_chosen == "Merchant")
 					return 1
 	return 0

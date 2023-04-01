@@ -12,7 +12,7 @@
 
 /obj/item/device/radio/headset/bracelet/attack_self(mob/user as mob)
 	var/dat = {"<HTML><META http-equiv="X-UA-Compatible" content="IE=edge" charset="UTF-8"><style type="text/css"> body {font-family: Times; cursor: url('http://lfwb.ru/Icons/pointer.cur'), auto;} a {text-decoration:none;outline: none;border: none;margin:-1px;} a:focus{outline:none;} a:hover {color:#0d0d0d;background:#505055;outline: none;border: none;} a.active { text-decoration:none; color:#533333;} a.inactive:hover {color:#0d0d0d;background:#bb0000} a.active:hover {color:#bb0000;background:#0f0f0f} a.inactive:hover { text-decoration:none; color:#0d0d0d; background:#bb0000}</style> <body background bgColor=#0d0d0d text=#862525 alink=#777777 vlink=#777777 link=#777777><HEAD><TITLE>[name]</TITLE></HEAD><BODY>"}
-	for(var/obj/item/weapon/card/id/ID in rings)
+	for(var/obj/item/card/id/ID in rings)
 		if(ID.no_showing) continue
 		if(ID.registered_name == "Unknown")	continue
 		dat += "<b>[ID.registered_name]</b> <i>([ID.assignment])</i><br>"
@@ -24,7 +24,7 @@
 
 /obj/item/device/radio/headset/bracelet/talk_into(mob/living/M as mob)
 	if(M.paralysis || M.stunned)
-		to_chat(M, "<span class = 'combatbold'[pick(nao_consigoen)]</span><span class='combat'> I can't move my arm!</span>")
+		to_chat(M, "<span class = 'combatbold'[pick(fnord)]</span><span class='combat'> I can't move my arm!</span>")
 		return
 	..()
 

@@ -25,18 +25,17 @@
 			obj_count++
 
 		for (var/obj/item/I in H)
-			if (istype(I, /obj/item/weapon/implant))
+			if (istype(I, /obj/item/implant))
 				continue
 			qdel(I)
 
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/kilt(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/heads/captain(H), slot_l_ear)
-		H.equip_to_slot_or_del(new /obj/item/clothing/head/beret(H), slot_head)
-		H.equip_to_slot_or_del(new /obj/item/weapon/claymore(H), slot_l_hand)
+		H.equip_to_slot_or_del(new /obj/item/claymore(H), slot_l_hand)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/combat(H), slot_shoes)
-		H.equip_to_slot_or_del(new /obj/item/weapon/pinpointer(H.loc), slot_l_store)
+		H.equip_to_slot_or_del(new /obj/item/pinpointer(H.loc), slot_l_store)
 
-		var/obj/item/weapon/card/id/W = new(H)
+		var/obj/item/card/id/W = new(H)
 		W.name = "[H.real_name]'s ID Card"
 		W.icon_state = "centcom"
 		W.access = get_all_accesses()

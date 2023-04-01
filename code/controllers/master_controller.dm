@@ -42,7 +42,7 @@ datum/controller/game_controller
 
 	var/global/datum/garbage_collector/garbageCollector
 
-datum/controller/game_controller/New()
+/datum/controller/game_controller/New()
 	//There can be only one master_controller. Out with the old and in with the new.
 	if(master_controller != src)
 		if(istype(master_controller))
@@ -54,9 +54,10 @@ datum/controller/game_controller/New()
 		job_master = new /datum/controller/occupations()
 		job_master.SetupOccupations()
 		job_master.LoadJobs("config/jobs.txt")
-		world << "\red \b Job setup complete"
 		set_donation_locks()
 		loadFateLocks()
+	if(!radio_controller)
+		radio_controller = new /datum/controller/radio()
 
 	if(!emergency_shuttle)
 		emergency_shuttle = new /datum/shuttle_controller/emergency_shuttle()
@@ -87,18 +88,21 @@ datum/controller/game_controller/proc/setup()
 datum/controller/game_controller/proc/setup_objects()
 	var/initialized_objects = 0
 	to_chat(world, "<span class = 'messages'>1. Generating objects...</span>")
+	world.log << "Generating Objects"
 
 	for(var/atom/movable/object in init_obj)
 		object.initialize()
 		CHECK_SLEEP_MASTER
 
 	to_chat(world, "<span class = 'messages'>2. Initializing tunnel network...</span>")
+	world.log << "Initializing tunnel network"
 
 	for(var/obj/machinery/atmospherics/machine in machines)
 		machine.build_network()
 		CHECK_SLEEP_MASTER
 
 	to_chat(world, "<span class = 'messages'>3. Initializing the lifeweb...</span>")
+	world.log << "Initalizing Atmos Objects"
 
 	for(var/obj/machinery/atmospherics/unary/U in machines)
 		CHECK_SLEEP_MASTER
@@ -108,14 +112,13 @@ datum/controller/game_controller/proc/setup_objects()
 		else if(istype(U, /obj/machinery/atmospherics/unary/vent_scrubber))
 			var/obj/machinery/atmospherics/unary/vent_scrubber/T = U
 			T.broadcast_status()
-	
+
 	to_chat(world, "<span class = 'messages'>4. Letting there be light...</span>")
-	shadowcasting_controller.initialized = TRUE
 
 	to_chat(world, "<span class = 'messages'>5. Dirtying the fortress...")
 
 	var/evergreenGen = world.timeofday
-	to_chat(world, "<span class='adminlobby'>God made Evergreen in <b>[(evergreenGen - start_time)/10]</b> seconds.</pan>")
+	to_chat(world, "<span class='adminlobby'>God made Evergreen in <b>[(evergreenGen - start_time)/10]</b> seconds.</span>")
 	CHECK_SLEEP_MASTER
 
 datum/controller/game_controller/proc/MushroomGen()		//Mostly a placeholder for now.
@@ -153,26 +156,26 @@ datum/controller/game_controller/proc/MushroomGen()		//Mostly a placeholder for 
 				if(O.density)
 					go = 0
 			if(go)
-				var/selectedMushroomType2 = pick(/obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/zheleznyak ,/obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/ovrajnik, /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/zelegreeb, /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/bezglaznik,/obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/barhovik ,/obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/krovnik, /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/corniy, /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/gryab,/obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/morfiannik, /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/podgnylnik, /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/ljutogreeb, /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/otorvyannik, /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/plumphelmet)
+				var/selectedMushroomType2 = pick(/obj/item/reagent_containers/food/snacks/grown/mushroom/zheleznyak ,/obj/item/reagent_containers/food/snacks/grown/mushroom/ovrajnik, /obj/item/reagent_containers/food/snacks/grown/mushroom/zelegreeb, /obj/item/reagent_containers/food/snacks/grown/mushroom/bezglaznik,/obj/item/reagent_containers/food/snacks/grown/mushroom/barhovik ,/obj/item/reagent_containers/food/snacks/grown/mushroom/krovnik, /obj/item/reagent_containers/food/snacks/grown/mushroom/corniy, /obj/item/reagent_containers/food/snacks/grown/mushroom/gryab,/obj/item/reagent_containers/food/snacks/grown/mushroom/morfiannik, /obj/item/reagent_containers/food/snacks/grown/mushroom/podgnylnik, /obj/item/reagent_containers/food/snacks/grown/mushroom/ljutogreeb, /obj/item/reagent_containers/food/snacks/grown/mushroom/otorvyannik, /obj/item/reagent_containers/food/snacks/grown/mushroom/plumphelmet)
 				new selectedMushroomType2(D)
 		if(prob(18))
-			new /obj/item/weapon/stone(D)
+			new /obj/item/stone(D)
 		if(prob(20))
 			var/selectedGrassType = /obj/structure/lifeweb/grass
 			new selectedGrassType(D)
 		if(prob(3))
 			if(prob(1))
 				if(prob(1))
-					var/selectedItem = /obj/item/weapon/hatchet/rusty
+					var/selectedItem = /obj/item/hatchet/rusty
 					new selectedItem(D)
 			else if(prob(3))
-				var/selectedItem = /obj/item/weapon/hatchet/stone
+				var/selectedItem = /obj/item/hatchet/stone
 				new selectedItem(D)
 			else if(prob(5))
-				var/selectedItem = /obj/item/weapon/kitchen/utensil/knife/combat
+				var/selectedItem = /obj/item/kitchen/utensil/knife/combat
 				new selectedItem(D)
 		if(prob(2))
-			var/selectedItem = /obj/item/weapon/reagent_containers/food/snacks/worms
+			var/selectedItem = /obj/item/reagent_containers/food/snacks/worms
 			new selectedItem(D)
 		if(D.allowedExist)
 			for(var/turf/simulated/floor/plating/dirt/DT in range(1, D))

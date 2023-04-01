@@ -1,6 +1,6 @@
 //CONTAINS: Evidence bags and fingerprint cards
 
-/obj/item/weapon/evidencebag
+/obj/item/evidencebag
 	name = "evidence bag"
 	desc = "An empty evidence bag."
 	icon = 'icons/obj/storage.dmi'
@@ -8,7 +8,7 @@
 	item_state = ""
 	w_class = 1
 
-/obj/item/weapon/evidencebag/afterattack(obj/item/I, mob/user as mob, proximity)
+/obj/item/evidencebag/afterattack(obj/item/I, mob/user as mob, proximity)
 	if(!proximity) return
 	if(!in_range(I, user))
 		return
@@ -16,7 +16,7 @@
 	if(!istype(I) || I.anchored == 1)
 		return ..()
 
-	if(istype(I, /obj/item/weapon/evidencebag))
+	if(istype(I, /obj/item/evidencebag))
 		user << "<span class='notice'>You find putting an evidence bag in another evidence bag to be slightly absurd.</span>"
 		return
 
@@ -29,8 +29,8 @@
 		return ..()
 
 	if(!isturf(I.loc)) //If it isn't on the floor. Do some checks to see if it's in our hands or a box. Otherwise give up.
-		if(istype(I.loc,/obj/item/weapon/storage))	//in a container.
-			var/obj/item/weapon/storage/U = I.loc
+		if(istype(I.loc,/obj/item/storage))	//in a container.
+			var/obj/item/storage/U = I.loc
 			user.client.screen -= I
 			U.contents.Remove(I)
 		else if(user.l_hand == I)					//in a hand
@@ -61,7 +61,7 @@
 	return
 
 
-/obj/item/weapon/evidencebag/attack_self(mob/user as mob)
+/obj/item/evidencebag/attack_self(mob/user as mob)
 	if(contents.len)
 		var/obj/item/I = contents[1]
 		user.visible_message("[user] takes [I] out of [src]", "You take [I] out of [src].",\
@@ -77,20 +77,20 @@
 		icon_state = "evidenceobj"
 	return
 
-/obj/item/weapon/storage/box/evidence
+/obj/item/storage/box/evidence
 	name = "evidence bag box"
 	desc = "A box claiming to contain evidence bags."
 	New()
-		new /obj/item/weapon/evidencebag(src)
-		new /obj/item/weapon/evidencebag(src)
-		new /obj/item/weapon/evidencebag(src)
-		new /obj/item/weapon/evidencebag(src)
-		new /obj/item/weapon/evidencebag(src)
-		new /obj/item/weapon/evidencebag(src)
+		new /obj/item/evidencebag(src)
+		new /obj/item/evidencebag(src)
+		new /obj/item/evidencebag(src)
+		new /obj/item/evidencebag(src)
+		new /obj/item/evidencebag(src)
+		new /obj/item/evidencebag(src)
 		..()
 		return
 
-/obj/item/weapon/f_card
+/obj/item/f_card
 	name = "finger print card"
 	desc = "Used to take fingerprints."
 	icon = 'icons/obj/card.dmi'
@@ -103,7 +103,7 @@
 	throw_range = 5
 
 
-/obj/item/weapon/fcardholder
+/obj/item/fcardholder
 	name = "fingerprint card case"
 	desc = "Apply finger print card."
 	icon = 'icons/obj/items.dmi'

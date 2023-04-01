@@ -1,5 +1,5 @@
 
-/obj/item/weapon/reagent_containers/borghypo
+/obj/item/reagent_containers/borghypo
 	name = "Cyborg Hypospray"
 	desc = "An advanced chemical synthesizer and injection system, designed for heavy-duty medical equipment."
 	icon = 'icons/obj/syringe.dmi'
@@ -17,7 +17,7 @@
 	var/list/datum/reagents/reagent_list = list()
 	var/list/reagent_ids = list("omnizine", "epinephrine", "spaceacillin")
 
-/obj/item/weapon/reagent_containers/borghypo/New()
+/obj/item/reagent_containers/borghypo/New()
 	..()
 	for(var/R in reagent_ids)
 		add_reagent(R)
@@ -25,11 +25,11 @@
 	processing_objects.Add(src)
 
 
-/obj/item/weapon/reagent_containers/borghypo/Destroy()
+/obj/item/reagent_containers/borghypo/Destroy()
 	processing_objects.Remove(src)
 	..()
 
-/obj/item/weapon/reagent_containers/borghypo/process() //Every [recharge_time] seconds, recharge some reagents for the cyborg
+/obj/item/reagent_containers/borghypo/process() //Every [recharge_time] seconds, recharge some reagents for the cyborg
 	charge_tick++
 	if(charge_tick < recharge_time) return 0
 	charge_tick = 0
@@ -46,13 +46,13 @@
 
 // Purely for testing purposes I swear~
 /*
-/obj/item/weapon/reagent_containers/borghypo/verb/add_cyanide()
+/obj/item/reagent_containers/borghypo/verb/add_cyanide()
 	set src in world
 	add_reagent("cyanide")
 */
 
 // Use this to add more chemicals for the borghypo to produce.
-/obj/item/weapon/reagent_containers/borghypo/proc/add_reagent(var/reagent)
+/obj/item/reagent_containers/borghypo/proc/add_reagent(var/reagent)
 	reagent_ids |= reagent
 	var/datum/reagents/RG = new(30)
 	RG.my_atom = src
@@ -61,7 +61,7 @@
 	var/datum/reagents/R = reagent_list[reagent_list.len]
 	R.add_reagent(reagent, 30)
 
-/obj/item/weapon/reagent_containers/borghypo/attack(mob/M as mob, mob/user as mob)
+/obj/item/reagent_containers/borghypo/attack(mob/M as mob, mob/user as mob)
 	var/datum/reagents/R = reagent_list[mode]
 	if(!R.total_volume)
 		user << "\red The injector is empty."
@@ -78,7 +78,7 @@
 			user << "\blue [trans] units injected. [R.total_volume] units remaining."
 	return
 
-/obj/item/weapon/reagent_containers/borghypo/attack_self(mob/user as mob)
+/obj/item/reagent_containers/borghypo/attack_self(mob/user as mob)
 	playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)		//Change the mode
 	mode++
 	if(mode > reagent_list.len)
@@ -89,7 +89,7 @@
 	user << "\blue Synthesizer is now producing '[R.name]'."
 	return
 
-/obj/item/weapon/reagent_containers/borghypo/examine()
+/obj/item/reagent_containers/borghypo/examine()
 	set src in view()
 	..()
 	if (!(usr in view(2)) && usr!=src.loc) return

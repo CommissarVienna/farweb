@@ -26,13 +26,10 @@
 	src.zone_sel = new /obj/screen/zone_sel( null )
 
 	potenzia = rand(16, 25)
-	my_stats.initst = 13
-	my_stats.initht = 13
-	my_stats.initdx = rand(12,16)
-	my_stats.st = my_stats.initst
-	my_stats.ht = my_stats.initht
-	my_stats.dx = my_stats.initdx
-	my_skills.CHANGE_SKILL(SKILL_MELEE, 14)
+	my_stats.change_stat(STAT_ST, 3)
+	my_stats.change_stat(STAT_HT, 3)
+	my_stats.change_stat(STAT_DX, 1)
+	my_skills.change_skill(SKILL_MELEE, 14)
 	sleep(10)
 	if(!mind)
 		mind = new /datum/mind(src)
@@ -45,7 +42,7 @@
 	if(resting || stat)
 		return ..()
 	var/selectedSound = pick('sound/effects/strygh_life1.ogg', 'sound/effects/strygh_life2.ogg')
-	playsound(loc, 'chameleon_step.ogg', 25, 0)
+	playsound(loc, 'sound/effects/chameleon_step.ogg', 25, 0)
 	if(prob(5))
 		playsound(loc, selectedSound, 80, 1)
 	return ..()

@@ -15,50 +15,11 @@ var/date_string = time2text(world.realtime, "YYYY/MM-Month/DD-Day")
 var/rtlog_path
 
 
-#define RECOMMENDED_VERSION 501 //lol
+#define RECOMMENDED_VERSION 514
 /world/New()
 	//logs]
 	set waitfor = FALSE
-#ifdef FARWEB_LIVE
-	if(init_discord == "True")
-		world.log << "Discord initialized."
-	else
-		world.log << "Discord failed to initialize, shutting down..."
-		del(world)
-		return
-	if(src.port == BRZ_PORT)
-		server_language = "BR"
-		current_server = "BRZ"
-		if(send_roundstart_embed != "True")
-			world.log << "Failed to send roundstart embed!"
-			del(world)
-			return
-	if(src.port == IZ2_PORT)
-		server_language = "IZ"
-		current_server =  "S2"
-		if(send_roundstart_embed != "True")
-			world.log << "Failed to send roundstart embed!"
-			del(world)
-			return
-	if(src.port == IZ1_PORT)
-		server_language = "IZ"
-		current_server = "S1"
-		if(send_roundstart_embed != "True")
-			world.log << "Failed to send roundstart embed!"
-			del(world)
-			return
-	if(src.port == SHROOM_PORT)
-		server_language = "IZ"
-		current_server = "SHROOM"
-	if(src.port == IZ3_PORT)
-		server_language = "IZ"
-		current_server = "S3"
-		hub_password = "SORRYNOPASSWORD"
-		if(send_roundstart_embed != "True")
-			world.log << "Failed to send roundstart embed!"
-			del(world)
-			return
-#else
+#ifdef NEARWEB_LIVE
 	server_language = "IZ"
 	current_server = "S1"
 #endif
@@ -73,11 +34,15 @@ var/rtlog_path
 		// dumb and hardcoded but I don't care~
 		config.server_name += " #[(world.port % 1000) / 100]"
 
+	world_name()
 	callHook("startup")
 	load_admins()
 	LoadBansjob()
 	load_whitelist()
-#ifdef FARWEB_LIVE
+	if(!fexists("data/game_version.sav"))//This should only have to be run once.
+		add_story_id()
+	get_story_id()
+#ifdef NEARWEB_LIVE
 	load_db_whitelist()
 	load_db_bans()
 	load_comrade_list()
@@ -114,7 +79,6 @@ var/rtlog_path
 		thanatiGlobal.setup()
 	TgsInitializationComplete()
 
-
 	spawn(3000)		//so we aren't adding to the round-start lag
 		if(config.ToRban)
 			ToRban_autoupdate()
@@ -122,17 +86,6 @@ var/rtlog_path
 #undef RECOMMENDED_VERSION
 
 	return
-
-//world/Topic(href, href_list[])
-//		world << "Received a Topic() call!"
-//		world << "[href]"
-//		for(var/a in href_list)
-//			world << "[a]"
-//		if(href_list["hello"])
-//			world << "Hello world!"
-//			return "Hello world!"
-//		world << "End of Topic() call."
-//		..()
 
 /world/Topic(T, addr, master, key)
 	TGS_TOPIC
@@ -178,17 +131,12 @@ var/rtlog_path
 		return list2params(s)
 
 
-/world/Reboot(var/reason)
-	/*spawn(0)
-		world << sound(pick('sound/AI/newroundsexy.ogg','sound/misc/apcdestroyed.ogg','sound/misc/bangindonk.ogg')) // random end sounds!! - LastyBatsy
-		*/
+/world/Reboot(reason)
+	TgsTargetedChatBroadcast("<@&1075561850374209546> The round has restarted! - <byond://play.nearweb.org:59490>", FALSE)
+	story_holder.story_number++
+	add_story_id()
 	for(var/client/C in clients)
 		C << link("byond://[world.address]:[world.port]")
-	if(send_roundend_embed != "True")
-		world.log << "Failed to send roundend embed!"
-	if(roundendping.len > 0)
-		for(var/C in roundendping)
-			TgsChatPrivateMessage("[current_server] has restarted!", C)
 	TgsReboot()
 	TgsEndProcess()
 	..(reason)
@@ -204,7 +152,7 @@ var/rtlog_path
 			master_mode = Lines[1]
 			diary << "Saved mode is '[master_mode]'"
 
-/world/proc/save_mode(var/the_mode)
+/world/proc/save_mode(the_mode)
 	var/F = file("data/mode.txt")
 	fdel(F)
 	F << the_mode
@@ -225,31 +173,14 @@ var/rtlog_path
 
 /world/proc/update_status()
 	var/s = ""
-/*
-	if (config && config.server_name)
-		s += "<b>[server_language] | [config.server_name]</b> &#8212; "
-
-	s += "<b>[vessel_name()]</b>";*/
 	s += "<b>[vessel_name()]</b> &#8212; "
 	s += " ("
-	s += "<a href=\"https://discord.gg/JcVcG6JxJm\">" //Change this to wherever you want the hub to link to.
-//	s += "[game_version]"
+	s += "<a href=\"https://discord.gg/wYHkRTYc5J\">" //Change this to wherever you want the hub to link to.
 	s += "Dungeon"  //Replace this with something else. Or ever better, delete it and uncomment the game version.
 	s += "</a>"
 	s += ")"
 
 	var/list/features = list()
-/*
-	if(ticker)
-		if(master_mode)
-			features += master_mode
-	else
-		features += "<b>INICIANDO</b>"
-
-	if (!enter_allowed)
-		features += "trancado"
-*/
-	//features += abandon_allowed ? "respawn" : "no respawn"
 
 	var/n = 0
 	for (var/mob/M in player_list)
@@ -280,7 +211,7 @@ var/rtlog_path
 #define FAILED_DB_CONNECTION_CUTOFF 5
 var/failed_db_connections = 0
 
-#ifdef FARWEB_LIVE
+#ifdef NEARWEB_LIVE
 /hook/startup/proc/connectDB()
 	if(!setup_database_connection())
 		world.log << "Your server failed to establish a connection with the feedback database."

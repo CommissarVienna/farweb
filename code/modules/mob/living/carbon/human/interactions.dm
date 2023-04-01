@@ -32,7 +32,7 @@
 			var/turf/T = get_turf(user)
 			new condomtype(T)
 	else
-		to_chat(user, "<span class='combat'>[pick(nao_consigoen)] it is already open!</span>")
+		to_chat(user, "<span class='combat'>[pick(fnord)] it is already open!</span>")
 	return
 
 /obj/item/condom_wrapper/small
@@ -120,7 +120,7 @@
 	if(istype(I, /obj/item/condom) && attacker.zone_sel.selecting == "groin" && !src.ConDom)
 		var/obj/item/condom/C = I
 		if(src.potenzia < C.minsize || src.potenzia > C.maxsize)
-			to_chat(src, "<span class='combatbold'>[pick(nao_consigoen)] Won't fit!</span>")
+			to_chat(src, "<span class='combatbold'>[pick(fnord)] Won't fit!</span>")
 			return
 		if(do_after(attacker, 10))
 			attacker.drop_from_inventory(I)
@@ -200,7 +200,7 @@ var/list/cuckoldlist = list()
 
 	var/mob/living/carbon/human/H = usr
 	var/mob/living/carbon/human/P = H.partner
-	var/datum/organ/external/temp = H.organs_by_name["r_hand"]
+	var/datum/organ/external/temp = H.organs_by_name[BP_R_HAND]
 	var/hashands = (temp && temp.is_usable())
 	if (!hashands)
 		temp = H.organs_by_name[BP_L_HAND]
@@ -227,23 +227,9 @@ var/list/cuckoldlist = list()
 	var/dat = "<META http-equiv='X-UA-Compatible' content='IE=edge' charset='UTF-8'><style type='text/css'> body {font-family: Times; cursor: url('http://lfwb.ru/Icons/pointer.cur'), auto;} a {text-decoration:none;outline: none;border: none;margin:-1px;} a:focus{outline:none;} a:hover {color:#0d0d0d;background:#505055;outline: none;border: none;} a.active { text-decoration:none; color:#533333;} a.inactive:hover {color:#0d0d0d;background:#bb0000} a.active:hover {color:#bb0000;background:#0f0f0f} a.inactive:hover { text-decoration:none; color:#0d0d0d; background:#bb0000}</style>"
 	dat += "<body background bgColor=#0d0d0d text=#862525 alink=#777777 vlink=#777777 link=#777777>"
 	dat += "<title>Interactions</title><B><HR><FONT size=3>INTERACTIONS - [H.partner]</FONT></B><BR><HR>"
-	//var/ya = "&#1103;"
-
-	//dat +=  {"• <A href='?src=\ref[usr];interaction=bow'>Bow.</A><BR>"}
-	//if (Adjacent(P))
-	//	dat +=  {"• <A href='?src=\ref[src];interaction=handshake'>Ïîïðèâåòñòâîâàòü.</A><BR>"}
-	//else
-	//	dat +=  {"• <A href='?src=\ref[src];interaction=wave'>Ïîïðèâåòñòâîâàòü.</A><BR>"}
 	if (hashands)
 		dat +=  {"<font size=3><B>Hands:</B></font><BR>"}
-		//if (Adjacent(P))
 		if(get_dist(H,P) <= 1)
-			//dat +=  {"• <A href='?src=\ref[usr];interaction=handshake'>Give handshake.</A><BR>"}
-			//dat +=  {"<A href='?src=\ref[usr];interaction=hug'>Hug!</A><BR>"}
-			//dat +=  {"• <A href='?src=\ref[usr];interaction=cheer'>Cheer!</A><BR>"}
-			//dat +=  {"• <A href='?src=\ref[usr];interaction=five'>Highfive.</A><BR>"}
-			//if (hashands_p)
-			//	dat +=  {"• <A href='?src=\ref[src];interaction=give'>Give.</A><BR>"}
 			dat +=  {"<A href='?src=\ref[usr];interaction=slap'>Slap face!</A><BR>"}
 			if (hasanus_p)
 				dat += {"<A href='?src=\ref[usr];interaction=assslap'>Slap ass!</A><BR>"}
@@ -252,22 +238,11 @@ var/list/cuckoldlist = list()
 					dat += {"<A href='?src=\ref[usr];interaction=fingering'>Put fingers in places.</A><BR>"}
 				if(P.gender == FEMALE || P.isFemboy())
 					dat += {"<A href='?src=\ref[usr];interaction=squeezebreast'>Squeeze breasts!</A><BR>"}
-			//if (P.species.name == "Tajaran")
-			//	dat +=  {"• <A href='?src=\ref[usr];interaction=pull'><font color=red>Pull big fluffy tail!</font></A><BR>"}
-			//	if(P.can_inject(H, 1))
-			//		dat +=  {"• <A href='?src=\ref[usr];interaction=pet'>Pet.</A><BR>"}
-			//dat +=  {"• <A href='?src=\ref[usr];interaction=knock'><font color=red>Knock upside the head.</font></A><BR>"}
-		//dat +=  {"• <A href='?src=\ref[usr];interaction=fuckyou'><font color=red>Insult.</font></A><BR>"}
-		//dat +=  {"• <A href='?src=\ref[usr];interaction=threaten'><font color=red>Threaten.</font></A><BR>"}
 
 	if (mouthfree && (lying == P.lying || !lying))
 		dat += {"<font size=3><B>Mouth:</B></font><BR>"}
 		dat += {"<A href='?src=\ref[usr];interaction=kiss'>Kiss.</A><BR>"}
-		//if (Adjacent(P))
 		if(get_dist(H,P) <= 1)
-			//if (mouthfree_p)
-			//	if (H.species.name == "Tajaran")
-			//		dat += {"• <A href='?src=\ref[usr];interaction=lick'>Ëèçíóòü â ùåêó.</A><BR>"}
 			if (isnude_p && (!P.mutilated_genitals))
 				if (haspenis_p)
 					dat += {"<A href='?src=\ref[usr];interaction=blowjob'>Suck cock.</A><BR>"}
@@ -276,9 +251,7 @@ var/list/cuckoldlist = list()
 				if (hasvagina_p)
 					dat += {"<A href='?src=\ref[usr];interaction=vaglick'>Lick vagina.</A><BR>"}
 			dat +=  {"<A href='?src=\ref[usr];interaction=spit'>Spit.</A><BR>"}
-		//dat +=  {"• <A href='?src=\ref[usr];interaction=tongue'><font color=red>Stick out tongue.</font></A><BR>"}
 
-	//if (isnude && usr.loc == H.partner.loc)
 	if(isnude && get_dist(usr,H.partner) <= 1)
 		if (haspenis && hashands)
 			dat += {"<font size=3><B>Forbidden Fruits:</B></font><BR>"}
@@ -289,16 +262,13 @@ var/list/cuckoldlist = list()
 					dat += {"<A href='?src=\ref[usr];interaction=anal'>Anal.</A><BR>"}
 				if (mouthfree_p)
 					dat += {"<A href='?src=\ref[usr];interaction=oral'>Oral.</A><BR>"}
-	//if (isnude && usr.loc == H.partner.loc && hashands)
 	if (isnude && get_dist(usr,H.partner) <= 1)
 		if (hasvagina && haspenis_p && (!H.mutilated_genitals))
 			dat += {"<font size=3><B>Vagina:</B></font><BR>"}
 			dat += {"<A href='?src=\ref[usr];interaction=mount'>Mount</A><BR><HR>"}
 
-	//var/datum/browser/popup = new(usr, "interactions", "Interactions", 340, 480)
 	usr << browse(dat, "window=interactions;size=350x300;can_resize=0")
-	//popup.set_content(dat)
-	//popup.open()
+
 
 //INTERACTIONS
 /mob/living/carbon/human
@@ -313,6 +283,7 @@ var/list/cuckoldlist = list()
 	var/lastmoan
 	var/mutilated_genitals = 0 //Whether or not they can do the fug.
 	var/virgin = FALSE //:mistake:
+	var/doing_fuck = FALSE
 
 /mob/living/carbon/human/proc/cum(mob/living/carbon/human/H as mob, mob/living/carbon/human/P as mob, var/hole = "floor")
 	var/sound
@@ -361,7 +332,7 @@ var/list/cuckoldlist = list()
 			if(P.job)
 				if(P.job == "Amuser" && !H.client.chromiesex && P.stat != DEAD)
 					H.client.chromiesex = TRUE
-					H.client.ChromieWinorLoose(H.client, 1)
+					H.client.ChromieWinorLoose(1)
 					if(H.check_perk(/datum/perk/sexaddict))
 						H.gainWP(1, 4)
 					else
@@ -385,12 +356,12 @@ var/list/cuckoldlist = list()
 							if(P.mind && H.mind)
 								for(var/datum/relation/family/R in P.mind.relations)
 									if(R.relation_holder == H.mind && R.name == "Husband")
-										P.client.ChromieWinorLoose(P.client, 1)
+										P.client.ChromieWinorLoose(1)
 										P.add_event("pregnant", /datum/happiness_event/misc/pregnantgood)
 										is_husband = TRUE
 							if(!is_husband)
 								P.add_event("pregnant", /datum/happiness_event/misc/pregnantbad)
-								P.client.ChromieWinorLoose(P.client, -1)
+								P.client.ChromieWinorLoose(-1)
 
 			else if (hole == "anus")
 				message = pick("cums in [P]'s asshole.")
@@ -403,27 +374,24 @@ var/list/cuckoldlist = list()
 			message = pick("cums!", "orgasms!")
 
 		if(P.job == "Successor" && ticker.eof.id == "blessedflesh")
-			H.client.ChromieWinorLoose(H.client, 1)
-			H.my_stats.wp += pick(2,4)
-			P.my_stats.wp += pick(1,2)
-			H.my_stats.st += pick(9,10)
-			H.my_stats.ht += pick(9,10)
-			H.my_stats.dx += pick(9,10)
-			H.my_stats.im += pick(10,12)
+			H.client.ChromieWinorLoose(1)
+			H.my_stats.change_stat(STAT_WP , 3)
+			P.my_stats.change_stat(STAT_WP , 2)
+			src.my_stats.change_stat(STAT_ST, 10)
+			src.my_stats.change_stat(STAT_HT, 10)
+			src.my_stats.change_stat(STAT_DX, 10)
 
 		if(H?.mind?.succubus)
 			H.succubus_enslave(P)
 			if(P.check_event(H.real_name))
 				if(H.stat != DEAD)
-					P.my_stats.st += 3
-					P.my_stats.dx += 3
+					P.my_stats.clear_mod("succubus\ref[H]")
 				P.clear_event("[H.real_name]")
 		if(P?.mind?.succubus)
 			P.succubus_enslave(H)
 			if(H.check_event(P.real_name))
 				if(P.stat != DEAD)
-					H.my_stats.st += 3
-					H.my_stats.dx += 3
+					H.my_stats.clear_mod("succubus\ref[P]")
 				H.clear_event("[P.real_name]")
 		H.visible_message("<span class='erpbold'>[H]</span> <span class='cumzone'>[message]</span>")
 		if (istype(P.loc, /obj/structure/closet))
@@ -431,23 +399,17 @@ var/list/cuckoldlist = list()
 		H.lust = 5
 		H.resistenza += 50
 		orgasms += 1
-		if(H.mind && P.mind)
-			if((H.mind.husband || H.mind.wife) || (P.mind.wife || P.mind.husband))
-				if(H.mind.husband != P.real_name || H.mind.wife != P.real_name || P.mind.wife != H.real_name || P.mind.husband != H.real_name)
-					var/cucktest
-					if(H.gender == MALE || H.isFemboy())
-						cucktest = "<b>[H.real_name] </b> cucked <b>[H.mind.wife] </b> with <b>[P.real_name]</b>"
-					else
-						cucktest = "<b>[H.real_name] </b> cucked <b>[H.mind.husband] </b> with <b>[P.real_name]</b>"
-					cuckoldlist.Add(cucktest)
-		/*
-		if(H.client.married != P.ckey || P.client.married != H.ckey)
-			var/cucktest
-			for(var/mob/living/carbon/human/HH in player_list)
-				if(HH.ckey == H.client.married || HH.ckey == P.client.married)
-					cucktest = "<b>[H.real_name] <i>(H.ckey)</i></b> cucked <b>[HH.real_name] <i>[HH.ckey]</i></b> with <b>[P.real_name] <i>([P.ckey])</i></b>"
-					cuckoldlist.Add(cucktest)
-		*/
+		if(P.mind && H.mind && (!ismonster(H) && !H.bot && !istype(H, /mob/living/carbon/human/skinless) && P.stat != DEAD))
+			var/has_husband = FALSE
+			for(var/datum/relation/family/R in P.mind.relations)
+				if(R.name == "Husband")
+					has_husband = TRUE
+				if(R.relation_holder == H.mind && R.name == "Husband")
+					break
+				else if (has_husband)
+					if(H.has_penis())
+						if(!R.relation_holder.current.CuckedBy.Find(H))
+							R.relation_holder.current.CuckedBy.Add(H)
 	else
 		message = pick("cums!")
 		H.visible_message("<span class='erpbold'>[H]</span> <span class='cumzone'>[message].</span>")
@@ -480,7 +442,7 @@ var/list/cuckoldlist = list()
 	if(H.special == "dst")
 		H.dst_completed += 1
 
-	if(H.vice == "Necrophile")
+	if(H.has_vice("Necrophile"))
 		if(P.stat == DEAD)
 			H.add_event("came", /datum/happiness_event/goodsex)
 			H.viceneed = 0
@@ -488,7 +450,7 @@ var/list/cuckoldlist = list()
 			H.add_event("came", /datum/happiness_event/badsex)
 	else
 		H.add_event("came", /datum/happiness_event/goodsex)
-		if(H.vice == "Sexoholic")
+		if(H.has_vice("Sexoholic"))
 			viceneed = 0
 	H.clear_event("lustpadla")
 
@@ -497,7 +459,7 @@ var/list/cuckoldlist = list()
 
 	for(var/mob/living/carbon/human/V in view(7))
 		if(V != H || V != P)
-			if(V.vice == "Voyeur")
+			if(V.has_vice("Voyeur"))
 				viceneed = 0
 
 	times_came++
@@ -508,9 +470,9 @@ var/list/cuckoldlist = list()
 	var/turf/T
 
 
-	var/obj/item/weapon/reagent_containers/glass/G = locate() in src.loc
+	var/obj/item/reagent_containers/glass/G = locate() in src.loc
 
-	if(G && !G.reagents.total_volume != G.reagents.maximum_volume)
+	if(G && !(G.reagents.total_volume >= G.reagents.maximum_volume))
 		G.reagents.add_reagent("semen", 10)
 		G.update_icon()
 		src.visible_message("<span class='erpbold'>[src]</span> <span class='cumzone'>cums on the [G]!</span>")
@@ -544,7 +506,7 @@ var/list/cuckoldlist = list()
 
 	if(istype(src.get_active_hand(), /obj/item/adultmag) || istype(src.get_other_hand(), /obj/item/adultmag))
 		src.add_event("adultmag", /datum/happiness_event/magazinepleasure)
-		if(src.vice == "Voyeur")
+		if(src.has_vice("Voyeur"))
 			viceneed = 0
 	if(!(src.reagents.has_reagent("hero_drops")))
 		if (src.stamina_loss > 100)
@@ -561,10 +523,21 @@ var/list/cuckoldlist = list()
 	times_came++
 
 /mob/living/carbon/human/proc/fuck(mob/living/carbon/human/H as mob, mob/living/carbon/human/P as mob, var/hole)
+	if(P.isChild() || H.isChild()) //No hrefing this asshole.
+		return
+	if(H.doing_fuck)
+		return
+	var/chastity_text_H = "I can't fuck with... that on..."
+	var/chastity_text_P = "Oh... I can't get fucked like this..."
+	var/chastity_check_H = FALSE
+	var/chastity_check_P = FALSE
+	if(H.underwear)//Chastity check.
+		chastity_check_H = TRUE
+	if(P.underwear)
+		chastity_check_P = TRUE
 	var/sound
 	var/sound_path // hack for blowjob. Can be used elsewhere to have dynamic sound depending on message
 	var/message = ""
-	/*var/stun = round(potenzia / 3)*/
 	if(!H.HadSex.Find(P))
 		H.HadSex.Add(P)
 	if(!P.HadSex.Find(H))
@@ -582,12 +555,16 @@ var/list/cuckoldlist = list()
 		H.apply_damage(rand(50,70), BRUTE, BP_GROIN)
 		playsound(H, 'sound/effects/gore/severed.ogg', 50, 1, -1)
 		H.mutilate_genitals()
-		H.client.ChromieWinorLoose(H.client, -1)
-
+		H.client.ChromieWinorLoose(-1)
+	H.doing_fuck = TRUE
 	switch(hole)
 
 		if("vaglick")
-
+			if(chastity_check_P)
+				chastity_text_H = "Oh, I can't please with this in the way..."
+				to_chat(H, chastity_text_H)
+				H.doing_fuck = FALSE
+				return
 			message = pick("licks [P].", "sucks [P]'s pussy.")
 
 			if (H.lastfucked != P || H.lfhole != hole)
@@ -617,7 +594,11 @@ var/list/cuckoldlist = list()
 			H.do_fucking_animation(P)
 
 		if("fingering")
-
+			if(chastity_check_P)
+				chastity_text_H = "Oh, I can't please with this in the way..."
+				to_chat(H, chastity_text_H)
+				H.doing_fuck = FALSE
+				return
 			message = pick("fingers [P].", "fingers [P]'s pussy.")
 			if (prob(35))
 				message = pick("fingers [P] hard.")
@@ -740,7 +721,20 @@ var/list/cuckoldlist = list()
 				H.visible_message("<span class='erpbold'>[H]</span> <span class='erp'>strokes</span> <B>[P]'s </span><span class='erp'> [pick("cock","dick","penis")] faster.</span>")
 
 		if("vaginal")
+			if(chastity_check_P)
+				to_chat(H, chastity_text_H)
+				to_chat(P, chastity_text_P)
+				H.doing_fuck = FALSE
+				return
 			message = pick("fucks [P].", "pounds [P]'s pussy.")
+
+			if(H.combat_mode)
+				to_chat(P, pick("Ow! That's pretty rough!","Ow! He's fucking roughly!", "That hurts! He's being too rough!"))
+				var/datum/organ/external/groin/G = P.get_organ("groin")
+				G.add_pain(10)
+				if(P.has_vice("Masochist"))
+					P.viceneed = 0
+
 
 			if (H.lastfucked != P || H.lfhole != hole)
 				message = pick(" shoves their dick into [P]'s pussy.")
@@ -753,6 +747,9 @@ var/list/cuckoldlist = list()
 				P.virgin = FALSE
 				H.visible_message("<span class='erpbold'>[H]</span> <span class='erp'>pop's</span> <span class='erpbold'>[P]'s</span> <span class='erp'>cherry.</span>")
 				H.gainWP(1, 1)
+				var/datum/organ/external/groin/G = P.get_organ("groin")
+				G.add_pain(20)
+				to_chat(P, "<span class='magentatext'>OH FUCK! IT'S TIGHT!</span>")
 			if (prob(5) && P.stat != DEAD)
 				H.visible_message("<span class='erpbold'>[H]</span> <span class='erp'>[message]</span>")
 				P.lust += H.get_pleasure_amt("vaginal-2")
@@ -781,7 +778,13 @@ var/list/cuckoldlist = list()
 				sound = pick(flist("honk/sound/new/ACTIONS/BODY/COLLIDE/NAKED/"))
 				playsound(loc, "honk/sound/new/ACTIONS/BODY/COLLIDE/NAKED/[sound]", 90, 1, -5)
 
-/*		if("mount")
+		if("mount")
+			if(chastity_check_H)
+				chastity_text_H = "Oh, I can't please with this in the way..."
+				to_chat(H, chastity_text_H)
+				to_chat(P, chastity_text_P)
+				H.doing_fuck = FALSE
+				return
 			message = pick("fucks [P]'s dick", "rides [P]'s dick", "rides [P]")
 
 			if (H.lastfucked != P || H.lfhole != hole)
@@ -795,55 +798,12 @@ var/list/cuckoldlist = list()
 
 			if (prob(5))
 				if(P.stat != DEAD)
-					H.visible_message("<span class='erpbold'>[H]</span> <span class='erp'>[message]</span>")
-					P.lust += H.potenzia * 2
-			else
-				H.visible_message("<span class='erpbold'>[H]</span> <span class='erp'>[message]</span>")
-			H.lust += P.potenzia
-			if (P.potenzia > 20)
-				H.stamina_loss += P.potenzia * 0.25
-			if (H.lust >= H.resistenza)
-				H.cum(H, P)
-			else
-				H.moan()
-/*
-			if (P.stat != DEAD)
-				P.lust += H.get_pleasure_amt("vaginal")
-				if (H.potenzia > 20)
-					P.stamina_loss += H.potenzia * 0.25
-				if (P.lust >= P.resistenza)
-					P.cum(P, H)
-				else
-					P.moan()*/
-			H.do_fucking_animation(P)
-			playsound(loc, "honk/sound/interactions/bang[rand(1, 3)].ogg", 70, 1, -1)
-*/
-
-		if("mount")
-			message = pick("fucks [P]'s dick", "rides [P]'s dick", "rides [P]")
-
-			/*if(potenzia >= 30)
-				P.Weaken(stun * 1.5)*/
-			if (H.lastfucked != P || H.lfhole != hole)
-				message = pick("begins to hop on [P]'s dick")//"îñòîðîæíî íàñàæèâàåòñ[ya] íà ïîëîâîé îðãàí [P]")
-				H.lastfucked = P
-				H.lfhole = hole
-				//add_logs(P, H, "fucked")
-
-			if(H.virgin)
-				H.virgin = FALSE
-				H.visible_message("<span class='erpbold'>[P]</span> <span class='erp'>pop's</span> <span class='erpbold'>[H]'s</span> <span class='erp'>cherry.</span>")
-
-			if (prob(5))
-				if(P.stat != DEAD)
 					H.visible_message("<span class='erpbold'>[H]</span> <span class='erp'>[message].</span>")
 					P.lust += H.potenzia * 2
 			else
 				H.visible_message("<span class='erpbold'>[H] [message].</span>")
 
 			H.lust += P.potenzia
-			/*if (P.potenzia > 20)
-				H.stamina_loss += P.potenzia * 0.10*/
 			if (H.lust >= H.resistenza)
 				H.cum(H, P, "vagina")
 			else
@@ -870,8 +830,6 @@ var/list/cuckoldlist = list()
 				H.lastfucked = P
 				H.lfhole = hole
 
-			/*if(potenzia >= 30)
-				P.Weaken(stun * 1.5)*/
 			if (prob(5) && P.stat != DEAD)
 				H.visible_message("<span class='erpbold'>[H]</span> <span class='erp'>[message]</span>")
 				P.lust += H.get_pleasure_amt("anal-2")
@@ -887,8 +845,6 @@ var/list/cuckoldlist = list()
 				P.moan(H.potenzia)
 
 			if (P.stat != DEAD && P.stat != UNCONSCIOUS)
-				/*if (H.potenzia > 20)
-					P.stamina_loss += H.potenzia * 0.10*/
 				P.lust += H.get_pleasure_amt("anal")
 				if (P.lust >= P.resistenza)
 					P.cum(P, H)
@@ -930,10 +886,11 @@ var/list/cuckoldlist = list()
 			sound = pick(flist("[sound_path]"))
 			playsound(loc, "[sound_path][sound]", 90, 1, -5)
 			H.do_fucking_animation(P)
+	spawn(5)
+		H.doing_fuck = FALSE
 
 
 /mob/living/carbon/human/proc/moan(var/size = 0)
-
 	var/mob/living/carbon/human/H = src
 	if (species.name == "Human" || H.isFemboy())
 		if (prob(H.lust / H.resistenza * 65))
@@ -1004,7 +961,62 @@ var/list/cuckoldlist = list()
 	animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff, time = 2)
 	animate(pixel_x = initial(pixel_x), pixel_y = final_pixel_y, time = 2)
 
-/obj/item/weapon/dildo
+/obj/item/chastity_key
+	name = "chastity belt key"
+	desc = "For when you finally want to use your wife."
+	icon = 'icons/obj/items.dmi'
+	icon_state = "key"
+	drop_sound = 'sound/webbers/keydrop.ogg'
+	drawsound = 'sound/webbers/keyring_up.ogg'
+	force = 0
+	throwforce = 0
+	w_class = 1
+
+/obj/item/chastity_key/attack(mob/living/carbon/human/M, mob/living/user, def_zone, special)
+	if(!istype(M))
+		return
+	if(!M.is_nude())
+		to_chat(user, "Take their clothes off first.")
+		return
+	if(!M.underwear)
+		return ..()
+	if(do_mob(user, M, 40))
+		M.underwear = "" //Return to nothingness
+		M.update_body()
+		playsound(M, 'sound/effects/wboltswitch.ogg', 100, 0)
+		user.put_in_hands(new /obj/item/chastity_belt(user))
+		user.visible_message("[user] unlocks [M]'s belt. They are free to be a whore again.")
+
+
+/obj/item/chastity_belt //I hate this
+	name = "chastity belt"
+	desc = "For keeping your wife fully faithful."
+	icon = 'icons/obj/clothing/underwears.dmi'
+	icon_state = "chastity"
+	force = 5
+
+/obj/item/chastity_belt/attack(mob/living/carbon/human/M, mob/living/user, def_zone, special)
+	if(!istype(M))
+		return
+	if(M.isChild())
+		return
+	if(M.gender != FEMALE)
+		to_chat(user, "This was designed for women.")
+		return
+	if(!M.is_nude())
+		to_chat(user, "They must be nude for this.")
+		return
+	if(M.underwear)
+		to_chat(user, "They are already wearing one.")
+		return
+	if(do_mob(user, M, 40))
+		user.visible_message("[user] locks the [src] onto [M]. They are now chaste.")
+		M.underwear = "chastity"
+		M.update_body()
+		playsound(M, 'sound/effects/wboltswitch.ogg', 100, 0)
+		qdel(src)
+
+/obj/item/dildo
 	name = "dildo"
 	desc = "Hmmm, deal throw"
 	icon = 'honk/icons/obj/items/dildo.dmi'
@@ -1021,7 +1033,7 @@ var/list/cuckoldlist = list()
 	var/hole = "vagina"
 	var/pleasure = 10
 
-/obj/item/weapon/dildo/copper
+/obj/item/dildo/copper
 	name = "copper dildo"
 	desc = "Hmmm, deal throw"
 	icon = 'icons/obj/weapons.dmi'
@@ -1035,9 +1047,9 @@ var/list/cuckoldlist = list()
 	attack_verb = list("slammed", "bashed", "whipped")
 	hole = "vagina"
 	pleasure = 7
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/copperlw
+	smelted_return = /obj/item/ore/refined/lw/copperlw
 
-/obj/item/weapon/dildo/goldeb
+/obj/item/dildo/goldeb
 	name = "golden dildo"
 	desc = "Hmmm, deal throw"
 	icon = 'icons/obj/weapons.dmi'
@@ -1052,7 +1064,7 @@ var/list/cuckoldlist = list()
 	hole = "vagina"
 	pleasure = 15
 
-/obj/item/weapon/dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
+/obj/item/dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	var/hasvagina = (M.gender == FEMALE && M.species.genitals && M.species.name != "Unathi" && M.species.name != "Stok" && !M.has_penis())
 	var/hasanus = M.species.anus
 	var/message = ""
@@ -1110,7 +1122,7 @@ var/list/cuckoldlist = list()
 	else
 		..()
 
-/obj/item/weapon/dildo/attack_self(mob/user as mob)
+/obj/item/dildo/attack_self(mob/user as mob)
 	if(hole == "vagina")
 		hole = "anus"
 	else

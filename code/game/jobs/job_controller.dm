@@ -61,23 +61,23 @@ var/global/thanatiWords = list()
 			var/datum/job/job = GetJob(rank)
 			if(!job)	return 0
 			if(jobban_isbanned(player, rank))	return 0
-			if(player.client.info?.chromosomes < 0 && rank == "Marduk") return 0
-			if(!trapapoc.Find(ckey(player.key)) || job.no_trapoc)
+			if(player.client.chromie_holder.chromie_number < 0 && rank == "Marduk") return 0
+			if(!donation_trap.Find(ckey(player.key)) || job.no_trapoc)
 				if(job.sex_lock && player.client.prefs.gender != job.sex_lock)
 					return 0
 			if(!job.player_old_enough(player.client)) return 0
 			if(job.job_whitelisted)
 				if(job.job_whitelisted.Find(PIGPLUS))
-					if(!comradelist.Find(ckey(player.client.key)) && !villainlist.Find(ckey(player.client.key)))
-						if(!pigpluslist.Find(ckey(player.client.key)))
+					if(!access_comrade.Find(ckey(player.client.key)) && !access_villain.Find(ckey(player.client.key)))
+						if(!access_pigplus.Find(ckey(player.client.key)))
 							return 0
 				else
 					if(job.job_whitelisted.Find(COMRADE))
-						if(!comradelist.Find(ckey(player.client.key)) && !villainlist.Find(ckey(player.client.key)))
+						if(!access_comrade.Find(ckey(player.client.key)) && !access_villain.Find(ckey(player.client.key)))
 							return 0
 					else
 						if(job.job_whitelisted.Find(VILLAIN))
-							if(!villainlist.Find(ckey(player.client.key)))
+							if(!access_villain.Find(ckey(player.client.key)))
 								return 0
 			var/position_limit = job.total_positions
 			if(!latejoin)
@@ -114,22 +114,22 @@ var/global/thanatiWords = list()
 			if(flag && (!player.client.prefs.be_special & flag))
 				Debug("FOC flag failed, Player: [player], Flag: [flag], ")
 				continue
-			if(!trapapoc.Find(ckey(player.key)) || job.no_trapoc)
+			if(!donation_trap.Find(ckey(player.key)) || job.no_trapoc)
 				if(job.sex_lock && player.client.prefs.gender != job.sex_lock)
 					Debug("FOC character wrong gender, Player: [player]")
 					continue
 			if(job.job_whitelisted)
 				if(job.job_whitelisted.Find(PIGPLUS))
-					if(!comradelist.Find(ckey(player.client.key)) && !villainlist.Find(ckey(player.client.key)))
-						if(!pigpluslist.Find(ckey(player.client.key)))
+					if(!access_comrade.Find(ckey(player.client.key)) && !access_villain.Find(ckey(player.client.key)))
+						if(!access_pigplus.Find(ckey(player.client.key)))
 							continue
 				else
 					if(job.job_whitelisted.Find(COMRADE))
-						if(!comradelist.Find(ckey(player.client.key)) && !villainlist.Find(ckey(player.client.key)))
+						if(!access_comrade.Find(ckey(player.client.key)) && !access_villain.Find(ckey(player.client.key)))
 							continue
 					else
 						if(job.job_whitelisted.Find(VILLAIN))
-							if(!villainlist.Find(ckey(player.client.key)))
+							if(!access_villain.Find(ckey(player.client.key)))
 								continue
 			if(player.client.prefs.GetJobDepartment(job, level) & job.flag)
 				Debug("FOC pass, Player: [player], Level:[level]")
@@ -155,24 +155,24 @@ var/global/thanatiWords = list()
 			if(!job.player_old_enough(player.client))
 				Debug("GRJ player not old enough, Player: [player]")
 				continue
-
-			if(!trapapoc.Find(ckey(player.key)) || job.no_trapoc)
-				if(job.sex_lock && player.client.prefs.gender  != job.sex_lock)
+		
+			if(!tier_tiamat.Find(ckey(player.key)) || !donation_trap.Find(ckey(player.key)) || job.no_trapoc)
+				if(job.sex_lock && player.client.prefs.gender != job.sex_lock)
 					continue
 
 
 			if(job.job_whitelisted)
 				if(job.job_whitelisted.Find(PIGPLUS))
-					if(!comradelist.Find(ckey(player.client.key)) && !villainlist.Find(ckey(player.client.key)))
-						if(!pigpluslist.Find(ckey(player.client.key)))
+					if(!access_comrade.Find(ckey(player.client.key)) && !access_villain.Find(ckey(player.client.key)))
+						if(!access_pigplus.Find(ckey(player.client.key)))
 							continue
 				else
 					if(job.job_whitelisted.Find(COMRADE))
-						if(!comradelist.Find(ckey(player.client.key)) && !villainlist.Find(ckey(player.client.key)))
+						if(!access_comrade.Find(ckey(player.client.key)) && !access_villain.Find(ckey(player.client.key)))
 							continue
 					else
 						if(job.job_whitelisted.Find(VILLAIN))
-							if(!villainlist.Find(ckey(player.client.key)))
+							if(!access_villain.Find(ckey(player.client.key)))
 								continue
 
 			if((job.current_positions < job.spawn_positions) || job.spawn_positions == -1)
@@ -317,12 +317,6 @@ var/global/thanatiWords = list()
 		Debug("Running DO")
 		SetupOccupations()
 
-		//Holder for Triumvirate is stored in the ticker, this just processes it
-/*		if(ticker)
-			for(var/datum/job/ai/A in occupations)
-				if(ticker.triai)
-					A.spawn_positions = 3
-*/
 		//Get the players who are ready
 		for(var/mob/new_player/player in player_list)
 			if(player.ready && player.mind && !player.mind.assigned_role)
@@ -381,7 +375,7 @@ var/global/thanatiWords = list()
 						Debug("DO isbanned failed, Player: [player], Job:[job.title]")
 						continue
 
-					if(!trapapoc.Find(ckey(player.key)))
+					if(!tier_tiamat.Find(ckey(player.key)) || !donation_trap.Find(ckey(player.key)))
 						if(job.sex_lock && job.sex_lock != player.client.prefs.gender)
 							Debug("DO player wrong gender, Player: [player], Job:[job.title]")
 							continue
@@ -456,48 +450,18 @@ var/global/thanatiWords = list()
 		//give them an account in the station database
 		var/datum/money_account/M = create_account(H.real_name, rand(10,40), null)
 		if(H.mind)
-			//var/remembered_info = ""
-			//remembered_info += "<b>Your account pin is:</b> [M.remote_access_pin]<br>"
-			//remembered_info += "<b>Your account funds are:</b> $[M.money]<br>"
-/*			remembered_info += "<b>Your account number is:</b> #[M.account_number]<br>"
-			remembered_info += "<b>Your account pin is:</b> [M.remote_access_pin]<br>"
-			remembered_info += "<b>Your account funds are:</b> $[M.money]<br>"
-
-			if(M.transaction_log.len)
-				var/datum/transaction/T = M.transaction_log[1]
-				remembered_info += "<b>Your account was created:</b> [T.time], [T.date] at [T.source_terminal]<br>"
-			H.mind.store_memory(remembered_info)
-*/
 			H.mind.initial_account = M
 
-		// If they're head, give them the account info for their department
-/*
-		if(H.mind && job.head_position)
-			var/remembered_info = ""
-			var/datum/money_account/department_account = department_accounts[job.department]
-
-			if(department_account)
-				remembered_info += "<b>Your department's account number is:</b> #[department_account.account_number]<br>"
-				remembered_info += "<b>Your department's account pin is:</b> [department_account.remote_access_pin]<br>"
-				remembered_info += "<b>Your department's account funds are:</b> $[department_account.money]<br>"
-
-			H.mind.store_memory(remembered_info)
-*/
-/*
-		spawn(0)
-			H << "\blue<b>Your account number is: [M.account_number], your account pin is: [M.remote_access_pin]</b>"
-*/
 		if(H.mind)
 			H.mind.assigned_role = rank
-		//H << "<b>As the [alt_title ? alt_title : rank] you answer directly to [job.supervisors]. Special circumstances may change this.</b>"
 		if(job.title != "Bum")
 			var/regex/R = regex("(^\\S+) (.*$)") //Get first name and last name
 			R.Find(H.real_name)
 			var/last_name = R.group[2]
 			if(gink_last_names.Find(last_name))
 				H.voicetype = "gink"
-				H.my_stats.st -= 1
-				H.my_stats.dx += 1
+				H.my_stats.change_stat(STAT_ST , -1)
+				H.my_stats.change_stat(STAT_DX , 1)
 
 
 		spawnId(H, rank, alt_title)
@@ -530,16 +494,16 @@ var/global/thanatiWords = list()
 							H.mind.store_memory("My word is [H.mind.thanati_corrupt] and my circle is [H.mind.thanati_type]")
 							to_chat(H, "<span class='baron'>Your corrupt word: [H.mind.thanati_corrupt], [H.mind.thanati_word_random] (The Circle of [H.mind.thanati_type]).</span>\n")
 							to_chat(H, "\n<span class='barondarker'><i>* Glorify our lord in a Sigil to remember our goals. *</i></span>")
-							H.verbs += /mob/living/carbon/human/proc/getWords
-							H.verbs += /mob/living/carbon/human/proc/praisethelord
-							H.verbs += /mob/living/carbon/human/proc/getBrothers
+							H.add_verb(list(/mob/living/carbon/human/proc/getWords,
+							/mob/living/carbon/human/proc/praisethelord,
+							/mob/living/carbon/human/proc/getBrothers))
 					else
 						if(!H.isChild() && !joined_late)
 							to_chat(H, "<span class='jogtowalk'><i>Thanati Roll: Failed!</i></span>")
 						H.religion = "Gray Church"
 			if(H.religion == "Gray Church")
 				if(H.job == "Mortus")
-					to_chat(H, "<span class='baronboldoutlined'>You profess Post-Christianity.</span><span class='baron'>, but in practice it is indifferent. The more you work in this place, the less you care about</span> <span class='baronboldoutlined'>religions</span><span class='baron'>, </span><span class='baronboldoutlined'>thoughts</span> <span class='baron'>and</span> <span class='baronboldoutlined'>common affairs</span><span class='baron'>. Your attention is consumed by the intoxicating anxiety that you continue to feel close to the Lifeweb.</span>")
+					to_chat(H, "<span class='baronboldoutlined'>You profess Post-Christianity</span><span class='baron'>, but in practice it is indifferent. The more you work in this place, the less you care about</span> <span class='baronboldoutlined'>religions</span><span class='baron'>, </span><span class='baronboldoutlined'>thoughts</span> <span class='baron'>and</span> <span class='baronboldoutlined'>common affairs</span><span class='baron'>. Your attention is consumed by the intoxicating anxiety that you continue to feel close to the Lifeweb.</span>")
 				else
 					to_chat(H, "<span class='baronboldoutlined'>You profess Post-Christianity.</span> <span class='baron'>It is Evergreen's only legal religion. May God and the Inquisition save us from Thanati. Amen.</span>")
 				H.religion = "Gray Church"
@@ -571,17 +535,21 @@ var/global/thanatiWords = list()
 			H.resting = FALSE
 			H.lying = FALSE
 			NG.buckle_mob(H,H)
-		if(H.vice == "Smoker")
-			for(var/obj/item/weapon/reagent_containers/food/snacks/organ/lungs/O in H.organ_storage)
+		if(H.has_vice("Smoker"))
+			for(var/obj/item/reagent_containers/food/snacks/organ/lungs/O in H.organ_storage)
 				O.bumorgans()
 			if(prob(5))
 				H.contract_disease(new /datum/disease/croniccough,1,0)
-		if(H.vice == "Alcoholic")
-			for(var/obj/item/weapon/reagent_containers/food/snacks/organ/liver/O in H.organ_storage)
+		if(H.has_vice("Alcoholic"))
+			for(var/obj/item/reagent_containers/food/snacks/organ/liver/O in H.organ_storage)
 				O.bumorgans()
-		if(H.vice == "Sexoholic")
+		if(H.has_vice("Sexoholic"))
 			if(prob(15))
 				H.contract_disease(new /datum/disease/aids,1,0)
+		if(H.has_vice("Low Pain Tolerance"))//If you have low pain tolerance that means your health is just less than everyone else more or less.
+			H.my_stats.change_stat(STAT_HT, rand(-2,-6))
+			if(H.my_stats.get_stat(STAT_HT) <= 3)
+				H.my_stats.set_stat(STAT_HT, 3)
 		if(H.ckey in patreons)
 			handle_patreon(H)
 
@@ -589,12 +557,12 @@ var/global/thanatiWords = list()
 		if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under))
 			var/obj/item/clothing/under/U = H.w_uniform
 			U.medal_attached = new /obj/item/medal/patreon(U)
-			U.medal_overlay()
+		//	U.medal_overlay()
 			H.update_inv_w_uniform()
 
 	proc/spawnId(var/mob/living/carbon/human/H, rank, title)
 		if(!H)	return 0
-		var/obj/item/weapon/card/id/C = null
+		var/obj/item/card/id/C = null
 
 		var/datum/job/job = null
 		for(var/datum/job/J in occupations)
@@ -614,13 +582,13 @@ var/global/thanatiWords = list()
 					C = new job.idtype(H)
 					C.access = job.get_access()
 		else
-			C = new /obj/item/weapon/card/id(H)
+			C = new /obj/item/card/id(H)
 		if(C)
 			C.registered_name = H.real_name
 			C.rank = rank
 			C.assignment = title ? title : rank
 			C.name = "[C.registered_name]'s Ring"
-			if(istype(C, /obj/item/weapon/card/id/lord))
+			if(istype(C, /obj/item/card/id/lord))
 				C.money_account = treasuryworth
 				C.money_account.set_account(H, C.registered_name, C.assignment, treasuryworth.money)
 			else
@@ -634,14 +602,6 @@ var/global/thanatiWords = list()
 				C.associated_account_number = H.mind.initial_account.account_number
 
 			H.equip_to_slot_or_del(C, slot_wear_id)
-/*
-		H.equip_to_slot_or_del(new /obj/item/device/pda(H), slot_belt)
-		if(locate(/obj/item/device/pda,H))
-			var/obj/item/device/pda/pda = locate(/obj/item/device/pda,H)
-			pda.owner = H.real_name
-			pda.ownjob = C.assignment
-			pda.name = "PDA-[H.real_name] ([pda.ownjob])"
-*/
 		return 1
 
 

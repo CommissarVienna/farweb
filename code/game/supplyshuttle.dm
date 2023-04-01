@@ -54,7 +54,7 @@ var/list/mechtoys = list(
 
 	else if(istype(A, /mob/living)) // You Shall Not Pass!
 		var/mob/living/M = A
-		if(!M.lying && !istype(M, /mob/living/carbon/monkey) && !istype(M, /mob/living/simple_animal/mouse) && !istype(M, /mob/living/simple_animal/hostile/giant_spider) && !istype(M, /mob/living/simple_animal/borer))  //If your not laying down, or a small creature, no pass.
+		if(!M.lying && !istype(M, /mob/living/carbon/monkey) && !istype(M, /mob/living/simple_animal/mouse) && !istype(M, /mob/living/simple_animal/hostile/giant_spider))  //If your not laying down, or a small creature, no pass.
 			return 0
 	return ..()
 
@@ -92,7 +92,7 @@ var/global/TaxUponSells = 20
 	name = "Bookmaking console"
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "supplycomp"
-	circuit = "/obj/item/weapon/circuitboard/supplycomp"
+	circuit = "/obj/item/circuitboard/supplycomp"
 	density = 0
 	var/locked = FALSE
 	var/temp = null
@@ -106,7 +106,7 @@ var/global/TaxUponSells = 20
 	name = "Supply ordering console"
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "request"
-	circuit = "/obj/item/weapon/circuitboard/ordercomp"
+	circuit = "/obj/item/circuitboard/ordercomp"
 	var/temp = null
 	var/reqtime = 0 //Cooldown for requisitions - Quarxink
 	var/last_viewed_group = "categories"
@@ -221,7 +221,7 @@ var/global/TaxUponSells = 20
 	proc/forbidden_atoms_check(atom/A)
 		if(istype(A,/mob/living))
 			return 1
-		if(istype(A,/obj/item/weapon/disk/nuclear))
+		if(istype(A,/obj/item/disk/nuclear))
 			return 1
 		if(istype(A,/obj/machinery/nuclearbomb))
 			return 1
@@ -320,7 +320,7 @@ var/global/TaxUponSells = 20
 
 			//supply manifest generation begin
 /*
-			var/obj/item/weapon/paper/manifest/slip = new /obj/item/weapon/paper/manifest(A)
+			var/obj/item/paper/manifest/slip = new /obj/item/paper/manifest(A)
 			slip.info = "<h3>[command_name()] Shipping Manifest</h3><hr><br>"
 			slip.info +="Order #[SO.ordernum]<br>"
 			slip.info +="Destination: [vessel_name]<br>"
@@ -362,7 +362,7 @@ var/global/TaxUponSells = 20
 		supply_shuttle.shoppinglist.Cut()
 		return
 
-/obj/item/weapon/paper/manifest
+/obj/item/paper/manifest
 	name = "Supply Manifest"
 
 
@@ -452,7 +452,7 @@ var/global/TaxUponSells = 20
 
 		supply_shuttle.ordernum++
 /*
-		var/obj/item/weapon/paper/reqform = new /obj/item/weapon/paper(loc)
+		var/obj/item/paper/reqform = new /obj/item/paper(loc)
 		reqform.name = "Requisition Form - [P.name]"
 		reqform.info += "<h3>[vessel_name] Supply Requisition Form</h3><hr>"
 		reqform.info += "INDEX: #[supply_shuttle.ordernum]<br>"
@@ -514,15 +514,15 @@ var/global/TaxUponSells = 20
 		return
 	user.set_machine(src)
 	post_signal("supply")
-	var/dat = "<html><head><style> a{color:white; font-size: 125%; text-decoration: none;}a:hover{text-decoration: underline} body{font-size: 135%}</style><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f; text-align: center;'>"
+	var/dat = "<html><head><style> a{color:white; font-size: 125%; text-decoration: none;}a:hover{text-decoration: underline} body{font-size: 135%}</style><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f; text-align: center;'>"
 	if (temp)
 		dat = temp
 	else
 		dat += {"<html><head><title>Bookmaking Console</title>
 		<body style='background-color:#0e0c0e; color: #43302f;'>
 		<BR><B>Merchant Guild</B><HR>
-		\nO Boat is [supply_shuttle.moving ? "coming to Firethorn ([supply_shuttle.eta] Mins.)":supply_shuttle.at_station ? "in Firethorn":"in City."]<BR>
-		<HR>\nEm sua conta: [supply_shuttle.points] obols.<BR>\n<BR>
+		\nThe boat is [supply_shuttle.moving ? "coming to Firethorn ([supply_shuttle.eta] Mins.)":supply_shuttle.at_station ? "in Firethorn":"in City."]<BR>
+		<HR>\nIn your account: [supply_shuttle.points] obols.<BR>\n<BR>
 		[supply_shuttle.moving ? "\nBoat must be in the city to take orders.<BR>\n<BR>":supply_shuttle.at_station ? "\nThe Boat must be in the city to make orders.<BR>\n<BR>":"\n<A href='?src=\ref[src];order=categories'>Make Orders</A><BR>\n<BR>"]
 		[supply_shuttle.moving ? "\nThe boat has already been called.<BR>\n<BR>":supply_shuttle.at_station ? "\n<A href='?src=\ref[src];send=1'>Send boat to the city.</A><BR>\n<BR>":"\n<A href='?src=\ref[src];send=1'>Send boat back to the fortress.</A><BR>\n<BR>"]
 		\n<A href='?src=\ref[src];withdraw=1'>Withdraw obols</A><BR>\n<BR>
@@ -537,8 +537,8 @@ var/global/TaxUponSells = 20
 
 /obj/machinery/computer/supplycomp/RightClick(mob/living/carbon/human/user as mob)
 	if(ishuman(user) && user.wear_id)
-		var/obj/item/weapon/card/id/idcard = user.wear_id
-		if(!istype(idcard, /obj/item/weapon/card/id/qm)) return
+		var/obj/item/card/id/idcard = user.wear_id
+		if(!istype(idcard, /obj/item/card/id/qm)) return
 		if(locked)
 			locked = FALSE
 			to_chat(user, "You have unlocked the console.")
@@ -547,24 +547,24 @@ var/global/TaxUponSells = 20
 			to_chat(user, "You have locked the console.")
 
 /obj/machinery/computer/supplycomp/attackby(I as obj, user as mob)
-	if(istype(I,/obj/item/weapon/card/emag) && !hacked)
+	if(istype(I,/obj/item/card/emag) && !hacked)
 		user << "\blue Special supplies unlocked."
 		hacked = 1
 		return
-	if(istype(I,/obj/item/weapon/spacecash))
+	if(istype(I,/obj/item/spacecash))
 		supply_shuttle.points += I:worth
 		qdel(I)
 		playsound(src.loc, 'sound/effects/coininsert.ogg', 30, 0)
 		return
-
-	if(istype(I, /obj/item/weapon/screwdriver))
+/* fuck off
+	if(istype(I, /obj/item/screwdriver))
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
 			if (stat & BROKEN)
-				user << "\blue The broken glass falls out."
+				to_chat(user, "\blue The broken glass falls out.")
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( loc )
-				new /obj/item/weapon/shard( loc )
-				var/obj/item/weapon/circuitboard/supplycomp/M = new /obj/item/weapon/circuitboard/supplycomp( A )
+				new /obj/item/shard( loc )
+				var/obj/item/circuitboard/supplycomp/M = new /obj/item/circuitboard/supplycomp( A )
 				for (var/obj/C in src)
 					C.loc = loc
 				A.circuit = M
@@ -573,9 +573,9 @@ var/global/TaxUponSells = 20
 				A.anchored = 1
 				qdel(src)
 			else
-				user << "\blue You disconnect the monitor."
+				to_chat(user, "\blue You disconnect the monitor.")
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( loc )
-				var/obj/item/weapon/circuitboard/supplycomp/M = new /obj/item/weapon/circuitboard/supplycomp( A )
+				var/obj/item/circuitboard/supplycomp/M = new /obj/item/circuitboard/supplycomp( A )
 				if(can_order_contraband)
 					M.contraband_enabled = 1
 				for (var/obj/C in src)
@@ -585,6 +585,7 @@ var/global/TaxUponSells = 20
 				A.icon_state = "4"
 				A.anchored = 1
 				qdel(src)
+		*/
 	else
 		attack_hand(user)
 	return
@@ -604,21 +605,21 @@ var/global/TaxUponSells = 20
 	//Calling the shuttle
 	if(href_list["send"])
 		if(!supply_shuttle.can_move())
-			temp = "<html><head><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
+			temp = "<html><head><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
 			temp += "For safety reasons the automated supply shuttle cannot transport live organisms, classified nuclear weaponry or homing beacons.<BR><BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 
 		else if(supply_shuttle.at_station)
 			supply_shuttle.moving = -1
 			supply_shuttle.sell()
 			supply_shuttle.send()
-			temp = "<html><head><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
-			temp += "The supply shuttle has departed.<BR><BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
+			temp = "<html><head><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
+			temp += "The boat has left the port.<BR><BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 		else
 			supply_shuttle.moving = 1
 			supply_shuttle.buy()
 			supply_shuttle.eta_timeofday = (world.timeofday + supply_shuttle.movetime) % 864000
-			temp = "<html><head><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
-			temp += "The supply shuttle has been called and will arrive in [round(supply_shuttle.movetime/600,1)] minutes.<BR><BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
+			temp = "<html><head><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
+			temp += "The boat is returning to the port, it will arrive in [round(supply_shuttle.movetime/600,1)] minutes.<BR><BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 			post_signal("supply")
 
 	else if (href_list["order"])
@@ -627,31 +628,22 @@ var/global/TaxUponSells = 20
 			//all_supply_groups
 			//Request what?
 			last_viewed_group = "categories"
-			temp = "<html><head><style> a{color:white; font-size: 125%; text-decoration: none;}a:hover{text-decoration: underline} body{font-size: 135%}</style><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f; text-align: center;'>"
-			temp += "<b>Conta: [supply_shuttle.points]</b><BR>"
+			temp = "<html><head><style> a{color:white; font-size: 125%; text-decoration: none;}a:hover{text-decoration: underline} body{font-size: 135%}</style><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f; text-align: center;'>"
+			temp += "<b>Obols: [supply_shuttle.points]</b><BR>"
 			temp += "<A href='?src=\ref[src];mainmenu=1'>Main Menu</A><HR><BR><BR>"
 			temp += "<b>Select a category:</b><BR><BR>"
 			for(var/supply_group_name in all_supply_groups )
 				temp += "<A href='?src=\ref[src];order=[supply_group_name]'>[supply_group_name]</A><BR><BR>"
 		else
 			last_viewed_group = href_list["order"]
-			temp = "<html><head><style> a{color:white; font-size: 125%; text-decoration: none;}a:hover{text-decoration: underline} body{font-size: 135%}</style><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f; text-align: center;'>"
-			temp += "<b>Supply points: [supply_shuttle.points]</b><BR>"
+			temp = "<html><head><style> a{color:white; font-size: 125%; text-decoration: none;}a:hover{text-decoration: underline} body{font-size: 135%}</style><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f; text-align: center;'>"
+			temp += "<b>Obols: [supply_shuttle.points]</b><BR>"
 			temp += "<A href='?src=\ref[src];order=categories'>Back to all categories</A><HR><BR><BR>"
 			temp += "<b>Request from: [last_viewed_group]</b><BR><BR>"
 			for(var/supply_name in supply_shuttle.supply_packs )
 				var/datum/supply_packs/N = supply_shuttle.supply_packs[supply_name]
 				if((N.hidden && !hacked) || (N.contraband && !can_order_contraband) || N.group != last_viewed_group || (N.is_weapon && gunban)) continue								//Have to send the type instead of a reference to
 				temp += "<A href='?src=\ref[src];doorder=[supply_name]'>[supply_name]</A> Price: [cost_with_taxes(N)] obols<BR>"		//the obj because it would get caught by the garbage
-
-		/*temp = "Supply points: [supply_shuttle.points]<BR><HR><BR>Request what?<BR><BR>"
-
-		for(var/supply_name in supply_shuttle.supply_packs )
-			var/datum/supply_packs/N = supply_shuttle.supply_packs[supply_name]
-			if(N.hidden && !hacked) continue
-			if(N.contraband && !can_order_contraband) continue
-			temp += "<A href='?src=\ref[src];doorder=[supply_name]'>[supply_name]</A> Cost: [N.cost]<BR>"    //the obj because it would get caught by the garbage
-		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"*/
 
 	else if (href_list["doorder"])
 		if(world.time < reqtime)
@@ -678,21 +670,6 @@ var/global/TaxUponSells = 20
 			idname = usr.real_name
 
 		supply_shuttle.ordernum++
-		/*var/obj/item/weapon/paper/reqform = new /obj/item/weapon/paper(loc)
-		reqform.name = "Requisition Form - [P.name]"
-		reqform.info += "<h3>[vessel_name] Supply Requisition Form</h3><hr>"
-		reqform.info += "INDEX: #[supply_shuttle.ordernum]<br>"
-		reqform.info += "REQUESTED BY: [idname]<br>"
-		reqform.info += "RANK: [idrank]<br>"
-		reqform.info += "REASON: [reason]<br>"
-		reqform.info += "SUPPLY CRATE TYPE: [P.name]<br>"
-		reqform.info += "ACCESS RESTRICTION: [replaceText(get_access_desc(P.access))]<br>"
-		reqform.info += "CONTENTS:<br>"
-		reqform.info += P.manifest
-		reqform.info += "<hr>"
-		reqform.info += "STAMP BELOW TO APPROVE THIS REQUISITION:<br>"
-
-		reqform.update_icon()*/	//Fix for appearing blank when printed.
 		reqtime = (world.time + 5) % 1e5
 
 		//make our supply_order datum
@@ -702,7 +679,7 @@ var/global/TaxUponSells = 20
 		O.orderedby = idname
 		supply_shuttle.requestlist += O
 
-		temp = "<html><head><style> a{color:white; font-size: 125%; text-decoration: none;}a:hover{text-decoration: underline} body{font-size: 135%}</style><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f; text-align: center;'>"
+		temp = "<html><head><style> a{color:white; font-size: 125%; text-decoration: none;}a:hover{text-decoration: underline} body{font-size: 135%}</style><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f; text-align: center;'>"
 		temp += "Order request placed.<BR>"
 		temp += "<BR><A href='?src=\ref[src];order=[last_viewed_group]'>Back</A> | <A href='?src=\ref[src];mainmenu=1'>Main Menu</A> | <A href='?src=\ref[src];confirmorder=[O.ordernum]'>Confirm Order</A>"
 
@@ -711,7 +688,7 @@ var/global/TaxUponSells = 20
 		var/ordernum = text2num(href_list["confirmorder"])
 		var/datum/supply_order/O
 		var/datum/supply_packs/P
-		temp = "<html><head><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
+		temp = "<html><head><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
 		temp += "Invalid Request"
 		for(var/i=1, i<=supply_shuttle.requestlist.len, i++)
 			var/datum/supply_order/SO = supply_shuttle.requestlist[i]
@@ -724,19 +701,19 @@ var/global/TaxUponSells = 20
 					supply_shuttle.points -= cost_of_supply
 					treasuryworth.add_money(cost_of_supply - P.cost)
 					supply_shuttle.shoppinglist += O
-					temp = "<html><head><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
+					temp = "<html><head><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
 					temp += "Thanks for your order.<BR>"
 					temp += "<BR><A href='?src=\ref[src];viewrequests=1'>Back</A> <A href='?src=\ref[src];mainmenu=1'>Main Menu</A>"
 				else
-					temp = "<html><head><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
-					temp += "Not enough supply points.<BR>"
+					temp = "<html><head><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
+					temp += "Not enough supply obols.<BR>"
 					temp += "<BR><A href='?src=\ref[src];viewrequests=1'>Back</A> <A href='?src=\ref[src];mainmenu=1'>Main Menu</A>"
 				break
 
 	else if(href_list["withdraw"])
 		playsound(src.loc, pick('sound/effects/public1.ogg','sound/effects/public2.ogg','sound/effects/public3.ogg'), 30, 0)
 		if(supply_shuttle.points)
-			usr << "<i>The terminal has [supply_shuttle.points] obols.</i>"
+			to_chat(usr, "<i>The terminal has [supply_shuttle.points] obols.</i>")
 			var/obols_type = input("Terminal", "Select a obol type. Copper : 1, Silver : 4, Gold : 16") in list("Copper", "Silver", "Gold","Cancel")
 			var/obols_div = 1
 			if(obols_type == "Cancel")
@@ -747,18 +724,17 @@ var/global/TaxUponSells = 20
 			else if(obols_type == "Gold")
 				obols_div = 16
 
-			var/withdraw = input("How much you want to withdraw | There is [round(supply_shuttle.points / obols_div)] [obols_type] obols in the terminal.","Terminal",supply_shuttle.points)
+			var/withdraw = input("How much you want to withdraw | There is [round(supply_shuttle.points / obols_div)] [obols_type] obols in the terminal.","Terminal",supply_shuttle.points) as num
 			if(!withdraw)
 				return
+			withdraw = abs(withdraw) //No negative numbers.
 			if(withdraw > round(supply_shuttle.points / obols_div))
-				usr << "There's not enough obols to withdraw that amount!"
+				to_chat(usr, "There's not enough obols to withdraw that amount!")
 				return
 			if(withdraw < 0)
-				usr << "negro nem tente"
-				usr << 'olha-o-macaco.ogg'
 				return
 			if(withdraw <= supply_shuttle.points)
-				usr << "<i>You withdraw [withdraw] obols.</i>"
+				to_chat(usr, "<i>You withdraw [withdraw] obols.</i>")
 				playsound(src.loc, 'sound/effects/coin_m.ogg', 30, 0)
 				switch(obols_type)
 					if("Gold")
@@ -770,11 +746,11 @@ var/global/TaxUponSells = 20
 				supply_shuttle.points -= withdraw * obols_div
 
 	else if (href_list["vieworders"])
-		temp = "<html><head><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
+		temp = "<html><head><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
 		temp += "Current approved orders: <BR><BR>"
 		for(var/S in supply_shuttle.shoppinglist)
 			var/datum/supply_order/SO = S
-			temp += "<html><head><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
+			temp += "<html><head><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
 			temp += "#[SO.ordernum] - [SO.object.name] approved by [SO.orderedby][SO.comment ? " ([SO.comment])":""]<BR>"// <A href='?src=\ref[src];cancelorder=[S]'>(Cancel)</A><BR>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 
@@ -798,32 +774,32 @@ var/global/TaxUponSells = 20
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 */
 	else if (href_list["viewrequests"])
-		temp = "<html><head><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
+		temp = "<html><head><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
 		temp += "Current requests: <BR><BR>"
 		for(var/S in supply_shuttle.requestlist)
 			var/datum/supply_order/SO = S
 			temp += "#[SO.ordernum] - [SO.object.name] requested by [SO.orderedby]  [supply_shuttle.moving ? "":supply_shuttle.at_station ? "":"<A href='?src=\ref[src];confirmorder=[SO.ordernum]'>Approve</A> <A href='?src=\ref[src];rreq=[SO.ordernum]'>Remove</A>"]<BR>"
 
-		temp = "<html><head><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
+		temp = "<html><head><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
 		temp += "<BR><A href='?src=\ref[src];clearreq=1'>Clear list</A>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 
 	else if (href_list["rreq"])
 		var/ordernum = text2num(href_list["rreq"])
-		temp = "<html><head><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
+		temp = "<html><head><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
 		temp += "Invalid Request.<BR>"
 		for(var/i=1, i<=supply_shuttle.requestlist.len, i++)
 			var/datum/supply_order/SO = supply_shuttle.requestlist[i]
 			if(SO.ordernum == ordernum)
 				supply_shuttle.requestlist.Cut(i,i+1)
-				temp = "<html><head><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
+				temp = "<html><head><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
 				temp += "Request removed.<BR>"
 				break
 		temp += "<BR><A href='?src=\ref[src];viewrequests=1'>Back</A> <A href='?src=\ref[src];mainmenu=1'>Main Menu</A>"
 
 	else if (href_list["clearreq"])
 		supply_shuttle.requestlist.Cut()
-		temp = "<html><head><title>Console Mercante</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
+		temp = "<html><head><title>Merchant Console</title> <body style='background-color:#0e0c0e; color: #43302f;'>"
 		temp += "List cleared.<BR>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 

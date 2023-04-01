@@ -10,7 +10,7 @@
 //if a file can't be updated, return 0 to delete it and start again
 //if a file was updated, return 1
 /datum/preferences/proc/savefile_update()
-	if(savefile_version < 8)	//lazily delete everything + additional files so they can be saved in the new format
+	if(savefile_version < SAVEFILE_VERSION_MIN)	//lazily delete everything + additional files so they can be saved in the new format
 		for(var/ckey in preferences_datums)
 			var/datum/preferences/D = preferences_datums[ckey]
 			if(D == src)
@@ -72,6 +72,8 @@
 	S["rsc_fix"]			>> rsc_fix
 	S["zoom_level"]			>> zoom_level
 	S["toggle_squire"]		>> toggle_squire
+	S["dom_hand"] 			>> dom_hand
+	S["font_size"]			>> font_size
 
 	//Sanitize
 	ooccolor		= sanitize_hexcolor(ooccolor, initial(ooccolor))
@@ -88,8 +90,9 @@
 	if(isnull(togglesize)) togglesize = 0
 	if(isnull(ambi_volume)) ambi_volume = 60
 	if(isnull(music_volume)) music_volume = 70
-	//if(isnull(toggle_nat)) toggle_nat = 0
-	//chromossomes	= sanitize_integer(chromossomes, initial(chromossomes))
+	if(!dom_hand)//Somehow we lose this fucking thing sometimes.
+		dom_hand = RIGHT_HAND
+	if(isnull(font_size)) font_size = 100
 
 	return 1
 
@@ -126,6 +129,8 @@
 	S["rsc_preload"]		<< rsc_fix
 	S["zoom_level"]			<< zoom_level
 	S["toggle_squire"]		<< toggle_squire
+	S["dom_hand"]			<< dom_hand
+	S["font_size"]			<< max(0,font_size)
 
 	return 1
 
@@ -209,6 +214,7 @@
 	S["MigProvince"] >> MigProvince
 	S["zodiac"] >> zodiac
 	S["family"] >> family
+	S["dom_hand"] >> dom_hand
 
 
 	//Sanitize
@@ -217,6 +223,7 @@
 	if(isnull(language)) language = "None"
 	if(isnull(nanotrasen_relation)) nanotrasen_relation = initial(nanotrasen_relation)
 	if(!real_name) real_name = random_name(gender)
+	if(!dom_hand) dom_hand = RIGHT_HAND
 	be_random_name	= sanitize_integer(be_random_name, 0, 1, initial(be_random_name))
 	dwarven 		= sanitize_integer(dwarven, 0, 1, initial(dwarven))
 	gender			= sanitize_gender(gender)
@@ -262,7 +269,6 @@
 
 	if(isnull(disabilities)) disabilities = 0
 	if(!organ_data) src.organ_data = list()
-	//if(!skin_style) skin_style = "Default"
 
 	return 1
 
@@ -329,15 +335,13 @@
 	S["be_special"]			<< be_special
 	S["disabilities"]		<< disabilities
 	S["organ_data"]			<< organ_data
-
+	S["vice"]				<< vice
+	S["MigProvince"] 		<< MigProvince
+	S["zodiac"] 			<< zodiac
+	S["family"] 			<< family
+	S["dom_hand"] 			<< dom_hand
 	S["nanotrasen_relation"] << nanotrasen_relation
-	//S["skin_style"]			<< skin_style
-
 	S["uplinklocation"] << uplinklocation
-	S["vice"] << vice
-	S["MigProvince"] << MigProvince
-	S["zodiac"] << zodiac
-	S["family"] << family
 
 	return 1
 

@@ -17,9 +17,9 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/remove_embryo
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/hemostat = 100,	\
-	/obj/item/weapon/wirecutters = 75,	\
-	/obj/item/weapon/kitchen/utensil/fork = 20
+	/obj/item/surgery_tool/hemostat = 100,	\
+	/obj/item/wirecutters = 75,	\
+	/obj/item/kitchen/utensil/fork = 20
 	)
 	blood_level = 2
 
@@ -151,8 +151,8 @@
 /datum/surgery_step/internal/fix_organ_robotic //For artificial organs
 	allowed_tools = list(
 	/obj/item/stack/nanopaste = 100,		\
-	/obj/item/weapon/surgery_tool/bonegel = 30, 		\
-	/obj/item/weapon/screwdriver = 70,	\
+	/obj/item/surgery_tool/bonegel = 30, 		\
+	/obj/item/screwdriver = 70,	\
 	)
 
 	min_duration = 70
@@ -220,9 +220,9 @@
 /datum/surgery_step/internal/detatch_organ
 
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/scalpel = 100,		\
-	/obj/item/weapon/kitchenknife = 75,	\
-	/obj/item/weapon/shard = 50, 		\
+	/obj/item/surgery_tool/scalpel = 100,		\
+	/obj/item/kitchenknife = 75,	\
+	/obj/item/shard = 50, 		\
 	)
 
 	min_duration = 90
@@ -275,9 +275,9 @@
 /datum/surgery_step/internal/remove_organ
 
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/hemostat = 100,	\
-	/obj/item/weapon/wirecutters = 75,	\
-	/obj/item/weapon/kitchen/utensil/fork = 20
+	/obj/item/surgery_tool/hemostat = 100,	\
+	/obj/item/wirecutters = 75,	\
+	/obj/item/kitchen/utensil/fork = 20
 	)
 
 	min_duration = 60
@@ -319,7 +319,7 @@
 			var/datum/organ/external/affected = target.get_organ(target_zone)
 			var/datum/organ/internal/I = target.internal_organs_by_name[target.op_stage.current_organ]
 
-			var/obj/item/weapon/reagent_containers/food/snacks/organ/O
+			var/obj/item/reagent_containers/food/snacks/organ/O
 			if(I && istype(I))
 				O = I.remove(user)
 				if(I.escritura)
@@ -351,7 +351,7 @@
 
 /datum/surgery_step/internal/replace_organ
 	allowed_tools = list(
-	/obj/item/weapon/reagent_containers/food/snacks/organ = 100
+	/obj/item/reagent_containers/food/snacks/organ = 100
 	)
 
 	min_duration = 60
@@ -359,7 +359,7 @@
 
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
-		var/obj/item/weapon/reagent_containers/food/snacks/organ/O = tool
+		var/obj/item/reagent_containers/food/snacks/organ/O = tool
 		var/datum/organ/external/affected = target.get_organ(target_zone)
 
 		var/organ_compatible
@@ -411,7 +411,7 @@
 		user.visible_message("\blue [user] has transplanted \the [tool] into [target]'s [affected.display_name].", \
 		"\blue You have transplanted \the [tool] into [target]'s [affected.display_name].")
 		user.drop_item(tool)
-		var/obj/item/weapon/reagent_containers/food/snacks/organ/O = tool
+		var/obj/item/reagent_containers/food/snacks/organ/O = tool
 
 		if(istype(O))
 
@@ -440,14 +440,14 @@
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		user.visible_message("\red [user]'s hand slips, damaging \the [tool]!", \
 		"\red Your hand slips, damaging \the [tool]!")
-		var/obj/item/weapon/reagent_containers/food/snacks/organ/I = tool
+		var/obj/item/reagent_containers/food/snacks/organ/I = tool
 		if(istype(I))
 			I.organ_data.take_damage(rand(3,5),0)
 
 /datum/surgery_step/internal/attach_organ
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/FixOVein = 100, \
-	/obj/item/weapon/surgery_tool/suture = 100, \
+	/obj/item/surgery_tool/FixOVein = 100, \
+	/obj/item/surgery_tool/suture = 100, \
 	/obj/item/stack/cable_coil = 75
 	)
 
@@ -500,9 +500,9 @@
 // To be finished after some tests.
 // /datum/surgery_step/ribcage/heart/cut
 //	allowed_tools = list(
-//	/obj/item/weapon/surgery_tool/scalpel = 100,		\
-//	/obj/item/weapon/kitchenknife = 75,	\
-//	/obj/item/weapon/shard = 50, 		\
+//	/obj/item/surgery_tool/scalpel = 100,		\
+//	/obj/item/kitchenknife = 75,	\
+//	/obj/item/shard = 50, 		\
 //	)
 
 //	min_duration = 30

@@ -9,7 +9,7 @@
 	var/spamcheck = 0
 	var/emagged = 0
 	var/insults = 0
-	var/list/insultmsg = list("яхмдхйюр - яхкю, мр - лнцхкю!", "яа - охднпюяш!", "йюохрюм - цнмднм!", "уня - усеяня!")
+	var/list/insultmsg = list("О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ - О©╫О©╫О©╫О©╫, О©╫О©╫ - О©╫О©╫О©╫О©╫О©╫О©╫!", "О©╫О©╫ - О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫!", "О©╫О©╫О©╫О©╫О©╫О©╫О©╫ - О©╫О©╫О©╫О©╫О©╫О©╫!", "О©╫О©╫О©╫ - О©╫О©╫О©╫О©╫О©╫О©╫!")
 
 /obj/item/device/megaphone/attack_self(mob/living/user as mob)
 	if (user.client)
@@ -22,7 +22,7 @@
 	if(user.silent)
 		return
 	if(spamcheck)
-		user << "\red мЕ РЮЙ АШЯРПН, ЙНБАНИ!"
+		user << "\red О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫, О©╫О©╫О©╫О©╫О©╫О©╫!"
 		return
 
 	var/message = sanitize(input(user, "Shout a message?", "Megaphone", null)  as text)
@@ -47,7 +47,7 @@
 		return
 
 /obj/item/device/megaphone/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/card/emag) && !emagged)
+	if(istype(I, /obj/item/card/emag) && !emagged)
 		user << "\red You overload \the [src]'s voice synthesizer."
 		emagged = 1
 		insults = 1//to prevent dickflooding

@@ -19,15 +19,15 @@
 		trap_type = pick("STONE","CLUB")
 	switch(trap_type)
 		if("STONE")
-			trap_path = /obj/item/weapon/stone
+			trap_path = /obj/item/stone
 		if("CLUB")
-			trap_path = /obj/item/weapon/melee/classic_baton/boneclub
+			trap_path = /obj/item/melee/classic_baton/boneclub
 		if("AMBUSH")
 			trap_path = /mob/living/carbon/human/monster/strygh
 
 /obj/effect/trap/Crossed(mob/living/carbon/human/M as mob|obj)
 	if(istype(M, /mob/living/carbon/human))
-		if(!M.jumping)
+		if(!M.throwing)
 			if(isactive)
 				for(var/mob/O in viewers(world.view, src.loc))
 					to_chat(O,"<font color='combat'>[M] was caught by \the [src]!</font>")
@@ -40,7 +40,7 @@
 	var/mob/living/carbon/human/H = AM
 	if(trap_type == "AMBUSH")
 		if(H.m_intent == "run")
-			playsound(H.loc, pick('ambush1.ogg','ambush2.ogg','ambush3.ogg','ambush4.ogg','ambush5.ogg','ambush6.ogg'), 50, 0, -1)
+			playsound(H.loc, pick('sound/lfwbambimusic/ambush1.ogg','sound/lfwbambimusic/ambush2.ogg','sound/lfwbambimusic/ambush3.ogg','sound/lfwbambimusic/ambush4.ogg','sound/lfwbambimusic/ambush5.ogg','sound/lfwbambimusic/ambush6.ogg'), 50, 0, -1)
 			for(var/mob/living/M in view(src))
 				to_chat(M,"<font color='red'><h2>AMBUSH!</h2></font>")
 				to_chat(M,"<font color='red'><h3>Curse them!</h3></font>")
@@ -52,10 +52,10 @@
 				new monster(src.loc)
 			qdel(src)
 	else
-		playsound(H.loc, 'trap.ogg', 60, 0)
+		playsound(H.loc, 'sound/effects/trap.ogg', 60, 0)
 		new trap_path(src.loc)
 		var/chosenOrgan = pick(H.organs_by_name)
-		playsound(src, 'klevec.ogg', 50, 1, -1)
+		playsound(src, 'sound/weapons/klevec.ogg', 50, 1, -1)
 		H.apply_damage(rand(10,65), BRUTE, chosenOrgan)
 		isactive = FALSE
 		//IMPROVISO
@@ -64,24 +64,24 @@
 /obj/effect/trap/attack_hand(mob/user as mob)
 	if(!isactive)
 		to_chat(usr,"<i>You arm the trap.</i>")
-		playsound(src.loc, 'trap_arm.ogg', 30, 0)
+		playsound(src.loc, 'sound/effects/trap_arm.ogg', 30, 0)
 		isactive = TRUE
 	else
 		to_chat(usr,"<i>You disarm the trap.</i>")
-		playsound(src.loc, 'trap_arm.ogg', 30, 0)
+		playsound(src.loc, 'sound/effects/trap_arm.ogg', 30, 0)
 		isactive = FALSE
 
 /mob/living/carbon/human/proc/check_for_traps()
 	visible_message(src, "<span class='bname'>[src]</span> begins to gaze around!", \
 	"You begin gazing around.")
-	if(do_after(src,20-src.my_stats.dx))
+	if(do_after(src,20-src.my_stats.get_stat(STAT_DX)))
 		for(var/obj/effect/trap/O in view(9, src))
 			to_chat(src,"<i>There are traps nearby!</i>")
-			flick('attention.dmi',O)
+			flick('icons/life/attention.dmi',O)
 
 /obj/effect/trap/skinless/trapcatch(AM)
 	var/mob/living/carbon/human/H = AM
-	playsound(H.loc, pick('ambush1.ogg','ambush2.ogg','ambush3.ogg','ambush4.ogg','ambush5.ogg','ambush6.ogg'), 100, 1)
+	playsound(H.loc, pick('sound/lfwbambimusic/ambush1.ogg','sound/lfwbambimusic/ambush2.ogg','sound/lfwbambimusic/ambush3.ogg','sound/lfwbambimusic/ambush4.ogg','sound/lfwbambimusic/ambush5.ogg','sound/lfwbambimusic/ambush6.ogg'), 100, 1)
 	for(var/mob/living/M in view(7, src))
 		to_chat(M,"<span class='combatbold'><h2>AMBUSH!</h2></span>")
 		to_chat(M,"<span class='combatbold'><h3>Curse them!</h3></span>")

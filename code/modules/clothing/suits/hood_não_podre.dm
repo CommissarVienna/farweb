@@ -4,8 +4,9 @@
 /obj/item/clothing/suit/storage/vest/goodhood/morticiancloak
 	name = "Mortician's Cloak"
 	desc = "The cloak of death. Used by morticians to take bums to the web."
-	icon_state = "mortus"
-	item_state = "bumcoat"
+	icon_state = "mortician"
+	item_state = "mortician"
+	hide_uniform_sleeves = TRUE
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	flags = FPRINT | TABLEPASS | ONESIZEFITSALL
 	weight = 5

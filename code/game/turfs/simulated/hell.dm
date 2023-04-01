@@ -7,7 +7,7 @@
 /turf/simulated/wall/r_wall/hell
 	name = "HELL"
 	desc = "You will never get out."
-	icon = 'hell.dmi'
+	icon = 'icons/turf/hell.dmi'
 	icon_state = "wall14"
 	walltype = "wall"
 
@@ -20,7 +20,7 @@
 	lighting_use_dynamic = FALSE
 
 
-obj/structure/helldoor
+/obj/structure/helldoor
 	name = "ESCAPE"
 	icon = 'icons/turf/hell.dmi'
 

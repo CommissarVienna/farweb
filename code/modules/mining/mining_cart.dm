@@ -80,7 +80,7 @@
 /obj/structure/miningcar/proc/collect_items(var/mob/user)
 	var/items_count = 0
 
-	for(var/obj/item/weapon/ore/lw/F in user.loc)
+	for(var/obj/item/ore/lw/F in user.loc)
 		if(!F.anchored)
 			F.loc = src
 			items_count++

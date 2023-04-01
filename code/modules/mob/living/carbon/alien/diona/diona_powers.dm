@@ -53,10 +53,6 @@
 	src.verbs -= /mob/living/carbon/alien/diona/proc/split
 	src.verbs += /mob/living/carbon/alien/diona/proc/merge
 
-	if(istype(M))
-		for(var/atom/A in M.contents)
-			if(istype(A,/mob/living/simple_animal/borer))
-				return
 	M.status_flags &= ~PASSEMOTES
 
 /mob/living/carbon/alien/diona/proc/steal_blood()

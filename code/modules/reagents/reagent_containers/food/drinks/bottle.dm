@@ -4,21 +4,24 @@
 //Functionally identical to regular drinks. The only difference is that the default bottle size is 100. - Darem
 //Bottles now weaken and break when smashed on people's heads. - Giacom
 
-/obj/item/weapon/reagent_containers/glass/bottle
+/obj/item/reagent_containers/glass/bottle
 	amount_per_transfer_from_this = 10
 	volume = 100
 	item_state = "broken_beer" //Generic held-item sprite until unique ones are made.
+	table_sound = 'sound/items/placing_glass.ogg'
+	table_pickup_sound = 'sound/items/generic_lift.ogg'
 	var/const/duration = 13 //Directly relates to the 'weaken' duration. Lowered by armor (i.e. helmets)
 	var/isGlass = 1 //Whether the 'bottle' is made of glass or not so that milk cartons dont shatter when someone gets hit by it
 
-/obj/item/weapon/reagent_containers/glass/bottle/proc/smash(mob/living/target as mob, mob/living/user as mob)
+
+/obj/item/reagent_containers/glass/bottle/proc/smash(mob/living/target as mob, mob/living/user as mob)
 
 	//Creates a shattering noise and replaces the bottle with a broken_bottle
 	if(!target || !user)
 
-		var/obj/item/weapon/broken_bottle/B = new /obj/item/weapon/broken_bottle(loc)
+		var/obj/item/broken_bottle/B = new /obj/item/broken_bottle(loc)
 		if(prob(33))
-			new/obj/item/weapon/shard(loc) // Create a glass shard at the target's location!
+			new/obj/item/shard(loc) // Create a glass shard at the target's location!
 		B.icon_state = src.icon_state
 		var/icon/I = new('icons/obj/drinks.dmi', src.icon_state)
 		I.Blend(B.broken_outline, ICON_OVERLAY, rand(5), 1)
@@ -30,10 +33,10 @@
 		qdel(src)
 	else
 		user.drop_item()
-		var/obj/item/weapon/broken_bottle/B = new /obj/item/weapon/broken_bottle(user.loc)
+		var/obj/item/broken_bottle/B = new /obj/item/broken_bottle(user.loc)
 		user.put_in_active_hand(B)
 		if(prob(33))
-			new/obj/item/weapon/shard(target.loc) // Create a glass shard at the target's location!
+			new/obj/item/shard(target.loc) // Create a glass shard at the target's location!
 		if(src.reagents.total_volume)
 			src.add_fluid_by_transfer(get_turf(src), src.reagents.total_volume)
 		B.icon_state = src.icon_state
@@ -49,7 +52,7 @@
 
 		qdel(src)
 
-/obj/item/weapon/reagent_containers/glass/bottle/throw_impact(atom/hit_atom, speed)
+/obj/item/reagent_containers/glass/bottle/throw_impact(atom/hit_atom, speed)
 	..(hit_atom, speed)
 	if(prob(33))
 		if(isliving(hit_atom))
@@ -60,10 +63,10 @@
 				//src.reagents.reaction(target, TOUCH)
 		smash()
 
-/obj/item/weapon/reagent_containers/glass/bottle/bullet_act()
+/obj/item/reagent_containers/glass/bottle/bullet_act()
 	smash()
 
-/obj/item/weapon/reagent_containers/glass/bottle/attack(mob/living/target as mob, mob/living/user as mob)
+/obj/item/reagent_containers/glass/bottle/attack(mob/living/target as mob, mob/living/user as mob)
 
 	if(!target)
 		return
@@ -142,7 +145,7 @@
 	return
 
 //Keeping this here for now, I'll ask if I should keep it here.
-/obj/item/weapon/broken_bottle
+/obj/item/broken_bottle
 
 	name = "Broken Bottle"
 	desc = "A bottle with a sharp broken bottom."
@@ -158,12 +161,12 @@
 	edge = 0
 	var/icon/broken_outline = icon('icons/obj/drinks.dmi', "broken")
 
-/obj/item/weapon/broken_bottle/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/broken_bottle/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	playsound(loc, 'sound/weapons/bladeslice.ogg', 50, 1, -1)
 	return ..()
 
 
-/obj/item/weapon/reagent_containers/glass/bottle/gin
+/obj/item/reagent_containers/glass/bottle/gin
 	name = "gin"
 	desc = "Gin, the woman's whiskey."
 	icon = 'icons/obj/drinks.dmi'
@@ -173,7 +176,7 @@
 		..()
 		reagents.add_reagent("gin", 100)
 
-/obj/item/weapon/reagent_containers/glass/bottle/whiskey
+/obj/item/reagent_containers/glass/bottle/whiskey
 	name = "whiskey"
 	desc = "A mash of grain turned into a man's best friend."
 	icon = 'icons/obj/drinks.dmi'
@@ -183,7 +186,7 @@
 		..()
 		reagents.add_reagent("whiskey", 100)
 
-/obj/item/weapon/reagent_containers/glass/bottle/vodka
+/obj/item/reagent_containers/glass/bottle/vodka
 	name = "vodka"
 	desc = "From Salar, with love."
 	icon = 'icons/obj/drinks.dmi'
@@ -193,7 +196,7 @@
 		..()
 		reagents.add_reagent("vodka", 100)
 
-/obj/item/weapon/reagent_containers/glass/bottle/tequilla
+/obj/item/reagent_containers/glass/bottle/tequilla
 	name = "tequila"
 	desc = "Made from premium petroleum distillates."
 	icon = 'icons/obj/drinks.dmi'
@@ -203,7 +206,7 @@
 		..()
 		reagents.add_reagent("tequilla", 100)
 
-/obj/item/weapon/reagent_containers/glass/bottle/rum
+/obj/item/reagent_containers/glass/bottle/rum
 	name = "rum"
 	desc = "For hardy sailors and seaspotters."
 	icon = 'icons/obj/drinks.dmi'
@@ -213,7 +216,7 @@
 		..()
 		reagents.add_reagent("rum", 100)
 
-/obj/item/weapon/reagent_containers/glass/bottle/vermouth
+/obj/item/reagent_containers/glass/bottle/vermouth
 	name = "vermouth"
 	desc = "Sweet, sweet dryness."
 	icon = 'icons/obj/drinks.dmi'
@@ -223,7 +226,7 @@
 		..()
 		reagents.add_reagent("vermouth", 100)
 
-/obj/item/weapon/reagent_containers/glass/bottle/cognac
+/obj/item/reagent_containers/glass/bottle/cognac
 	name = "cognac"
 	desc = "Don't mix this with anything or it's considered a sin."
 	icon = 'icons/obj/drinks.dmi'
@@ -233,7 +236,7 @@
 		..()
 		reagents.add_reagent("cognac", 100)
 
-/obj/item/weapon/reagent_containers/glass/bottle/wine
+/obj/item/reagent_containers/glass/bottle/wine
 	name = "cave wine"
 	desc = "Argubly stronger than standard liquor."
 	icon = 'icons/obj/drinks.dmi'
@@ -243,7 +246,7 @@
 		..()
 		reagents.add_reagent("wine", 100)
 
-/obj/item/weapon/reagent_containers/glass/bottle/absinthe
+/obj/item/reagent_containers/glass/bottle/absinthe
 	name = "absinthe"
 	desc = "One sip of this and you just know you're gonna have a good time."
 	icon = 'icons/obj/drinks.dmi'
@@ -253,7 +256,7 @@
 		..()
 		reagents.add_reagent("absinthe", 100)
 
-/obj/item/weapon/reagent_containers/glass/bottle/pwine
+/obj/item/reagent_containers/glass/bottle/pwine
 	name = "velvet wine"
 	desc = "What a delightful packaging for a surely high quality wine! The vintage must be amazing!"
 	icon = 'icons/obj/drinks.dmi'
@@ -265,7 +268,7 @@
 
 //////////////////////////JUICES AND STUFF ///////////////////////
 
-/obj/item/weapon/reagent_containers/glass/bottle/orangejuice
+/obj/item/reagent_containers/glass/bottle/orangejuice
 	name = "Orange Juice"
 	desc = "Full of vitamins and deliciousness!"
 	icon = 'icons/obj/drinks.dmi'
@@ -276,7 +279,7 @@
 		..()
 		reagents.add_reagent("orangejuice", 100)
 
-/obj/item/weapon/reagent_containers/glass/bottle/cream
+/obj/item/reagent_containers/glass/bottle/cream
 	name = "Milk Cream"
 	desc = "It's cream. Made from milk. What else did you think you'd find in there?"
 	icon = 'icons/obj/drinks.dmi'
@@ -287,7 +290,7 @@
 		..()
 		reagents.add_reagent("cream", 100)
 
-/obj/item/weapon/reagent_containers/glass/bottle/tomatojuice
+/obj/item/reagent_containers/glass/bottle/tomatojuice
 	name = "Tomato Juice"
 	desc = "Well, at least it LOOKS like tomato juice. You can't tell with all that redness."
 	icon = 'icons/obj/drinks.dmi'
@@ -298,7 +301,7 @@
 		..()
 		reagents.add_reagent("tomatojuice", 100)
 
-/obj/item/weapon/reagent_containers/glass/bottle/limejuice
+/obj/item/reagent_containers/glass/bottle/limejuice
 	name = "Lime Juice"
 	desc = "Sweet-sour goodness."
 	icon = 'icons/obj/drinks.dmi'
@@ -309,7 +312,7 @@
 		..()
 		reagents.add_reagent("limejuice", 100)
 
-/obj/item/weapon/reagent_containers/glass/bottle/waterbottle
+/obj/item/reagent_containers/glass/bottle/waterbottle
 	name = "Water Bottle"
 	icon_state = "waterbottle"
 	icon = 'icons/obj/drinks.dmi'
@@ -321,7 +324,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 
-/obj/item/weapon/reagent_containers/glass/bottle/ale
+/obj/item/reagent_containers/glass/bottle/ale
 	name = "Magm-Ale"
 	desc = "A true dorf's drink of choice."
 	icon = 'icons/obj/drinks.dmi'
@@ -334,7 +337,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 
-/obj/item/weapon/reagent_containers/glass/bottle/beer
+/obj/item/reagent_containers/glass/bottle/beer
 	name = "Beer"
 	desc = "Contains only water, malt and hops."
 	icon = 'icons/obj/drinks.dmi'

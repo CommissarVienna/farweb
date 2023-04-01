@@ -161,7 +161,7 @@
 	desc = "A handgun holster."
 	icon_state = "holster"
 	item_color = "holster"
-	var/obj/item/weapon/gun/holstered = null
+	var/obj/item/gun/holstered = null
 
 /obj/item/clothing/tie/holster/armpit
 	name = "shoulder holster"
@@ -181,10 +181,10 @@
 	icon_state = "webbing"
 	item_color = "webbing"
 	var/slots = 3
-	var/obj/item/weapon/storage/pockets/hold
+	var/obj/item/storage/pockets/hold
 
 /obj/item/clothing/tie/storage/New()
-	hold = new /obj/item/weapon/storage/pockets(src)
+	hold = new /obj/item/storage/pockets(src)
 	hold.master_item = src
 	hold.storage_slots = slots
 
@@ -196,15 +196,15 @@
 		hold.remove_from_storage(I, T)
 	src.add_fingerprint(user)
 
-/obj/item/clothing/tie/storage/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/clothing/tie/storage/attackby(obj/item/W as obj, mob/user as mob)
 	hold.attackby(W,user)
 	src.add_fingerprint(user)
 
-/obj/item/weapon/storage/pockets
+/obj/item/storage/pockets
 	name = "storage"
 	var/master_item		//item it belongs to
 
-/obj/item/weapon/storage/pockets/close(mob/user as mob)
+/obj/item/storage/pockets/close(mob/user as mob)
 	..()
 	loc = master_item
 
@@ -258,7 +258,7 @@
 
 /obj/item/clothing/tie/holobadge/attackby(var/obj/item/O as obj, var/mob/user as mob)
 
-	if (istype(O, /obj/item/weapon/card/emag))
+	if (istype(O, /obj/item/card/emag))
 		if (emagged)
 			user << "\red [src] is already cracked."
 			return
@@ -267,11 +267,11 @@
 			user << "\red You swipe [O] and crack the holobadge security checks."
 			return
 
-	else if(istype(O, /obj/item/weapon/card/id) || istype(O, /obj/item/device/pda))
+	else if(istype(O, /obj/item/card/id) || istype(O, /obj/item/device/pda))
 
-		var/obj/item/weapon/card/id/id_card = null
+		var/obj/item/card/id/id_card = null
 
-		if(istype(O, /obj/item/weapon/card/id))
+		if(istype(O, /obj/item/card/id))
 			id_card = O
 		else
 			var/obj/item/device/pda/pda = O
@@ -291,7 +291,7 @@
 	if(isliving(user))
 		user.visible_message("\red [user] invades [M]'s personal space, thrusting [src] into their face insistently.","\red You invade [M]'s personal space, thrusting [src] into their face insistently. You are the law.")
 
-/obj/item/weapon/storage/box/holobadge
+/obj/item/storage/box/holobadge
 	name = "holobadge box"
 	desc = "A box claiming to contain holobadges."
 	New()
@@ -318,7 +318,7 @@
 /obj/item/clothing/tie/storage/knifeharness/proc/update()
 	var/count = 0
 	for(var/obj/item/I in hold)
-		if(istype(I,/obj/item/weapon/hatchet/unathiknife))
+		if(istype(I,/obj/item/hatchet/unathiknife))
 			count++
 	if(count>2) count = 2
 	item_state = "unathiharness[count]"
@@ -333,5 +333,5 @@
 
 /obj/item/clothing/tie/storage/knifeharness/New()
 	..()
-	new /obj/item/weapon/hatchet/unathiknife(hold)
-	new /obj/item/weapon/hatchet/unathiknife(hold)
+	new /obj/item/hatchet/unathiknife(hold)
+	new /obj/item/hatchet/unathiknife(hold)

@@ -1,7 +1,7 @@
 /obj/item
 	var/typeDamage = BRUTE //COISA PRO FUTURO
 
-/obj/item/weapon/phone
+/obj/item/phone
 	name = "red phone"
 	desc = "Should anything ever go wrong..."
 	icon = 'icons/obj/items.dmi'
@@ -15,7 +15,7 @@
 	attack_verb = list("called", "rang")
 	hitsound = 'sound/weapons/ring.ogg'
 
-/obj/item/weapon/rsp
+/obj/item/rsp
 	name = "\improper Rapid-Seed-Producer (RSP)"
 	desc = "A device used to rapidly deploy seeds."
 	icon = 'icons/obj/items.dmi'
@@ -28,7 +28,7 @@
 	flags = TABLEPASS
 	w_class = 3.0
 
-/obj/item/weapon/bananapeel
+/obj/item/bananapeel
 	name = "banana peel"
 	desc = "A peel from a banana."
 	icon = 'icons/obj/items.dmi'
@@ -39,18 +39,7 @@
 	throw_speed = 4
 	throw_range = 20
 
-/obj/item/weapon/corncob
-	name = "corn cob"
-	desc = "A reminder of meals gone by."
-	icon = 'icons/obj/harvest.dmi'
-	icon_state = "corn_cob"
-	item_state = "corn_cob"
-	w_class = 1.0
-	throwforce = 0
-	throw_speed = 4
-	throw_range = 20
-
-/obj/item/weapon/soap
+/obj/item/soap
 	name = "soap"
 	desc = "A cheap bar of soap. Doesn't smell."
 	gender = PLURAL
@@ -61,7 +50,7 @@
 	throw_speed = 4
 	throw_range = 20
 
-/obj/item/weapon/soap/Crossed(AM as mob|obj)
+/obj/item/soap/Crossed(AM as mob|obj)
 	if(iscarbon(AM))
 		var/mob/living/carbon/M = AM
 		if(prob(25))
@@ -69,19 +58,19 @@
 	else
 		return
 
-/obj/item/weapon/soap/nanotrasen
+/obj/item/soap/nanotrasen
 	desc = "A Nanotrasen brand bar of soap. Smells of plasma."
 	icon_state = "soapnt"
 
-/obj/item/weapon/soap/deluxe
+/obj/item/soap/deluxe
 	desc = "A deluxe Waffle Co. brand bar of soap. Smells of condoms."
 	icon_state = "soapdeluxe"
 
-/obj/item/weapon/soap/syndie
+/obj/item/soap/syndie
 	desc = "An untrustworthy bar of soap. Smells of fear."
 	icon_state = "soapsyndie"
 
-/obj/item/weapon/bikehorn
+/obj/item/bikehorn
 	name = "bike horn"
 	desc = "A horn off of a bicycle."
 	icon = 'icons/obj/items.dmi'
@@ -95,7 +84,7 @@
 	var/spam_flag = 0
 
 
-/obj/item/weapon/c_tube
+/obj/item/c_tube
 	name = "cardboard tube"
 	desc = "A tube... of cardboard."
 	icon = 'icons/obj/items.dmi'
@@ -106,7 +95,7 @@
 	throw_range = 5
 
 
-/obj/item/weapon/cane
+/obj/item/cane
 	name = "caduceus"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "caduceus"
@@ -118,11 +107,11 @@
 	m_amt = 50
 	attack_verb = list("bludgeoned", "whacked", "disciplined", "thrashed")
 
-/obj/item/weapon/disk
+/obj/item/disk
 	name = "disk"
 	icon = 'icons/obj/items.dmi'
 
-/obj/item/weapon/disk/nuclear
+/obj/item/disk/nuclear
 	name = "nuclear authentication disk"
 	desc = "Better keep this safe."
 	icon_state = "nucleardisk"
@@ -131,7 +120,7 @@
 	flammable = 0
 
 /*
-/obj/item/weapon/game_kit
+/obj/item/game_kit
 	name = "Gaming Kit"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "game_kit"
@@ -143,7 +132,7 @@
 	w_class = 5.0
 */
 
-/obj/item/weapon/gift
+/obj/item/gift
 	name = "gift"
 	desc = "A wrapped item."
 	icon = 'icons/obj/items.dmi'
@@ -153,7 +142,7 @@
 	item_state = "gift"
 	w_class = 4.0
 
-/obj/item/weapon/legcuffs
+/obj/item/legcuffs
 	name = "legcuffs"
 	desc = "Use this to keep prisoners in line."
 	gender = PLURAL
@@ -165,7 +154,7 @@
 	origin_tech = "materials=1"
 	var/breakouttime = 300	//Deciseconds = 30s = 0.5 minute
 
-/obj/item/weapon/legcuffs/beartrap
+/obj/item/legcuffs/beartrap
 	name = "bear trap"
 	throw_speed = 2
 	throw_range = 1
@@ -177,14 +166,14 @@
 		viewers(user) << "\red <b>[user] is putting the [src.name] on \his head! It looks like \he's trying to commit suicide.</b>"
 		return (BRUTELOSS)
 
-/obj/item/weapon/legcuffs/beartrap/attack_self(mob/user as mob)
+/obj/item/legcuffs/beartrap/attack_self(mob/user as mob)
 	..()
 	if(ishuman(user) && !user.stat && !user.restrained())
 		armed = !armed
 		icon_state = "beartrap[armed]"
 		user << "<span class='notice'>[src] is now [armed ? "armed" : "disarmed"]</span>"
 
-/obj/item/weapon/legcuffs/beartrap/Crossed(AM as mob|obj)
+/obj/item/legcuffs/beartrap/Crossed(AM as mob|obj)
 	if(armed)
 		if(ishuman(AM))
 			if(isturf(src.loc))
@@ -199,13 +188,13 @@
 						if(O == H)
 							continue
 						O.show_message("\red <B>[H] steps on \the [src].</B>", 1)
-		if(isanimal(AM) && !istype(AM, /mob/living/simple_animal/parrot) && !istype(AM, /mob/living/simple_animal/construct) && !istype(AM, /mob/living/simple_animal/shade) && !istype(AM, /mob/living/simple_animal/hostile/viscerator))
+		if(isanimal(AM) && !istype(AM, /mob/living/simple_animal/parrot) && !istype(AM, /mob/living/simple_animal/construct) && !istype(AM, /mob/living/simple_animal/shade))
 			armed = 0
 			var/mob/living/simple_animal/SA = AM
 			SA.health -= 20
 	..()
 
-/obj/item/weapon/legcuffs/bola
+/obj/item/legcuffs/bola
 	name = "throwing net"
 	desc = "A restraining device designed to be thrown at the target. Upon connecting with said target, it will wrap around their legs, making it difficult for them to move quickly."
 	icon = 'icons/obj/weapons.dmi'
@@ -216,12 +205,12 @@
 	slot_flags = SLOT_BELT|SLOT_BACK
 	drawsound = 'sound/weapons/net_equip.ogg'
 
-/obj/item/weapon/legcuffs/bola/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, gentle = FALSE, quickstart = TRUE)
+/obj/item/legcuffs/bola/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, gentle = FALSE, quickstart = TRUE)
 	if(!..())
 		return
 	playsound(src.loc,'sound/weapons/net_equip.ogg', 75, 0)
 
-/obj/item/weapon/legcuffs/bola/throw_impact(atom/hit_atom)
+/obj/item/legcuffs/bola/throw_impact(atom/hit_atom)
 	if((ishuman(hit_atom)))
 		var/mob/living/carbon/human/H = hit_atom
 		ensnare(H)
@@ -232,7 +221,7 @@
   * Arguments:
   * * C - the carbon that we will try to ensnare
   */
-/obj/item/weapon/legcuffs/bola/proc/ensnare(mob/living/carbon/C)
+/obj/item/legcuffs/bola/proc/ensnare(mob/living/carbon/C)
 	if(!C.legcuffed)
 		visible_message("<span class='danger'>\The [src] ensnares [C]!</span>")
 		C.legcuffed = src
@@ -242,7 +231,7 @@
 		playsound(C, 'sound/weapons/net_captured.ogg', 50, 0)
 
 
-/obj/item/weapon/caution
+/obj/item/caution
 	desc = "Caution! Wet Floor!"
 	name = "wet floor sign"
 	icon = 'icons/obj/janitor.dmi'
@@ -255,12 +244,12 @@
 	flags = FPRINT | TABLEPASS
 	attack_verb = list("warned", "cautioned", "smashed")
 
-/obj/item/weapon/caution/cone
+/obj/item/caution/cone
 	desc = "This cone is trying to warn you of something!"
 	name = "warning cone"
 	icon_state = "cone"
 
-/obj/item/weapon/rack_parts
+/obj/item/rack_parts
 	name = "rack parts"
 	desc = "Parts of a rack."
 	icon = 'icons/obj/items.dmi'
@@ -268,7 +257,7 @@
 	flags = FPRINT | TABLEPASS| CONDUCT
 	m_amt = 3750
 
-/obj/item/weapon/shard
+/obj/item/shard
 	name = "shard"
 	icon = 'icons/obj/shards.dmi'
 	icon_state = "large"
@@ -287,7 +276,7 @@
 							"\red <b>[user] is slitting \his throat with the shard of glass! It looks like \he's trying to commit suicide.</b>")
 		return (BRUTELOSS)
 
-/obj/item/weapon/shard/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/shard/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if((M == user) && ishuman(user) && (user.zone_sel == "mouth"))
 		playsound(src, 'sound/effects/crunchychewing.ogg', 70, FALSE)
 		if(do_after(user, 2 SECONDS))
@@ -305,7 +294,7 @@
 		playsound(loc, 'sound/weapons/bladeslice.ogg', 50, 1, -1)
 	return ..()
 
-/*/obj/item/weapon/syndicate_uplink
+/*/obj/item/syndicate_uplink
 	name = "station bounced radio"
 	desc = "Remain silent about this..."
 	icon = 'icons/obj/radio.dmi'
@@ -324,13 +313,13 @@
 	m_amt = 100
 	origin_tech = "magnets=2;syndicate=3"*/
 
-/obj/item/weapon/shard/shrapnel
+/obj/item/shard/shrapnel
 	name = "shrapnel"
 	icon = 'icons/obj/shards.dmi'
 	icon_state = "shrapnellarge"
 	desc = "A bunch of tiny bits of shattered metal."
 
-/obj/item/weapon/shard/shrapnel/New()
+/obj/item/shard/shrapnel/New()
 
 	src.icon_state = pick("shrapnellarge", "shrapnelmedium", "shrapnelsmall")
 	switch(src.icon_state)
@@ -346,7 +335,7 @@
 		else
 	return
 
-/obj/item/weapon/SWF_uplink
+/obj/item/SWF_uplink
 	name = "station-bounced radio"
 	desc = "used to comunicate it appears."
 	icon = 'icons/obj/radio.dmi'
@@ -366,7 +355,7 @@
 	m_amt = 100
 	origin_tech = "magnets=1"
 
-/obj/item/weapon/staff
+/obj/item/staff
 	name = "wizards staff"
 	desc = "Apparently a staff used by the wizard."
 	icon = 'icons/obj/wizard.dmi'
@@ -379,20 +368,20 @@
 	flags = FPRINT | TABLEPASS | NOSHIELD
 	attack_verb = list("bludgeoned", "whacked", "disciplined")
 
-/obj/item/weapon/staff/broom
+/obj/item/staff/broom
 	name = "broom"
 	desc = "Used for sweeping, and flying into the night while cackling. Black cat not included."
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "broom"
 
-/obj/item/weapon/staff/gentcane
+/obj/item/staff/gentcane
 	name = "Gentlemans Cane"
 	desc = "An ebony can with an ivory tip."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "cane"
 	item_state = "stick"
 
-/obj/item/weapon/staff/stick
+/obj/item/staff/stick
 	name = "stick"
 	desc = "A great tool to drag someone else's drinks across the bar."
 	icon = 'icons/obj/weapons.dmi'
@@ -405,7 +394,7 @@
 	w_class = 2.0
 	flags = FPRINT | TABLEPASS | NOSHIELD
 
-/obj/item/weapon/table_parts
+/obj/item/table_parts
 	name = "table parts"
 	desc = "Parts of a table. Poor table."
 	gender = PLURAL
@@ -415,7 +404,7 @@
 	flags = FPRINT | TABLEPASS| CONDUCT
 	attack_verb = list("slammed", "bashed", "battered", "bludgeoned", "thrashed", "whacked")
 
-/obj/item/weapon/table_parts/reinforced
+/obj/item/table_parts/reinforced
 	name = "reinforced table parts"
 	desc = "Hard table parts. Well...harder..."
 	icon = 'icons/obj/items.dmi'
@@ -423,13 +412,13 @@
 	m_amt = 7500
 	flags = FPRINT | TABLEPASS| CONDUCT
 
-/obj/item/weapon/table_parts/wood
+/obj/item/table_parts/wood
 	name = "wooden table parts"
 	desc = "Keep away from fire."
 	icon_state = "wood_tableparts"
 	flags = null
 
-/obj/item/weapon/wire
+/obj/item/wire
 	desc = "This is just a simple piece of regular insulated wire."
 	name = "wire"
 	icon = 'icons/obj/power.dmi'
@@ -444,7 +433,7 @@
 		viewers(user) << "\red <b>[user] is strangling \himself with the [src.name]! It looks like \he's trying to commit suicide.</b>"
 		return (OXYLOSS)
 
-/obj/item/weapon/module
+/obj/item/module
 	icon = 'icons/obj/module.dmi'
 	icon_state = "std_module"
 	w_class = 2.0
@@ -452,29 +441,29 @@
 	flags = FPRINT|TABLEPASS|CONDUCT
 	var/mtype = 1						// 1=electronic 2=hardware
 
-/obj/item/weapon/module/card_reader
+/obj/item/module/card_reader
 	name = "card reader module"
 	icon_state = "card_mod"
 	desc = "An electronic module for reading data and ID cards."
 
-/obj/item/weapon/module/power_control
+/obj/item/module/power_control
 	name = "power control module"
 	icon_state = "power_mod"
 	desc = "Heavy-duty switching circuits for power control."
 	m_amt = 50
 	g_amt = 50
 
-/obj/item/weapon/module/id_auth
+/obj/item/module/id_auth
 	name = "\improper ID authentication module"
 	icon_state = "id_mod"
 	desc = "A module allowing secure authorization of ID cards."
 
-/obj/item/weapon/module/cell_power
+/obj/item/module/cell_power
 	name = "power cell regulator module"
 	icon_state = "power_mod"
 	desc = "A converter and regulator allowing the use of power cells."
 
-/obj/item/weapon/module/cell_power
+/obj/item/module/cell_power
 	name = "power cell charger module"
 	icon_state = "power_mod"
 	desc = "Charging circuits for power cells."
@@ -489,7 +478,7 @@
 	throw_speed = 4
 	throw_range = 20
 
-/obj/item/weapon/camera_bug/attack_self(mob/usr as mob)
+/obj/item/camera_bug/attack_self(mob/usr as mob)
 	var/list/cameras = new/list()
 	for (var/obj/machinery/camera/C in cameranet.cameras)
 		if (C.bugged && C.status)
@@ -515,7 +504,7 @@
 	usr.client.eye = target
 
 
-/obj/item/weapon/syntiflesh
+/obj/item/syntiflesh
 	name = "syntiflesh"
 	desc = "Meat that appears...strange..."
 	icon = 'icons/obj/food.dmi'
@@ -524,7 +513,7 @@
 	w_class = 1.0
 	origin_tech = "biotech=2"
 
-/obj/item/weapon/hatchet
+/obj/item/hatchet
 	name = "axe"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "axe"
@@ -542,27 +531,27 @@
 	m_amt = 15000
 	speciality = SKILL_SWING
 	origin_tech = "materials=2;combat=1"
-	attack_verb = list("chopped", "torn", "cut")
-	drop_sound = 'axe_drop.ogg'
-	drawsound = 'axe_unsheath.ogg'
+	attack_verb = list("chopped", "cut", "cleaved")
+	drop_sound = 'sound/effects/axe_drop.ogg'
+	drawsound = 'sound/weapons/axe_unsheath.ogg'
 	hitsound= "axechop"
 	swing_sound = "axeswing"
 	force_wielded = 40.0
 	force_unwielded = 28.0
-	equip_sound = 'axe_sheath.ogg'
+	equip_sound = 'sound/weapons/axe_sheath.ogg'
 	edge = 1
 	weapon_speed_delay = 12
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	smelted_return = /obj/item/ore/refined/lw/ironlw
 
-/obj/item/weapon/hatchet/bronze
+/obj/item/hatchet/bronze
 	name = "bronze axe"
 	icon_state = "axe2"
 	force_wielded = 35.0
 	force_unwielded = 30.0
 	force = 30.0
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/copperlw
+	smelted_return = /obj/item/ore/refined/lw/copperlw
 
-/obj/item/weapon/hatchet/sun
+/obj/item/hatchet/sun
 	name = "axe of the sun"
 	icon_state = "artiaxe2"
 	force_wielded = 35.0
@@ -570,7 +559,7 @@
 	force = 35.0
 
 
-/obj/item/weapon/hatchet/sun/attack(mob/living/carbon/human/M as mob, mob/living/carbon/human/user as mob)
+/obj/item/hatchet/sun/attack(mob/living/carbon/human/M as mob, mob/living/carbon/human/user as mob)
 	..()
 	if(iszombie(M))
 		if(prob(35))
@@ -588,7 +577,7 @@
 			sound = list('sound/voice/firescream1.ogg', 'sound/voice/firescream2.ogg', 'sound/voice/firescream3.ogg')
 		playsound(M, pick(sound), 200, 1)
 
-/obj/item/weapon/hatchet/stone
+/obj/item/hatchet/stone
 	name = "stone axe"
 	desc = "A very ancient axe."
 	icon = 'icons/obj/weapons.dmi'
@@ -597,7 +586,7 @@
 	force_wielded = 15.0
 	force_unwielded = 8.0
 
-/obj/item/weapon/hatchet/rusty
+/obj/item/hatchet/rusty
 	name = "rusty axe"
 	desc = "A very old axe."
 	icon = 'icons/obj/weapons.dmi'
@@ -606,14 +595,14 @@
 	force_wielded = 25.5
 	force_unwielded = 21.2
 
-/obj/item/weapon/hatchet/unathiknife
+/obj/item/hatchet/unathiknife
 	name = "duelling knife"
 	desc = "A length of leather-bound wood studded with razor-sharp teeth. How crude."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "unathiknife"
 	attack_verb = list("ripped", "torn", "cut")
 
-/obj/item/weapon/scythe
+/obj/item/scythe
 	icon_state = "scythe0"
 	name = "scythe"
 	desc = "A sharp and curved blade on a long fibremetal handle, this tool makes it easy to reap what you sow."
@@ -627,7 +616,7 @@
 	origin_tech = "materials=2;combat=2"
 	attack_verb = list("chopped", "sliced", "cut", "reaped")
 
-/obj/item/weapon/scythe/afterattack(atom/A, mob/user as mob, proximity)
+/obj/item/scythe/afterattack(atom/A, mob/user as mob, proximity)
 	if(!proximity) return
 	if(istype(A, /obj/effect/spacevine))
 		for(var/obj/effect/spacevine/B in orange(A,1))
@@ -636,7 +625,7 @@
 		del A
 
 /*
-/obj/item/weapon/cigarpacket
+/obj/item/cigarpacket
 	name = "Pete's Cuban Cigars"
 	desc = "The most robust cigars on the planet."
 	icon = 'icons/obj/cigarettes.dmi'
@@ -647,7 +636,7 @@
 	var/cigarcount = 6
 	flags = ONBELT | TABLEPASS */
 
-/obj/item/weapon/pai_cable
+/obj/item/pai_cable
 	desc = "A flexible coated cable with a universal jack on one end."
 	name = "data cable"
 	icon = 'icons/obj/power.dmi'
@@ -656,18 +645,18 @@
 	var/obj/machinery/machine
 
 
-/obj/item/weapon/horn
+/obj/item/horn
 	name = "horn"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "horn"
 	var/cooldown
-	var/distantsound = 'horn1d.ogg'
-	var/closesound = 'horn1.ogg'
+	var/distantsound = 'sound/effects/horn1d.ogg'
+	var/closesound = 'sound/effects/horn1.ogg'
 	flags = FPRINT | TABLEPASS | CONDUCT
 	slot_flags = SLOT_BELT
 	w_class = 4
 
-/obj/item/weapon/horn/attack_self(mob/M)
+/obj/item/horn/attack_self(mob/M)
 	if(cooldown)	return
 	M.visible_message("<span class='passivebold'>[M]</span> <span class='passive'>blows \the [src]!</span>")
 	for(var/mob/L in mob_list)
@@ -682,16 +671,16 @@
 	spawn(450)
 		cooldown = 0
 
-/obj/item/weapon/horn/horn2
+/obj/item/horn/horn2
 	name = "horn"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "horn2"
-	distantsound = 'horn2d.ogg'
-	closesound = 'horn2.ogg'
+	distantsound = 'sound/effects/horn2d.ogg'
+	closesound = 'sound/effects/horn2.ogg'
 
 ///////////////////////////////////////Stock Parts /////////////////////////////////
 
-/obj/item/weapon/stock_parts
+/obj/item/stock_parts
 	name = "stock part"
 	desc = "What?"
 	gender = PLURAL
@@ -704,14 +693,14 @@
 
 //Rank 1
 
-/obj/item/weapon/stock_parts/console_screen
+/obj/item/stock_parts/console_screen
 	name = "console screen"
 	desc = "Used in the construction of computers and other devices with a interactive console."
 	icon_state = "screen"
 	origin_tech = "materials=1"
 	g_amt = 200
 
-/obj/item/weapon/stock_parts/capacitor
+/obj/item/stock_parts/capacitor
 	name = "capacitor"
 	desc = "A basic capacitor used in the construction of a variety of devices."
 	icon_state = "capacitor"
@@ -719,7 +708,7 @@
 	m_amt = 50
 	g_amt = 50
 
-/obj/item/weapon/stock_parts/scanning_module
+/obj/item/stock_parts/scanning_module
 	name = "scanning module"
 	desc = "A compact, high resolution scanning module used in the construction of certain devices."
 	icon_state = "scan_module"
@@ -727,14 +716,14 @@
 	m_amt = 50
 	g_amt = 20
 
-/obj/item/weapon/stock_parts/manipulator
+/obj/item/stock_parts/manipulator
 	name = "micro-manipulator"
 	desc = "A tiny little manipulator used in the construction of certain devices."
 	icon_state = "micro_mani"
 	origin_tech = "materials=1;programming=1"
 	m_amt = 30
 
-/obj/item/weapon/stock_parts/micro_laser
+/obj/item/stock_parts/micro_laser
 	name = "micro-laser"
 	desc = "A tiny laser used in certain devices."
 	icon_state = "micro_laser"
@@ -742,7 +731,7 @@
 	m_amt = 10
 	g_amt = 20
 
-/obj/item/weapon/stock_parts/matter_bin
+/obj/item/stock_parts/matter_bin
 	name = "matter bin"
 	desc = "A container for hold compressed matter awaiting re-construction."
 	icon_state = "matter_bin"
@@ -751,7 +740,7 @@
 
 //Rank 2
 
-/obj/item/weapon/stock_parts/capacitor/adv
+/obj/item/stock_parts/capacitor/adv
 	name = "advanced capacitor"
 	icon_state = "adv_capacitor"
 	desc = "An advanced capacitor used in the construction of a variety of devices."
@@ -760,7 +749,7 @@
 	m_amt = 50
 	g_amt = 50
 
-/obj/item/weapon/stock_parts/scanning_module/adv
+/obj/item/stock_parts/scanning_module/adv
 	name = "advanced scanning module"
 	icon_state = "adv_scan_module"
 	desc = "A compact, high resolution scanning module used in the construction of certain devices."
@@ -770,7 +759,7 @@
 	m_amt = 50
 	g_amt = 20
 
-/obj/item/weapon/stock_parts/manipulator/nano
+/obj/item/stock_parts/manipulator/nano
 	name = "nano-manipulator"
 	desc = "A tiny little manipulator used in the construction of certain devices."
 	icon_state = "nano_mani"
@@ -778,7 +767,7 @@
 	rating = 2
 	m_amt = 30
 
-/obj/item/weapon/stock_parts/micro_laser/high
+/obj/item/stock_parts/micro_laser/high
 	name = "high-power micro-laser"
 	desc = "A tiny laser used in certain devices."
 	icon_state = "high_micro_laser"
@@ -787,7 +776,7 @@
 	m_amt = 10
 	g_amt = 20
 
-/obj/item/weapon/stock_parts/matter_bin/adv
+/obj/item/stock_parts/matter_bin/adv
 	name = "advanced matter bin"
 	desc = "A container for hold compressed matter awaiting re-construction."
 	icon_state = "advanced_matter_bin"
@@ -797,7 +786,7 @@
 
 //Rating 3
 
-/obj/item/weapon/stock_parts/capacitor/super
+/obj/item/stock_parts/capacitor/super
 	name = "super capacitor"
 	icon_state = "super_capacitor"
 	desc = "A super-high capacity capacitor used in the construction of a variety of devices."
@@ -806,7 +795,7 @@
 	m_amt = 50
 	g_amt = 50
 
-/obj/item/weapon/stock_parts/scanning_module/phasic
+/obj/item/stock_parts/scanning_module/phasic
 	name = "phasic scanning module"
 	icon_state = "super_scan_module"
 	desc = "A compact, high resolution phasic scanning module used in the construction of certain devices."
@@ -815,7 +804,7 @@
 	m_amt = 50
 	g_amt = 20
 
-/obj/item/weapon/stock_parts/manipulator/pico
+/obj/item/stock_parts/manipulator/pico
 	name = "pico-manipulator"
 	desc = "A tiny little manipulator used in the construction of certain devices."
 	icon_state = "pico_mani"
@@ -823,7 +812,7 @@
 	rating = 3
 	m_amt = 30
 
-/obj/item/weapon/stock_parts/micro_laser/ultra
+/obj/item/stock_parts/micro_laser/ultra
 	name = "ultra-high-power micro-laser"
 	icon_state = "ultra_high_micro_laser"
 	desc = "A tiny laser used in certain devices."
@@ -832,7 +821,7 @@
 	m_amt = 10
 	g_amt = 20
 
-/obj/item/weapon/stock_parts/matter_bin/super
+/obj/item/stock_parts/matter_bin/super
 	name = "super matter bin"
 	desc = "A container for hold compressed matter awaiting re-construction."
 	icon_state = "super_matter_bin"
@@ -842,7 +831,7 @@
 
 // Subspace stock parts
 
-/obj/item/weapon/stock_parts/subspace/ansible
+/obj/item/stock_parts/subspace/ansible
 	name = "subspace ansible"
 	icon_state = "subspace_ansible"
 	desc = "A compact module capable of sensing extradimensional activity."
@@ -850,7 +839,7 @@
 	m_amt = 30
 	g_amt = 10
 
-/obj/item/weapon/stock_parts/subspace/filter
+/obj/item/stock_parts/subspace/filter
 	name = "hyperwave filter"
 	icon_state = "hyperwave_filter"
 	desc = "A tiny device capable of filtering and converting super-intense radiowaves."
@@ -858,7 +847,7 @@
 	m_amt = 30
 	g_amt = 10
 
-/obj/item/weapon/stock_parts/subspace/amplifier
+/obj/item/stock_parts/subspace/amplifier
 	name = "subspace amplifier"
 	icon_state = "subspace_amplifier"
 	desc = "A compact micro-machine capable of amplifying weak subspace transmissions."
@@ -866,7 +855,7 @@
 	m_amt = 30
 	g_amt = 10
 
-/obj/item/weapon/stock_parts/subspace/treatment
+/obj/item/stock_parts/subspace/treatment
 	name = "subspace treatment disk"
 	icon_state = "treatment_disk"
 	desc = "A compact micro-machine capable of stretching out hyper-compressed radio waves."
@@ -874,7 +863,7 @@
 	m_amt = 30
 	g_amt = 10
 
-/obj/item/weapon/stock_parts/subspace/analyzer
+/obj/item/stock_parts/subspace/analyzer
 	name = "subspace wavelength analyzer"
 	icon_state = "wavelength_analyzer"
 	desc = "A sophisticated analyzer capable of analyzing cryptic subspace wavelengths."
@@ -882,28 +871,28 @@
 	m_amt = 30
 	g_amt = 10
 
-/obj/item/weapon/stock_parts/subspace/crystal
+/obj/item/stock_parts/subspace/crystal
 	name = "ansible crystal"
 	icon_state = "ansible_crystal"
 	desc = "A crystal made from pure glass used to transmit laser databursts to subspace."
 	origin_tech = "magnets=4;materials=4;bluespace=2"
 	g_amt = 50
 
-/obj/item/weapon/stock_parts/subspace/transmitter
+/obj/item/stock_parts/subspace/transmitter
 	name = "subspace transmitter"
 	icon_state = "subspace_transmitter"
 	desc = "A large piece of equipment used to open a window into the subspace dimension."
 	origin_tech = "magnets=5;materials=5;bluespace=3"
 	m_amt = 50
 
-/obj/item/weapon/ectoplasm
+/obj/item/ectoplasm
 	name = "ectoplasm"
 	desc = "spooky"
 	gender = PLURAL
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "ectoplasm"
 
-/obj/item/weapon/research//Makes testing much less of a pain -Sieve
+/obj/item/research//Makes testing much less of a pain -Sieve
 	name = "research"
 	icon = 'icons/obj/stock_parts.dmi'
 	icon_state = "capacitor"
@@ -911,13 +900,13 @@
 	origin_tech = "materials=8;programming=8;magnets=8;powerstorage=8;bluespace=8;combat=8;biotech=8;syndicate=8"
 
 
-/obj/item/weapon/storage/part_replacer
+/obj/item/storage/part_replacer
 	name = "Rapid Part Exchange Device"
 	desc = "Special mechanical module made to store, sort, and apply standard machine parts."
 	icon_state = "RPED"
 	item_state = "RPED"
 	w_class = 5
-	can_hold = list(/obj/item/weapon/stock_parts)
+	can_hold = list(/obj/item/stock_parts)
 	storage_slots = 21
 	use_to_pickup = 1
 	allow_quick_gather = 1
@@ -927,18 +916,18 @@
 	max_w_class = 3
 	max_combined_w_class = 42
 
-/obj/item/weapon/storage/part_replacer/proc/play_rped_sound()
+/obj/item/storage/part_replacer/proc/play_rped_sound()
 	//Plays the sound for RPED exhanging or installing parts.
 	playsound(src, 'sound/items/rped.ogg', 40, 1)
 
 //Sorts stock parts inside an RPED by their rating.
-//Only use /obj/item/weapon/stock_parts/ with this sort proc!
-/proc/cmp_rped_sort(var/obj/item/weapon/stock_parts/A, var/obj/item/weapon/stock_parts/B)
+//Only use /obj/item/stock_parts/ with this sort proc!
+/proc/cmp_rped_sort(var/obj/item/stock_parts/A, var/obj/item/stock_parts/B)
 	return B.rating - A.rating
 
 
 
-/obj/item/weapon/holosign_creator
+/obj/item/holosign_creator
 	name = "holographic sign projector"
 	desc = "A handy-dandy projector that displays a janitorial sign."
 	icon = 'icons/obj/janitor.dmi'
@@ -953,12 +942,12 @@
 	var/list/signs = list()
 	var/max_signs = 10
 
-/obj/item/weapon/holosign_creator/afterattack(atom/target, mob/user, flag)
+/obj/item/holosign_creator/afterattack(atom/target, mob/user, flag)
 	if(flag)
 		var/turf/T = get_turf(target)
 		var/obj/effect/overlay/holograph/H = locate() in T
 		if(istype(target, /obj/structure/janitorialcart))	return
-		if(istype(target, /obj/item/weapon/storage)) return
+		if(istype(target, /obj/item/storage)) return
 		if(H)
 			user << "<span class='notice'>You use [src] to destroy [H].</span>"
 			qdel(H)
@@ -970,10 +959,10 @@
 			else
 				user << "<span class='notice'>[src] is projecting at max capacity!</span>"
 
-/obj/item/weapon/holosign_creator/attack(mob/living/carbon/human/M, mob/user)
+/obj/item/holosign_creator/attack(mob/living/carbon/human/M, mob/user)
 	return
 
-/obj/item/weapon/holosign_creator/attack_self(mob/user)
+/obj/item/holosign_creator/attack_self(mob/user)
 	if(signs.len)
 		var/list/L = signs.Copy()
 		for(var/sign in L)

@@ -88,8 +88,8 @@ var/global/sent_syndicate_strike_team = 0
 //Spawns the rest of the commando gear.
 //	for (var/obj/effect/landmark/L)
 	//	if (L.name == "Commando_Manual")
-			//new /obj/item/weapon/gun/energy/pulse_rifle(L.loc)
-		//	var/obj/item/weapon/paper/P = new(L.loc)
+			//new /obj/item/gun/energy/pulse_rifle(L.loc)
+		//	var/obj/item/paper/P = new(L.loc)
 		//	P.info = "<p><b>Good morning soldier!</b>. This compact guide will familiarize you with standard operating procedure. There are three basic rules to follow:<br>#1 Work as a team.<br>#2 Accomplish your objective at all costs.<br>#3 Leave no witnesses.<br>You are fully equipped and stocked for your mission--before departing on the Spec. Ops. Shuttle due South, make sure that all operatives are ready. Actual mission objective will be relayed to you by Central Command through your headsets.<br>If deemed appropriate, Central Command will also allow members of your team to equip assault power-armor for the mission. You will find the armor storage due West of your position. Once you are ready to leave, utilize the Special Operations shuttle console and toggle the hull doors via the other console.</p><p>In the event that the team does not accomplish their assigned objective in a timely manner, or finds no other way to do so, attached below are instructions on how to operate a Nanotrasen Nuclear Device. Your operations <b>LEADER</b> is provided with a nuclear authentication disk and a pin-pointer for this reason. You may easily recognize them by their rank: Lieutenant, Captain, or Major. The nuclear device itself will be present somewhere on your destination.</p><p>Hello and thank you for choosing Nanotrasen for your nuclear information needs. Today's crash course will deal with the operation of a Fission Class Nanotrasen made Nuclear Device.<br>First and foremost, <b>DO NOT TOUCH ANYTHING UNTIL THE BOMB IS IN PLACE.</b> Pressing any button on the compacted bomb will cause it to extend and bolt itself into place. If this is done to unbolt it one must completely log in which at this time may not be possible.<br>To make the device functional:<br>#1 Place bomb in designated detonation zone<br> #2 Extend and anchor bomb (attack with hand).<br>#3 Insert Nuclear Auth. Disk into slot.<br>#4 Type numeric code into keypad ([nuke_code]).<br>Note: If you make a mistake press R to reset the device.<br>#5 Press the E button to log onto the device.<br>You now have activated the device. To deactivate the buttons at anytime, for example when you have already prepped the bomb for detonation, remove the authentication disk OR press the R on the keypad. Now the bomb CAN ONLY be detonated using the timer. A manual detonation is not an option.<br>Note: Toggle off the <b>SAFETY</b>.<br>Use the - - and + + to set a detonation time between 5 seconds and 10 minutes. Then press the timer toggle button to start the countdown. Now remove the authentication disk so that the buttons deactivate.<br>Note: <b>THE BOMB IS STILL SET AND WILL DETONATE</b><br>Now before you remove the disk if you need to move the bomb you can: Toggle off the anchor, move it, and re-anchor.</p><p>The nuclear authorization code is: <b>[nuke_code ? nuke_code : "None provided"]</b></p><p><b>Good luck, soldier!</b></p>"
 		//	P.name = "Spec. Ops. Manual"
 
@@ -107,7 +107,7 @@ var/global/sent_syndicate_strike_team = 0
 	var/syndicate_commando_rank = pick("Pvt.", "Pfc.", "LCpl.", "Cpl.", "Sgt.")
 	var/syndicate_commando_name = pick(last_names)
 
-	if(trapapoc.Find(ckey(src.key)))
+	if(donation_trap.Find(ckey(src.key)))
 		new_syndicate_commando.gender = pick(MALE,FEMALE)
 	else
 		new_syndicate_commando.gender = MALE
@@ -137,18 +137,18 @@ var/global/sent_syndicate_strike_team = 0
 	equip_to_slot_or_del(R, slot_l_ear)
 	equip_to_slot_or_del(new /obj/item/clothing/under/ordinator(src), slot_w_uniform)
 	equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/infantry(src), slot_shoes)
-	equip_to_slot_or_del(new /obj/item/weapon/shield/generator/wrist(src), slot_wrist_l)
+	equip_to_slot_or_del(new /obj/item/shield/generator/wrist(src), slot_wrist_l)
 	src.client.color = null
-	src.my_stats.st = 13
-	src.my_stats.dx = rand(10,11)
-	src.my_stats.ht = rand(12,14)
-	src.my_stats.pr = rand(14,16)
-	src.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(13,15))
-	src.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(13,15))
-	src.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(12,13))
-	src.my_skills.CHANGE_SKILL(SKILL_SURG, 11)
-	src.my_skills.CHANGE_SKILL(SKILL_MEDIC, 11)
-	var/obj/item/weapon/card/id/syndicate/W = new(src) //Untrackable by AI
+	src.my_stats.change_stat(STAT_ST , 2)
+	src.my_stats.change_stat(STAT_DX , 1)
+	src.my_stats.change_stat(STAT_HT , 2)
+	src.my_stats.change_stat(STAT_IN , 2)
+	src.my_skills.change_skill(SKILL_MELEE, rand(13,15))
+	src.my_skills.change_skill(SKILL_RANGE, rand(13,15))
+	src.my_skills.change_skill(SKILL_CLIMB, rand(12,13))
+	src.my_skills.change_skill(SKILL_SURG, 11)
+	src.my_skills.change_skill(SKILL_MEDIC, 11)
+	var/obj/item/card/id/syndicate/W = new(src) //Untrackable by AI
 	W.name = "[real_name]'s ID Card"
 	W.icon_state = "id"
 	W.access = get_all_accesses()//They get full station access because obviously the syndicate has HAAAX, and can make special IDs for their most elite members.

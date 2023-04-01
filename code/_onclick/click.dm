@@ -193,7 +193,7 @@
 */
 /mob/proc/RangedAttack(var/atom/A, var/params)
 	if(!mutations.len) return
-	if((LASER in mutations) && a_intent == "harm")
+	if((LASER in mutations) && a_intent == "hurt")
 		LaserEyes(A) // moved into a proc below
 	else if(TK in mutations)
 		switch(get_dist(src,A))
@@ -258,19 +258,23 @@
 	if(A.Adjacent(src))
 		proximity_flag = 1
 	if(proximity_flag > 0)
+	/*
 		if(istype(src, /mob/living/carbon/human) && istype(A.loc, /turf))
 			var/mob/living/carbon/human/H = src
 			if(H.combat_mode && H.combat_intent == I_DEFEND)
 				H.do_combat_intent(I_DEFEND)
 				return
+	*/
 		A.RightClick(src)
 
 	else
+		/*
 		if(istype(src, /mob/living/carbon/human) && istype(A.loc, /turf) || istype(src, /mob/living/carbon/human) && istype(A.loc, /area))
 			var/mob/living/carbon/human/H = src
 			if(H.combat_mode && H.combat_intent == I_DEFEND)
 				H.do_combat_intent(I_DEFEND)
 				return
+		*/
 		if((istype(A, /mob/living) || istype(A, /obj/structure/oldways)) && istype(src, /mob/living/carbon/human))
 			var/atom/user = A
 			var/mob/living/carbon/human/H = src
@@ -287,8 +291,8 @@
 					if(H.get_active_hand() == null)
 						return src.visible_message("<span class='combatbold'>[H]</span><span class='combat'> threatens </span><span class='combatbold'>[user]</span> <span class='combat'>with his fists!</span>")
 					var/obj/item/I = H.get_active_hand()
-					if(istype(I, /obj/item/weapon/gun))
-						var/obj/item/weapon/gun/G = I
+					if(istype(I, /obj/item/gun))
+						var/obj/item/gun/G = I
 						G.aim_at(user)
 						return src.visible_message("<span class='combatbold'>[H]</span><span class='combat'> aims at [user] with <b>[I]</b>!</span>")
 					return src.visible_message("<span class='combatbold'>[H]</span><span class='combat'> threatens [user] with <b>[I]</b>!</span>")
@@ -316,7 +320,6 @@
 		return
 	if(user.lying)
 		return
-	user.visible_message("<span class='notice'>[user] peers into the distance.</span>")
 	user.face_atom(src)
 	user.do_zoom()
 	return
@@ -381,7 +384,7 @@
 	return
 /atom/proc/ShiftClick(var/mob/user)
 	if(user.client && user.client.eye == user)
-		examine()
+		examine(user)
 		user.face_atom(src)
 	return
 

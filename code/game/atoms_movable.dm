@@ -56,13 +56,35 @@
 	return
 
 /atom/movable/proc/forceMove(atom/destination)
+	if(loc == destination)
+		return 0
+	var/is_origin_turf = isturf(loc)
+	var/is_destination_turf = isturf(destination)
+	// It is a new area if:
+	//  Both the origin and destination are turfs with different areas.
+	//  When either origin or destination is a turf and the other is not.
+	var/is_new_area = (is_origin_turf ^ is_destination_turf) || (is_origin_turf && is_destination_turf && loc.loc != destination.loc)
+
+	var/atom/origin = loc
+	loc = destination
+
+	if(origin)
+		origin.Exited(src, destination)
+		if(is_origin_turf)
+			for(var/atom/movable/AM in origin)
+				AM.Uncrossed(src)
+			if(is_new_area && is_origin_turf)
+				origin.loc.Exited(src, destination)
+
 	if(destination)
-		if(loc)
-			loc.Exited(src)
-		loc = destination
-		loc.Entered(src)
-		return 1
-	return 0
+		destination.Entered(src, origin)
+		if(is_destination_turf) // If we're entering a turf, cross all movable atoms
+			for(var/atom/movable/AM in loc)
+				if(AM != src)
+					AM.Crossed(src)
+			if(is_new_area && is_destination_turf)
+				destination.loc.Entered(src, origin)
+	return 1
 
 /atom/movable/proc/set_glide_size(glide_size_override = 0, var/min = 0.9, var/max = 32/2)
 	if(!glide_size_override || glide_size_override > max)
@@ -245,22 +267,22 @@
 	if(istype(src, /obj/item))
 		var/obj/item/I = src
 		playsound(I, I.drop_sound, 40, 1)
-	if(istype(src, /obj/item/weapon/spacecash))
-		var/obj/item/weapon/spacecash/C = src
+	if(istype(src, /obj/item/spacecash))
+		var/obj/item/spacecash/C = src
 
-		var/path =  /obj/item/weapon/spacecash/c1
+		var/path =  /obj/item/spacecash/c1
 		var/divide = C.singularvalue
 
 		switch(divide)
 			if(4)
-				path = /obj/item/weapon/spacecash/silver/c1
+				path = /obj/item/spacecash/silver/c1
 
 			if(16)
-				path = /obj/item/weapon/spacecash/gold/c1
+				path = /obj/item/spacecash/gold/c1
 
 
 		for(var/x = 1; x <= (C.worth / divide); x++)
-			var/obj/item/weapon/spacecash/S = new path(loc)
+			var/obj/item/spacecash/S = new path(loc)
 			S.pixel_x = rand(-12, 12)
 			S.pixel_y = rand(-12, 12)
 

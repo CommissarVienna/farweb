@@ -15,29 +15,30 @@
 	var/zodiacdesc = ""
 	msg += "<hr class='linexd'>"
 	msg += "<span class='moodboxtext'>My name is</span><span class='[mind.say_color]'>[src.real_name]</span>\n"
-	/*if(dom_hand == "Right-handed")
-		msg += "<span class='moodboxtext'>I'm right-handed.</span>"
-	else if (dom_hand == "Left-handed")
-		msg += "<span class='moodboxtext'>I'm left-handed.</span>"
-	else if (src.dom_hand == "Ambidextrous")
-		msg += "I'm ambidextrous."*/ // dom_hand does nothing but i'm leaving this here for the future,remind RiotMigrant to add ambidextrous special when Foe finishes combat
-	msg += "<span class='moodboxtext'>My blood type: [src.dna.b_type]. </span>"
+	
+	if(dom_hand == RIGHT_HAND)
+		msg += "<span class='moodboxtext'>I'm right-handed.</span>\n"
+	else if (dom_hand == LEFT_HAND)
+		msg += "<span class='moodboxtext'>I'm left-handed.</span>\n"
+	else if (src.dom_hand == AMBIDEXTROUS)
+		msg += "<span class='moodboxtext'>I'm ambidextrous.</span>\n"
+	msg += "<span class='moodboxtext'>My blood type: [src.dna.b_type]. </span>\n"
 	if(src.potenzia <=10 && src.has_penis())
-		msg += "<span class='moodboxtext'>My size: small.</span>"
+		msg += "<span class='moodboxtext'>My size: small.</span>\n"
 	else if(src.potenzia <=20 && src.has_penis())
-		msg += "<span class='moodboxtext'>My size: regular.</span>"
+		msg += "<span class='moodboxtext'>My size: regular.</span>\n"
 	else if (src.potenzia >20 && src.has_penis())
-		msg += "<span class='moodboxtext'>My size: large.</span>" 
+		msg += "<span class='moodboxtext'>My size: large.</span>\n" 
 	if(src.outsider && src.province && src.province != "Wanderer")
 		msg += "<span class='moodboxtext'>I come from <b>[src.province]</b></span>\n"
 	msg += "<br>"
 	msg += "<br>"
 	if(src.favorite_beverage == "Blood" || src.favorite_beverage == "Water")
-		msg += "<span class='moodboxtext'>I don't have a favorite beverage.</span>"
+		msg += "<span class='moodboxtext'>I don't have a favorite beverage. </span>\n"
 	else
-		msg += "<span class='moodboxtext'>My favorite beverage: [src.favorite_beverage]<br>"
+		msg += "<span class='moodboxtext'>My favorite beverage: [src.favorite_beverage]<br>\n"
 	if(src.special)
-		msg += "<span class='combat'><i>\"[src.specialdesc]\"</i></span><br>"
+		msg += "<span class='combat'><i>\"[src.specialdesc]\"</i></span><br>\n"
 	switch(zodiac)
 		if("Aranea")
 			zodiacdesc = "(Manipulation, Lust, Stealth)"
@@ -63,12 +64,12 @@
 			zodiacdesc = "(Safety, Consistency, Equanimity)"
 		if("Apis")
 			zodiacdesc = "(Family, Protection, Care)"
-	msg += "<span class='moodboxtext'>My age: [src.age]. My Sign: <span class='graytextbold'>[src.zodiac]</span> <span class='moodboxtext'>[zodiacdesc].</span><br>"
+	msg += "<span class='moodboxtext'>My age: <span class='graytextbold'>[src.age]</span>\nMy Sign: <span class='graytextbold'>[src.zodiac]</span> <span class='moodboxtext'>[zodiacdesc].</span><br>"
 	msg += "<br>"
 	if(src.vice)
-		msg += "<span class='moodboxtext'>My vice: [src.vice]</span>"
+		msg += "<span class='moodboxtext'>My vice: [src.vice]</span>\n"
 	else
-		msg += "<span class='moodboxtext'>I</span> <span class='graytextbold'>don't</span> <span class='moodboxtext'>have vices.</span>"
+		msg += "<span class='moodboxtext'>I</span> <span class='graytextbold'>don't</span> <span class='moodboxtext'>have vices.</span>\n"
 	msg += "<hr class='linexd'>"
 
 	if(ismonster(src) || iszombie(src) || isVampire || src.mind.changeling)

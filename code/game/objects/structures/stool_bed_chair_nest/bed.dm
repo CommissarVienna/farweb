@@ -40,11 +40,11 @@
 	icon_state = "bedcons"
 
 /obj/structure/stool/bed/couple1
-	icon = 'bigbed.dmi'
+	icon = 'icons/obj/bigbed.dmi'
 	icon_state = "bed"
 
 /obj/structure/stool/bed/couple2
-	icon = 'bigbed.dmi'
+	icon = 'icons/obj/bigbed.dmi'
 	icon_state = "bed2"
 	pixel_y = -13
 
@@ -104,8 +104,8 @@
 		if(buckled_mob.buckled == src)
 			if(buckled_mob != user)
 				buckled_mob.visible_message(\
-					"<span class='passivebold'>[buckled_mob.name]</span> <span class='passive'>was unbuckled by</span> <span class='passivebold'>[user.name]</span><span class='passive'>!</span>",\
-					"<span class='passive'>You were unbuckled from [src] by</span> <span class='passivebold'>[user.name]</span><span class='passive'>.</span>",\
+					"<span class='passivebold'>[buckled_mob.name]</span> <span class='passive'>was forced up from [src] by</span> <span class='passivebold'>[user.name]</span><span class='passive'>!</span>",\
+					"<span class='passive'>You were stood up from [src] by</span> <span class='passivebold'>[user.name]</span><span class='passive'>.</span>",\
 					"<span class='passive'>You hear metal clanking</span>")
 			else
 				if(ishuman(buckled_mob))
@@ -113,8 +113,8 @@
 					if(H.handcuffed)
 						return
 				buckled_mob.visible_message(\
-					"<span class='passivebold'>[buckled_mob.name]</span> <span class='passive'>unbuckled \himself!</span>",\
-					"<span class='passive'>You unbuckle yourself from [src].</span>",\
+					"<span class='passivebold'>[buckled_mob.name]</span> <span class='passive'> stands up from \the [src]!</span>",\
+					"<span class='passive'>You stand up from [src].</span>",\
 					"<span class='passive'>You hear metal clanking</span>")
 			unbuckle()
 			src.add_fingerprint(user)
@@ -130,13 +130,13 @@
 
 	if (M == usr)
 		M.visible_message(\
-			"<span class='passivebold'>[M.name]</span> <span class='passive'>buckles in!</span>",\
-			"<span class='passive'>You buckle yourself to [src].</span>",\
+			"<span class='passivebold'>[M.name]</span> <span class='passive'>sits on \the [src]</span>",\
+			"<span class='passive'>You sit on \the [src].</span>",\
 			"<span class='passive'>You hear metal clanking</span>")
 	else
 		M.visible_message(\
-			"<span class='passivebold'>[M.name]</span> <span class='passive'>is buckled in to [src] by</span> <span class='passivebold'>[user.name]</span><span class='passive'>!</span>",\
-			"<span class='passivebold'>You are buckled in to [src] by</span> <span class='passivebold'>[user.name]</span><span class='passive'>.</span>",\
+			"<span class='passivebold'>[M.name]</span> <span class='passive'>is sat on \the [src] by</span> <span class='passivebold'>[user.name]</span><span class='passive'>!</span>",\
+			"<span class='passivebold'>You sat on \the [src] by</span> <span class='passivebold'>[user.name]</span><span class='passive'>.</span>",\
 			"<span class='passive'>You hear metal clanking</span>")
 	M.buckled = src
 	M.loc = src.loc
@@ -174,7 +174,7 @@
 			buckled_mob.loc = src.loc
 		else
 			buckled_mob = null
-	playsound(src.loc, 'rollermove.ogg', 50, 1)
+	playsound(src.loc, 'sound/misc/rollermove.ogg', 50, 1)
 
 /obj/structure/stool/bed/roller/buckle_mob(mob/M as mob, mob/user as mob)
 	if ( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.restrained() || user.stat || M.buckled || istype(usr, /mob/living/silicon/pai) )

@@ -71,8 +71,8 @@
 			holder.process_activation(src, 1, 0)
 		if(holder && (wires & WIRE_PULSE_SPECIAL))
 			holder.process_activation(src, 0, 1)
-		if(istype(loc,/obj/item/weapon/grenade)) // This is a hack.  Todo: Manage this better -Sayu
-			var/obj/item/weapon/grenade/G = loc
+		if(istype(loc,/obj/item/grenade)) // This is a hack.  Todo: Manage this better -Sayu
+			var/obj/item/grenade/G = loc
 			G.prime()
 //		if(radio && (wires & WIRE_RADIO_PULSE))
 			//Not sure what goes here quite yet send signal?
@@ -101,7 +101,7 @@
 		return 0
 
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
+	attackby(obj/item/W as obj, mob/user as mob)
 		if(isassembly(W))
 			var/obj/item/device/assembly/A = W
 			if((!A.secured) && (!secured))

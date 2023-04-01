@@ -1,4 +1,4 @@
-/obj/item/weapon/fragment
+/obj/item/fragment
 	name = "fragment"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "frag1"
@@ -8,11 +8,11 @@
 	throwforce = 35
 	w_class = 1
 
-/obj/item/weapon/fragment/New()
+/obj/item/fragment/New()
 	icon_state = pick("frag1","frag2","frag3")
 	..()
 
-/obj/item/weapon/grenade/syndieminibomb
+/obj/item/grenade/syndieminibomb
 	desc = "A syndicate manufactured explosive used to sow destruction and chaos"
 	name = "syndicate minibomb"
 	icon = 'icons/obj/grenade.dmi'
@@ -22,11 +22,11 @@
 	var/deliveryamt = 1 // amount of type to deliver
 	var/spawner_type = null
 
-/obj/item/weapon/grenade/syndieminibomb/prime()
+/obj/item/grenade/syndieminibomb/prime()
 	explosion(src.loc,1,2,4)
 	qdel(src)
 
-/obj/item/weapon/grenade/syndieminibomb/frag
+/obj/item/grenade/syndieminibomb/frag
 	desc = ""
 	name = "Fragmentation grenade"
 	icon = 'icons/obj/grenade.dmi'
@@ -34,7 +34,7 @@
 	item_state = "flashbang"
 	origin_tech = "materials=3;magnets=4;syndicate=4"
 	deliveryamt = 30 // amount of type to deliver
-	spawner_type = /obj/item/weapon/fragment
+	spawner_type = /obj/item/fragment
 
 	prime()													// Prime now just handles the two loops that query for people in lockers and people who can see it.
 		explosion(src.loc,0,0,3,0)
@@ -55,7 +55,7 @@
 		qdel(src)
 		return
 
-/obj/item/weapon/grenade/syndieminibomb/frag/fake
+/obj/item/grenade/syndieminibomb/frag/fake
 	prime()
 		if(prob(10))
 			playsound(src.loc, 'sound/effects/UEPA.ogg', 100, 1)
@@ -92,7 +92,7 @@
 				else
 					M.add_event("jestercool",/datum/happiness_event/misc/jestgood)
 
-/obj/item/weapon/grenade/syndieminibomb/frag/suicide
+/obj/item/grenade/syndieminibomb/frag/suicide
 	desc = ""
 	name = "Modified Fragmentation grenade"
 	icon = 'icons/obj/grenade.dmi'
@@ -100,6 +100,6 @@
 	item_state = "flashbang"
 	origin_tech = "materials=3;magnets=4;syndicate=4"
 
-/obj/item/weapon/grenade/syndieminibomb/frag/suicide/prime()
+/obj/item/grenade/syndieminibomb/frag/suicide/prime()
 	explosion(src.loc,0,0,6,6)
 	qdel(src)

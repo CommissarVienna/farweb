@@ -2,6 +2,6 @@
 	..()
 	if(!client)
 		return
-	if(thirtycm.Find(ckey))
+	if(donation_30cm.Find(ckey))
 		potenzia = rand(30, 32)
 //XD

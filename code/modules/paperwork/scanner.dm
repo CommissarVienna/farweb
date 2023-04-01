@@ -1,6 +1,6 @@
 /obj/machinery/scanner
 	name = "Scanner"
-	icon = 'computer.dmi'
+	icon = 'icons/obj/computer.dmi'
 	icon_state = "aiupload"
 	density = 1
 	anchored = 1
@@ -40,7 +40,7 @@
 	for(var/A in marks)
 		text += "\red[A]<br>"
 	user << "You feel a tiny prick!"
-	var/obj/item/weapon/paper/scan/print = new/obj/item/weapon/paper/scan(src.loc)
+	var/obj/item/paper/scan/print = new/obj/item/paper/scan(src.loc)
 	print.name = "[mname] Report"
 	print.info = text
 	print.mname = mname

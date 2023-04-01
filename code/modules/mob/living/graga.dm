@@ -10,7 +10,7 @@
 	a_intent = "hurt"
 	var/cycle_pause = 15
 	var/list/zone_allowed = list("chest", "head", "l_arm", "r_arm", "groin")
-	icon = 'human.dmi'
+	icon = 'icons/mob/human.dmi'
 
 	var/rushing = 0
 	var/stamina = 100
@@ -128,7 +128,7 @@
 			return FALSE
 
 		zone_sel.selecting = pick(zone_allowed)
-		if (stat == DEAD)
+		if (stat)
 			return FALSE
 		if(resting)
 			mob_rest()
@@ -188,9 +188,9 @@
 						continue
 					if(istype(A, /obj/multiz/stairs/))
 						continue
-					if(A.density  && src.my_stats.st >= 20)
+					if(A.density  && src.my_stats.get_stat(STAT_ST) >= 20)
 						qdel(A)
-				if(T.density && src.my_stats.st >= 20)
+				if(T.density && src.my_stats.get_stat(STAT_ST) >= 20)
 					qdel(T)
 
 			// change the target if there is another human that is closer
@@ -274,13 +274,9 @@
 	equip_to_slot_or_del(new /obj/item/clothing/under/GRAGA(src), slot_w_uniform)
 	name = selectedName
 	real_name = selectedName
-	my_stats.initst = 100
-	my_stats.initht = 50
-	my_stats.initdx = rand(8, 10)
-	my_stats.st = my_stats.initst
-	my_stats.ht = my_stats.initht
-	my_stats.dx = my_stats.initdx
-	my_skills.CHANGE_SKILL(SKILL_MELEE, 14)
+	my_stats.set_stat(STAT_ST, 100)
+	my_stats.set_stat(STAT_HT, 50)
+	my_skills.change_skill(SKILL_MELEE, 14)
 
 	src.zone_sel = new /obj/screen/zone_sel( null )
 
@@ -333,10 +329,10 @@
 	if(istype(M, /mob/living/carbon/human/monster))
 		return 1
 
-/mob/living/carbon/human/monster/examine()
-	to_chat(usr, "<span class='combat'>Eeeww!</span>")
-	if(ishuman(usr))
-		var/mob/living/carbon/human/H = usr
+/mob/living/carbon/human/monster/examine(mob/user)
+	to_chat(user, "<span class='combat'>Eeeww!</span>")
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
 		if(!H.StingerSeen.Find(src))
 			H.StingerSeen.Add(src)
 			H << sound(pick('sound/tension/tension.ogg','sound/tension/tension2.ogg','sound/tension/tension3.ogg','sound/tension/tension4.ogg','sound/tension/tension5.ogg','sound/tension/tension6.ogg','sound/tension/tension7.ogg'), repeat = 0, wait = 0, volume = H?.client?.prefs?.ambi_volume, channel = 23)

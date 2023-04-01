@@ -47,7 +47,7 @@
 	return
 
 /obj/item/toy/balloon/attackby(obj/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/reagent_containers/glass))
+	if(istype(O, /obj/item/reagent_containers/glass))
 		if(O.reagents)
 			if(O.reagents.total_volume < 1)
 				user << "The [O] is empty."
@@ -129,11 +129,11 @@
 		return
 	cooldown = TRUE
 	to_chat(user, "You hug the plushie.")
-	playsound(src.loc, 'CRUDOX_CROU.ogg', rand(60,90), 1, -1)
+	playsound(src.loc, 'sound/CRUDOX_CROU.ogg', rand(60,90), 1, -1)
 	spawn(20)
 		cooldown = FALSE
 /*
- * Toy gun: Why isnt this an /obj/item/weapon/gun?
+ * Toy gun: Why isnt this an /obj/item/gun?
  */
 
 
@@ -493,7 +493,7 @@
 
 /obj/item/toy/waterflower/afterattack(atom/A as mob|obj, mob/user as mob)
 
-	if (istype(A, /obj/item/weapon/storage/backpack ))
+	if (istype(A, /obj/item/storage/backpack ))
 		return
 
 	else if (locate (/obj/structure/table, src.loc))
@@ -634,7 +634,7 @@
 	attack_verb = list("attacked", "slashed", "sliced")
 
 /* NYET.
-/obj/item/weapon/toddler
+/obj/item/toddler
 	icon_state = "toddler"
 	name = "toddler"
 	desc = "This baby looks almost real. Wait, did it just burp?"

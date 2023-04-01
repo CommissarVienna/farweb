@@ -15,7 +15,7 @@
 	if(T.intact)
 		return
 
-	if(istype(W, /obj/item/weapon/wirecutters))
+	if(istype(W, /obj/item/wirecutters))
 		usr << "\blue These cables are too tough to be cut with those [W.name]."
 		return
 	else if(istype(W, /obj/item/stack/cable_coil))

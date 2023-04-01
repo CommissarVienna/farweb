@@ -2,7 +2,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// (Mixing)Glass.
 ////////////////////////////////////////////////////////////////////////////////
-/obj/item/weapon/reagent_containers/glass
+/obj/item/reagent_containers/glass
 	name = " "
 	var/base_name = " "
 	desc = " "
@@ -26,13 +26,13 @@
 		/obj/structure/rack,
 		/obj/structure/closet,
 		/obj/structure/sink,
-		/obj/item/weapon/storage,
+		/obj/item/storage,
 		/obj/machinery/atmospherics/unary/cryo_cell,
 		/obj/machinery/dna_scannernew,
-		/obj/item/weapon/grenade/chem_grenade,
+		/obj/item/grenade/chem_grenade,
 		/obj/machinery/bot/medbot,
 		/obj/machinery/computer/pandemic,
-		/obj/item/weapon/storage/secure/safe,
+		/obj/item/storage/secure/safe,
 		/obj/machinery/iv_drip,
 		/obj/machinery/disease2/incubator,
 		/obj/machinery/disposal,
@@ -86,13 +86,13 @@
 			var/mob/living/M = target
 			if(user.zone_sel.selecting == "mouth")
 				if(!reagents.total_volume)
-					to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)]</span> <span class='combat'>\the<span class='combatbold'>[src]</span> is empty!</span>")
+					to_chat(user, "<span class='combatbold'>[pick(fnord)]</span> <span class='combat'>\the<span class='combatbold'>[src]</span> is empty!</span>")
 					return
 				if(user == M)
 					to_chat(user,"<span class='passive'> You drink from <span class='passivebold'>[src]</span>.</span>")
 					if(reagents.total_volume)
 						reagents.reaction(M, INGEST, override = amount_per_transfer_from_this)
-						playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(10,50), 1)
+						playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(10,50), 1)
 						spawn(5)
 							reagents.trans_to(M, amount_per_transfer_from_this)
 				else
@@ -101,7 +101,7 @@
 					user.visible_message("<span class='combat'><span class='combatbold'>[user]</span> feeds \the <span class='combatbold'>[M]</span> with \the <span class='combatbold'>[src]</span>.</span>")
 					if(reagents.total_volume)
 						reagents.reaction(M, INGEST)
-						playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(10,50), 2)
+						playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(10,50), 2)
 						spawn(5)
 							reagents.trans_to(M, amount_per_transfer_from_this)
 				return
@@ -142,6 +142,9 @@
 		else if(istype(target, /obj/structure/water))
 			return
 
+		else if(istype(target, /obj/structure/fireplace/hearth))
+			return
+
 		else if(target.is_open_container() && target.reagents) //Something like a glass. Player probably wants to transfer TO it.
 			if(!reagents.total_volume)
 				to_chat(user, "\red [src] is empty.")
@@ -154,9 +157,6 @@
 			var/trans = src.reagents.trans_to(target, amount_per_transfer_from_this)
 			to_chat(user, "\blue You transfer [trans] units of the solution to [target].")
 
-		//Safety for dumping stuff into a ninja suit. It handles everything through attackby() and this is unnecessary.
-		else if(istype(target, /obj/item/clothing/suit/space/space_ninja))
-			return
 
 		else if(reagents.total_volume)
 			if(istype(target, /turf/simulated/floor/open))
@@ -178,9 +178,9 @@
 			to_chat(user, "<span class='passivebold'>None of [src] left, oh no!</span>")
 			return 0
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
+	attackby(obj/item/W as obj, mob/user as mob)
 		..()
-		if(istype(W, /obj/item/weapon/pen) || istype(W, /obj/item/device/flashlight/pen))
+		if(istype(W, /obj/item/pen))
 			var/tmp_label = sanitize(input(user, "Enter a label for [src.name]","Label",src.label_text))
 			if(length(tmp_label) > 10)
 				user << "\red The label can be at most 10 characters long."
@@ -188,7 +188,7 @@
 				user << "\blue You set the label to \"[tmp_label]\"."
 				src.label_text = tmp_label
 				src.update_name_label()
-	
+
 	on_reagent_change()
 		update_icon()
 
@@ -210,7 +210,13 @@
 		else
 			src.name = "[src.base_name] ([src.label_text])"
 
-/obj/item/weapon/reagent_containers/glass/beaker
+
+/obj/item/reagent_containers/glass/throw_impact(atom/hit_atom, speed)
+	..(hit_atom, speed)
+	if(src.reagents.total_volume)
+		src.add_fluid_by_transfer(get_turf(src), src.reagents.total_volume)
+
+/obj/item/reagent_containers/glass/beaker
 	name = "beaker"
 	desc = "A beaker. Can hold up to 50 units."
 	icon = 'icons/obj/chemical.dmi'
@@ -242,7 +248,7 @@
 			var/image/lid = image(icon, src, "lid_[initial(icon_state)]")
 			overlays += lid
 
-/obj/item/weapon/reagent_containers/glass/beaker/large
+/obj/item/reagent_containers/glass/beaker/large
 	name = "large beaker"
 	desc = "A large beaker. Can hold up to 100 units."
 	icon_state = "beakerlarge"
@@ -252,7 +258,7 @@
 	possible_transfer_amounts = list(5,10,15,25,30,50,100)
 	flags = FPRINT | TABLEPASS | OPENCONTAINER
 
-/obj/item/weapon/reagent_containers/glass/beaker/noreact
+/obj/item/reagent_containers/glass/beaker/noreact
 	name = "cryostasis beaker"
 	desc = "A cryostasis beaker that allows for chemical storage without reactions. Can hold up to 50 units."
 	icon_state = "beakernoreact"
@@ -261,7 +267,7 @@
 	amount_per_transfer_from_this = 10
 	flags = FPRINT | TABLEPASS | OPENCONTAINER | NOREACT
 
-/obj/item/weapon/reagent_containers/glass/beaker/bluespace
+/obj/item/reagent_containers/glass/beaker/bluespace
 	name = "bluespace beaker"
 	desc = "A bluespace beaker, powered by experimental bluespace technology. Can hold up to 300 units."
 	icon_state = "beakerbluespace"
@@ -272,7 +278,7 @@
 	flags = FPRINT | TABLEPASS | OPENCONTAINER
 
 
-/obj/item/weapon/reagent_containers/glass/beaker/vial
+/obj/item/reagent_containers/glass/beaker/vial
 	name = "vial"
 	desc = "A small glass vial. Can hold up to 25 units."
 	icon_state = "vial"
@@ -282,19 +288,19 @@
 	possible_transfer_amounts = list(5,10,15,30)
 	flags = FPRINT | TABLEPASS | OPENCONTAINER
 
-/obj/item/weapon/reagent_containers/glass/beaker/cryoxadone
+/obj/item/reagent_containers/glass/beaker/cryoxadone
 	New()
 		..()
 		reagents.add_reagent("cryoxadone", 30)
 		update_icon()
 
-/obj/item/weapon/reagent_containers/glass/beaker/sulphuric
+/obj/item/reagent_containers/glass/beaker/sulphuric
 	New()
 		..()
 		reagents.add_reagent("sacid", 50)
 		update_icon()
 
-/obj/item/weapon/reagent_containers/glass/bucket
+/obj/item/reagent_containers/glass/bucket
 	desc = "It's a bucket."
 	name = "bucket"
 	icon = 'icons/obj/janitor.dmi'
@@ -312,13 +318,13 @@
 		if(isprox(D))
 			user << "You add [D] to [src]."
 			qdel(D)
-			user.put_in_hands(new /obj/item/weapon/bucket_sensor)
+			user.put_in_hands(new /obj/item/bucket_sensor)
 			user.drop_from_inventory(src)
 			qdel(src)
 
 // vials are defined twice, what?
 /*
-/obj/item/weapon/reagent_containers/glass/beaker/vial
+/obj/item/reagent_containers/glass/beaker/vial
 	name = "vial"
 	desc = "Small glass vial. Looks fragile."
 	icon_state = "vial"
@@ -329,7 +335,7 @@
 	flags = FPRINT | TABLEPASS | OPENCONTAINER */
 
 /*
-/obj/item/weapon/reagent_containers/glass/blender_jug
+/obj/item/reagent_containers/glass/blender_jug
 	name = "Blender Jug"
 	desc = "A blender jug, part of a blender."
 	icon = 'icons/obj/kitchen.dmi'
@@ -345,7 +351,7 @@
 			if(76 to 100)
 				icon_state = "blender_jug_f"
 
-/obj/item/weapon/reagent_containers/glass/canister		//not used apparantly
+/obj/item/reagent_containers/glass/canister		//not used apparantly
 	desc = "It's a canister. Mainly used for transporting fuel."
 	name = "canister"
 	icon = 'icons/obj/tank.dmi'
@@ -360,15 +366,15 @@
 	volume = 120
 	flags = FPRINT
 
-/obj/item/weapon/reagent_containers/glass/dispenser
+/obj/item/reagent_containers/glass/dispenser
 	name = "reagent glass"
 	desc = "A reagent glass."
-	icon = 'icons/obj/chemical.dmi'
+	icon = 'icons/obj/icons/obj/chemical.dmi'
 	icon_state = "beaker0"
 	amount_per_transfer_from_this = 10
 	flags = FPRINT | TABLEPASS | OPENCONTAINER
 
-/obj/item/weapon/reagent_containers/glass/dispenser/surfactant
+/obj/item/reagent_containers/glass/dispenser/surfactant
 	name = "reagent glass (surfactant)"
 	icon_state = "liquid"
 

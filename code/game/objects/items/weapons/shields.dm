@@ -1,9 +1,9 @@
-/obj/item/weapon/shield
+/obj/item/shield
 	name = "shield"
-	drop_sound = 'metalshield_drop.ogg'
+	drop_sound = 'sound/effects/metalshield_drop.ogg'
 	parry_chance = 35
 
-/obj/item/weapon/shield/riot
+/obj/item/shield/riot
 	name = "riot shield"
 	desc = "A shield adept at blocking blunt objects from connecting with the torso of the shield wielder."
 	icon = 'icons/obj/weapons.dmi'
@@ -24,8 +24,8 @@
 	IsShield()
 		return 0
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon))
+	attackby(obj/item/W as obj, mob/user as mob)
+		if(istype(W, /obj/item))
 			if(cooldown < world.time - 25)
 				user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 				playsound(user.loc, pick('sound/weapons/bash1.ogg','sound/weapons/bash2.ogg'), 50, 1)
@@ -33,7 +33,7 @@
 		else
 			..()
 
-/obj/item/weapon/shield/wood
+/obj/item/shield/wood
 	name = "buckler shield"
 	desc = "A shield adept at blocking blunt objects from connecting with the torso of the shield wielder."
 	icon = 'icons/obj/weapons.dmi'
@@ -54,13 +54,13 @@
 	origin_tech = "materials=2"
 	attack_verb = list("shoved", "bashed")
 	var/cooldown = 0 //shield bash cooldown. based on world.time
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	smelted_return = /obj/item/ore/refined/lw/ironlw
 
 	IsShield()
 		return 0
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon))
+	attackby(obj/item/W as obj, mob/user as mob)
+		if(istype(W, /obj/item))
 			if(cooldown < world.time - 25)
 				user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 				playsound(user.loc, pick('sound/weapons/bash1.ogg','sound/weapons/bash2.ogg'), 50, 1)
@@ -68,7 +68,7 @@
 		else
 			..()
 
-/obj/item/weapon/shield/fort
+/obj/item/shield/fort
 	name = "buckler shield"
 	desc = "A shield adept at blocking blunt objects from connecting with the torso of the shield wielder."
 	icon = 'icons/obj/weapons.dmi'
@@ -95,8 +95,8 @@
 	IsShield()
 		return 0
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon))
+	attackby(obj/item/W as obj, mob/user as mob)
+		if(istype(W, /obj/item))
 			if(cooldown < world.time - 25)
 				user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 				playsound(user.loc, pick('sound/weapons/bash1.ogg','sound/weapons/bash2.ogg'), 50, 1)
@@ -105,7 +105,7 @@
 			..()
 
 
-/obj/item/weapon/shield/copper
+/obj/item/shield/copper
 	name = "copper buckler shield"
 	desc = "A shield adept at blocking blunt objects from connecting with the torso of the shield wielder."
 	icon = 'icons/obj/weapons.dmi'
@@ -126,12 +126,12 @@
 	attack_verb = list("shoved", "bashed")
 	var/cooldown = 0 //shield bash cooldown. based on world.time
 	weight = 5
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/copperlw
+	smelted_return = /obj/item/ore/refined/lw/copperlw
 	IsShield()
 		return 0
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon))
+	attackby(obj/item/W as obj, mob/user as mob)
+		if(istype(W, /obj/item))
 			if(cooldown < world.time - 25)
 				user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 				playsound(user.loc, pick('sound/weapons/bash1.ogg','sound/weapons/bash2.ogg'), 50, 1)
@@ -139,7 +139,7 @@
 		else
 			..()
 
-/obj/item/weapon/shield/largeshield
+/obj/item/shield/largeshield
 	name = "Firethorn Shield"
 	desc = "A shield adept at blocking blunt objects from connecting with the torso of the shield wielder."
 	icon = 'icons/obj/weapons.dmi'
@@ -163,8 +163,8 @@
 	IsShield()
 		return 0
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon))
+	attackby(obj/item/W as obj, mob/user as mob)
+		if(istype(W, /obj/item))
 			if(cooldown < world.time - 25)
 				user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 				playsound(user.loc, pick('sound/weapons/bash1.ogg','sound/weapons/bash2.ogg'), 50, 1)
@@ -173,7 +173,7 @@
 			..()
 
 
-/obj/item/weapon/shield/golden
+/obj/item/shield/golden
 	name = "golden buckler shield"
 	desc = "A shield adept at blocking blunt objects from connecting with the torso of the shield wielder."
 	icon = 'icons/obj/weapons.dmi'
@@ -194,13 +194,13 @@
 	origin_tech = "materials=2"
 	attack_verb = list("shoved", "bashed")
 	var/cooldown = 0 //shield bash cooldown. based on world.time
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/goldlw
+	smelted_return = /obj/item/ore/refined/lw/goldlw
 
 	IsShield()
 		return 0
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon))
+	attackby(obj/item/W as obj, mob/user as mob)
+		if(istype(W, /obj/item))
 			if(cooldown < world.time - 25)
 				user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 				playsound(user.loc, pick('sound/weapons/bash1.ogg','sound/weapons/bash2.ogg'), 50, 1)
@@ -209,7 +209,7 @@
 			..()
 
 
-/obj/item/weapon/shield/crusader
+/obj/item/shield/crusader
 	name = "crusader shield"
 	desc = "A shield adept at blocking blunt objects from connecting with the torso of the shield wielder."
 	icon = 'icons/obj/weapons.dmi'
@@ -230,12 +230,13 @@
 	origin_tech = "materials=2"
 	attack_verb = list("shoved", "bashed")
 	var/cooldown = 0 //shield bash cooldown. based on world.time
+	smelted_return = /obj/item/ore/refined/lw/goldlw
 
 	IsShield()
 		return 0
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon))
+	attackby(obj/item/W as obj, mob/user as mob)
+		if(istype(W, /obj/item))
 			if(cooldown < world.time - 25)
 				user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 				playsound(user.loc, pick('sound/weapons/bash1.ogg','sound/weapons/bash2.ogg'), 50, 1)
@@ -243,7 +244,7 @@
 		else
 			..()
 
-/obj/item/weapon/shield/generator/wrist
+/obj/item/shield/generator/wrist
 	name = "wrist energy shield"
 	wrist_use = TRUE
 	icon = 'icons/obj/personal.dmi'
@@ -253,7 +254,7 @@
 	active_state = "braceshield"
 	off_state = "braceshield"
 
-/obj/item/weapon/shield/generator
+/obj/item/shield/generator
 	name = "energy shield"
 	desc = "A shield capable of deflecting most projectile and melee attacks. It can be retracted."
 	icon = 'icons/obj/device.dmi'
@@ -264,16 +265,16 @@
 	w_class = 4.0
 	slot_flags = SLOT_BELT
 	item_worth = 100
-	var/obj/item/weapon/cell/crap/leet/CELL = null
+	var/obj/item/cell/crap/leet/CELL = null
 	var/active = 0
 	var/active_state = "shield1"
 	var/off_state = "shield0"
 
-/obj/item/weapon/shield/generator/New()
+/obj/item/shield/generator/New()
 	..()
-	CELL = new /obj/item/weapon/cell/crap/leet
+	CELL = new /obj/item/cell/crap/leet
 
-/obj/item/weapon/shield/generator/MouseDrop(var/obj/over_object)
+/obj/item/shield/generator/MouseDrop(var/obj/over_object)
 	var/mob/user = usr
 	switch(over_object.name)
 		if("r_hand")
@@ -299,26 +300,26 @@
 			else
 				to_chat(usr, "<span class='combat'><i>It has no cell!</i></span>")
 
-/obj/item/weapon/shield/generator/attackby(var/obj/item/A, var/mob/user)
-	if(istype(A, /obj/item/weapon/cell/crap) && !CELL)
+/obj/item/shield/generator/attackby(var/obj/item/A, var/mob/user)
+	if(istype(A, /obj/item/cell/crap) && !CELL)
 		user.drop_item(sound = 0)
 		CELL = A
 		CELL.loc = src
 		user.visible_message("<span class='combatbold'>[user.name]</span> <span class='combat'>reloads [src]!</span>")
 		playsound(src, 'sound/lfwbcombatuse/energy_reload.ogg', 25, 0)
-		var/obj/item/weapon/cell/crap/C = A			//I didn't know how to do it without hardcoded type
+		var/obj/item/cell/crap/C = A			//I didn't know how to do it without hardcoded type
 		C.updateicon()
 		update_icon()
 	else
 		return ..()
 
-/obj/item/weapon/shield/generator/update_icon()
+/obj/item/shield/generator/update_icon()
 	if(active)
 		icon_state = active_state
 	else
 		icon_state = off_state
 
-/obj/item/weapon/shield/generator/process()
+/obj/item/shield/generator/process()
 	if(active)
 		if(CELL.charge == 0)
 			active = FALSE
@@ -328,8 +329,8 @@
 		else if(CELL.charge > 0)
 			CELL.charge = max(0, CELL.charge - 10)
 
-/obj/item/weapon/shield/generator/RightClick(mob/living/carbon/human/user as mob)
-	playsound(src.loc, 'shield2.ogg', 25, 0, -1)
+/obj/item/shield/generator/RightClick(mob/living/carbon/human/user as mob)
+	playsound(src.loc, 'sound/effects/shield2.ogg', 25, 0, -1)
 	if(CELL.charge && active)
 		active = 0
 		processing_objects.Remove(src)
@@ -346,7 +347,7 @@
 		src.add_fingerprint(user)
 		return
 
-/obj/item/weapon/shield/generator/proc/failure(mob/user as mob)
+/obj/item/shield/generator/proc/failure(mob/user as mob)
 	var/mob/living/carbon/human/H = user
 	if(active)
 		to_chat(user, "[src] has been deactivated!")
@@ -355,7 +356,7 @@
 		H.update_icons()
 		update_icon()
 
-/obj/item/weapon/shield/generator/dropped(mob/user as mob)
+/obj/item/shield/generator/dropped(mob/user as mob)
 	var/mob/living/carbon/human/H = user
 	if(active)
 		active = 0
@@ -363,7 +364,7 @@
 		H.update_icons()
 		update_icon()
 
-/obj/item/weapon/shield/generator/emp_act(severity)
+/obj/item/shield/generator/emp_act(severity)
 	active = 0
 	processing_objects.Remove(src)
 	update_icon()
@@ -371,7 +372,7 @@
 		loc:update_icons()
 	..()
 
-/obj/item/weapon/cloaking_device
+/obj/item/cloaking_device
 	name = "camouflage generator"
 	desc = "Use this to become invisible to the human eyesocket."
 	icon = 'icons/obj/device.dmi'
@@ -386,58 +387,35 @@
 	item_worth = 80
 	w_class = 1.0
 	origin_tech = "magnets=3;syndicate=4"
+	var/area_locked
 
-/obj/item/weapon/cloaking_device/brothel
+/obj/item/cloaking_device/brothel
 	name = "brothel camouflage generator"
 	desc = "Use this to become invisible to the human eyesocket, theft of cloaking devices will be prosecuted by law.."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "bracecamb"
+	area_locked = /area/dunwell/station/brothel
 
-/obj/item/weapon/cloaking_device/brothel/RightClick(mob/user as mob)
+/obj/item/cloaking_device/RightClick(mob/user as mob)
 	var/mob/living/carbon/human/H = user
 	src.active = !( src.active )
-	playsound(src.loc, 'console_interact1.ogg', 25, 0, -1)
+	playsound(src.loc, 'sound/webbers/console_interact1.ogg', 25, 0, -1)
 	if (src.active)
 		to_chat(user, "The cloaking device is now active.")
-		H.brothelstealth = 1
 		H.update_icons()
 	else
 		to_chat(user, "The cloaking device is now inactive.")
-		H.brothelstealth = 0
 		H.update_icons()
 	src.add_fingerprint(user)
 	return
-/obj/item/weapon/cloaking_device/brothel/dropped(mob/user as mob)
+/obj/item/cloaking_device/dropped(mob/user as mob)
 	var/mob/living/carbon/human/H = user
 	if(src.active)
 		to_chat(user, "The cloaking device is now inactive.")
 		src.active = 0
-		H.brothelstealth = 0
 		H.update_icons()
 
-/obj/item/weapon/cloaking_device/RightClick(mob/user as mob)
-	var/mob/living/carbon/human/H = user
-	src.active = !( src.active )
-	playsound(src.loc, 'console_interact1.ogg', 25, 0, -1)
-	if (src.active)
-		to_chat(user, "The cloaking device is now active.")
-		H.stealth = 1
-		H.update_icons()
-	else
-		to_chat(user, "The cloaking device is now inactive.")
-		H.stealth = 0
-		H.update_icons()
-	src.add_fingerprint(user)
-	return
-/obj/item/weapon/cloaking_device/dropped(mob/user as mob)
-	var/mob/living/carbon/human/H = user
-	if(src.active)
-		to_chat(user, "The cloaking device is now inactive.")
-		src.active = 0
-		H.stealth = 0
-		H.update_icons()
-
-/obj/item/weapon/cloaking_device/emp_act(severity)
+/obj/item/cloaking_device/emp_act(severity)
 	active = 0
 	if(ismob(loc))
 		loc:update_icons()

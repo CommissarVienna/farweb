@@ -22,7 +22,7 @@
 	var/obj/mecha = null//This does not appear to be used outside of reference in mecha.dm.
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
-		if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/organ/brain) && !brainmob) //Time to stick a brain in it --NEO
+		if(istype(O,/obj/item/reagent_containers/food/snacks/organ/brain) && !brainmob) //Time to stick a brain in it --NEO
 			if(!O:brainmob)
 				user << "\red You aren't sure where this brain came from, but you're pretty sure it's a useless brain."
 				return
@@ -46,7 +46,7 @@
 			locked = 1
 			return
 
-		if((istype(O,/obj/item/weapon/card/id)||istype(O,/obj/item/device/pda)) && brainmob)
+		if((istype(O,/obj/item/card/id)||istype(O,/obj/item/device/pda)) && brainmob)
 			if(allowed(user))
 				locked = !locked
 				user << "\blue You [locked ? "lock" : "unlock"] the brain holder."
@@ -65,7 +65,7 @@
 			user << "\red You upend the MMI, but the brain is clamped into place."
 		else
 			user << "\blue You upend the MMI, spilling the brain onto the floor."
-			var/obj/item/weapon/reagent_containers/food/snacks/organ/brain/brain = new(user.loc)
+			var/obj/item/reagent_containers/food/snacks/organ/brain/brain = new(user.loc)
 			brainmob.container = null//Reset brainmob mmi var.
 			brainmob.loc = brain//Throw mob into brain.
 			living_mob_list -= brainmob//Get outta here

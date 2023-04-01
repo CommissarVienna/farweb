@@ -6,7 +6,7 @@
 
 /obj/machinery/redemption_machine/attackby(var/obj/item/O as obj, var/mob/living/carbon/human/H as mob)
 	if(O.item_worth)
-		var/obj/item/weapon/card/id/idcard = H.wear_id
+		var/obj/item/card/id/idcard = H.wear_id
 		if(H.wear_id)
 			idcard.receivePayment(O.item_worth/rand(2,3))
 			treasuryworth.add_money(O.item_worth)
@@ -23,9 +23,9 @@
 
 /obj/machinery/redemption_machine/ore/attackby(var/obj/item/O as obj, var/mob/living/carbon/human/H as mob)
 	if(O.item_worth)
-		var/obj/item/weapon/card/id/idcard = H.wear_id
+		var/obj/item/card/id/idcard = H.wear_id
 		if(H.wear_id)
-			istype(O, /obj/item/weapon/ore) ? idcard.receivePayment(O.item_worth/rand(1,2)) : idcard.receivePayment(O.item_worth/rand(2,3))
+			istype(O, /obj/item/ore) ? idcard.receivePayment(O.item_worth/rand(1,2)) : idcard.receivePayment(O.item_worth/rand(2,3))
 			treasuryworth.add_money(O.item_worth)
 			src.visible_message("<span class ='passivebold'>[H]</span> <span class='passive'>inserts [O] in the [src]!</span>", 1)
 			qdel(O)

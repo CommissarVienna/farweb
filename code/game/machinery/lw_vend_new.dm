@@ -1,10 +1,10 @@
 /obj/machinery/lwvend
 	var/obols = 8
-	var/list/products	= list(list(name = "Lighter", path = /obj/item/weapon/flame/lighter, price = 12, code = "lighter"),
+	var/list/products	= list(list(name = "Lighter", path = /obj/item/flame/lighter, price = 12, code = "lighter"),
 	list(name = "Bandages", path = /obj/item/stack/medical/bruise_pack, price = 8, code = "bandages"),
-	list(name = "Cigarrete Pack", path = /obj/item/weapon/storage/fancy/cigarettes, price = 30, code = "cigpacket"))
+	list(name = "Cigarrete Pack", path = /obj/item/storage/fancy/cigarettes, price = 30, code = "cigpacket"))
 	name = "Vendor"
-	icon = 'vending.dmi'
+	icon = 'icons/obj/vending.dmi'
 	icon_state = "snack"
 	anchored = 1
 	density = 1
@@ -15,7 +15,7 @@
 	vending_list.Add(src)
 
 /obj/machinery/lwvend/attackby(obj/item/I as obj, mob/living/carbon/human/user as mob)
-	if(istype(I,/obj/item/weapon/spacecash))
+	if(istype(I,/obj/item/spacecash))
 		src.obols += I:worth
 		qdel(I)
 		playsound(src.loc, 'sound/effects/coininsert.ogg', 30, 0)
@@ -43,7 +43,6 @@
 			ProductPrice = round(ProductPrice + ((ProductPrice / 100) * TaxUponSells))
 
 		var/atom/A = new path()
-		//dat += "<A href='?src=\ref[src];[code]=1'>[ProductName]</A><BR><span class='materials'>[recipeContents]</span><BR><BR>"
 		if(illiterate)
 			dat += "<TR><TD><TT><FONT Color = '836363'><B><BIG>[icon2html(A, user)] [Illiterate(ProductName,100)]</BIG></B></TT></TD> <TD><TT>[ProductPrice]</TT></TD></font></TT></TD> "
 		else
@@ -75,14 +74,13 @@
 		playsound(src.loc, pick('sound/effects/public1.ogg','sound/effects/public2.ogg','sound/effects/public3.ogg'), 30, 0)
 		if(src.obols)
 			to_chat(usr, "<i>[src] has [src.obols] obols.</i>")
-			var/withdraw = input("How much you want to withdraw | There is [src.obols] obols in [src].","[src]",src.obols)
+			var/withdraw = input("How much you want to withdraw | There is [src.obols] obols in [src].","[src]",src.obols) as num
 			if(!withdraw)
 				return
+			withdraw = abs(withdraw) //No negative numbers.
 			if(withdraw > src.obols)
 				to_chat(usr, "There's not enough obols to withdraw that amount!")
 			if(withdraw < 0)
-				to_chat(usr, "negro nem tente")
-				usr << 'olha-o-macaco.ogg'
 				return
 			if(withdraw <= src.obols)
 				to_chat(usr, "<i>You withdraw [withdraw] from [src].</i>")
@@ -117,50 +115,50 @@ var/debt = 1
 	obols = 0
 	taxes = 0
 	products = list(
-	list(name = "Grenade", path = /obj/item/weapon/grenade/syndieminibomb/frag, price = 120, code = "grenade"),
-	list(name = "Knife", path = /obj/item/weapon/kitchen/utensil/knife, price = 10, code = "knife"),
-	list(name = "Lockpick", path = /obj/item/weapon/lockpick, price = 30, code = "lockpick"),
+	list(name = "Grenade", path = /obj/item/grenade/syndieminibomb/frag, price = 120, code = "grenade"),
+	list(name = "Knife", path = /obj/item/kitchen/utensil/knife, price = 10, code = "knife"),
+	list(name = "Lockpick", path = /obj/item/lockpick, price = 30, code = "lockpick"),
 	list(name = "Karek Magazine (.380)", path = /obj/item/ammo_magazine/external/uzi380, price = 35, code = "uzi380"),
-	list(name = "Zippo Lighter", path = /obj/item/weapon/flame/lighter/zippo, price = 12, code = "zippo"),
+	list(name = "Zippo Lighter", path = /obj/item/flame/lighter/zippo, price = 12, code = "zippo"),
 	list(name = "Fetish Clothes (Red)", path = /obj/item/clothing/suit/hooker, price = 24, code = "fetshred"),
 	list(name = "Fetish Clothes (Black)", path = /obj/item/clothing/suit/hooker/domina, price = 30, code = "fetshbl"),
-	list(name = "Mini-Pistol", path = /obj/item/weapon/gun/projectile/automatic/pistol/ml23, price = 130, code = "minipistol"),
-	list(name = "Flashbang Grenade", path = /obj/item/weapon/grenade/flashbang, price = 130, code = "flashbang"),
+	list(name = "Mini-Pistol", path = /obj/item/gun/projectile/automatic/pistol/ml23, price = 130, code = "minipistol"),
+	list(name = "Flashbang Grenade", path = /obj/item/grenade/flashbang, price = 130, code = "flashbang"),
 	list(name = "9mm Magazine", path = /obj/item/ammo_magazine/external/mc9mm, price = 20, code = "mc9mm"),
 	list(name = "9mm Baton Magazine", path = /obj/item/ammo_magazine/external/mc9mm, price = 10, code = "mc9mmb"),
-	list(name = "Poison Fruit", path = /obj/item/weapon/reagent_containers/food/snacks/grown/apple/poisoned, price = 25, code = "poison"),
-	list(name = "Buffout Pills", path = /obj/item/weapon/storage/pill_bottle/buffout, price = 50, code = "buffout"),
-	list(name = "Mentats Can", path = /obj/item/weapon/storage/pill_bottle/mentats, price = 30, code = "mentats"),
-	list(name = "DOB", path = /obj/item/weapon/reagent_containers/pill/lifeweb/blotter/DOB, price = 11, code = "DOB"),
+	list(name = "Poison Fruit", path = /obj/item/reagent_containers/food/snacks/grown/apple/poisoned, price = 25, code = "poison"),
+	list(name = "Buffout Pills", path = /obj/item/storage/pill_bottle/buffout, price = 50, code = "buffout"),
+	list(name = "Mentats Can", path = /obj/item/storage/pill_bottle/mentats, price = 30, code = "mentats"),
+	list(name = "DOB", path = /obj/item/reagent_containers/pill/lifeweb/blotter/DOB, price = 11, code = "DOB"),
 	list(name = "Weed", path = /obj/item/clothing/mask/cigarette/weed, price = 11, code = "weed"),
-	list(name = "Camouflage Generator", path = /obj/item/weapon/cloaking_device, price = 50, code = "camogen"),
-	list(name = "Syringe", path = /obj/item/weapon/reagent_containers/syringe, price = 12, code = "syringe"),
-	list(name = "Screamer 23", path = /obj/item/weapon/gun/projectile/automatic/pistol/magnum66/screamer23, price = 250, code = "screamer23"),
+	list(name = "Camouflage Generator", path = /obj/item/cloaking_device, price = 50, code = "camogen"),
+	list(name = "Syringe", path = /obj/item/reagent_containers/syringe, price = 12, code = "syringe"),
+	list(name = "Screamer 23", path = /obj/item/gun/projectile/automatic/pistol/magnum66/screamer23, price = 250, code = "screamer23"),
 	list(name = "Mobile Phone", path = /obj/item/device/cellphone, price = 12, code = "phone"),
 	list(name = "Magazine (.45)", path = /obj/item/ammo_magazine/external/sm45/pusher/full, price = 24, code = "sm45"),
-	list(name = "Fake Golden Obols", path = /obj/item/weapon/fakecash/gold/c20, price = 30, code = "fakegold"),
+	list(name = "Fake Golden Obols", path = /obj/item/fakecash/gold/c20, price = 30, code = "fakegold"),
 	list(name = "Condom (S)", path = /obj/item/condom_wrapper/small, price = 4, code = "consmall"),
 	list(name = "Condom (M)", path = /obj/item/condom_wrapper/regular, price = 8, code = "conmed"),
 	list(name = "Condom (XXL)", path = /obj/item/condom_wrapper/large, price = 12, code = "conlarge"),
-	list(name = "Uzi Submachinegun", path = /obj/item/weapon/gun/projectile/automatic/mini_uzi, price = 610, code = "uzi"),
-	list(name = "Neoduelista Revolver", path = /obj/item/weapon/gun/projectile/newRevolver/duelista, price = 85, code = "neoduelista"),
+	list(name = "Uzi Submachinegun", path = /obj/item/gun/projectile/automatic/mini_uzi, price = 610, code = "uzi"),
+	list(name = "Neoduelista Revolver", path = /obj/item/gun/projectile/newRevolver/duelista, price = 85, code = "neoduelista"),
 	list(name = "Neoduelista ammo (5)", path = /obj/item/stack/bullets/Newduelista/five, price = 30, code = "neoammo5"),
-	list(name = "MDMA Bottle", path = /obj/item/weapon/storage/pill_bottle/mdma, price = 50, code = "mdmabottle"),
-	list(name = "MDMA Pill", path = /obj/item/weapon/reagent_containers/pill/lifeweb/mdma, price = 13, code = "mdmapill"),
-	list(name = "Mice 69 Pill", path = /obj/item/weapon/reagent_containers/pill/lifeweb/mice69, price = 2, code = "mice"),
-	list(name = "Mice 69 Bottle", path = /obj/item/weapon/storage/pill_bottle/mice69, price = 14, code = "micebottle"),
-	list(name = "Cigarette Packet", path = /obj/item/weapon/storage/fancy/cigarettes, price = 18, code = "cigarettes"),
-	list(name = "Dentrine Pill", path = /obj/item/weapon/reagent_containers/pill/lifeweb/dentrine, price = 42, code = "dentrine"),
-	list(name = "Telescopic Baton", path = /obj/item/weapon/melee/telebaton, price = 115, code = "telebaton"),
+	list(name = "MDMA Bottle", path = /obj/item/storage/pill_bottle/mdma, price = 50, code = "mdmabottle"),
+	list(name = "MDMA Pill", path = /obj/item/reagent_containers/pill/lifeweb/mdma, price = 13, code = "mdmapill"),
+	list(name = "Mice 69 Pill", path = /obj/item/reagent_containers/pill/lifeweb/mice69, price = 2, code = "mice"),
+	list(name = "Mice 69 Bottle", path = /obj/item/storage/pill_bottle/mice69, price = 14, code = "micebottle"),
+	list(name = "Cigarette Packet", path = /obj/item/storage/fancy/cigarettes, price = 18, code = "cigarettes"),
+	list(name = "Dentrine Pill", path = /obj/item/reagent_containers/pill/lifeweb/dentrine, price = 42, code = "dentrine"),
+	list(name = "Telescopic Baton", path = /obj/item/melee/telebaton, price = 115, code = "telebaton"),
 	list(name = "Neoduelista ammo (1)", path = /obj/item/stack/bullets/Newduelista, price = 5, code = "neoammo1"),
-	list(name = "Sawn-Off Shotgun", path = /obj/item/weapon/gun/projectile/newRevolver/duelista/doublebarrel/sawnOff, price = 163, code = "sawnoff"),
-	list(name = "Vinici-Us", path = /obj/item/weapon/reagent_containers/pill/lifeweb/blotter/vinici_us, price = 23, code = "vinicius"),
-	list(name = "Heroin", path = /obj/item/weapon/reagent_containers/syringe/heroin, price = 10, code = "cocaine"),
-	list(name = "Cocaine", path = /obj/item/weapon/storage/pacote/cocaina, price = 45, code = "heroin"),
+	list(name = "Sawn-Off Shotgun", path = /obj/item/gun/projectile/newRevolver/duelista/doublebarrel/sawnOff, price = 163, code = "sawnoff"),
+	list(name = "Vinici-Us", path = /obj/item/reagent_containers/pill/lifeweb/blotter/vinici_us, price = 23, code = "vinicius"),
+	list(name = "Heroin", path = /obj/item/reagent_containers/syringe/heroin, price = 10, code = "cocaine"),
+	list(name = "Cocaine", path = /obj/item/storage/pacote/cocaina, price = 45, code = "heroin"),
 	list(name = "Buckshot (3)", path = /obj/item/stack/bullets/buckshot/three, price = 16, code = "buckshot"),
 	list(name = "Pusher Debt", path = /obj/item/coupon/pusher, price = 100, code = "debt"))
 	name = "ONION"
-	icon = 'vending.dmi'
+	icon = 'icons/obj/vending.dmi'
 	icon_state = "onion"
 	anchored = 1
 	density = 0
@@ -180,40 +178,40 @@ var/debt = 1
 
 /obj/machinery/lwvend/sanctuary
 	obols = 8
-	products	= list(list(name = "Dentrine", path = /obj/item/weapon/reagent_containers/pill/lifeweb/dentrine, price = 42, code = "dentrine"),
+	products	= list(list(name = "Dentrine", path = /obj/item/reagent_containers/pill/lifeweb/dentrine, price = 42, code = "dentrine"),
 	list(name = "Bandages", path = /obj/item/stack/medical/bruise_pack, price = 8, code = "bandages"),
-	list(name = "Inaprovaline Bottle", path = /obj/item/weapon/reagent_containers/glass/bottle/lifeweb/inaprovaline, price = 18, code = "inaprovaline"),
-	list(name = "Syringe", path = /obj/item/weapon/reagent_containers/syringe, price = 12, code = "syringe"),
-	list(name = "Vaccine", path = /obj/item/weapon/reagent_containers/syringe/antiviral, price = 25, code = "vaccine"),
-	list(name = "Suture", path = /obj/item/weapon/surgery_tool/suture, price = 12, code = "suture"),
-	list(name = "Syringe (Antibiotic)", path = /obj/item/weapon/reagent_containers/syringe/antibiotic, price = 20, code = "antibiotic"))
+	list(name = "Inaprovaline Bottle", path = /obj/item/reagent_containers/glass/bottle/lifeweb/inaprovaline, price = 18, code = "inaprovaline"),
+	list(name = "Syringe", path = /obj/item/reagent_containers/syringe, price = 12, code = "syringe"),
+	list(name = "Vaccine", path = /obj/item/reagent_containers/syringe/antiviral, price = 25, code = "vaccine"),
+	list(name = "Suture", path = /obj/item/surgery_tool/suture, price = 12, code = "suture"),
+	list(name = "Syringe (Antibiotic)", path = /obj/item/reagent_containers/syringe/antibiotic, price = 20, code = "antibiotic"))
 	name = "Sanctuary Vendor"
-	icon = 'vending.dmi'
+	icon = 'icons/obj/vending.dmi'
 	icon_state = "snack"
 	anchored = 1
 	density = 1
 
 /obj/machinery/lwvend/innvend
 	obols = 12
-	products	= list(list(name = "Eggs", path = /obj/item/weapon/storage/fancy/egg_box, price = 10, code = "eggs"),
-	list(name = "Flour", path = /obj/item/weapon/reagent_containers/food/drinks/flour, price = 8, code = "flour"),
-	list(name = "Milk", path = /obj/item/weapon/reagent_containers/food/drinks/milk, price = 8, code = "milk"),
-	list(name = "Dough", path = /obj/item/weapon/reagent_containers/food/snacks/dough, price = 10, code = "dough"),
-	list(name = "Butter", path = /obj/item/weapon/reagent_containers/food/snacks/breadsys/butterpack, price = 6, code = "butter"),
-	list(name = "Peppermill", path = /obj/item/weapon/reagent_containers/food/condiment/peppermill, price = 8, code = "pepper"),
-	list(name = "Salt Shaker", path = /obj/item/weapon/reagent_containers/food/condiment/saltshaker, price = 8, code = "salt"),
-	list(name = "Raw Meat", path = /obj/item/weapon/reagent_containers/food/snacks/meat, price = 25, code = "meat"),
-	list(name = "Vodka", path = /obj/item/weapon/reagent_containers/glass/bottle/vodka, price = 18, code = "vodka"),
-	list(name = "Absinthe", path = /obj/item/weapon/reagent_containers/glass/bottle/absinthe, price = 20, code = "absinthe"),
-	list(name = "Rum", path = /obj/item/weapon/reagent_containers/glass/bottle/rum, price = 20, code = "rum"),
-	list(name = "Whiskey", path = /obj/item/weapon/reagent_containers/glass/bottle/whiskey, price = 30, code = "whiskey"),
-	list(name = "Wine", path = /obj/item/weapon/reagent_containers/glass/bottle/wine, price = 40, code = "wine"),
-	list(name = "Vintage Wine", path = /obj/item/weapon/reagent_containers/glass/bottle/pwine, price = 80, code = "oldwine"),
-	list(name = "Vermouth", path = /obj/item/weapon/reagent_containers/glass/bottle/vermouth, price = 50, code = "vermouth"),
-	list(name = "Beer", path = /obj/item/weapon/reagent_containers/glass/bottle/beer, price = 8, code = "beer"),
-	list(name = "Salami", path = /obj/item/weapon/reagent_containers/food/snacks/breadsys/salamistick, price = 12, code = "salami"))
+	products	= list(list(name = "Eggs", path = /obj/item/storage/fancy/egg_box, price = 10, code = "eggs"),
+	list(name = "Flour", path = /obj/item/reagent_containers/food/drinks/flour, price = 8, code = "flour"),
+	list(name = "Milk", path = /obj/item/reagent_containers/food/drinks/milk, price = 8, code = "milk"),
+	list(name = "Dough", path = /obj/item/reagent_containers/food/snacks/dough, price = 10, code = "dough"),
+	list(name = "Butter", path = /obj/item/reagent_containers/food/snacks/breadsys/butterpack, price = 6, code = "butter"),
+	list(name = "Peppermill", path = /obj/item/reagent_containers/food/condiment/peppermill, price = 8, code = "pepper"),
+	list(name = "Salt Shaker", path = /obj/item/reagent_containers/food/condiment/saltshaker, price = 8, code = "salt"),
+	list(name = "Raw Meat", path = /obj/item/reagent_containers/food/snacks/meat, price = 25, code = "meat"),
+	list(name = "Vodka", path = /obj/item/reagent_containers/glass/bottle/vodka, price = 18, code = "vodka"),
+	list(name = "Absinthe", path = /obj/item/reagent_containers/glass/bottle/absinthe, price = 20, code = "absinthe"),
+	list(name = "Rum", path = /obj/item/reagent_containers/glass/bottle/rum, price = 20, code = "rum"),
+	list(name = "Whiskey", path = /obj/item/reagent_containers/glass/bottle/whiskey, price = 30, code = "whiskey"),
+	list(name = "Wine", path = /obj/item/reagent_containers/glass/bottle/wine, price = 40, code = "wine"),
+	list(name = "Vintage Wine", path = /obj/item/reagent_containers/glass/bottle/pwine, price = 80, code = "oldwine"),
+	list(name = "Vermouth", path = /obj/item/reagent_containers/glass/bottle/vermouth, price = 50, code = "vermouth"),
+	list(name = "Beer", path = /obj/item/reagent_containers/glass/bottle/beer, price = 8, code = "beer"),
+	list(name = "Salami", path = /obj/item/reagent_containers/food/snacks/breadsys/salamistick, price = 12, code = "salami"))
 	name = "Innkeep Vendor"
-	icon = 'vending.dmi'
+	icon = 'icons/obj/vending.dmi'
 	icon_state = "production"
 	anchored = 1
 	density = 1
@@ -223,7 +221,7 @@ var/debt = 1
 /obj/machinery/computerVendor
 	name = "vendor"
 	desc = "A vendor used to buy and sell items."
-	icon = 'vending.dmi'
+	icon = 'icons/obj/vending.dmi'
 	icon_state = "snack"
 	anchored = 1
 	density = 1
@@ -239,7 +237,7 @@ var/debt = 1
 	acceptableJobs = list("Armorsmith", "Metalsmith", "Weaponsmith")
 
 /obj/machinery/computerVendor/bookkeeper
-	acceptableJobs = list("Grayhound", "Bookkeeper")
+	acceptableJobs = list("Docker", "Merchant")
 
 /obj/item/var/priceSet = 0
 
@@ -251,12 +249,12 @@ var/debt = 1
 	..()
 
 /obj/machinery/computerVendor/attackby(obj/item/I as obj, mob/living/carbon/human/user as mob)
-	if(istype(I,/obj/item/weapon/spacecash))
+	if(istype(I,/obj/item/spacecash))
 		src.obols += I:worth
 		qdel(I)
 		playsound(src.loc, 'sound/effects/coininsert.ogg', 30, 0)
 		return
-	if(istype(I,/obj/item/weapon/wrench))
+	if(istype(I,/obj/item/wrench))
 		if(!anchored)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 			src.anchored = 1
@@ -332,13 +330,15 @@ var/debt = 1
 		if(usr.job in acceptableJobs)
 			if(src.obols)
 				to_chat(usr, "<i>[src] has [src.obols] obols.</i>")
-				var/withdraw = input("How much you want to withdraw | There is [src.obols] obols in [src].","[src]",src.obols)
+				var/withdraw = input("How much you want to withdraw | There is [src.obols] obols in [src].","[src]",src.obols) as num
 				if(!withdraw)
 					return
+				withdraw = abs(withdraw) //No negative numbers.
 				if(withdraw > src.obols)
 					to_chat(usr, "There's not enough obols to withdraw that amount!")
 				if(withdraw < 0)
 					to_chat(usr, "That is an invalid amount to withdraw!")
+					return
 				if(get_dist(usr,src) > 1)
 					return
 				if(withdraw <= src.obols)

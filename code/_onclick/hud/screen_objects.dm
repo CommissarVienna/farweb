@@ -37,7 +37,7 @@
 
 /obj/screen/a_intent
 	name = "a_intent"
-	var/intent = "help"
+	var/intent = I_HELP
 
 /obj/screen/a_intent/update_icon()
 	icon_state = "[intent]"
@@ -46,55 +46,18 @@
 	var/list/P = params2list(params)
 	var/icon_x = text2num(P["icon-x"])
 	var/icon_y = text2num(P["icon-y"])
-	intent = "disarm"
+	intent = I_DISARM
 	if(icon_x <= world.icon_size/2)
 		if(icon_y <= world.icon_size/2)
-			intent = "help"
+			intent = I_HELP
 		else
-			intent = "hurt"
+			intent = I_HURT
 	else if(icon_y <= world.icon_size/2)
-		intent = "grab"
+		intent = I_GRAB
 	update_icon()
-	usr.a_intent = intent
+	usr.a_intent_change(intent)
 
 
-/**************************NAO MECHA***************************
-*************************************************************
-
-
-/obj/screen/combat_popup
-	name = "combat_intents"
-	var/c_intent = "feint"
-
-/obj/screen/combat_popup/update_icon()
-	icon_state = "[c_intent]"
-
-/obj/screen/combat_popup/Click(location, control, params)
-	var/list/P = params2list(params)
-	var/icon_x = text2num(P["icon-x"])
-	var/icon_y = text2num(P["icon-y"])
-	world << "ANUS"
-	switch(icon_x)
-		if(33 to 62)
-			switch(icon_y)
-				if(55 to 64)
-					c_intent = "weak"
-					world << "CU"
-
-
-
-
-
-	update_icon()
-	usr.combat_intent = c_intent
-*/
-
-
-
-
-
-/**************************NAO MECHA***************************
-*************************************************************/
 
 /obj/screen/inventory
 	var/slot_id	//The indentifier for the slot. It has nothing to do with ID cards.
@@ -105,8 +68,8 @@
 
 /obj/screen/close/Click()
 	if(master)
-		if(istype(master, /obj/item/weapon/storage))
-			var/obj/item/weapon/storage/S = master
+		if(istype(master, /obj/item/storage))
+			var/obj/item/storage/S = master
 			S.close(usr)
 		/*else if(istype(master, /mob/living/carbon/human/))
 			var/mob/living/carbon/human/S = master
@@ -146,7 +109,7 @@
 	name = "grab"
 
 /obj/screen/grab/Click()
-	var/obj/item/weapon/grab/G = master
+	var/obj/item/grab/G = master
 	G.s_click(src)
 	return 1
 
@@ -178,8 +141,8 @@
 				usr.next_move = world.time+2
 				return 1*/
 
-			if(istype(master, /obj/item/weapon/storage/forge))
-				var/obj/item/weapon/storage/forge/F = master
+			if(istype(master, /obj/item/storage/forge))
+				var/obj/item/storage/forge/F = master
 				if(F.on || F.tocomplete)
 					return
 
@@ -323,7 +286,13 @@
 	if (old_selecting != selecting)
 		update_icon()
 
-	selecting = selecting
+	if(usr.hand)
+		usr.left_hand_zone = selecting
+		selecting = selecting
+	else
+		usr.right_hand_zone = selecting
+		selecting = selecting
+
 	return TRUE
 
 /obj/screen/zone_sel/New()
@@ -374,7 +343,7 @@
 					if(17 to 32)
 						switch(icon_x)
 							if(1 to 18)
-								H.check_skills_rmb()
+								H.check_skills(TRUE)
 			if("stamina")
 				if(isliving(usr))
 					var/mob/living/carbon/human/H = usr
@@ -458,43 +427,43 @@
 					if(33 to 62)
 						switch(icon_y)
 							if(55 to 64)
-								to_chat(H, "<span class='combatmodes'>⠀Weak: You will deal as little damage as possible to an enemy target. Perhaps it is good to suppress someone.</i></span>")
-								H.combat_intent = "weak"
+								to_chat(H, "<span class='combatmodes'><i>Weak: You will deal as little damage as possible to an enemy target. Perhaps it is good to suppress someone.</i></span>")
+								H.combat_intent = I_WEAK
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "min_st"
 							if(48 to 54)
-								to_chat(H, "<span class='combatmodes'>⠀Aimed: You will more precisely damage your enemy in exchange for stamina and strength. Good at hitting targets with few weaknesses.</i></span>")
-								H.combat_intent = "aimed"
+								to_chat(H, "<span class='combatmodes'><i>Aimed: You will more precisely damage your enemy in exchange for stamina and strength. Good at hitting targets with few weaknesses.</i></span>")
+								H.combat_intent = I_AIMED
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "aimed"
 							if(40 to 47)
-
-								H.combat_intent = "fury"
+								to_chat(H, "<span class='combatmodes'><i>⠀Fury: You will attack as quickly as possible at the cost of damage and stamina.</i></span>")
+								H.combat_intent = I_FURY
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "fury"
 							if(33 to 40)
-								to_chat(H, "<span class='combatmodes'>⠀Strong: You will deal as much damage as possible to an enemy target in exchange for stamina. Great to finish off someone.</i></span>")
-								H.combat_intent = "strong"
+								to_chat(H, "<span class='combatmodes'><i>Strong: You will deal as much damage as possible to an enemy target in exchange for stamina. Great to finish off someone.</i></span>")
+								H.combat_intent = I_STRONG
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "max_st"
 							if(25 to 31)
-								to_chat(H, "<span class='combatmodes'>⠀Defend: You will more easily dodge or parry an enemy attack in exchange for stamina. Great to defend yourself!</i></span>")
-								H.combat_intent = "defend"
+								to_chat(H, "<span class='combatmodes'><i>Defend: You will more easily dodge or parry an enemy attack in exchange for stamina. Great to defend yourself!</i></span>")
+								H.combat_intent = I_DEFEND
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "defend"
 							if(18 to 24)
-								to_chat(H, "⠀<span class='combatbold'>[pick(nao_consigoen)]! You don't know how to use this..</span>")
-								H.combat_intent = "guard"
+								to_chat(H, "⠀<span class='combatmodes'><i>Guard: You will be able to riposte on a successful parry.</i></span>")
+								H.combat_intent = I_GUARD
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "guard"
 							if(9 to 17)
-								to_chat(H, "⠀<span class='combatbold'>[pick(nao_consigoen)]! You don't know how to use this..</span>")
-								H.combat_intent = "dual"
+								to_chat(H, "⠀<span class='combatmodes'><i>Dual: You will attack with the weapon in your offhand.</i></span>")
+								H.combat_intent = I_DUAL
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "dual"
 							if(1 to 9)
-								to_chat(H, "⠀<span class='combatbold'>[pick(nao_consigoen)]! You don't know how to use this..</span>")
-								H.combat_intent = "feint"
+								to_chat(H, "⠀<span class='combatmodes'><i>Fient: You will be able to fient attacks to stun, and even disarm opponents.</i></span>")
+								H.combat_intent = I_FEINT
 								H.combat_popup.screen_loc = null
 								H.combat_intents.icon_state = "feint"
 		if("resist")
@@ -521,10 +490,10 @@
 					if(1 to 32)
 						switch(icon_y)
 							if(17 to 32)
-								H.c_intent = "dodge"
+								H.c_intent = I_DODGE
 								H.dodge_parry.icon_state = "dodge1"
 							else
-								H.c_intent = "parry"
+								H.c_intent = I_PARRY
 								H.dodge_parry.icon_state = "dodge0"
 
 
@@ -634,7 +603,7 @@
 			else
 				var/mob/living/carbon/human/HHH = usr
 				if(HHH.special == "weirdgait")
-					to_chat(HHH, "<span class='combat'>[pick(nao_consigoen)] I'm stuck!</span>")
+					to_chat(HHH, "<span class='combat'>[pick(fnord)] I'm stuck!</span>")
 					return
 				usr.fixeye()
 				if(usr.facing_dir)
@@ -704,8 +673,8 @@
 										tankcheck = list(C.r_hand, C.l_hand, C.back)
 
 									for(var/i=1, i<tankcheck.len+1, ++i)
-										if(istype(tankcheck[i], /obj/item/weapon/tank))
-											var/obj/item/weapon/tank/t = tankcheck[i]
+										if(istype(tankcheck[i], /obj/item/tank))
+											var/obj/item/tank/t = tankcheck[i]
 											if (!isnull(t.manipulated_by) && t.manipulated_by != C.real_name && findtext(t.desc,breathes))
 												contents.Add(t.air_contents.total_moles)	//Someone messed with the tank and put unknown gasses
 												continue					//in it, so we're going to believe the tank is what it says it is
@@ -793,8 +762,8 @@
 								tankcheck = list(C.r_hand, C.l_hand, C.back)
 
 							for(var/i=1, i<tankcheck.len+1, ++i)
-								if(istype(tankcheck[i], /obj/item/weapon/tank))
-									var/obj/item/weapon/tank/t = tankcheck[i]
+								if(istype(tankcheck[i], /obj/item/tank))
+									var/obj/item/tank/t = tankcheck[i]
 									if (!isnull(t.manipulated_by) && t.manipulated_by != C.real_name && findtext(t.desc,breathes))
 										contents.Add(t.air_contents.total_moles)	//Someone messed with the tank and put unknown gasses
 										continue					//in it, so we're going to believe the tank is what it says it is
@@ -906,7 +875,7 @@
 /*		if("Allow Walking")
 			if(gun_click_time > world.time - 30)	//give them 3 seconds between mode changes.
 				return
-			if(!istype(usr.equipped(),/obj/item/weapon/gun))
+			if(!istype(usr.equipped(),/obj/item/gun))
 				usr << "You need your gun in your active hand to do that!"
 				return
 			usr.client.AllowTargetMove()
@@ -915,7 +884,7 @@
 		if("Disallow Walking")
 			if(gun_click_time > world.time - 30)	//give them 3 seconds between mode changes.
 				return
-			if(!istype(usr.equipped(),/obj/item/weapon/gun))
+			if(!istype(usr.equipped(),/obj/item/gun))
 				usr << "You need your gun in your active hand to do that!"
 				return
 			usr.client.AllowTargetMove()
@@ -924,7 +893,7 @@
 		if("Allow Running")
 			if(gun_click_time > world.time - 30)	//give them 3 seconds between mode changes.
 				return
-			if(!istype(usr.equipped(),/obj/item/weapon/gun))
+			if(!istype(usr.equipped(),/obj/item/gun))
 				usr << "You need your gun in your active hand to do that!"
 				return
 			usr.client.AllowTargetRun()
@@ -933,7 +902,7 @@
 		if("Disallow Running")
 			if(gun_click_time > world.time - 30)	//give them 3 seconds between mode changes.
 				return
-			if(!istype(usr.equipped(),/obj/item/weapon/gun))
+			if(!istype(usr.equipped(),/obj/item/gun))
 				usr << "You need your gun in your active hand to do that!"
 				return
 			usr.client.AllowTargetRun()
@@ -942,7 +911,7 @@
 		if("Allow Item Use")
 			if(gun_click_time > world.time - 30)	//give them 3 seconds between mode changes.
 				return
-			if(!istype(usr.equipped(),/obj/item/weapon/gun))
+			if(!istype(usr.equipped(),/obj/item/gun))
 				usr << "You need your gun in your active hand to do that!"
 				return
 			usr.client.AllowTargetClick()
@@ -952,7 +921,7 @@
 		if("Disallow Item Use")
 			if(gun_click_time > world.time - 30)	//give them 3 seconds between mode changes.
 				return
-			if(!istype(usr.equipped(),/obj/item/weapon/gun))
+			if(!istype(usr.equipped(),/obj/item/gun))
 				usr << "You need your gun in your active hand to do that!"
 				return
 			usr.client.AllowTargetClick()

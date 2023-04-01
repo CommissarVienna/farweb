@@ -201,7 +201,7 @@
 
 /atom/movable/triangle
 	name = ""
-	icon = 'triangle.dmi'
+	icon = 'icons/effects/triangle.dmi'
 	icon_state = "triangle"
 	plane = SHADOWCASTING_PLANE
 

@@ -26,7 +26,7 @@ var/list/trip_markers = list()
 		return
 	start_journey(H)
 
-/obj/effect/trip/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/effect/trip/attackby(obj/item/W as obj, mob/user as mob)
 	return
 
 /obj/effect/trip/proc/start_journey(var/mob/living/carbon/human/H)
@@ -62,8 +62,8 @@ var/list/trip_markers = list()
 		grab_hands += H.get_active_hand()
 		if(length(grab_hands))
 			for(var/A in grab_hands)
-				if(istype(A, /obj/item/weapon/grab))
-					var/obj/item/weapon/grab/G = A
+				if(istype(A, /obj/item/grab))
+					var/obj/item/grab/G = A
 					if(ismob(G.affecting))
 						var/mob/GM = G.affecting
 						GM.forceMove(T.loc)
@@ -72,7 +72,7 @@ var/list/trip_markers = list()
 			var/atom/movable/buckled_to = H.buckled
 			buckled_to.forceMove(T.loc)
 	else
-		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] I need to stay still!</span>")
+		to_chat(src, "<span class='combat'>[pick(fnord)] I need to stay still!</span>")
 
 /obj/effect/trip/siege
 	name = ""
@@ -93,7 +93,7 @@ var/list/trip_markers = list()
 	if(!(H.siegesoldier))
 		return
 	if(!S.siegewar && (!(H.migclass) || !(H.migclass in classes_observers)))
-		to_chat(H, "[pick(nao_consigoen)] War isn't declared!")
+		to_chat(H, "[pick(fnord)] War isn't declared!")
 		return
 	..()
 

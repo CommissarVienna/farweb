@@ -5,10 +5,10 @@
 			src.nutrition -= HUNGER_FACTOR/20
 			if(src.m_intent == "run")
 				src.nutrition -= HUNGER_FACTOR/15
-		if(src.hidratacao && src.stat != 2)
-			src.hidratacao -= THIRST_FACTOR/20
+		if(src.hydration && src.stat != 2)
+			src.hydration -= THIRST_FACTOR/20
 			if(src.m_intent == "run")
-				src.hidratacao -= THIRST_FACTOR/15
+				src.hydration -= THIRST_FACTOR/15
 		if(hasalpha)
 			var/turf/T = NewLoc
 			if(T.get_lumcount() <= 0.2)
@@ -20,46 +20,8 @@
 
 /mob/living/carbon/relaymove(var/mob/user, direction)
 	return
-	/*var/datum/organ/internal/stomach/Stomach = src.internal_organs_by_name[pick("stomach")]
-	if(user in Stomach.stomach_contents)
-		if(prob(40))
-			for(var/mob/M in hearers(4, src))
-				if(M.client)
-					M.show_message(text("\red You hear something rumbling inside [src]'s stomach..."), 2)
-			var/obj/item/I = user.get_active_hand()
-			if(I && I.force)
-				var/d = rand(round(I.force / 4), I.force)
-				if(istype(src, /mob/living/carbon/human))
-					var/mob/living/carbon/human/H = src
-					var/organ = H.get_organ("chest")
-					if (istype(organ, /datum/organ/external))
-						var/datum/organ/external/temp = organ
-						if(temp.take_damage(d, 0))
-							H.UpdateDamageIcon()
-					H.updatehealth()
-				else
-					src.take_organ_damage(d)
-				for(var/mob/M in viewers(user, null))
-					if(M.client)
-						M.show_message(text("\red <B>[user] attacks [src]'s stomach wall with the [I.name]!"), 2)
-				playsound(user.loc, 'sound/effects/attackblob.ogg', 50, 1)
-
-				if(prob(src.getBruteLoss() - 50))
-					for(var/atom/movable/A in Stomach.stomach_contents)
-						A.loc = loc
-						Stomach.stomach_contents.Remove(A)
-					src.gib()*/
 
 /mob/living/carbon/gib()
-/*
-	for(var/mob/M in src)
-		var/datum/organ/internal/stomach/Stomach = src.internal_organs_by_name[pick("stomach")]
-		if(M in Stomach.stomach_contents)
-			Stomach.stomach_contents.Remove(M)
-		M.loc = src.loc
-		for(var/mob/N in viewers(src, null))
-			if(N.client)
-				N.show_message(text("\red <B>[M] bursts out of [src]!</B>"), 2)*/
 	. = ..()
 
 /mob/living/carbon/attack_hand(mob/M as mob)
@@ -69,7 +31,7 @@
 		if (M.hand)
 			temp = M:organs_by_name["l_hand"]
 		if(temp && !temp.is_usable())
-			M << "\red You can't use your [temp.display_name]"
+			to_chat(M, "\red You can't use your [temp.display_name]")
 			return
 
 	for(var/datum/disease/D in viruses)
@@ -113,31 +75,20 @@
 
 
 	src.take_overall_damage(0,shock_damage,used_weapon="Electrocution")
-	//src.burn_skin(shock_damage)
-	//src.adjustFireLoss(shock_damage) //burn_skin will do this for us
-	//src.updatehealth()
 	src.visible_message(
 		"<span class='combatbold'>[src]</span><span class='combat'> was shocked by the</span><span class='combatbold'> [source]!</span>"
 	)
-//	if(src.stunned < shock_damage)	src.stunned = shock_damage
 	if(!istype(src?.species, /datum/species/human/alien) && !ismonster(src))
 		if(ishuman(src))
 			var/mob/living/carbon/human/H = src
-			var/stun_time = max(0, 13 - H.my_stats.ht)
+			var/stun_time = max(0, 13 - H.my_stats.get_stat(STAT_HT))
 			Stun(stun_time)//This should work for now, more is really silly and makes you lay there forever
-			if(!H.my_stats.ht>=12)
+			if(!H.my_stats.get_stat(STAT_HT)>=12)
 				Weaken(1)
-//	if(src.weakened < 20*siemens_coeff)	src.weakened = 20*siemens_coeff
 	return shock_damage
 
 
 /mob/living/carbon/proc/swap_hand()
-	var/obj/item/item_in_hand = src.get_active_hand()
-	if(item_in_hand) //this segment checks if the item in your hand is twohanded.
-		if(istype(item_in_hand,/obj/item/weapon/twohanded))
-			if(item_in_hand:wielded == 1)
-				usr << "<span class='warning'>Your other hand is too busy holding the [item_in_hand.name]</span>"
-				return
 	src.hand = !( src.hand )
 	if(hud_used.l_hand_hud_object && hud_used.r_hand_hud_object)
 		if(hand)	//This being 1 means the left hand is in use
@@ -151,7 +102,15 @@
 			hud_used.swaphands_hud_object.dir = 2
 		else
 			hud_used.swaphands_hud_object.dir = 1
-//	unlock_medal("Nice start.", 0, "How to change hands?", "easy")
+	if(hand)
+		a_intent_change(left_hand_intent)
+		zone_sel.selecting = left_hand_zone
+		zone_sel.update_icon()
+	else
+		a_intent_change(right_hand_intent)
+		zone_sel.selecting = right_hand_zone
+		zone_sel.update_icon()
+	update_handedness()
 	return
 
 /mob/living/carbon/proc/activate_hand(var/selhand) //0 or "r" or "right" for right hand; 1 or "l" or "left" for left hand.
@@ -171,55 +130,13 @@
 	if(M == src)
 		return
 	if (src.health >= config.health_threshold_crit)
-	/*	if(src == M && istype(src, /mob/living/carbon/human))
-			var/mob/living/carbon/human/H = src
-			src.visible_message( \
-				text("\blue [src] examines [].",src.gender==MALE?"himself":"herself"), \
-				"\blue You check yourself for injuries." \
-				)
-
-			for(var/datum/organ/external/org in H.organs)
-				var/status = ""
-				var/brutedamage = org.brute_dam
-				var/burndamage = org.burn_dam
-				if(halloss > 0)
-					if(prob(30))
-						brutedamage += halloss
-					if(prob(30))
-						burndamage += halloss
-
-				if(brutedamage > 0)
-					status = "bruised"
-				if(brutedamage > 20)
-					status = "bleeding"
-				if(brutedamage > 40)
-					status = "mangled"
-				if(brutedamage > 0 && burndamage > 0)
-					status += " and "
-				if(burndamage > 40)
-					status += "peeling away"
-
-				else if(burndamage > 10)
-					status += "blistered"
-				else if(burndamage > 0)
-					status += "numb"
-				if(org.status & ORGAN_DESTROYED)
-					status = "MISSING!"
-				if(org.status & ORGAN_MUTATED)
-					status = "weirdly shapen."
-				if(status == "")
-					status = "OK"
-				src.show_message(text("\t []My [] is [].",status=="OK"?"\blue ":"\red ",org.display_name,status),1)
-			if((SKELETON in H.mutations) && (!H.w_uniform) && (!H.wear_suit))
-				H.play_xylophone()
-		else																		*/
 		if (istype(src,/mob/living/carbon/human) && src:w_uniform)
 			var/mob/living/carbon/human/H = src
 			H.w_uniform.add_fingerprint(M)
 		src.sleeping = max(0,src.sleeping-5)
 		if(src.sleeping == 0)
 			if(src.can_stand)
-				src.resting = 0
+				src.SetResting(FALSE)
 		AdjustParalysis(-2)
 		AdjustStunned(-2)
 		AdjustWeakened(-3)
@@ -231,16 +148,11 @@
 /mob/living/carbon/proc/eyecheck()
 	return 0
 
-// ++++ROCKDTBEN++++ MOB PROCS -- Ask me before touching.
-// Stop! ... Hammertime! ~Carn
-
 /mob/living/carbon/proc/getDNA()
 	return dna
 
 /mob/living/carbon/proc/setDNA(var/datum/dna/newDNA)
 	dna = newDNA
-
-// ++++ROCKDTBEN++++ MOB PROCS //END
 
 /mob/living/carbon/clean_blood()
 	. = ..()
@@ -273,7 +185,7 @@
 			for(var/x = 1; x <= grabbed_by.len; x++)
 				if(grabbed_by[x])
 					var/turf/back = get_step(src, reverse_dir[dir])
-					var/obj/item/weapon/I = src.get_active_hand()
+					var/obj/item/I = src.get_active_hand()
 
 					for(var/mob/living/L in back.contents)
 						I.attack(L, src)
@@ -282,22 +194,22 @@
 							glindcooldown = FALSE
 					return
 		for(var/mob/living/L in newloc)
-			if(istype(src.get_active_hand(), /obj/item/weapon) && src.a_intent == "hurt")
-				var/obj/item/weapon/I = src.get_active_hand()
+			if(istype(src.get_active_hand(), /obj/item) && src.a_intent == "hurt")
+				var/obj/item/I = src.get_active_hand()
 				I.attack(L, src)
 				glindcooldown = TRUE
 				spawn(10)
 					glindcooldown = FALSE
 				return
 
-		var/obj/item/weapon/I = src.get_active_hand()
+		var/obj/item/I = src.get_active_hand()
 		if(I && src.a_intent == "hurt")
 			src.visible_message("<span class='hitbold'>[src]</span> <span class='hit'>swings</span> <span class='hitbold'>[I]!</span>")
 			playsound(src, 'sound/weapons/2hswing.ogg', 50, 1)
 			glindcooldown = TRUE
 			var/turf/T = get_step(src, src.dir)
-			if(T.density && T.flammable && istype(I, /obj/item/weapon/flame))
-				var/obj/item/weapon/flame/F = I
+			if(T.density && T.flammable && istype(I, /obj/item/flame))
+				var/obj/item/flame/F = I
 				if(F.lit)
 					animate(src, pixel_x=(T.x-src.x)*10, pixel_y=(T.y-src.y)*10, time = 5)
 					if(prob(40))
@@ -307,10 +219,10 @@
 	if(src.a_intent == "help" && !glindcooldown)
 		var/turf/turfloc = get_step(src,src.dir)
 		var/obj/objloc = get_step(src, src.dir)
-		var/image/hide = image('blind.dmi', turfloc)
-		var/image/hide2 = image('blind.dmi', objloc)
-		hide.icon = 'blind.dmi'
-		hide2.icon = 'blind.dmi'
+		var/image/hide = image('icons/blind.dmi', turfloc)
+		var/image/hide2 = image('icons/blind.dmi', objloc)
+		hide.icon = 'icons/blind.dmi'
+		hide2.icon = 'icons/blind.dmi'
 		hide.appearance_flags = NO_CLIENT_COLOR|RESET_ALPHA
 		hide.plane = 50
 		hide.layer = HUD_ABOVE_ITEM_LAYER
@@ -395,13 +307,13 @@ proc/strToSpeedModifier(var/strength, var/w_class)//Looks messy. Is messy. Is al
 		var/obj/item/I = item
 		weight_class = I.w_class
 
-	var/throw_delay = strToSpeedModifier(src?.my_stats?.st, weight_class)
+	var/throw_delay = strToSpeedModifier(src?.my_stats?.get_stat(STAT_ST), weight_class)
 
 	src.visible_message("<span class='hitbold'>[src]</span> <span class='hit'>is trying to throw [item].</span>")
 
 	if(do_after(src, throw_delay))
-		if (istype(item, /obj/item/weapon/grab))
-			var/obj/item/weapon/grab/G = item
+		if (istype(item, /obj/item/grab))
+			var/obj/item/grab/G = item
 			item = G.throw_mob() //throw the person instead of the grab
 			if(ismob(item))
 				var/turf/start_T = get_turf(loc) //Get the start and target tile for the descriptors
@@ -435,8 +347,8 @@ proc/strToSpeedModifier(var/strength, var/w_class)//Looks messy. Is messy. Is al
 		u_equip(item)
 		update_icons()
 
-		if(istype(item, /obj/item/weapon/flame/candle/tnt))
-			var/obj/item/weapon/flame/candle/tnt/T = item
+		if(istype(item, /obj/item/flame/candle/tnt))
+			var/obj/item/flame/candle/tnt/T = item
 			if(T.lit)
 				playsound(src, 'sound/effects/tnt_throw_lit.ogg', 50, 1)
 		else
@@ -512,7 +424,7 @@ proc/strToSpeedModifier(var/strength, var/w_class)//Looks messy. Is messy. Is al
 	<BR><B>Head(Mask):</B> <A href='?src=\ref[src];item=mask'>[(wear_mask ? wear_mask : "Nothing")]</A>
 	<BR><B>Left Hand:</B> <A href='?src=\ref[src];item=l_hand'>[(l_hand ? l_hand  : "Nothing")]</A>
 	<BR><B>Right Hand:</B> <A href='?src=\ref[src];item=r_hand'>[(r_hand ? r_hand : "Nothing")]</A>
-	<BR><B>Back:</B> <A href='?src=\ref[src];item=back'>[(back ? back : "Nothing")]</A> [((istype(wear_mask, /obj/item/clothing/mask) && istype(back, /obj/item/weapon/tank) && !( internal )) ? text(" <A href='?src=\ref[];item=internal'>Set Internal</A>", src) : "")]
+	<BR><B>Back:</B> <A href='?src=\ref[src];item=back'>[(back ? back : "Nothing")]</A> [((istype(wear_mask, /obj/item/clothing/mask) && istype(back, /obj/item/tank) && !( internal )) ? text(" <A href='?src=\ref[];item=internal'>Set Internal</A>", src) : "")]
 	<BR>[(handcuffed ? text("<A href='?src=\ref[src];item=handcuff'>Handcuffed</A>") : text("<A href='?src=\ref[src];item=handcuff'>Not Handcuffed</A>"))]
 	<BR>[(internal ? text("<A href='?src=\ref[src];item=internal'>Remove Internal</A>") : "")]
 	<BR><A href='?src=\ref[src];item=pockets'>Empty Pockets</A>
@@ -546,22 +458,16 @@ proc/strToSpeedModifier(var/strength, var/w_class)//Looks messy. Is messy. Is al
 //			output for machines^	^^^^^^^output for people^^^^^^^^^
 
 /mob/living/carbon/getTrail()
-	if(getBruteLoss() < 300)
-		if(prob(50))
-			return "ltrails_1"
-		return "ltrails_2"
-	else if(prob(50))
-		return "trails_1"
-	return "trails_2"
+	if(getBruteLoss() < 100)
+		return "ltrails"
+	else
+		return "trails"
 
 var/const/NO_SLIP_WHEN_WALKING = 1
 var/const/STEP = 2
 var/const/SLIDE = 4
 var/const/GALOSHES_DONT_HELP = 8
-/*
-/mob/living/carbon/slip(var/s_amount, var/w_amount, var/obj/O, var/lube)
-	loc.handle_slip(src, s_amount, w_amount, O, lube)
-*/
+
 /mob/living/carbon/slip(slipped_on, stun_duration = 8)
 	if(buckled)
 		return FALSE
@@ -569,23 +475,7 @@ var/const/GALOSHES_DONT_HELP = 8
 	playsound(loc, 'sound/misc/slip.ogg', 50, 1, -3)
 	//Weaken(Floor(stun_duration/2))
 	return TRUE
-/*
-/mob/living/carbon/verb/mob_sleep()
-	set name = "Sleep"
-	set category = "IC"
 
-	if(usr.sleeping)
-		usr << "\red You are already sleeping"
-		return
-	if(alert(src,"You sure you want to sleep for a while?","Sleep","Yes","No") == "Yes")
-		var/mob/living/carbon/human/H = usr
-		H.mentalfatigue = 0
-		H.clear_event("mentalfatigue")
-		usr.sleeping = 12 //Short nap
-		spawn(12)
-			if(usr.client)
-				usr.client.chatOutput.load()
-*/
 /mob/living/carbon/verb/mob_sleep()
 	set name = "Sleep"
 	set category = "IC"
@@ -596,8 +486,8 @@ var/const/GALOSHES_DONT_HELP = 8
 			H.tryingtosleep = FALSE
 	else
 		if(ishuman(src))
-			if(H.feels_pain() && (get_pain() > (70 + my_stats.ht*3)) )
-				to_chat(H, "<span class='combatbold'>[pick(nao_consigoen)]</span><span class='combat'> I can't sleep while... IN PAIN!</span>")
+			if(H.feel_pain_check() && (get_pain() > (70 + my_stats.get_stat(STAT_HT)*3)) )
+				to_chat(H, "<span class='combatbold'>[pick(fnord)]</span><span class='combat'> I can't sleep while... IN PAIN!</span>")
 				return
 			var/cansleep = TRUE
 			if(istype(H.wear_suit, /obj/item/clothing/suit/armor))
@@ -609,15 +499,17 @@ var/const/GALOSHES_DONT_HELP = 8
 			if(istype(H.gloves, /obj/item/clothing/gloves/combat))
 				cansleep = FALSE
 			if(!cansleep)
-				to_chat(H, "<span class='combatbold'>[pick(nao_consigoen)]</span><span class='combat'> I can't sleep while wearing armor!</span>")
+				to_chat(H, "<span class='combatbold'>[pick(fnord)]</span><span class='combat'> I can't sleep while wearing armor!</span>")
 				return
 		H.tryingtosleep = TRUE
 		H.sleeping = 6
 		H.eye_closed = 1
-		H.mentalfatigue = 0
-		H.clear_event("mentalfatigue")
 
 /mob/living/carbon/human/verb/toggle_eye()
+	var/obj/item/clothing/head/blackbag/B = head //Head location
+	if(B) return //This is a dirty hack but it stops exploits. I'll fix it proper later. Or I won't. Fuck you. I do what I want.
+	var/obj/item/clothing/glasses/sunglasses/blindfold/blind = glasses
+	if(blind) return //Same thing for blindfolds. Fuck this gay earth.
 	if(eye_closed == FALSE)
 		if(gender == FEMALE)
 			emote("closes her eyes.")
@@ -631,82 +523,8 @@ var/const/GALOSHES_DONT_HELP = 8
 			emote("opens his eyes.")
 		eye_closed = FALSE
 	handle_regular_hud_updates()
-	regenerate_icons()
+	update_body() //regenerate_icons() is expensive.
 
-//Brain slug proc for voluntary removal of control.
-/mob/living/carbon/proc/release_control()
-
-	set category = "Abilities"
-	set name = "Release Control"
-	set desc = "Release control of your host's body."
-
-	var/mob/living/simple_animal/borer/B = has_brain_worms()
-
-	if(!B)
-		return
-
-	if(B.controlling)
-		src << "\red <B>You withdraw your probosci, releasing control of [B.host_brain]</B>"
-		B.host_brain << "\red <B>Your vision swims as the alien parasite releases control of your body.</B>"
-		B.ckey = ckey
-		B.controlling = 0
-	if(B.host_brain.ckey)
-		ckey = B.host_brain.ckey
-		B.host_brain.ckey = null
-		B.host_brain.name = "host brain"
-		B.host_brain.real_name = "host brain"
-
-	verbs -= /mob/living/carbon/proc/release_control
-	verbs -= /mob/living/carbon/proc/punish_host
-	verbs -= /mob/living/carbon/proc/spawn_larvae
-
-//Brain slug proc for tormenting the host.
-/mob/living/carbon/proc/punish_host()
-	set category = "Abilities"
-	set name = "Torment host"
-	set desc = "Punish your host with agony."
-
-	var/mob/living/simple_animal/borer/B = has_brain_worms()
-
-	if(!B)
-		return
-
-	if(B.host_brain.ckey)
-		src << "\red <B>You send a punishing spike of psychic agony lancing into your host's brain.</B>"
-		B.host_brain << "\red <B><FONT size=3>Horrific, burning agony lances through you, ripping a soundless scream from your trapped mind!</FONT></B>"
-
-//Check for brain worms in head.
-/mob/proc/has_brain_worms()
-
-	for(var/I in contents)
-		if(istype(I,/mob/living/simple_animal/borer))
-			return I
-
-	return 0
-
-/mob/living/carbon/proc/spawn_larvae()
-	set category = "Abilities"
-	set name = "Reproduce"
-	set desc = "Spawn several young."
-
-	var/mob/living/simple_animal/borer/B = has_brain_worms()
-
-	if(!B)
-		return
-
-	if(B.chemicals >= 150)
-		src << "\red <B>Your host twitches and quivers as you rapdly excrete several larvae from your sluglike body.</B>"
-		visible_message("\red <B>[src] heaves violently, expelling a rush of vomit and a wriggling, sluglike creature!</B>")
-		B.chemicals -= 150
-
-		new /obj/effect/decal/cleanable/vomit(get_turf(src))
-		playsound(loc, 'sound/effects/splat.ogg', 50, 1)
-		Stun(5)
-		new /mob/living/simple_animal/borer(get_turf(src))
-
-	else
-		src << "You do not have enough chemicals stored to reproduce."
-		return
 
 /mob/living/carbon/fall(var/forced)
     loc.handle_fall(src, forced)//it's loc so it doesn't call the mob's handle_fall which does nothing
@@ -727,5 +545,17 @@ var/const/GALOSHES_DONT_HELP = 8
 			return r_hand
 	return null
 
-
-
+/mob/living/carbon/proc/update_handedness()
+	if(dom_hand == AMBIDEXTROUS)//Don't bother checking the rest of this shit if we're ambidextrous.
+		wrong_hand_used = FALSE
+		return
+	if(hand)	//This being 1 means the left hand is in use
+		if(dom_hand == RIGHT_HAND)
+			wrong_hand_used = TRUE
+		else
+			wrong_hand_used = FALSE
+	else
+		if(dom_hand == LEFT_HAND)
+			wrong_hand_used = TRUE
+		else
+			wrong_hand_used = FALSE

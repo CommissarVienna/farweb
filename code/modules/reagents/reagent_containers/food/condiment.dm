@@ -5,7 +5,7 @@
 //	to mixed-drinks code. If you want an object that starts pre-loaded, you need to make it in addition to the other code.
 
 //Food items that aren't eaten normally and leave an empty container behind.
-/obj/item/weapon/reagent_containers/food/condiment
+/obj/item/reagent_containers/food/condiment
 	name = "Condiment Container"
 	desc = "Just your average condiment container."
 	icon = 'icons/obj/food.dmi'
@@ -14,7 +14,7 @@
 	possible_transfer_amounts = list(1,5,10)
 	volume = 50
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
+	attackby(obj/item/W as obj, mob/user as mob)
 
 		return
 	attack_self(mob/user as mob)
@@ -40,7 +40,7 @@
 				M << "\red I can't use that, I must drink it with my mouth."
 				return 0
 
-			playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(50,60), 0)
+			playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(50,60), 0)
 			return 1
 		else if( istype(M, /mob/living/carbon/human) )
 
@@ -59,7 +59,7 @@
 				spawn(5)
 					reagents.trans_to(M, 10)
 
-			playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(50,60), 0)
+			playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(50,60), 0)
 			return 1
 		return 0
 
@@ -82,7 +82,7 @@
 			user << "\blue You fill [src] with [trans] units of the contents of [target]."
 
 		//Something like a glass or a food item. Player probably wants to transfer TO it.
-		else if(target.is_open_container() || istype(target, /obj/item/weapon/reagent_containers/food/snacks))
+		else if(target.is_open_container() || istype(target, /obj/item/reagent_containers/food/snacks))
 			if(!reagents.total_volume)
 				user << "\red [src] is empty."
 				return
@@ -145,7 +145,7 @@
 			desc = "An empty condiment bottle."
 			return
 
-/obj/item/weapon/reagent_containers/food/condiment/enzyme
+/obj/item/reagent_containers/food/condiment/enzyme
 	name = "Universal Enzyme"
 	desc = "Used in cooking various dishes."
 	icon_state = "enzyme"
@@ -153,12 +153,12 @@
 		..()
 		reagents.add_reagent("enzyme", 50)
 
-/obj/item/weapon/reagent_containers/food/condiment/sugar
+/obj/item/reagent_containers/food/condiment/sugar
 	New()
 		..()
 		reagents.add_reagent("sugar", 50)
 
-/obj/item/weapon/reagent_containers/food/condiment/saltshaker		//Seperate from above since it's a small shaker rather then
+/obj/item/reagent_containers/food/condiment/saltshaker		//Seperate from above since it's a small shaker rather then
 	name = "Salt Shaker"											//	a large one.
 	desc = "Salt. From space oceans, presumably."
 	icon_state = "saltshakersmall"
@@ -169,15 +169,15 @@
 		..()
 		reagents.add_reagent("sodiumchloride", 20)
 
-/obj/item/weapon/reagent_containers/food/condiment/saltshaker/attack_self(mob/user as mob)
+/obj/item/reagent_containers/food/condiment/saltshaker/attack_self(mob/user as mob)
 	if(volume < 4)
 		return
 	volume -= 4
 	var/turf/T = get_turf(src)
-	new /obj/item/weapon/reagent_containers/food/snacks/salt(T)
+	new /obj/item/reagent_containers/food/snacks/salt(T)
 
 
-/obj/item/weapon/reagent_containers/food/snacks/salt
+/obj/item/reagent_containers/food/snacks/salt
 	name = "salt"
 	icon_state = "powder"
 	filling_color = "#211F02"
@@ -185,7 +185,7 @@
 		..()
 		reagents.add_reagent("sodiumchloride", 4)
 
-/obj/item/weapon/reagent_containers/food/snacks/cocaine
+/obj/item/reagent_containers/food/snacks/cocaine
 	name = "powder"
 	icon_state = "powder"
 	filling_color = "#211F02"
@@ -193,22 +193,22 @@
 		..()
 		reagents.add_reagent("cocaine", 5)
 
-/obj/item/weapon/reagent_containers/food/snacks/cocaine/clean_mmb(mob/living/carbon/human/user)
+/obj/item/reagent_containers/food/snacks/cocaine/clean_mmb(mob/living/carbon/human/user)
 	if(do_after(user,10))
 		user.visible_message("<span class='passivebold'>[user]</span><span class='passive'> sniffs the [src]!</span>")
 		reagents.add_reagent("cocaine", 10)
 		src.reagents.reaction(user, INGEST)
 		src.reagents.trans_to(user, 15)
-		playsound(user,pick('sniff.ogg'), rand(50,60), 0)
+		playsound(user,pick('sound/webbers/sniff.ogg'), rand(50,60), 0)
 		qdel(src)
 
-/obj/item/weapon/reagent_containers/food/snacks/salt/Crossed(AM as mob|obj)
+/obj/item/reagent_containers/food/snacks/salt/Crossed(AM as mob|obj)
 	if(isobserver(AM))
 		var/mob/dead/observer/O = AM
 		O.Sendtohell()
 		return
 
-/obj/item/weapon/reagent_containers/food/condiment/peppermill
+/obj/item/reagent_containers/food/condiment/peppermill
 	name = "Pepper Mill"
 	desc = "Often used to flavor food or make people sneeze."
 	icon_state = "peppermillsmall"
@@ -219,7 +219,7 @@
 		..()
 		reagents.add_reagent("blackpepper", 20)
 
-/obj/item/weapon/reagent_containers/food/condiment/ketchup
+/obj/item/reagent_containers/food/condiment/ketchup
 	name = "Ketchup"
 	desc = "You feel more American already."
 	icon_state = "ketchup"

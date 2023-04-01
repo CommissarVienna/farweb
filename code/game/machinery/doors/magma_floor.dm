@@ -44,7 +44,7 @@
 	visible_message("<span class='bname'>⠀[H]</span> drinks from \the [src]!</span>")
 	playsound(M.loc, 'sound/items/drink.ogg', rand(10, 50), 1)
 	if(H.client)
-		H.client.ChromieWinorLoose(H.client, -3)
+		H.client.ChromieWinorLoose(-3)
 	H.death(1)
 	return
 
@@ -77,7 +77,7 @@
 							M.dust()
 							return
 						if(H.client)
-							H.client.ChromieWinorLoose(H.client, -1)
+							H.client.ChromieWinorLoose(-1)
 						M.dust()
 					else
 						qdel(M)
@@ -99,7 +99,7 @@
 				//spawn(5)
 				var/mob/living/carbon/human/H = M
 				if(H.client)
-					H.client.ChromieWinorLoose(H.client, -1)
+					H.client.ChromieWinorLoose(-1)
 				H.buried = TRUE
 				M.dust()
 			else

@@ -7,7 +7,7 @@
 
 /obj/machinery/iv_drip/var/mob/living/carbon/human/attached = null
 /obj/machinery/iv_drip/var/mode = 1 // 1 is injecting, 0 is taking blood.
-/obj/machinery/iv_drip/var/obj/item/weapon/reagent_containers/beaker = null
+/obj/machinery/iv_drip/var/obj/item/reagent_containers/beaker = null
 
 /obj/machinery/iv_drip/update_icon()
 	if(src.attached)
@@ -50,8 +50,8 @@
 		src.update_icon()
 
 
-/obj/machinery/iv_drip/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/reagent_containers))
+/obj/machinery/iv_drip/attackby(obj/item/W as obj, mob/user as mob)
+	if (istype(W, /obj/item/reagent_containers))
 		if(!isnull(src.beaker))
 			user << "There is already a reagent container loaded!"
 			return
@@ -83,7 +83,7 @@
 		if(mode)
 			if(src.beaker.volume > 0)
 				var/transfer_amount = REAGENTS_METABOLISM
-				if(istype(src.beaker, /obj/item/weapon/reagent_containers/blood))
+				if(istype(src.beaker, /obj/item/reagent_containers/blood))
 					// speed up transfer on blood packs
 					transfer_amount = 4
 				src.beaker.reagents.trans_to(src.attached, transfer_amount)
@@ -146,19 +146,16 @@
 	mode = !mode
 	to_chat(usr, "The IV drip is now [mode ? "injecting" : "taking blood"].")
 
-/obj/machinery/iv_drip/examine()
-	set src in view()
+/obj/machinery/iv_drip/examine(mob/user)
 	..()
-	if (!(usr in view(2)) && usr!=src.loc) return
-
-	to_chat(usr, "The IV drip is [mode ? "injecting" : "taking blood"].")
+	to_chat(user, "The IV drip is [mode ? "injecting" : "taking blood"].")
 
 	if(beaker)
 		if(beaker.reagents && beaker.reagents.reagent_list.len)
-			to_chat(usr, "\blue Attached is \a [beaker] with [beaker.reagents.total_volume] units of liquid.")
+			to_chat(user, "\blue Attached is \a [beaker] with [beaker.reagents.total_volume] units of liquid.")
 		else
-			to_chat(usr, "\blue Attached is an empty [beaker].")
+			to_chat(user, "\blue Attached is an empty [beaker].")
 	else
-		to_chat(usr, "\blue No chemicals are attached.")
+		to_chat(user, "\blue No chemicals are attached.")
 
-	to_chat(usr, "\blue [attached ? attached : "No one"] is attached.")
+	to_chat(user, "\blue [attached ? attached : "No one"] is attached.")

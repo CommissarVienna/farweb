@@ -21,7 +21,7 @@
 	attack_sound = 'sound/effects/strygh_attack_01.ogg'
 	faction = "creature"
 	speed = 7
-	a_intent = "harm"
+	a_intent = "hurt"
 	stance = HOSTILE_STANCE_ATTACK
 
 /mob/living/simple_animal/hostile/retaliate/creature/New()
@@ -35,7 +35,7 @@
 	if(prob(10))
 		playsound(src, pick('sound/effects/strygh_life1.ogg','sound/effects/strygh_life2.ogg'), 25, 0, -1)
 	if(prob(50))
-		playsound(src, 'chameleon_step.ogg', 25, 0, -1)
+		playsound(src, 'sound/effects/chameleon_step.ogg', 25, 0, -1)
 
 /mob/living/simple_animal/hostile/retaliate/creature/Found(mob/living/carbon)
 	..()
@@ -65,7 +65,7 @@
 		else
 			user << "\blue this [src] is dead, medical items won't bring it back to life."
 	if(meat_type && (stat == DEAD))	//if the animal has a meat, and if it is dead.
-		if(istype(O, /obj/item/weapon/kitchenknife) || istype(O, /obj/item/weapon/butch) || istype(O, /obj/item/weapon/kitchen/utensil/knife))
+		if(istype(O, /obj/item/kitchenknife) || istype(O, /obj/item/butch) || istype(O, /obj/item/kitchen/utensil/knife))
 			new meat_type (get_turf(src))
 			new meat_type (get_turf(src))
 			new meat_type (get_turf(src))

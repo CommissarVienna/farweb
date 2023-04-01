@@ -127,12 +127,12 @@
 	*/
 	return
 
-/obj/machinery/door/firedoor/attackby(obj/item/weapon/C as obj, mob/user as mob)
+/obj/machinery/door/firedoor/attackby(obj/item/C as obj, mob/user as mob)
 	add_fingerprint(user)
 	if(operating)
 		return//Already doing something.
-	if(istype(C, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/W = C
+	if(istype(C, /obj/item/weldingtool))
+		var/obj/item/weldingtool/W = C
 		if(W.remove_fuel(0, user))
 			blocked = !blocked
 			user.visible_message("\red \The [user] [blocked ? "welds" : "unwelds"] \the [src] with \a [W].",\
@@ -146,11 +146,11 @@
 		return
 
 
-	if(istype(C, /obj/item/weapon/crowbar) || (istype(C,/obj/item/weapon/twohanded/fireaxe) && C:wielded == 1 ) )
+	if(istype(C, /obj/item/crowbar) || (istype(C,/obj/item/twohanded/fireaxe) && C:wielded == 1 ) )
 		if(operating)
 			return
 
-		if( blocked && istype(C, /obj/item/weapon/crowbar) )
+		if( blocked && istype(C, /obj/item/crowbar) )
 			user.visible_message("\red \The [user] pries at \the [src] with \a [C], but \the [src] is welded in place!",\
 			"You try to pry \the [src] [density ? "open" : "closed"], but it is welded in place!",\
 			"You hear someone struggle and metal straining.")
@@ -160,7 +160,7 @@
 				"You start forcing \the [src] [density ? "open" : "closed"] with \the [C]!",\
 				"You hear metal strain.")
 		if(do_after(user,5))
-			if( istype(C, /obj/item/weapon/crowbar) )
+			if( istype(C, /obj/item/crowbar) )
 				if( stat & (BROKEN|NOPOWER) || !density)
 					user.visible_message("\red \The [user] forces \the [src] [density ? "open" : "closed"] with \a [C]!",\
 					"You force \the [src] [density ? "open" : "closed"] with \the [C]!",\

@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/projectile/newRevolver/duelista/richter
+/obj/item/gun/projectile/newRevolver/duelista/richter
 	name = "RT44H TA&CBC"
 	desc = "A Taurus revolver, uses .44 ammo. * Made by Taurus & CBC *"
 	icon_state = "richter"

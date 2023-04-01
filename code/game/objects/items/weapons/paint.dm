@@ -2,7 +2,7 @@
 
 var/global/list/cached_icons = list()
 
-/obj/item/weapon/reagent_containers/glass/paint
+/obj/item/reagent_containers/glass/paint
 	desc = "It's a paint bucket."
 	name = "paint bucket"
 	icon = 'icons/obj/items.dmi'
@@ -72,7 +72,7 @@ var/global/list/cached_icons = list()
 	remover
 		paint_type = "remover"
 /*
-/obj/item/weapon/paint
+/obj/item/paint
 	gender= PLURAL
 	name = "paint"
 	desc = "Used to recolor floors and walls. Can not be removed by the janitor."
@@ -82,43 +82,43 @@ var/global/list/cached_icons = list()
 	item_state = "paintcan"
 	w_class = 3.0
 
-/obj/item/weapon/paint/red
+/obj/item/paint/red
 	name = "red paint"
 	color = "FF0000"
 	icon_state = "paint_red"
 
-/obj/item/weapon/paint/green
+/obj/item/paint/green
 	name = "green paint"
 	color = "00FF00"
 	icon_state = "paint_green"
 
-/obj/item/weapon/paint/blue
+/obj/item/paint/blue
 	name = "blue paint"
 	color = "0000FF"
 	icon_state = "paint_blue"
 
-/obj/item/weapon/paint/yellow
+/obj/item/paint/yellow
 	name = "yellow paint"
 	color = "FFFF00"
 	icon_state = "paint_yellow"
 
-/obj/item/weapon/paint/violet
+/obj/item/paint/violet
 	name = "violet paint"
 	color = "FF00FF"
 	icon_state = "paint_violet"
 
-/obj/item/weapon/paint/black
+/obj/item/paint/black
 	name = "black paint"
 	color = "333333"
 	icon_state = "paint_black"
 
-/obj/item/weapon/paint/white
+/obj/item/paint/white
 	name = "white paint"
 	color = "FFFFFF"
 	icon_state = "paint_white"
 
 
-/obj/item/weapon/paint/anycolor
+/obj/item/paint/anycolor
 	gender= PLURAL
 	name = "any color"
 	icon_state = "paint_neutral"
@@ -147,7 +147,7 @@ var/global/list/cached_icons = list()
 		return
 
 
-/obj/item/weapon/paint/afterattack(turf/target, mob/user as mob, proximity)
+/obj/item/paint/afterattack(turf/target, mob/user as mob, proximity)
 	if(!proximity) return
 	if(!istype(target) || istype(target, /turf/space))
 		return
@@ -162,7 +162,7 @@ var/global/list/cached_icons = list()
 		target.icon = cached_icons[ind]
 	return
 
-/obj/item/weapon/paint/paint_remover
+/obj/item/paint/paint_remover
 	gender =  PLURAL
 	name = "paint remover"
 	icon_state = "paint_neutral"

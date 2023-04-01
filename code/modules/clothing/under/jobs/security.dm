@@ -21,9 +21,9 @@
 /obj/item/clothing/under/rank/security
 	name = "warrior uniform"
 	desc = "It's made of a slightly sturdier material than standard uniform, to allow for robust protection."
-	icon_state = "security"
-	item_state = "secred"
-	item_color = "secred"
+	icon_state = "clshirt"
+	item_state = "clshirt"
+	item_color = "clshirt"
 	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	flags = FPRINT | TABLEPASS
 	siemens_coefficient = 0.9
@@ -113,7 +113,7 @@
 	name = "hat"
 	desc = "Someone who wears this will look very smart."
 	icon_state = "detective"
-	allowed = list(/obj/item/weapon/reagent_containers/food/snacks/candy_corn, /obj/item/weapon/pen)
+	allowed = list(/obj/item/reagent_containers/food/snacks/candy_corn, /obj/item/pen)
 	armor = list(melee = 50, bullet = 5, laser = 25,energy = 10, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.9
 
@@ -139,15 +139,6 @@
 	item_state = "hos_corporate"
 	item_color = "hos_corporate"
 
-/obj/item/clothing/head/helmet/HoS
-	name = "Head of Security Hat"
-	desc = "The hat of the Head of Security. For showing the officers who's in charge."
-	icon_state = "hoscap"
-	flags = FPRINT | TABLEPASS | HEADCOVERSEYES
-	armor = list(melee = 80, bullet = 60, laser = 50,energy = 10, bomb = 25, bio = 10, rad = 0)
-	flags_inv = 0
-	flags_inv = HIDEEARS
-	siemens_coefficient = 0.8
 
 /obj/item/clothing/suit/armor/hos
 	name = "armored coat"

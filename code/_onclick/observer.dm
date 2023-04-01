@@ -11,11 +11,12 @@
 		src << "\blue You will no longer examine things you click on."
 
 /mob/dead/observer/verb/ascend()
-	set category = "Wraith"
+	set category = "dead"
 	set name = "Ascend"
+	set desc = "(30) Ascend"
 
 	if(in_hell)
-		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] I've been damned!</span>")
+		to_chat(src, "<span class='combat'>[pick(fnord)] I've been damned!</span>")
 		return
 
 	if(src.wraith_pain >= 30)
@@ -31,11 +32,12 @@
 		to_chat(src, "<spanclass='combat'>([wraith_pain]/30)</span><span class='combat'> Pain required.</span>")
 
 /mob/dead/observer/verb/jaunt(var/mob/living/carbon/human/M in player_list)
-	set category = "Wraith"
+	set category = "dead"
 	set name = "Jaunt"
+	set desc = "(5) Jaunt"
 
 	if(in_hell)
-		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] I've been damned!</span>")
+		to_chat(src, "<span class='combat'>[pick(fnord)] I've been damned!</span>")
 		return
 	if(src.wraith_pain >= 5)
 		if(can_reenter_corpse)
@@ -49,14 +51,15 @@
 
 /mob/dead/observer/verb/gruespawn() // warning: unexpected inquisition
 	set name = "GrueSpawn"
-	set category = "Wraith"
+	set category = "dead"
+	set desc = "(15) Grue"
 	if(in_hell)
-		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] I've been damned!</span>")
+		to_chat(src, "<span class='combat'>[pick(fnord)] I've been damned!</span>")
 		return
 	var/turf/T = get_turf(src)
 	var/area/A = get_area(T)
 	if(A.luminosity || istype(A,/area/dunwell/realsurface) || istype(A, /area/shuttle/train))
-		to_chat(src, "<spanclass='combatbold'>[pick(nao_consigoen)]</span><span class='combat'> too bright!</span>")
+		to_chat(src, "<spanclass='combatbold'>[pick(fnord)]</span><span class='combat'> too bright!</span>")
 		return
 	if(src.wraith_pain >= 15)
 		if(can_reenter_corpse)
@@ -74,8 +77,11 @@
 /*/mob/dead/observer/verb/ignition()
 	set name = "Ignition"
 	set category = "Wraith"
+	set category = "dead"
+	set desc = "(30) Ignition"
+
 	if(in_hell)
-		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] I've been damned!</span>")
+		to_chat(src, "<span class='combat'>[pick(fnord)] I've been damned!</span>")
 		return
 	if(src.wraith_pain >= 30)
 		if(can_reenter_corpse)
@@ -91,9 +97,11 @@
 
 /mob/dead/observer/verb/intervene_dreams(msg as text)
 	set name = "InterveneDreams"
-	set category = "Wraith"
+	set category = "dead"
+	set desc = "Intervene Dreams"
+
 	if(in_hell)
-		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] I've been damned!</span>")
+		to_chat(src, "<span class='combat'>[pick(fnord)] I've been damned!</span>")
 		return
 	msg = sanitize(msg)
 	if(!msg)	return
@@ -102,14 +110,14 @@
 		if(H.stat == 1)
 			to_chat(H, "<span class='passive'> <i>... [msg] ...</i></span>")
 			if(prob(12))
-				H << pick('dream1.ogg','dream2.ogg','dream3.ogg','dream4.ogg','dream5.ogg')
+				H << pick('sound/sweetdreams/dream1.ogg','sound/sweetdreams/dream2.ogg','sound/sweetdreams/dream3.ogg','sound/sweetdreams/dream4.ogg','sound/sweetdreams/dream5.ogg')
 
 /mob/dead/observer/DblClickOn(var/atom/A, var/params)
 	if(client.buildmode)
 		build_click(src, client.buildmode, params, A)
 		return
 	if(in_hell)
-		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] I've been damned!</span>")
+		to_chat(src, "<span class='combat'>[pick(fnord)] I've been damned!</span>")
 		return
 	if(src.wraith_pain >= 1)
 		if(istype(A,/obj/structure/fireplace) || istype(A, /obj/structure/torchwall))

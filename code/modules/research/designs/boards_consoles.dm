@@ -9,7 +9,7 @@
 	req_tech = list("programming" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/security
+	build_path = /obj/item/circuitboard/security
 
 /datum/design/aicore
 	name = "Circuit Design (AI Core)"
@@ -18,7 +18,7 @@
 	req_tech = list("programming" = 4, "biotech" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/aicore
+	build_path = /obj/item/circuitboard/aicore
 
 /datum/design/aiupload
 	name = "Circuit Design (AI Upload)"
@@ -27,7 +27,7 @@
 	req_tech = list("programming" = 4)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/aiupload
+	build_path = /obj/item/circuitboard/aiupload
 
 /datum/design/borgupload
 	name = "Circuit Design (Cyborg Upload)"
@@ -36,7 +36,7 @@
 	req_tech = list("programming" = 4)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/borgupload
+	build_path = /obj/item/circuitboard/borgupload
 
 /datum/design/med_data
 	name = "Circuit Design (Medical Records)"
@@ -45,7 +45,7 @@
 	req_tech = list("programming" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/med_data
+	build_path = /obj/item/circuitboard/med_data
 
 /datum/design/operating
 	name = "Circuit Design (Operating Computer)"
@@ -54,7 +54,7 @@
 	req_tech = list("programming" = 2, "biotech" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/operating
+	build_path = /obj/item/circuitboard/operating
 
 /datum/design/pandemic
 	name = "Circuit Design (PanD.E.M.I.C. 2200)"
@@ -63,7 +63,7 @@
 	req_tech = list("programming" = 2, "biotech" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/pandemic
+	build_path = /obj/item/circuitboard/pandemic
 
 /datum/design/scan_console
 	name = "Circuit Design (DNA Machine)"
@@ -72,7 +72,7 @@
 	req_tech = list("programming" = 2, "biotech" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/scan_consolenew
+	build_path = /obj/item/circuitboard/scan_consolenew
 
 /datum/design/comconsole
 	name = "Circuit Design (Communications)"
@@ -81,7 +81,7 @@
 	req_tech = list("programming" = 2, "magnets" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/communications
+	build_path = /obj/item/circuitboard/communications
 
 /datum/design/idcardconsole
 	name = "Circuit Design (ID Computer)"
@@ -90,7 +90,7 @@
 	req_tech = list("programming" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/card
+	build_path = /obj/item/circuitboard/card
 
 /datum/design/crewconsole
 	name = "Circuit Design (Crew monitoring computer)"
@@ -99,7 +99,7 @@
 	req_tech = list("programming" = 3, "magnets" = 2, "biotech" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/crew
+	build_path = /obj/item/circuitboard/crew
 
 /datum/design/teleconsole
 	name = "Circuit Design (Teleporter Console)"
@@ -108,7 +108,7 @@
 	req_tech = list("programming" = 3, "bluespace" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/teleporter
+	build_path = /obj/item/circuitboard/teleporter
 
 /datum/design/secdata
 	name = "Circuit Design (Security Records Console)"
@@ -117,7 +117,7 @@
 	req_tech = list("programming" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/secure_data
+	build_path = /obj/item/circuitboard/secure_data
 
 /datum/design/atmosalerts
 	name = "Circuit Design (Atmosphere Alert)"
@@ -126,7 +126,7 @@
 	req_tech = list("programming" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/atmos_alert
+	build_path = /obj/item/circuitboard/atmos_alert
 
 /datum/design/air_management
 	name = "Circuit Design (Atmospheric Monitor)"
@@ -135,7 +135,7 @@
 	req_tech = list("programming" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/air_management
+	build_path = /obj/item/circuitboard/air_management
 
 /* Uncomment if someone makes these buildable
 /datum/design/general_alert
@@ -145,7 +145,7 @@
 	req_tech = list("programming" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/general_alert
+	build_path = /obj/item/circuitboard/general_alert
 */
 
 /datum/design/robocontrol
@@ -155,7 +155,7 @@
 	req_tech = list("programming" = 4)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/robotics
+	build_path = /obj/item/circuitboard/robotics
 
 /datum/design/clonecontrol
 	name = "Circuit Design (Cloning Machine Console)"
@@ -164,7 +164,7 @@
 	req_tech = list("programming" = 3, "biotech" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/cloning
+	build_path = /obj/item/circuitboard/cloning
 
 /datum/design/clonepod
 	name = "Circuit Design (Clone Pod)"
@@ -173,7 +173,7 @@
 	req_tech = list("programming" = 3, "biotech" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/clonepod
+	build_path = /obj/item/circuitboard/clonepod
 
 /datum/design/clonescanner
 	name = "Circuit Design (Cloning Scanner)"
@@ -182,7 +182,7 @@
 	req_tech = list("programming" = 3, "biotech" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/clonescanner
+	build_path = /obj/item/circuitboard/clonescanner
 
 /datum/design/arcademachine
 	name = "Circuit Design (Arcade Machine)"
@@ -191,7 +191,7 @@
 	req_tech = list("programming" = 1)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/arcade
+	build_path = /obj/item/circuitboard/arcade
 
 /datum/design/powermonitor
 	name = "Circuit Design (Power Monitor)"
@@ -200,7 +200,7 @@
 	req_tech = list("programming" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/powermonitor
+	build_path = /obj/item/circuitboard/powermonitor
 
 /datum/design/solarcontrol
 	name = "Circuit Design (Solar Control)"
@@ -209,7 +209,7 @@
 	req_tech = list("programming" = 2, "powerstorage" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/solar_control
+	build_path = /obj/item/circuitboard/solar_control
 
 /datum/design/prisonmanage
 	name = "Circuit Design (Prisoner Management Console)"
@@ -218,7 +218,7 @@
 	req_tech = list("programming" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/prisoner
+	build_path = /obj/item/circuitboard/prisoner
 
 /datum/design/mechacontrol
 	name = "Circuit Design (Exosuit Control Console)"
@@ -227,7 +227,7 @@
 	req_tech = list("programming" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha_control
+	build_path = /obj/item/circuitboard/mecha_control
 
 /datum/design/mechapower
 	name = "Circuit Design (Mech Bay Power Control Console)"
@@ -236,7 +236,7 @@
 	req_tech = list("programming" = 2, "powerstorage" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mech_bay_power_console
+	build_path = /obj/item/circuitboard/mech_bay_power_console
 
 /datum/design/rdconsole
 	name = "Circuit Design (R&D Console)"
@@ -245,7 +245,7 @@
 	req_tech = list("programming" = 4)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/rdconsole
+	build_path = /obj/item/circuitboard/rdconsole
 
 /datum/design/ordercomp
 	name = "Circuit Design (Supply ordering console)"
@@ -254,7 +254,7 @@
 	req_tech = list("programming" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/ordercomp
+	build_path = /obj/item/circuitboard/ordercomp
 
 /datum/design/supplycomp
 	name = "Circuit Design (Supply shuttle console)"
@@ -263,7 +263,7 @@
 	req_tech = list("programming" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/supplycomp
+	build_path = /obj/item/circuitboard/supplycomp
 
 /datum/design/comm_monitor
 	name = "Circuit Design (Telecommunications Monitoring Console)"
@@ -272,7 +272,7 @@
 	req_tech = list("programming" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/comm_monitor
+	build_path = /obj/item/circuitboard/comm_monitor
 
 /datum/design/comm_server
 	name = "Circuit Design (Telecommunications Server Monitoring Console)"
@@ -281,7 +281,7 @@
 	req_tech = list("programming" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/comm_server
+	build_path = /obj/item/circuitboard/comm_server
 
 /datum/design/message_monitor
 	name = "Circuit Design (Messaging Monitor Console)"
@@ -290,7 +290,7 @@
 	req_tech = list("programming" = 5)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/message_monitor
+	build_path = /obj/item/circuitboard/message_monitor
 
 /datum/design/aifixer
 	name = "Circuit Design (AI Integrity Restorer)"
@@ -299,4 +299,4 @@
 	req_tech = list("programming" = 3, "biotech" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/aifixer
+	build_path = /obj/item/circuitboard/aifixer

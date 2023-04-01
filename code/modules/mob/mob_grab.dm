@@ -1,7 +1,7 @@
 #define UPGRADE_COOLDOWN	40
 #define UPGRADE_KILL_TIMER	100
 
-/obj/item/weapon/grab
+/obj/item/grab
 	name = "grab"
 	flags = NOBLUDGEON
 	var/obj/screen/grab/hud = null
@@ -19,12 +19,12 @@
 	throw_range = 3
 	w_class = 5.0
 
-/obj/item/weapon/grab/wrench
+/obj/item/grab/wrench
 	name = "wrench"
 	icon_state = "wrench"
 	throw_range = 2
 
-/obj/item/weapon/grab/wrench/New(mob/user, mob/victim)
+/obj/item/grab/wrench/New(mob/user, mob/victim)
 	..()
 	loc = user
 	assailant = user
@@ -49,7 +49,7 @@
 	hud.icon_state = "wrench"
 
 
-/obj/item/weapon/grab/wrench/s_click(obj/screen/S)
+/obj/item/grab/wrench/s_click(obj/screen/S)
 	var/mob/living/carbon/human/AS = assailant
 	var/mob/living/carbon/human/AF = affecting
 	var/datum/organ/external/affectedorgan = aforgan
@@ -73,7 +73,7 @@
 		if(AS.wrenchTry(AS, AF))
 			if (affectedorgan.status & ORGAN_BROKEN)
 				AS.visible_message("<span class='hitbold'>[assailant]</span> <span class='hit'>twists</span> <span class='hitbold'>[AF]</span> <span class='hit'>[affectedorgan.display_name]!</span>")
-				playsound(AF.loc, 'bite.ogg', 75, 0, -1)
+				playsound(AF.loc, 'sound/weapons/bite.ogg', 75, 0, -1)
 				var/baseDamage = 10
 				var/chanceToFracture = 40
 				var/attack_mod = 0
@@ -117,7 +117,7 @@
 			else
 
 				AS.visible_message("<span class='hitbold'>[assailant]</span> <span class='hit'>wrenches</span> <span class='hitbold'>[AF]</span> <span class='hit'>[affectedorgan.display_name]!</span>")
-				playsound(AF.loc, 'bite.ogg', 75, 0, -1)
+				playsound(AF.loc, 'sound/weapons/bite.ogg', 75, 0, -1)
 
 				var/baseDamage = 25
 				var/chanceToFracture = 10
@@ -167,15 +167,16 @@
 		if(iszombie(AS)) return
 		if(istype(AS?.species, /datum/species/human/alien)) return
 		if (affectedorgan.cripple_left > 0)
-			if(skillcheck(AS.my_skills.GET_SKILL(SKILL_SURG), 30, 0, AS) || prob(40))
+			if(skillcheck(AS.my_skills.get_skill(SKILL_SURG), 30, 0, AS) || prob(40))
 				AS.visible_message("<span class='combatbold'>[assailant]</span> <span class='combat'>fixes</span> <span class='combatbold'>[AF]</span> <span class='combat'>[affectedorgan.display_name]!</span>")
-				playsound(AF.loc, 'bone_crack.ogg', 75, 0, -1)
+				playsound(AF.loc, 'sound/effects/bone_crack.ogg', 75, 0, -1)
 				affectedorgan.cripple_left = 0
 				AS.adjustStaminaLoss(rand(5,10))
 			else
 				AS.visible_message("<span class='combatbold'>[assailant]</span> <span class='combat'>fails to fix</span> <span class='combatbold'>[AF]</span> <span class='combat'>[affectedorgan.display_name]!</span>")
-				playsound(AF.loc, 'bite.ogg', 75, 0, -1)
-				AF.apply_damage(rand(10, 20)+AS.my_stats.st-AF.my_stats.ht, BRUTE, affectedorgan)
+				playsound(AF.loc, 'sound/weapons/bite.ogg', 75, 0, -1)
+				var/damage_AF = rand(10, 20)+AS.my_stats.get_stat(STAT_ST)-AF.my_stats.get_stat(STAT_HT)
+				AF.apply_damage(damage_AF, BRUTE, affectedorgan)
 				AS.adjustStaminaLoss(rand(10,15))
 		if(istype(affectedorgan, /datum/organ/external/head))
 			var/datum/organ/external/head/H = affectedorgan
@@ -184,12 +185,12 @@
 
 	AS.setClickCooldown(DEFAULT_SLOW_COOLDOWN)
 
-/obj/item/weapon/grab/stucked
+/obj/item/grab/stucked
 	name = "stucked"
 	icon_state = "tear"
 	throw_range = 3
 
-/obj/item/weapon/grab/stucked/New(mob/user, mob/victim)
+/obj/item/grab/stucked/New(mob/user, mob/victim)
 	..()
 	loc = user
 	assailant = user
@@ -207,7 +208,7 @@
 	hud.name = "stucked grab"
 	hud.master = src
 
-/obj/item/weapon/grab/stucked/s_click(obj/screen/S)//(obj/screen/S)
+/obj/item/grab/stucked/s_click(obj/screen/S)//(obj/screen/S)
 	var/mob/living/carbon/human/AS = assailant
 	var/mob/living/carbon/human/AF = affecting
 	if(!affecting)
@@ -225,7 +226,7 @@
 	AF.yank_out_object(AS)
 	qdel(src)
 
-/obj/item/weapon/grab/New(mob/user, mob/victim)
+/obj/item/grab/New(mob/user, mob/victim)
 	..()
 	loc = user
 	assailant = user
@@ -250,7 +251,7 @@
 
 
 //Used by throw code to hand over the mob, instead of throwing the grab. The grab is then deleted by the throw code.
-/obj/item/weapon/grab/proc/throw_mob()
+/obj/item/grab/proc/throw_mob()
 	if(affecting == assailant)
 		return null
 	if(state == GRAB_NECK)
@@ -264,7 +265,7 @@
 
 
 //This makes sure that the grab screen object is displayed in the correct hand.
-/obj/item/weapon/grab/proc/synch()
+/obj/item/grab/proc/synch()
 	if(affecting)
 		if(assailant.r_hand == src)
 			if(istype(assailant,/mob/living/carbon/human))
@@ -289,7 +290,7 @@
 	process()
 
 
-/obj/item/weapon/grab/process()
+/obj/item/grab/process()
 	confirm()
 
 	if(assailant?.client)
@@ -301,12 +302,12 @@
 
 	if(state <= GRAB_AGGRESSIVE)
 		allow_upgrade = 0
-		if((assailant?.l_hand && assailant?.l_hand != src && istype(assailant?.l_hand, /obj/item/weapon/grab)))
-			var/obj/item/weapon/grab/G = assailant?.l_hand
+		if((assailant?.l_hand && assailant?.l_hand != src && istype(assailant?.l_hand, /obj/item/grab)))
+			var/obj/item/grab/G = assailant?.l_hand
 			if(G.affecting != affecting)
 				allow_upgrade = 0
-		if((assailant?.r_hand && assailant?.r_hand != src && istype(assailant?.r_hand, /obj/item/weapon/grab)))
-			var/obj/item/weapon/grab/G = assailant?.r_hand
+		if((assailant?.r_hand && assailant?.r_hand != src && istype(assailant?.r_hand, /obj/item/grab)))
+			var/obj/item/grab/G = assailant?.r_hand
 			if(G.affecting != affecting)
 				allow_upgrade = 0
 		if(state == GRAB_AGGRESSIVE)
@@ -314,7 +315,7 @@
 			affecting?.hand = 0
 			affecting?.hand = 1
 			affecting?.hand = h
-			for(var/obj/item/weapon/grab/G in affecting?.grabbed_by)
+			for(var/obj/item/grab/G in affecting?.grabbed_by)
 				if(G == src) continue
 				if(G?.state == GRAB_AGGRESSIVE)
 					allow_upgrade = 0
@@ -340,12 +341,12 @@
 		affecting.losebreath = min(affecting.losebreath + 2, 3)*/
 
 /mob/living/carbon/human/attackby(obj/item/I, mob/user)
-	if(!istype(I, /obj/item/weapon/grab))
+	if(!istype(I, /obj/item/grab))
 		return ..()
 	if(user != src)
 		return ..()
 
-	var/obj/item/weapon/grab/G = I
+	var/obj/item/grab/G = I
 	var/mob/living/carbon/human/H = G.affecting
 
 	if(!ishuman(G.affecting))
@@ -355,7 +356,7 @@
 	if(G.assailant == H)
 		return ..()
 
-	var/damage = my_stats.st * 2.3
+	var/damage = my_stats.get_stat(STAT_ST) * 2.3
 	H.apply_damage(damage, BRUTE, G.aforgan)
 	apply_damage(damage / 2.5, BRUTE, get_organ("head"))
 	visible_message("<span class='combatbold'>[G.assailant] headbutts [H.name]!</span>")
@@ -364,14 +365,14 @@
 	G.dropped()
 	qdel(G)
 
-/obj/screen/grab/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/weapon/grab))
+/obj/screen/grab/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/grab))
 		if(!ishuman(user))
 			return
 
 		var/mob/living/carbon/human/attacker = user
-		var/obj/item/weapon/grab/G = W
-		var/obj/item/weapon/grab/GG = attacker.hand ? attacker.l_hand : attacker.r_hand
+		var/obj/item/grab/G = W
+		var/obj/item/grab/GG = attacker.hand ? attacker.l_hand : attacker.r_hand
 
 		if(G.aforgan.name != "head" && GG.aforgan.name != "head")
 			return
@@ -385,7 +386,7 @@
 		var/mob/living/carbon/human/secondHeadbutter = GG.affecting
 		if(firstHeadbutter == secondHeadbutter)
 			return
-		var/damage = firstHeadbutter.my_stats.ht + secondHeadbutter.my_stats.ht + attacker.my_stats.st
+		var/damage = firstHeadbutter.my_stats.get_stat(STAT_HT) + secondHeadbutter.my_stats.get_stat(STAT_HT) + attacker.my_stats.get_stat(STAT_ST)
 
 		visible_message("<span class='combatbold'>[attacker.name] hits [firstHeadbutter.name]'s head with [secondHeadbutter.name]'s head!</span>")
 		firstHeadbutter.apply_damage(damage, BRUTE, G.aforgan)
@@ -399,7 +400,7 @@
 		var/list/headbuttEffects = list('sound/combat2020/headbutt.ogg', 'sound/combat2020/hard_fist.ogg')
 		playsound(user, pick(headbuttEffects), 80, 1, -1)
 
-/obj/item/weapon/grab/proc/s_click(obj/screen/S)
+/obj/item/grab/proc/s_click(obj/screen/S)
 	if(!affecting)
 		return
 	if(state == GRAB_UPGRADING)
@@ -425,6 +426,17 @@
 		icon_state = "grabbed1"
 	else
 		if(state < GRAB_NECK)
+			if(assailant == affecting)
+				return
+
+			var/obj/structure/grille/reinforced/R = locate() in affecting.loc
+			var/obj/structure/grille/reinforced/RR = locate() in assailant.loc
+
+			if(R || RR)
+				to_chat(assailant, "I can not!") //No grabbing people through fences please.
+				return
+
+
 			assailant.visible_message("<span class='combatbold'>[assailant]</span> <span class='combat'>begins to put </span> <span class='combatbold'>[affecting]</span> <span class='combat'> on \his back!</span>")
 			if(do_after(assailant, 30))
 				state = GRAB_NECK
@@ -432,8 +444,7 @@
 					if(istype(assailant, /mob/living/carbon/human))
 						var/mob/living/carbon/human/H = assailant
 						H.buckle_mob(affecting)
-						affecting.resting = 0
-						affecting.update_canmove()
+						affecting.SetResting(FALSE)
 
 						affecting.plane = initial(affecting.plane)
 						affecting.layer = 3.9
@@ -492,7 +503,7 @@
 
 
 //This is used to make sure the victim hasn't managed to yackety sax away before using the grab.
-/obj/item/weapon/grab/proc/confirm()
+/obj/item/grab/proc/confirm()
 	if(assailant == affecting)
 		return 1
 
@@ -508,7 +519,7 @@
 	return 1
 
 
-/obj/item/weapon/grab/attack(mob/M, mob/user)
+/obj/item/grab/attack(mob/M, mob/user)
 	if(!affecting)
 		return
 
@@ -542,10 +553,10 @@
 			qdel(src)
 */
 
-/obj/item/weapon/grab/dropped()
+/obj/item/grab/dropped()
 	qdel(src)
 
-/obj/item/weapon/grab/Destroy()
+/obj/item/grab/Destroy()
 	if(ishuman(assailant))
 		var/mob/living/carbon/human/assailante = assailant
 		assailant.client.screen -= hud
@@ -556,10 +567,10 @@
 		var/mob/living/carbon/human/affectante = affecting
 		for(var/x = 1; x <= affectante.grabbed_by.len; x++)
 			if(affectante.grabbed_by[x])
-				if(istype(affectante.grabbed_by[x], /obj/item/weapon/grab))
-					var/obj/item/weapon/grab/G = affectante.grabbed_by[x]
+				if(istype(affectante.grabbed_by[x], /obj/item/grab))
+					var/obj/item/grab/G = affectante.grabbed_by[x]
 					if(G.assailant == assailant)
-						affectante.grabbed_by[x] = null
+						affectante.grabbed_by -= G
 
 	affecting = null
 	aforgan = null
@@ -598,7 +609,7 @@
 	if(!defensor.combat_mode)
 		modifier += 38
 
-	var/diff = atacante.my_stats.st - defensor.my_stats.ht
+	var/diff = atacante.my_stats.get_stat(STAT_ST) - defensor.my_stats.get_stat(STAT_HT)
 
 	if(diff < 0)
 		var/parsedDiff = diff * -1
@@ -620,14 +631,12 @@
 
 /mob/living/carbon/human/Life()
 	..()
-
-	if(species?.name == "Human" || isChild(src) && !mind?.changeling){
-		if(neckXommed){
+	if(species?.name == "Human" || isChild(src) && !mind?.changeling)
+		if(neckXommed)
 			return
-		}
+		
 		var/datum/organ/external/head/H = get_organ("head")
 
-		if(H.headwrenched){
+		if(H.headwrenched)
 			death_door()
-		}
-	}
+		

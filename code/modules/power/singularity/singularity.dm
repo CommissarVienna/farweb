@@ -249,7 +249,7 @@ var/global/list/uneatable = list(
 		sleep(1)
 	else if(istype(A,/obj/))
 
-		if (istype(A,/obj/item/weapon/storage/backpack/holding))
+		if (istype(A,/obj/item/storage/backpack/holding))
 			var/dist = max((current_size - 2),1)
 			explosion(src.loc,(dist),(dist*2),(dist*4))
 			return
@@ -443,7 +443,7 @@ var/global/list/uneatable = list(
 	return
 
 
-
+/*
 /obj/machinery/singularity/narsie //Moving narsie to a child object of the singularity so it can be made to function differently. --NEO
 	name = "Nar-Sie"
 	desc = "Your mind begins to bubble and ooze as it tries to comprehend what it sees."
@@ -564,3 +564,4 @@ var/global/list/uneatable = list(
 	if(defer_powernet_rebuild != 2)
 		defer_powernet_rebuild = 0
 	return
+*/

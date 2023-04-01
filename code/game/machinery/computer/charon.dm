@@ -7,7 +7,7 @@
 
 /obj/machinery/charon/attack_hand(var/mob/living/carbon/human/user as mob)
 	var/sounds = 'sound/webbers/console_input2.ogg'
-	if(user.check_perk(/datum/perk/illiterate) || user.my_stats.it <= 5)
+	if(user.check_perk(/datum/perk/illiterate) || user.my_stats.get_stat(STAT_IN) <= 5)
 		to_chat(usr, "<span class='jogtowalk'><i>How do I use this...</i></span>")
 		playsound(src.loc, sounds, 25, 1)
 		illitelaunch

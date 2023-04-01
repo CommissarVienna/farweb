@@ -82,7 +82,6 @@ var/list/baronfamily = list(
 	"Heir",
 	"Successor",
 	"Baroness"
-//	"Chief Medical Officer"
 )
 
 var/list/command_positions = list(
@@ -95,7 +94,6 @@ var/list/command_positions = list(
 	"Meister",
 	"Inquisitor",
 	"Treasurer"
-//	"Chief Medical Officer"
 )
 
 
@@ -117,12 +115,11 @@ var/list/science_positions = list(
 
 //BS12 EDIT
 var/list/civilian_positions = list(
-	"Innkeeper",
-	"Innkeeper Wife",
+	"Madam",
 	"Soiler",
 	"Misero",
-	"Bookkeeper",
-	"Grayhound",
+	"Merchant",
+	"Docker",
 	"Arbiter",
 	"Bishop",
 	"Practicus",

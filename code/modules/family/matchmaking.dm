@@ -3,7 +3,7 @@
 #define AGE_CHILD 2
 
 
-var/static/list/family_blacklisted_jobs = list("Innkeeper", "Innkeeper Wife", "Bulter", "Sitzfrau", "Incarn", "Inquisitor", "Practicus", "Guest")
+var/static/list/family_blacklisted_jobs = list("Bulter", "Sitzfrau", "Incarn", "Inquisitor", "Practicus", "Guest")
 var/global/datum/matchmaker/matchmaker = new()
 var/datum/family/baron_family = null
 var/mob/living/carbon/human/pending_nobles = list()
@@ -16,47 +16,42 @@ var/client/list/set_spoused = list() //prevents set_spoused people from being sh
 	var/client/target
 	var/accepted = FALSE
 
+/datum/set_spouse/proc/spouse_check()
+	if(!ishuman(sender.mob) || !ishuman(target.mob))
+		return 0
+	var/mob/living/carbon/human/human_sender = sender.mob
+	var/mob/living/carbon/human/human_target = target.mob
+	if(ticker.eof.id == "ordinators" && (human_target.job == "Marduk" || human_target.job == "Tiamat" || human_sender.job == "Tiamat" || human_sender.job == "Marduk"))
+		return 0
+
+	if(baronfamily.Find(human_sender.job) || baronfamily.Find(human_target.job))
+		return 0
+
+	if(family_blacklisted_jobs.Find(human_sender.job) || family_blacklisted_jobs.Find(human_target.job))
+		return 0
+
+	if(human_sender.age < 18 || human_target.age < 18)
+		return 0
+
+	if(human_sender.has_penis() && human_target.has_penis())
+		return 0
+
+
+	if(!human_sender.has_penis() && !human_target.has_penis())
+		return 0
+
+	return 1
+
 /datum/set_spouse/proc/do_setspouse()
 	if(!accepted)
 		return
-	if(!ishuman(src.sender.mob) || !ishuman(src.target.mob))
-		to_chat(src.sender.mob,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span></span>")
-		to_chat(src.target.mob,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span></span>")
+	if(!spouse_check())
+		to_chat(sender,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span></span>")
+		to_chat(target,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span></span>")
 		return
 
 	var/mob/living/carbon/human/human_sender = sender.mob
 	var/mob/living/carbon/human/human_target = target.mob
-
-	if(ticker.eof.id == "ordinators" && (human_target.job == "Marduk" || human_target.job == "Tiamat" || human_sender.job == "Tiamat" || human_sender.job == "Marduk"))
-		to_chat(human_sender,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span></span>")
-		to_chat(human_target,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span></span>")
-		return
-
-	if(baronfamily.Find(human_sender.job) || baronfamily.Find(human_target.job))
-		to_chat(human_sender,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span></span>")
-		to_chat(human_target,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span></span>")
-		return
-
-	if(family_blacklisted_jobs.Find(human_sender.job) || family_blacklisted_jobs.Find(human_target.job))
-		to_chat(human_sender,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span></span>")
-		to_chat(human_target,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span></span>")
-		return
-
-	if(human_sender.age < 18 || human_target.age < 18)
-		to_chat(human_sender,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span> </span>")
-		to_chat(human_target,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span> </span>")
-		return
-
-	if(human_sender.has_penis() && human_target.has_penis())
-		to_chat(human_sender,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span></span>")
-		to_chat(human_target,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span> </span>")
-		return
-
-
-	if(!human_sender.has_penis() && !human_target.has_penis())
-		to_chat(human_sender,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span></span>")
-		to_chat(human_target,"<span class='combat'>Setspouse <span class='combatbold'>FAIL!</span> </span>")
-		return
 
 
 	var/mob/living/carbon/human/husband
@@ -237,10 +232,6 @@ var/client/list/set_spoused = list() //prevents set_spoused people from being sh
 /datum/matchmaker/proc/setup_special_marriage()
 	for(var/mob/living/carbon/human/H in player_list)
 		switch(H.job)
-			if("Innkeeper")
-				for(var/mob/living/carbon/human/HH in player_list)
-					if(HH.job == "Innkeeper Wife")
-						setmarriage(H,HH)
 			if("Butler")
 				for(var/mob/living/carbon/human/HH in player_list)
 					if(HH.job == "Sitzfrau")

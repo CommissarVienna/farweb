@@ -250,57 +250,57 @@
 	var/hitlimit = 20
 	var/hascap = FALSE
 
-/obj/structure/lifeweb/mushroom/attackby(obj/item/weapon/W as obj, mob/living/carbon/human/user as mob)
+/obj/structure/lifeweb/mushroom/attackby(obj/item/W as obj, mob/living/carbon/human/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-	if(istype(W, /obj/item/weapon/hatchet))
+	if(istype(W, /obj/item/hatchet))
 		if(hitstaken <= hitlimit)
 			hitstaken += rand(2,6)
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
 			src.sound2()
 			W.damageSharp("SOFT")
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 25, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 25, 1, -1)
 			return
 		else
 			new /obj/item/stack/sheet/wood(loc, rand(1,4))
 			src.sound2()
 			W.damageSharp("SOFT")
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 34, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 34, 1, -1)
 			qdel(src)
 			return
-	else if(istype(W, /obj/item/weapon/shovel))
+	else if(istype(W, /obj/item/shovel))
 		if(hitstaken <= hitlimit)
 			hitstaken += rand(2,6)
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
 			src.sound2()
 			W.damageSharp("SOFT")
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 25, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 25, 1, -1)
 		else
 			new /obj/item/stack/sheet/wood(loc, rand(1,4))
 			src.sound2()
 			W.damageSharp("SOFT")
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 34, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 34, 1, -1)
 			qdel(src)
-	else if(istype(W, /obj/item/weapon))
+	else if(istype(W, /obj/item))
 		if(W.sharp)
 			if(hitstaken <= hitlimit)
 				hitstaken += rand(1,3)
 				src.sound2()
 				W.damageSharp("MEDIUM")
 				user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-				playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 25, 1, -1)
+				playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 25, 1, -1)
 			else
 				new /obj/item/stack/sheet/wood(loc, rand(1,3))
 				src.sound2()
 				W.damageSharp("MEDIUM")
 				user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-				playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 34, 1, -1)
+				playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 34, 1, -1)
 				qdel(src)
 		else
 			W.damageItem("SOFT")
 			user.show_message("<span class='notice'>You innefectively hit the [src]!</span>", 1)
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 5, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 5, 1, -1)
 
 /obj/structure/lifeweb/mushroom/surface/New()
 	icon_state = pick("icicles","lazurellus","sadshroom","sadshroom2","sadshroom3")
@@ -357,14 +357,14 @@
 	M.Translate(5, -28)
 	src.transform = M
 
-/obj/structure/lifeweb/tallshroom_fallen/attackby(obj/item/weapon/W as obj, mob/living/carbon/human/user as mob)
-	if(istype(W, /obj/item/weapon/hatchet))
+/obj/structure/lifeweb/tallshroom_fallen/attackby(obj/item/W as obj, mob/living/carbon/human/user as mob)
+	if(istype(W, /obj/item/hatchet))
 		if(hitstaken <= hitlimit)
 			hitstaken += rand(2,6)
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
 			src.sound2()
 			W.damageSharp("SOFT")
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 25, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 25, 1, -1)
 			return
 		else
 			new /obj/item/stack/sheet/wood(loc, 6)
@@ -372,44 +372,44 @@
 			src.sound2()
 			W.damageSharp("SOFT")
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 34, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 34, 1, -1)
 			for(var/obj/structure/lifeweb/tallshroom_barrier/T in range(1,src))
 				qdel(T)
 			qdel(src)
 			return
-	else if(istype(W, /obj/item/weapon/shovel))
+	else if(istype(W, /obj/item/shovel))
 		if(hitstaken <= hitlimit)
 			hitstaken += rand(2,6)
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
 			src.sound2()
 			W.damageSharp("SOFT")
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 25, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 25, 1, -1)
 		else
 			new /obj/item/stack/sheet/wood(loc, rand(1,4))
 			src.sound2()
 			W.damageSharp("SOFT")
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 34, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 34, 1, -1)
 			qdel(src)
-	else if(istype(W, /obj/item/weapon))
+	else if(istype(W, /obj/item))
 		if(W.sharp)
 			if(hitstaken <= hitlimit)
 				hitstaken += rand(1,3)
 				src.sound2()
 				W.damageSharp("MEDIUM")
 				user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-				playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 25, 1, -1)
+				playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 25, 1, -1)
 			else
 				new /obj/item/stack/sheet/wood(loc, rand(1,3))
 				src.sound2()
 				W.damageSharp("MEDIUM")
 				user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-				playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 34, 1, -1)
+				playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 34, 1, -1)
 				qdel(src)
 		else
 			W.damageItem("SOFT")
 			user.show_message("<span class='notice'>You innefectively hit the [src]!</span>", 1)
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 5, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 5, 1, -1)
 
 /obj/structure/lifeweb/tallshroom
 	name = "tallshroom"
@@ -427,26 +427,26 @@
 	icon_state = pick("tall1","tall2","tall3","tall4", "tall5", "tall6", "tall7")
 	fall_state = icon_state
 
-/obj/structure/lifeweb/tallshroom/attackby(obj/item/weapon/W as obj, mob/living/carbon/human/user as mob)
+/obj/structure/lifeweb/tallshroom/attackby(obj/item/W as obj, mob/living/carbon/human/user as mob)
 	if(falling)
 		return
-	if(istype(W, /obj/item/weapon/hatchet))
+	if(istype(W, /obj/item/hatchet))
 		if(hitstaken <= hitlimit)
 			hitstaken += rand(2,6)
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
 			src.sound2()
 			W.damageSharp("SOFT")
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 25, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 25, 1, -1)
 			animate(src, transform = turn(matrix(), rand(1,3)), time = 2, loop = 0)
 			return
 		else
 			src.sound2()
 			W.damageSharp("SOFT")
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 34, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 34, 1, -1)
 			visible_message("<span class='bname'>[src]</span> begins to slowly [pick("detach","snap off")] from its roots and fall!")
 			animate(src, transform = turn(matrix(), 2), time = 2, loop = 0)
-			playsound(src.loc, 'shroomfall.ogg', 125, 0, 3)
+			playsound(src.loc, 'sound/effects/shroomfall.ogg', 125, 0, 3)
 			falling = TRUE
 			spawn(30)
 				animate(src, transform = turn(matrix(), 10), time = 18, loop = 0)
@@ -468,11 +468,11 @@
 					visible_message("<span class='combatbold'>[src]</span><span class='combat'>crushes [L]!</span>")
 				qdel(src)
 			return
-	else if(istype(W, /obj/item/weapon))
+	else if(istype(W, /obj/item))
 		W.damageItem("SOFT")
 		user.show_message("<span class='notice'>You innefectively hit the [src]!</span>", 1)
-		to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)]<span><span class='combat'> I can't cut this with \the [W],<i> only an sharp axe can do it!</i></span>")
-		playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 5, 1, -1)
+		to_chat(user, "<span class='combatbold'>[pick(fnord)]<span><span class='combat'> I can't cut this with \the [W],<i> only an sharp axe can do it!</i></span>")
+		playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 5, 1, -1)
 		return
 
 /obj/structure/lifeweb/mushroom/sadshroom2
@@ -491,20 +491,20 @@
 	density = 0
 	layer = TURF_LAYER
 
-/obj/structure/lifeweb/grass/attackby(obj/item/weapon/W as obj, mob/living/carbon/human/user as mob)
+/obj/structure/lifeweb/grass/attackby(obj/item/W as obj, mob/living/carbon/human/user as mob)
 	if(W.sharp)
 		if(prob(90))
-			var/obj/item/weapon/handcuffs/fiber/NG = new (src.loc)
+			var/obj/item/handcuffs/fiber/NG = new (src.loc)
 			NG.name = "fibers"
 		if(prob(85))
-			var/obj/item/weapon/handcuffs/fiber/GB = new (src.loc)
+			var/obj/item/handcuffs/fiber/GB = new (src.loc)
 			GB.name = "fibers"
 		if(prob(50))
-			var/obj/item/weapon/handcuffs/fiber/GC = new (src.loc)
+			var/obj/item/handcuffs/fiber/GC = new (src.loc)
 			GC.name = "fibers"
 		src.sound2()
 		visible_message("<span class='bname'>[user]</span> cuts [src].")
-		playsound(src.loc, pick('PlantRustle_01.ogg','PlantRustle_02.ogg','PlantRustle_03.ogg','PlantRustle_04.ogg'),50, 1, -1)
+		playsound(src.loc, pick('sound/effects/footsteps/PlantRustle_01.ogg','sound/effects/footsteps/PlantRustle_02.ogg','sound/effects/footsteps/PlantRustle_03.ogg','sound/effects/footsteps/PlantRustle_04.ogg'),50, 1, -1)
 		qdel(src)
 
 /obj/structure/lifeweb/grass/New()
@@ -538,7 +538,7 @@
 
 /obj/structure/lifeweb/grass/Crossed(mob/living/M as mob)
 	if(isliving(M))
-		playsound(src.loc, pick('PlantRustle_01.ogg','PlantRustle_02.ogg','PlantRustle_03.ogg','PlantRustle_04.ogg'),50, 1, -1)
+		playsound(src.loc, pick('sound/effects/footsteps/PlantRustle_01.ogg','sound/effects/footsteps/PlantRustle_02.ogg','sound/effects/footsteps/PlantRustle_03.ogg','sound/effects/footsteps/PlantRustle_04.ogg'),50, 1, -1)
 		pixel_x += rand(-0.2,0.2)
 		pixel_y += rand(-0.2,0.2)
 
@@ -572,7 +572,7 @@
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(5, 1, src)
 		s.start()
-		playsound(src.loc, pick('electr.ogg','electr1.ogg','electr2.ogg','electr3.ogg'), 100, 1)
+		playsound(src.loc, pick('sound/effects/electr.ogg','sound/effects/electr1.ogg','sound/effects/electr2.ogg','sound/effects/electr3.ogg'), 100, 1)
 		if(iszombie(H)) return
 		if(H.species && H.species.flags & NO_PAIN) return
 		H.electrocute_act(12, src, 1)
@@ -592,52 +592,52 @@
 		step(H, pick(alldirs - get_dir(H, src)))
 	..()
 
-/obj/structure/lifeweb/mushroom/glorbmushroom/attackby(obj/item/weapon/W as obj, mob/living/carbon/human/user as mob)
-	if(istype(W, /obj/item/weapon/hatchet))
+/obj/structure/lifeweb/mushroom/glorbmushroom/attackby(obj/item/W as obj, mob/living/carbon/human/user as mob)
+	if(istype(W, /obj/item/hatchet))
 		if(hitstaken <= hitlimit)
 			hitstaken += rand(2,6)
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
 			src.sound2()
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 25, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 25, 1, -1)
 		else
 			var/obj/structure/aibots/NG = new (src.loc)
 			NG.name = "flying orb"
 			src.sound2()
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 34, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 34, 1, -1)
 			qdel(src)
-	else if(istype(W, /obj/item/weapon/shovel))
+	else if(istype(W, /obj/item/shovel))
 		if(hitstaken <= hitlimit)
 			hitstaken += rand(2,6)
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
 			src.sound2()
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 25, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 25, 1, -1)
 		else
 			var/obj/structure/aibots/NG = new (src.loc)
 			NG.name = "flying orb"
 			src.sound2()
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 34, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 34, 1, -1)
 			set_light(0)
 			qdel(src)
-	else if(istype(W, /obj/item/weapon))
+	else if(istype(W, /obj/item))
 		if(W.sharp)
 			if(hitstaken <= hitlimit)
 				hitstaken += rand(1,3)
 				src.sound2()
 				user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-				playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 25, 1, -1)
+				playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 25, 1, -1)
 			else
 				var/obj/structure/aibots/NG = new (src.loc)
 				NG.name = "flying orb"
 				src.sound2()
 				user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-				playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 34, 1, -1)
+				playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 34, 1, -1)
 				set_light(0)
 				qdel(src)
 		else
 			user.show_message("<span class='notice'>You innefectively hit the [src]!</span>", 1)
-			playsound(W.loc, pick('wood_chop_01.ogg','wood_chop_02.ogg','wood_chop_03.ogg','wood_chop_04.ogg'), 5, 1, -1)
+			playsound(W.loc, pick('sound/effects/wood_chop_01.ogg','sound/effects/wood_chop_02.ogg','sound/effects/wood_chop_03.ogg','sound/effects/wood_chop_04.ogg'), 5, 1, -1)
 
 /obj/structure/lifeweb/mushroom/sandshroom
 	name = "sandshroom"
@@ -713,7 +713,7 @@
 		for(var/mob/living/carbon/HH in range(src,2))
 			if(prob(90))
 				var/datum/reagents/reagents = new/datum/reagents(2)
-				reagents.add_reagent(/datum/reagent/venom, 2)
+				reagents.add_reagent("venom", 2)
 				reagents.reaction(HH, INGEST)
 				reagents.trans_to(HH, 2)
 				if(prob(90))
@@ -735,24 +735,24 @@
 	var/hitstaken = 0
 	var/hitlimit = 15
 
-/obj/structure/rack/lwtable/stone/attackby(obj/item/weapon/W as obj, mob/living/carbon/human/user as mob)
+/obj/structure/rack/lwtable/stone/attackby(obj/item/W as obj, mob/living/carbon/human/user as mob)
 	if(user.a_intent != "hurt")
 		return ..()
 
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-	if(istype(W, /obj/item/weapon/pickaxe))
+	if(istype(W, /obj/item/pickaxe))
 		if(hitstaken <= hitlimit)
 			hitstaken += rand(2,6)
 			src.sound2()
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-			playsound(W.loc, pick('npc_human_pickaxe_01.ogg','npc_human_pickaxe_02.ogg','npc_human_pickaxe_03.ogg','npc_human_pickaxe_05.ogg'), 25, 1, -1)
+			playsound(W.loc, pick('sound/effects/npc_human_pickaxe_01.ogg','sound/effects/npc_human_pickaxe_02.ogg','sound/effects/npc_human_pickaxe_03.ogg','sound/effects/npc_human_pickaxe_05.ogg'), 25, 1, -1)
 		else
 			var/amount = rand(1, 2)
 			for(var/a = 0, a <= amount, a++)
-				new /obj/item/weapon/stone(user.loc)
+				new /obj/item/stone(user.loc)
 			src.sound2()
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-			playsound(W.loc, pick('npc_human_pickaxe_01.ogg','npc_human_pickaxe_02.ogg','npc_human_pickaxe_03.ogg','npc_human_pickaxe_05.ogg'), 25, 1, -1)
+			playsound(W.loc, pick('sound/effects/npc_human_pickaxe_01.ogg','sound/effects/npc_human_pickaxe_02.ogg','sound/effects/npc_human_pickaxe_03.ogg','sound/effects/npc_human_pickaxe_05.ogg'), 25, 1, -1)
 			qdel(src)
 	else
 		if(hitstaken <= hitlimit)
@@ -762,17 +762,17 @@
 			if(W.sharp)
 				W.damageSharp("HARD")
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-			playsound(W.loc, pick('npc_human_pickaxe_01.ogg','npc_human_pickaxe_02.ogg','npc_human_pickaxe_03.ogg','npc_human_pickaxe_05.ogg'), 25, 1, -1)
+			playsound(W.loc, pick('sound/effects/npc_human_pickaxe_01.ogg','sound/effects/npc_human_pickaxe_02.ogg','sound/effects/npc_human_pickaxe_03.ogg','sound/effects/npc_human_pickaxe_05.ogg'), 25, 1, -1)
 		else
 			var/amount = rand(1, 2)
 			for(var/a = 0, a <= amount, a++)
-				new /obj/item/weapon/stone(user.loc)
+				new /obj/item/stone(user.loc)
 			src.sound2()
 			W.damageItem("SOFT")
 			if(W.sharp)
 				W.damageSharp("HARD")
 			user.show_message("<span class='notice'>You hit the [src]!</span>", 1)
-			playsound(W.loc, pick('npc_human_pickaxe_01.ogg','npc_human_pickaxe_02.ogg','npc_human_pickaxe_03.ogg','npc_human_pickaxe_05.ogg'), 25, 1, -1)
+			playsound(W.loc, pick('sound/effects/npc_human_pickaxe_01.ogg','sound/effects/npc_human_pickaxe_02.ogg','sound/effects/npc_human_pickaxe_03.ogg','sound/effects/npc_human_pickaxe_05.ogg'), 25, 1, -1)
 			qdel(src)
 
 /obj/structure/rack/lwtable/stone/s1

@@ -95,14 +95,10 @@
 	desc = "A 12 gauge shell."
 	icon_state = "gshell"
 	caliber = ".12"
+	spent_icon = "gshell-1"
+	stack_type = /obj/item/stack/bullets/buckshot
 	projectile_type = /obj/item/projectile/bullet/shotgun
 	m_amt = 12500
-
-	update_icon()
-		desc = "[initial(desc)][BB ? "" : " This one is spent"]"
-		overlays = list()
-		if(!BB)
-			icon_state = "gshell-1"
 
 /obj/item/ammo_casing/shotgun/blank
 	name = "shotgun shell"
@@ -161,6 +157,9 @@
 /obj/item/ammo_casing/a762
 	desc = "A 7.62 bullet casing."
 	caliber = ".762"
+	icon_state = "r1"
+	spent_icon = "brifle-casing"
+	stack_type = /obj/item/stack/bullets/rifle
 	projectile_type = /obj/item/projectile/bullet/princess
 
 /obj/item/ammo_casing/a556

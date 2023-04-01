@@ -1,83 +1,96 @@
-/proc/add_seaspotter()
+/proc/add_tier_squire()
     var/ckey = input("Enter the donator's ckey", "Farweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO seaspotter_merc (ckey) VALUE (\"[ckey(ckey)]\")")
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO tier_squire (ckey) VALUE (\"[ckey(ckey)]\")")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
-    seaspotter_merc.Add(ckey(ckey))
+    tier_squire.Add(ckey(ckey))
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
 
-/proc/add_squirea()
+/proc/add_tier_tiamat()
     var/ckey = input("Enter the donator's ckey", "Farweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO squire_donor (ckey) VALUE (\"[ckey(ckey)]\")")
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO tier_tiamat (ckey) VALUE (\"[ckey(ckey)]\")")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
-    adultsquire.Add(ckey(ckey))
+    tier_tiamat.Add(ckey(ckey))
+    to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
+
+/proc/add_tier_marduk()
+    var/ckey = input("Enter the donator's ckey", "Farweb")
+    if(length(ckey) <= 1 || length(ckey) > 30)
+        to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
+        return
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO tier_marduk (ckey) VALUE (\"[ckey(ckey)]\")")
+    if(!queryInsert.Execute())
+        world.log << queryInsert.ErrorMsg()
+        queryInsert.Close()
+        return
+    tier_marduk.Add(ckey(ckey))
+    to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
+
+/proc/add_tier_crusader()
+    var/ckey = input("Enter the donator's ckey", "Farweb")
+    if(length(ckey) <= 1 || length(ckey) > 30)
+        to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
+        return
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO tier_crusader (ckey) VALUE (\"[ckey(ckey)]\")")
+    if(!queryInsert.Execute())
+        world.log << queryInsert.ErrorMsg()
+        queryInsert.Close()
+        return
+    tier_crusader.Add(ckey(ckey))
+    to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
+
+/proc/add_seaspotter()
+    var/ckey = input("Enter the donator's ckey", "Nearweb")
+    if(length(ckey) <= 1 || length(ckey) > 30)
+        to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
+        return
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO donation_seaspotter (ckey) VALUE (\"[ckey(ckey)]\")")
+    if(!queryInsert.Execute())
+        world.log << queryInsert.ErrorMsg()
+        queryInsert.Close()
+        return
+    donation_seaspotter.Add(ckey(ckey))
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
 
 /proc/add_mercenary()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
+    var/ckey = input("Enter the donator's ckey", "Nearweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO mercenary_donor (ckey) VALUE (\"[ckey(ckey)]\")")
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO donation_mercenary (ckey) VALUE (\"[ckey(ckey)]\")")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
-    mercenary_donor.Add(ckey(ckey))
-    to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
-
-/proc/add_tribvet()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
-    if(length(ckey) <= 1 || length(ckey) > 30)
-        to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
-        return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO tribvet_donor (ckey) VALUE (\"[ckey(ckey)]\")")
-    if(!queryInsert.Execute())
-        world.log << queryInsert.ErrorMsg()
-        queryInsert.Close()
-        return
-    tribunal_vet.Add(ckey(ckey))
-    to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
-
-/proc/add_urchin()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
-    if(length(ckey) <= 1 || length(ckey) > 30)
-        to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
-        return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO urchin_donor (ckey) VALUE (\"[ckey(ckey)]\")")
-    if(!queryInsert.Execute())
-        world.log << queryInsert.ErrorMsg()
-        queryInsert.Close()
-        return
-    urchin_donor.Add(ckey(ckey))
+    donation_mercenary.Add(ckey(ckey))
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
 
 /proc/add_reddawn()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
+    var/ckey = input("Enter the donator's ckey", "Nearweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO reddawn_merc (ckey) VALUE (\"[ckey(ckey)]\")")
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO donation_reddawn (ckey) VALUE (\"[ckey(ckey)]\")")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
-    reddawn_merc.Add(ckey(ckey))
+    donation_reddawn.Add(ckey(ckey))
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
 
 /proc/add_lord()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
+    var/ckey = input("Enter the donator's ckey", "Nearweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
@@ -90,145 +103,118 @@
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
 
 /proc/add_crusader()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
+    var/ckey = input("Enter the donator's ckey", "Nearweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO crusader (ckey) VALUE (\"[ckey(ckey)]\")")
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO donation_crusader (ckey) VALUE (\"[ckey(ckey)]\")")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
-    crusader.Add(ckey(ckey))
-    to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
-
-/proc/add_tophat()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
-    if(length(ckey) <= 1 || length(ckey) > 30)
-        to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
-        return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO tophat (ckey) VALUE (\"[ckey(ckey)]\")")
-    if(!queryInsert.Execute())
-        world.log << queryInsert.ErrorMsg()
-        queryInsert.Close()
-        return
-    tophat.Add(ckey(ckey))
+    donation_crusader.Add(ckey(ckey))
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
 
 /proc/add_monk()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
+    var/ckey = input("Enter the donator's ckey", "Nearweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO monk (ckey) VALUE (\"[ckey(ckey)]\")")
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO donation_monk (ckey) VALUE (\"[ckey(ckey)]\")")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
-    monk.Add(ckey(ckey))
+    donation_monk.Add(ckey(ckey))
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
 
 /proc/add_futa()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
+    var/ckey = input("Enter the donator's ckey", "Nearweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO futa (ckey) VALUE (\"[ckey(ckey)]\")")
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO donation_futa (ckey) VALUE (\"[ckey(ckey)]\")")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
-    futa.Add(ckey(ckey))
+    donation_futa.Add(ckey(ckey))
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
 
-
 /proc/add_30cm()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
+    var/ckey = input("Enter the donator's ckey", "Nearweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO 30cm (ckey) VALUE (\"[ckey(ckey)]\")")
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO donation_30cm (ckey) VALUE (\"[ckey(ckey)]\")")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
-    thirtycm.Add(ckey(ckey))
+    donation_30cm.Add(ckey(ckey))
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
 
 /proc/add_trapapoc()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
+    var/ckey = input("Enter the donator's ckey", "Nearweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO trapapoc (ckey) VALUE (\"[ckey(ckey)]\")")
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO donation_trap (ckey) VALUE (\"[ckey(ckey)]\")")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
-    trapapoc.Add(ckey(ckey))
+    donation_trap.Add(ckey(ckey))
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
 
 /proc/add_outlaw()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
+    var/ckey = input("Enter the donator's ckey", "Nearweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO outlaw (ckey) VALUE (\"[ckey(ckey)]\")")
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO donation_outlaw (ckey) VALUE (\"[ckey(ckey)]\")")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
-    outlaw.Add(ckey(ckey))
+    donation_outlaw.Add(ckey(ckey))
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
 
 /proc/add_waterbottle()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
+    var/ckey = input("Enter the donator's ckey", "Nearweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO waterbottledonation (ckey) VALUE (\"[ckey(ckey)]\")")
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO donation_waterbottle (ckey) VALUE (\"[ckey(ckey)]\")")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
-    waterbottledonation.Add(ckey(ckey))
+    donation_waterbottle.Add(ckey(ckey))
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
 
 /proc/add_luxurydonation()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
+    var/ckey = input("Enter the donator's ckey", "Nearweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO luxurydonation (ckey) VALUE (\"[ckey(ckey)]\")")
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO donation_lecheryamulet (ckey) VALUE (\"[ckey(ckey)]\")")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
-    luxurydonation.Add(ckey(ckey))
-    to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
-
-/proc/add_pjack()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
-    if(length(ckey) <= 1 || length(ckey) > 30)
-        to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
-        return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO pjack (ckey) VALUE (\"[ckey(ckey)]\")")
-    if(!queryInsert.Execute())
-        world.log << queryInsert.ErrorMsg()
-        queryInsert.Close()
-        return
-    pjack.Add(ckey(ckey))
+    donation_lecheryamulet.Add(ckey(ckey))
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")
 
 /proc/add_customooc()
-    var/ckey = input("Enter the donator's ckey", "Farweb")
+    var/ckey = input("Enter the donator's ckey", "Nearweb")
     if(length(ckey) <= 1 || length(ckey) > 30)
         to_chat(usr, "<span class='highlighttext'>This ckey is invalid.</span>")
         return
-    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO customooccolorlist (ckey) VALUE (\"[ckey(ckey)]\")")
+    var/DBQuery/queryInsert = dbcon.NewQuery("INSERT INTO donation_mycolor (ckey) VALUE (\"[ckey(ckey)]\")")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
-    customooccolorlist.Add(ckey(ckey))
+    donation_mycolor.Add(ckey(ckey))
     to_chat(usr, "<span class='highlighttext'>[ckey] has been added to the donators list.</span>")

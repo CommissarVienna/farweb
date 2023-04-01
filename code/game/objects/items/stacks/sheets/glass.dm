@@ -233,7 +233,7 @@
 /*
  * Glass shards - TODO: Move this into code/game/object/item/weapons
  */
-/obj/item/weapon/shard/Bump()
+/obj/item/shard/Bump()
 
 	spawn( 0 )
 		if (prob(20))
@@ -244,7 +244,7 @@
 		return
 	return
 
-/obj/item/weapon/shard/New()
+/obj/item/shard/New()
 
 	src.icon_state = pick("large", "medium", "small")
 	switch(src.icon_state)
@@ -260,10 +260,10 @@
 		else
 	return
 
-/obj/item/weapon/shard/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/shard/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if ( istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	if ( istype(W, /obj/item/weldingtool))
+		var/obj/item/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
 			var/obj/item/stack/sheet/glass/NG = new (user.loc)
 			for (var/obj/item/stack/sheet/glass/G in user.loc)
@@ -278,7 +278,7 @@
 			return
 	return ..()
 
-/obj/item/weapon/shard/Crossed(AM as mob|obj)
+/obj/item/shard/Crossed(AM as mob|obj)
 	if(isobserver(AM))
 		return
 	if(ishuman(AM))

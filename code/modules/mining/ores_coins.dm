@@ -1,6 +1,6 @@
 /**********************Mineral ores**************************/
 
-/obj/item/weapon/ore
+/obj/item/ore
 	name = "Rock"
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "ore2"
@@ -8,9 +8,9 @@
 	var/points = 0 //How many points this ore gets you from the ore redemption machine
 	var/refined_type = null //What this ore defaults to being refined into
 
-/obj/item/weapon/ore/attackby(obj/item/I as obj, mob/user as mob)
-	if(istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/W = I
+/obj/item/ore/attackby(obj/item/I as obj, mob/user as mob)
+	if(istype(I, /obj/item/weldingtool))
+		var/obj/item/weldingtool/W = I
 		if(W.remove_fuel(15))
 			new refined_type(get_turf(src.loc))
 			qdel(src)
@@ -18,21 +18,21 @@
 			user << "<span class='info'>Not enough fuel to smelt [src].</span>"
 	..()
 
-/obj/item/weapon/ore/uranium
+/obj/item/ore/uranium
 	name = "Uranium ore"
 	icon_state = "Uranium ore"
 	origin_tech = "materials=5"
 	points = 18
 	refined_type = /obj/item/stack/sheet/mineral/uranium
 
-/obj/item/weapon/ore/iron
+/obj/item/ore/iron
 	name = "Iron ore"
 	icon_state = "Iron ore"
 	origin_tech = "materials=1"
 	points = 1
 	refined_type = /obj/item/stack/sheet/metal
 
-/obj/item/weapon/ore/glass
+/obj/item/ore/glass
 	name = "Sand"
 	icon_state = "Glass ore"
 	origin_tech = "materials=1"
@@ -41,20 +41,20 @@
 
 	attack_self(mob/living/user as mob) //It's magic I ain't gonna explain how instant conversion with no tool works. -- Urist
 		var/location = get_turf(user)
-		for(var/obj/item/weapon/ore/glass/sandToConvert in location)
+		for(var/obj/item/ore/glass/sandToConvert in location)
 			new /obj/item/stack/sheet/mineral/sandstone(location)
 			qdel(sandToConvert)
 		new /obj/item/stack/sheet/mineral/sandstone(location)
 		qdel(src)
 
-/obj/item/weapon/ore/plasma
+/obj/item/ore/plasma
 	name = "Plasma ore"
 	icon_state = "Plasma ore"
 	origin_tech = "materials=2"
 	points = 16
 	refined_type = /obj/item/stack/sheet/mineral/plasma
 
-/obj/item/weapon/ore/dirt
+/obj/item/ore/dirt
 	name = "Dirt"
 	icon = 'icons/mining.dmi'
 	icon_state = "Glass ore"
@@ -62,16 +62,16 @@
 	points = 16
 	refined_type = /obj/item/stack/sheet/mineral/snow
 
-/obj/item/weapon/ore/snow/attackby(obj/item/weapon/shovel/W as obj, mob/user as mob)
+/obj/item/ore/snow/attackby(obj/item/shovel/W as obj, mob/user as mob)
 	if(!W || !user)
 		return 0
 
-	if ((istype(W, /obj/item/weapon/shovel)) && !W.full)
+	if ((istype(W, /obj/item/shovel)) && !W.full)
 		W.full = "oredochao"
 		playsound(src, 'sound/effects/dig_shovel.ogg', 50, 1)
 		qdel(src)
 
-/obj/item/weapon/ore/silver
+/obj/item/ore/silver
 	name = "Silver ore"
 	icon_state = "Silver ore"
 	origin_tech = "materials=3"
@@ -79,33 +79,33 @@
 	refined_type = /obj/item/stack/sheet/mineral/silver
 	silver = TRUE
 
-/obj/item/weapon/ore/gold
+/obj/item/ore/gold
 	name = "Gold ore"
 	icon_state = "Gold ore"
 	origin_tech = "materials=4"
 	points = 18
 	refined_type = /obj/item/stack/sheet/mineral/gold
 
-/obj/item/weapon/ore/diamond
+/obj/item/ore/diamond
 	name = "Diamond ore"
 	icon_state = "Diamond ore"
 	origin_tech = "materials=6"
 	points = 36
 	refined_type = /obj/item/stack/sheet/mineral/diamond
 
-/obj/item/weapon/ore/clown
+/obj/item/ore/clown
 	name = "Bananium ore"
 	icon_state = "Clown ore"
 	origin_tech = "materials=4"
 	points = 27
 	refined_type = /obj/item/stack/sheet/mineral/clown
 
-/obj/item/weapon/ore/slag
+/obj/item/ore/slag
 	name = "Slag"
 	desc = "Completely useless"
 	icon_state = "slag"
 
-/* /obj/item/weapon/twohanded/required/gibtonite ~ Later
+/* /obj/item/twohanded/required/gibtonite ~ Later
 	name = "Gibtonite ore"
 	desc = "Extremely explosive if struck with mining equipment, Gibtonite is often used by miners to speed up their work by using it as a mining charge. This material is illegal to possess by unauthorized personnel under space law."
 	icon = 'icons/obj/mining.dmi'
@@ -118,8 +118,8 @@
 	var/det_time = 100
 	var/quality = 1 //How pure this gibtonite is, determines the explosion produced by it and is derived from the det_time of the rock wall it was taken from, higher value = better
 
-/obj/item/weapon/twohanded/required/gibtonite/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/pickaxe) || istype(I, /obj/item/weapon/resonator))
+/obj/item/twohanded/required/gibtonite/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/pickaxe) || istype(I, /obj/item/resonator))
 		GibtoniteReaction(user)
 		return
 	if(istype(I, /obj/item/device/mining_scanner) && primed)
@@ -130,15 +130,15 @@
 		return
 	..()
 
-/obj/item/weapon/twohanded/required/gibtonite/bullet_act(var/obj/item/projectile/P)
+/obj/item/twohanded/required/gibtonite/bullet_act(var/obj/item/projectile/P)
 	if(istype(P, /obj/item/projectile/kinetic))
 		GibtoniteReaction(P.firer)
 	..()
 
-/obj/item/weapon/twohanded/required/gibtonite/ex_act()
+/obj/item/twohanded/required/gibtonite/ex_act()
 	GibtoniteReaction(triggered_by_explosive = 1)
 
-/obj/item/weapon/twohanded/required/gibtonite/proc/GibtoniteReaction(mob/user, triggered_by_explosive = 0)
+/obj/item/twohanded/required/gibtonite/proc/GibtoniteReaction(mob/user, triggered_by_explosive = 0)
 	if(!primed)
 		playsound(src,'sound/effects/hit_on_shattered_glass.ogg',50,1)
 		primed = 1
@@ -168,13 +168,13 @@
 				explosion(src.loc,-1,1,3,adminlog = notify_admins)
 			qdel(src) */
 
-/obj/item/weapon/ore/New()
+/obj/item/ore/New()
 	pixel_x = rand(0,16)-8
 	pixel_y = rand(0,8)-8
 
 /*****************************Coin********************************/
 
-/obj/item/weapon/coin
+/obj/item/coin
 	icon = 'icons/obj/items.dmi'
 	name = "Coin"
 	icon_state = "coin"
@@ -184,47 +184,47 @@
 	w_class = 1.0
 	var/string_attached
 
-/obj/item/weapon/coin/New()
+/obj/item/coin/New()
 	pixel_x = rand(0,16)-8
 	pixel_y = rand(0,8)-8
 
-/obj/item/weapon/coin/gold
+/obj/item/coin/gold
 	name = "Gold coin"
 	icon_state = "coin_gold"
 
-/obj/item/weapon/coin/silver
+/obj/item/coin/silver
 	name = "Silver coin"
 	icon_state = "coin_silver"
 
-/obj/item/weapon/coin/diamond
+/obj/item/coin/diamond
 	name = "Diamond coin"
 	icon_state = "coin_diamond"
 
-/obj/item/weapon/coin/iron
+/obj/item/coin/iron
 	name = "Iron coin"
 	icon_state = "coin_iron"
 
-/obj/item/weapon/coin/plasma
+/obj/item/coin/plasma
 	name = "Solid plasma coin"
 	icon_state = "coin_plasma"
 
-/obj/item/weapon/coin/uranium
+/obj/item/coin/uranium
 	name = "Uranium coin"
 	icon_state = "coin_uranium"
 
-/obj/item/weapon/coin/clown
+/obj/item/coin/clown
 	name = "Bananaium coin"
 	icon_state = "coin_clown"
 
-/obj/item/weapon/coin/adamantine
+/obj/item/coin/adamantine
 	name = "Adamantine coin"
 	icon_state = "coin_adamantine"
 
-/obj/item/weapon/coin/mythril
+/obj/item/coin/mythril
 	name = "Mythril coin"
 	icon_state = "coin_mythril"
 
-/obj/item/weapon/coin/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/coin/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/stack/cable_coil) )
 		var/obj/item/stack/cable_coil/CC = W
 		if(string_attached)
@@ -240,7 +240,7 @@
 		string_attached = 1
 		user << "\blue You attach a string to the coin."
 		CC.use(1)
-	else if(istype(W,/obj/item/weapon/wirecutters) )
+	else if(istype(W,/obj/item/wirecutters) )
 		if(!string_attached)
 			..()
 			return

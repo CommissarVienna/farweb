@@ -99,8 +99,8 @@
 
 /obj/structure/fire/attackby(obj/item/W, mob/user)
     ..()
-    if(istype(W, /obj/item/weapon/reagent_containers))
-        var/obj/item/weapon/reagent_containers/R = W
+    if(istype(W, /obj/item/reagent_containers))
+        var/obj/item/reagent_containers/R = W
 
         var/reagentResult = R.reagents.get_reagent_amount("water")
 
@@ -112,8 +112,8 @@
             if(prob(90))
                 intensityFire = 0
                 return
-    if(istype(W, /obj/item/weapon/flame/torch))
-        var/obj/item/weapon/flame/torch/T = W
+    if(istype(W, /obj/item/flame/torch))
+        var/obj/item/flame/torch/T = W
 
         T.lit = 1
         T.update_brightness()

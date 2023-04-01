@@ -17,19 +17,19 @@
  * Twohanded
  */
 /*
-/obj/item/weapon/twohanded/proc/unwield()
+/obj/item/twohanded/proc/unwield()
 	wielded = 0
 	force = force_unwielded
 	name = "[initial(name)]"
 	update_icon()
 
-/obj/item/weapon/twohanded/proc/wield()
+/obj/item/twohanded/proc/wield()
 	wielded = 1
 	force = force_wielded
 	name = "[initial(name)] (Wielded)"
 	update_icon()
 
-/obj/item/weapon/twohanded/mob_can_equip(M as mob, slot)
+/obj/item/twohanded/mob_can_equip(M as mob, slot)
 	//Cannot equip wielded items.
 	if(wielded)
 		M << "<span class='warning'>Unwield the [initial(name)] first!</span>"
@@ -37,21 +37,21 @@
 
 	return ..()
 
-/obj/item/weapon/twohanded/dropped(mob/user as mob)
+/obj/item/twohanded/dropped(mob/user as mob)
 	//handles unwielding a twohanded weapon when dropped as well as clearing up the offhand
 	if(user)
-		var/obj/item/weapon/twohanded/O = user.get_inactive_hand()
+		var/obj/item/twohanded/O = user.get_inactive_hand()
 		if(istype(O))
 			O.unwield()
 	return	unwield()
 
-/obj/item/weapon/twohanded/update_icon()
+/obj/item/twohanded/update_icon()
 	return
 
-/obj/item/weapon/twohanded/pickup(mob/user)
+/obj/item/twohanded/pickup(mob/user)
 	unwield()
 
-/obj/item/weapon/twohanded/attack_self(mob/user as mob)
+/obj/item/twohanded/attack_self(mob/user as mob)
 	if( istype(user,/mob/living/carbon/monkey) )
 		user << "<span class='warning'>It's too heavy for you to wield fully.</span>"
 		return
@@ -63,7 +63,7 @@
 		if (src.unwieldsound)
 			playsound(src.loc, unwieldsound, 50, 1)
 
-		var/obj/item/weapon/twohanded/offhand/O = user.get_inactive_hand()
+		var/obj/item/twohanded/offhand/O = user.get_inactive_hand()
 		if(O && istype(O))
 			O.unwield()
 		return
@@ -77,14 +77,14 @@
 		if (src.wieldsound)
 			playsound(src.loc, wieldsound, 50, 1)
 
-		var/obj/item/weapon/twohanded/offhand/O = new(user) ////Let's reserve his other hand~
+		var/obj/item/twohanded/offhand/O = new(user) ////Let's reserve his other hand~
 		O.name = "[initial(name)] - offhand"
 		O.desc = "Your second grip on the [initial(name)]"
 		user.put_in_inactive_hand(O)
 		return
 
 ///////////OFFHAND///////////////
-/obj/item/weapon/twohanded/offhand
+/obj/item/twohanded/offhand
 	w_class = 5.0
 	icon_state = "offhand"
 	name = "offhand"
@@ -98,7 +98,7 @@
 /*
  * Fireaxe
  */
-/obj/item/weapon/twohanded/fireaxe  // DEM AXES MAN, marker -Agouri
+/obj/item/twohanded/fireaxe  // DEM AXES MAN, marker -Agouri
 	icon_state = "fireaxe0"
 	name = "fire axe"
 	desc = "Truly, the weapon of a madman. Who would think to fight fire with an axe?"
@@ -111,22 +111,22 @@
 	force_wielded = 40
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
 
-/obj/item/weapon/twohanded/fireaxe/update_icon()  //Currently only here to fuck with the on-mob icons.
+/obj/item/twohanded/fireaxe/update_icon()  //Currently only here to fuck with the on-mob icons.
 	icon_state = "fireaxe[wielded]"
 	return
 
-/obj/item/weapon/twohanded/fireaxe/afterattack(atom/A as mob|obj|turf|area, mob/user as mob, proximity)
+/obj/item/twohanded/fireaxe/afterattack(atom/A as mob|obj|turf|area, mob/user as mob, proximity)
 	if(!proximity) return
 	..()
 	if(A && wielded && (istype(A,/obj/structure/window) || istype(A,/obj/structure/grille))) //destroys windows and grilles in one hit
 		if(istype(A,/obj/structure/window)) //should just make a window.Break() proc but couldn't bother with it
 			var/obj/structure/window/W = A
 
-			new /obj/item/weapon/shard( W.loc )
+			new /obj/item/shard( W.loc )
 			if(W.reinf) new /obj/item/stack/rods( W.loc)
 
 			if (W.dir == SOUTHWEST)
-				new /obj/item/weapon/shard( W.loc )
+				new /obj/item/shard( W.loc )
 				if(W.reinf) new /obj/item/stack/rods( W.loc)
 		qdel(A)
 
@@ -134,7 +134,7 @@
 /*
  * Double-Bladed Energy Swords - Cheridan
  */
-/obj/item/weapon/twohanded/dualsaber
+/obj/item/twohanded/dualsaber
 	icon_state = "dualsaber0"
 	name = "double-bladed energy sword"
 	desc = "Handle with care."
@@ -153,11 +153,11 @@
 	origin_tech = "magnets=3;syndicate=4"
 	attack_verb = list("attacked", "slashed", "sliced", "torn", "ripped", "diced", "cut")
 
-/obj/item/weapon/twohanded/dualsaber/update_icon()
+/obj/item/twohanded/dualsaber/update_icon()
 	icon_state = "dualsaber[wielded]"
 	return
 
-/obj/item/weapon/twohanded/dualsaber/attack(target as mob, mob/living/user as mob)
+/obj/item/twohanded/dualsaber/attack(target as mob, mob/living/user as mob)
 	..()
 	if((CLUMSY in user.mutations) && (wielded) &&prob(40))
 		user << "\red You twirl around a bit before losing your balance and impaling yourself on the [src]."
@@ -169,7 +169,7 @@
 				user.dir = i
 				sleep(1)
 
-/obj/item/weapon/twohanded/dualsaber/IsShield()
+/obj/item/twohanded/dualsaber/IsShield()
 	if(wielded)
 		return 1
 	else
@@ -178,7 +178,7 @@
 //Ghetto-weapons
 
 //spears, bay edition
-/obj/item/weapon/twohanded/spear
+/obj/item/twohanded/spear
 	icon_state = "spearglass0"
 	name = "spear"
 	desc = "A haphazardly-constructed yet still deadly weapon of ancient design."
@@ -195,14 +195,14 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb = list("attacked", "poked", "jabbed", "torn", "gored")
 
-/obj/item/weapon/twohanded/spear/update_icon()
+/obj/item/twohanded/spear/update_icon()
 	icon_state = "spearglass[wielded]"
 	return
 
 
 //toolbox-hammer
 /*
-/obj/item/weapon/twohanded/t_hammer
+/obj/item/twohanded/t_hammer
 	icon_state = "Btoolbox_W"
 	name = "toolbox-hammer"
 	desc = "A strange construction, a toolbox attached to a rod. It looks like a hammer."

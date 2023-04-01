@@ -1,6 +1,6 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
 
-/obj/item/weapon/implant/freedom
+/obj/item/implant/freedom
 	name = "freedom implant"
 	desc = "Use this to escape from those evil Red Shirts."
 	item_color = "r"
@@ -21,7 +21,7 @@
 			src.uses--
 			source << "You feel a faint click."
 			if (source.handcuffed)
-				var/obj/item/weapon/W = source.handcuffed
+				var/obj/item/W = source.handcuffed
 				source.handcuffed = null
 				source.update_inv_handcuffed()
 				if (source.client)
@@ -32,7 +32,7 @@
 					if (W)
 						W.layer = initial(W.layer)
 			if (source.legcuffed)
-				var/obj/item/weapon/W = source.legcuffed
+				var/obj/item/W = source.legcuffed
 				source.legcuffed = null
 				source.update_inv_legcuffed()
 				if (source.client)

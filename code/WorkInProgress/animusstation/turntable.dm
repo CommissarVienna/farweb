@@ -56,7 +56,7 @@
 	desc = "A jukebox is a partially automated music-playing device, usually a coin-operated machine, that will play a patron's selection from self-contained media."
 	icon = 'icons/effects/lasers2.dmi'
 	icon_state = "Jukebox7"
-	var/obj/item/weapon/disk/music/disk
+	var/obj/item/disk/music/disk
 	var/playing = 0
 	var/datum/turntable_soundtrack/track = null
 	var/volume = 100
@@ -94,8 +94,8 @@
 
 
 /obj/machinery/party/turntable/attackby(obj/O, mob/user)
-	if(istype(O, /obj/item/weapon/disk/music) && !disk)
-		var/obj/item/weapon/disk/music/M = O
+	if(istype(O, /obj/item/disk/music) && !disk)
+		var/obj/item/disk/music/M = O
 		if(M.bloqueado)
 			to_chat(user, "The disk is blocked.")
 			return

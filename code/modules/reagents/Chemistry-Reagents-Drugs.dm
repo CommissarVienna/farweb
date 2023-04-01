@@ -15,19 +15,14 @@
 
 /datum/reagent/nicotine/on_mob_life(var/mob/living/carbon/human/M as mob)
 	if(!M) M = holder.my_atom
-	var/smoke_message = pick("You can just feel your lungs dying!", "You feel relaxed.", "You feel calmed.", "You feel the lung cancer forming.", "You feel the money you wasted.", "You feel like a space cowboy.", "You feel rugged.")
-	if(M.vice == "Smoker")
+	if(M.has_vice("Smoker"))
 		M.viceneed = 0
-	if(prob(5))
-		M << "<span class='notice'>[smoke_message]</span>"
 	M.AdjustStunned(-1)
 	M.AdjustWeakened(-1*REM)
 	..()
 	return
 
 /datum/reagent/nicotine/overdose_process(var/mob/living/M as mob)
-	if(prob(20))
-		M << "You feel like you smoked too much."
 	M.adjustToxLoss(1*REM)
 	M.adjustOxyLoss(1*REM)
 	..()
@@ -53,17 +48,15 @@
 		return
 	if(first_life)
 		first_life = FALSE
-		valueAddIT = rand(1,2)
-		valueAddDX = -rand(1,2)
 		if(M.special == "weedstrong")
-			M.add_stats(2, 1, -2, 3)
+			M.my_stats.add_mod("maconha", stat_list(ST = 2, HT = 1, DX = -2, IN = 3), time = 900)
 		else
-			M.add_stats(1, 0, -2, 2)
+			M.my_stats.add_mod("maconha", stat_list(ST = 1, DX = -2, IN = 2), time = 900)
 
 
 
 	var/smoke_message = pick("...I feel good.", "...I... Feel relaxed", "... Oh oh Oh! ...", "... Esse tal do mato ....")
-	if(M.vice == "Pothead" || M.vice == "Smoker")
+	if(M.has_vice("Pothead"))
 		M.viceneed = 0
 	if(prob(5))
 		to_chat(M, "<span class='dreamershitbutitsactuallypassivebutitactuallyisbigandbold'>[smoke_message]</span>")
@@ -84,10 +77,6 @@
 	var/mob/living/carbon/human/M = holder?.my_atom
 	if(!istype(M))
 		return
-	if(M.special == "weedstrong")
-		M.reset_stats(strength=1, health=1, dexterity=1, inteligence=1)
-	else
-		M.reset_stats(strength=1, health=1, dexterity=1, inteligence=1)
 	M.enmaconhado = 0
 	for(var/obj/ripple_controller/R in M?.client?.screen)
 		var/filter = R.get_filter("negors")

@@ -1,12 +1,12 @@
 /obj/item
     var/list/poisoned = list()
 
-/obj/item/weapon/reagent_containers/attackby(obj/item/W, mob/user)
+/obj/item/reagent_containers/attackby(obj/item/W, mob/user)
     if(!ishuman(user))
         return ..()
-    if(istype(src, /obj/item/weapon/reagent_containers/syringe))
+    if(istype(src, /obj/item/reagent_containers/syringe))
         return ..()
-    if(istype(src,/obj/item/weapon/reagent_containers/pill))
+    if(istype(src,/obj/item/reagent_containers/pill))
         return ..()
     if(W.sharp || W.edge)
         if(reagents.total_volume >= reagents?.reagent_list.len)

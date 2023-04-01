@@ -1,6 +1,6 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
 
-/obj/item/weapon/implantcase
+/obj/item/implantcase
 	name = "Glass Case"
 	desc = "A case containing an implant."
 	icon_state = "implantcase-0"
@@ -8,7 +8,7 @@
 	throw_speed = 1
 	throw_range = 5
 	w_class = 1.0
-	var/obj/item/weapon/implant/imp = null
+	var/obj/item/implant/imp = null
 	proc
 		update()
 
@@ -21,9 +21,9 @@
 		return
 
 
-	attackby(obj/item/weapon/I as obj, mob/user as mob)
+	attackby(obj/item/I as obj, mob/user as mob)
 		..()
-		if (istype(I, /obj/item/weapon/pen))
+		if (istype(I, /obj/item/pen))
 			var/t = input(user, "What would you like the label to be?", text("[]", src.name), null)  as text
 			if (user.get_active_hand() != I)
 				return
@@ -34,7 +34,7 @@
 				src.name = text("Glass Case- '[]'", t)
 			else
 				src.name = "Glass Case"
-		else if(istype(I, /obj/item/weapon/reagent_containers/syringe))
+		else if(istype(I, /obj/item/reagent_containers/syringe))
 			if(!src.imp)	return
 			if(!src.imp.allow_reagents)	return
 			if(src.imp.reagents.total_volume >= src.imp.reagents.maximum_volume)
@@ -43,7 +43,7 @@
 				spawn(5)
 					I.reagents.trans_to(src.imp, 5)
 					user << "\blue You inject 5 units of the solution. The syringe now contains [I.reagents.total_volume] units."
-		else if (istype(I, /obj/item/weapon/implanter))
+		else if (istype(I, /obj/item/implanter))
 			if (I:imp)
 				if ((src.imp || I:imp.implanted))
 					return
@@ -65,7 +65,7 @@
 
 
 
-/obj/item/weapon/implantcase/tracking
+/obj/item/implantcase/tracking
 	name = "Glass Case- 'Tracking'"
 	desc = "A case containing a tracking implant."
 	icon = 'icons/obj/items.dmi'
@@ -73,13 +73,13 @@
 
 
 	New()
-		src.imp = new /obj/item/weapon/implant/tracking( src )
+		src.imp = new /obj/item/implant/tracking( src )
 		..()
 		return
 
 
 
-/obj/item/weapon/implantcase/explosive
+/obj/item/implantcase/explosive
 	name = "Glass Case- 'Explosive'"
 	desc = "A case containing an explosive implant."
 	icon = 'icons/obj/items.dmi'
@@ -87,25 +87,25 @@
 
 
 	New()
-		src.imp = new /obj/item/weapon/implant/explosive( src )
+		src.imp = new /obj/item/implant/explosive( src )
 		..()
 		return
 
 
 
-/obj/item/weapon/implantcase/chem
+/obj/item/implantcase/chem
 	name = "Glass Case- 'Chem'"
 	desc = "A case containing a chemical implant."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "implantcase-b"
-/obj/item/weapon/implantcase/chem/New()
+/obj/item/implantcase/chem/New()
 
-	src.imp = new /obj/item/weapon/implant/chem( src )
+	src.imp = new /obj/item/implant/chem( src )
 	..()
 	return
 
 
-/obj/item/weapon/implantcase/loyalty
+/obj/item/implantcase/loyalty
 	name = "Glass Case- 'Loyalty'"
 	desc = "A case containing a loyalty implant."
 	icon = 'icons/obj/items.dmi'
@@ -113,11 +113,11 @@
 
 
 	New()
-		src.imp = new /obj/item/weapon/implant/loyalty( src )
+		src.imp = new /obj/item/implant/loyalty( src )
 		..()
 		return
 
-/obj/item/weapon/implantcase/mentor
+/obj/item/implantcase/mentor
 	name = "Glass Case- 'Mentor protection'"
 	desc = "A case containing a mentor protection implant."
 	icon = 'icons/obj/items.dmi'
@@ -125,18 +125,18 @@
 
 
 	New()
-		src.imp = new /obj/item/weapon/implant/mentor( src )
+		src.imp = new /obj/item/implant/mentor( src )
 		..()
 		return
 
 
-/obj/item/weapon/implantcase/death_alarm
+/obj/item/implantcase/death_alarm
 	name = "Glass Case- 'Death Alarm'"
 	desc = "A case containing a death alarm implant."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "implantcase-b"
 
 	New()
-		src.imp = new /obj/item/weapon/implant/death_alarm( src )
+		src.imp = new /obj/item/implant/death_alarm( src )
 		..()
 		return

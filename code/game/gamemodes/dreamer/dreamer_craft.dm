@@ -6,7 +6,7 @@
 	name = "Wonder"
 	id = "INRI"
 	key = 1
-	materials = list(/obj/item/weapon/bone = 2, /obj/item/weapon/skull = 1, /obj/item/weapon/reagent_containers/food/snacks/organ/lungs = 3)
+	materials = list(/obj/item/bone = 2, /obj/item/skull = 1, /obj/item/reagent_containers/food/snacks/organ/lungs = 3)
 	desc_materials = "Bones: 2, Skulls: 1, Lungs: 3"
 	path_type = /obj/structure/wonder/first
 
@@ -14,7 +14,7 @@
 	name = "Wonder"
 	id = "INRR"
 	key = 2
-	materials = list(/obj/item/weapon/reagent_containers/food/snacks/organ/guts = 2, /obj/item/weapon/organ/jaw = 2, /obj/item/weapon/reagent_containers/food/snacks/organ/liver = 1)
+	materials = list(/obj/item/reagent_containers/food/snacks/organ/guts = 2, /obj/item/organ/jaw = 2, /obj/item/reagent_containers/food/snacks/organ/liver = 1)
 	desc_materials = "Guts: 2, Jaw: 2, Livers: 1"
 	path_type = /obj/structure/wonder/second
 
@@ -22,7 +22,7 @@
 	name = "Wonder"
 	id = "INTR"
 	key = 3
-	materials = list(/obj/item/weapon/reagent_containers/food/snacks/organ/stomach = 2, /obj/item/weapon/bone = 2, /obj/item/weapon/organ/eye = 1)
+	materials = list(/obj/item/reagent_containers/food/snacks/organ/stomach = 2, /obj/item/bone = 2, /obj/item/organ/eye = 1)
 	desc_materials = "Stomach: 2, Bones: 2, Eye: 1"
 	path_type = /obj/structure/wonder/third
 
@@ -30,13 +30,14 @@
 	name = "Wonder"
 	id = "INRF"
 	key = 4
-	materials = list(/obj/item/weapon/organ/eye = 2, /obj/item/weapon/reagent_containers/food/snacks/organ/kidneys = 1, /obj/item/weapon/reagent_containers/food/snacks/organ/stomach = 2)
+	materials = list(/obj/item/organ/eye = 2, /obj/item/reagent_containers/food/snacks/organ/kidneys = 1, /obj/item/reagent_containers/food/snacks/organ/stomach = 2)
 	desc_materials = "Eye: 2, Kidneys: 1, Stomach: 2"
 	path_type = /obj/structure/wonder/fourth
 
 /mob/living/carbon/human/proc/dreamer()
 	set name = "Wonders"
-	set category = "The Dreamer"
+	set desc = "Wonders"
+	set category = "gpc"
 
 	usr << browse(dreamRecipes(), "window=dreamercreation;size=300x650;can_close=1;can_resize=0;border=0;titlebar=1")
 
@@ -62,3 +63,49 @@
 
 	fullHTML += "<BR><BR><div class='desc'>* materials go under the character</div><div class='desc'>** Between the walls</div></body></head></html>"
 	return fullHTML
+
+/mob/living/carbon/human/proc/dreamerArchetypes(mob/living/carbon/human/H)
+	set hidden = 0
+	set name = "dreamerArchetypes"
+	set category = "The Dreamer"
+	set desc = "The Nightmare"
+
+	var/list/dreamerArchetypeList = list("The Chaser", "The Brute")
+	H.dreamerArchetype = input(H,"Select your archetype.","DREAMER ARCHETYPES") in dreamerArchetypeList
+	switch(H.dreamerArchetype)
+		if("The Chaser") // Ghostface
+			H.dreamerArchetype = DREAMER_GHOSTFACE
+
+			H.my_skills.change_skill(SKILL_MELEE, 17)
+			H.my_skills.change_skill(SKILL_RANGE, 0)
+			H.my_skills.change_skill(SKILL_CRAFT, 15)
+			H.my_skills.change_skill(SKILL_CLIMB, 17)
+			H.my_skills.change_skill(SKILL_KNIFE, 17)
+			H.my_skills.change_skill(SKILL_SNEAK, 17)
+
+			H.my_stats.change_stat(STAT_ST , 5)
+			H.my_stats.change_stat(STAT_DX , 15)
+			H.my_stats.change_stat(STAT_HT , 15)
+
+			H.add_perk(/datum/perk/ref/silent)
+			H.add_perk(/datum/perk/ref/jumper)
+			H.add_perk(/datum/perk/ref/slippery)
+
+			to_chat(H, SPAN_DREAMER("BEHIND THE STATUES HAVE WHAT I SEEK."))
+			H.verbs -= /mob/living/carbon/human/proc/dreamerArchetypes
+		if("The Brute") // Classic Dreamer
+			H.dreamerArchetype = DREAMER_BRUTE
+
+			H.my_skills.change_skill(SKILL_MELEE, 17)
+			H.my_skills.change_skill(SKILL_RANGE, 0)
+			H.my_skills.change_skill(SKILL_CRAFT, 15)
+			H.my_skills.change_skill(SKILL_UNARM, 17)
+
+			H.my_stats.change_stat(STAT_ST , 15)
+			H.my_stats.change_stat(STAT_DX , 5)
+			H.my_stats.change_stat(STAT_HT , 15)
+
+			H.add_perk(/datum/perk/ref/strongback)
+			H.add_perk(/datum/perk/morestamina)
+			H.add_perk(/datum/perk/ref/disarm)
+			H.verbs -= /mob/living/carbon/human/proc/dreamerArchetypes

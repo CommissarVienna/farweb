@@ -23,7 +23,7 @@
 
 	A.Victim = null
 	A.buckled_mob = null
-	playsound(src.loc, 'lw_free.ogg', 100, 0, -1)
+	playsound(src.loc, 'sound/LW2/lw_free.ogg', 100, 0, -1)
 	H.buckled = null
 	H.lifeweb_locked = FALSE
 	H.anchored = null
@@ -40,6 +40,8 @@
 	set hidden = 1
 	var/obj/structure/stool/bed/chair/altar/A = lifewebChair
 	var/mob/living/carbon/human/H = A.Victim
+	for(var/obj/machinery/lifeweb/control/C in view(1, src))
+		playsound(C.loc, 'sound/LW2/keyhit_03.ogg', 100, 0, -1)
 
 	if(A.Victim)
 		if(A.status)
@@ -66,6 +68,8 @@
 	set hidden = 1
 	var/obj/structure/stool/bed/chair/altar/A = lifewebChair
 	var/mob/living/carbon/human/H = A.Victim
+	for(var/obj/machinery/lifeweb/control/C in view(1, src))
+		playsound(C.loc, 'sound/LW2/keyhit_05.ogg', 100, 0, -1)
 
 	if(src.client)
 		var/client/C = src.client
@@ -81,4 +85,4 @@
 	lfwbopen = FALSE
 	if(mob && sound)
 		for(var/obj/machinery/lifeweb/control/C in view(1, mob))
-			playsound(C.loc, 'sound/lfwbsounds/lw_key2.ogg', 100, 1)
+			playsound(C.loc, 'sound/LW2/keyhit_01.ogg', 100, 1)

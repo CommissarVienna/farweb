@@ -19,7 +19,7 @@ var/minimig_grace = TRUE
 var/minimig_bandit = FALSE
 /datum/game_mode/minimig/post_setup()
 	job_master.ResetOccupations()
-	world << 'allmigration_start.ogg'
+	world << 'sound/music/allmigration_start.ogg'
 	spawn (rand(waittime_l, waittime_h))
 		to_chat(world, "<br>")
 		to_chat(world, "<span class='ravenheartfortress'>Mini-Migration</span>")
@@ -61,11 +61,7 @@ var/minimig_bandit = FALSE
 						spawn(600)
 							roundendready = TRUE
 							ticker.mode.check_win()
-							world << 'allmigration_end.ogg'
-							/* Temp Chromie farm prevention
-							for(var/client/C in clients)
-								C.ChromieWinorLoose(C, 1)
-							*/
+							world << 'sound/music/allmigration_end.ogg'
 							for(var/mob/living/M in player_list)
 								if(M.stat != DEAD)
 									M.client.ChromieWinorLoose(M.client, 1)

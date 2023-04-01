@@ -7,7 +7,6 @@ var/global/obj/effect/overlay/slmaster = null
 var/global/times_came = 0
 
 var/global/list/active_areas = list()
-var/global/list/gibbed_people = list()
 var/global/list/all_areas = list()
 var/global/list/machines = list()
 var/global/list/processing_objects = list()
@@ -50,7 +49,7 @@ var/list/paper_blacklist = list("java","onblur","onchange","onclick","ondblclick
 
 var/global/list/nao_consigo = list("Merda!", "Droga!", "Inferno!", "Porra!", "Desgraça!")
 
-var/global/list/nao_consigoen = list("Fnord,", "No!", "I've failed,", "NOPE!", "Krya,", "Neca de pitibiribas,")
+var/global/list/fnord = list("Fnord,", "No!", "I've failed,", "NOPE!", "Krya,", "Neca de pitibiribas,","I wish I could but no,", "I've tried my hardest but,")
 
 var/BLINDBLOCK = 0
 var/DEAFBLOCK = 0
@@ -95,7 +94,7 @@ var/diary = null
 var/diaryofmeanpeople = null
 var/href_logfile = null
 
-var/game_version = "Farweb"
+var/game_version = "Nearweb"
 var/changelog_hash = ""
 var/game_year = (text2num(time2text(world.realtime, "YYYY")) + 544)
 
@@ -240,10 +239,10 @@ var/list/awaydestinations = list()	//a list of landmarks that the warpgate can t
 
 	// MySQL configuration
 
-var/sqladdress = "127.0.0.1"
-var/sqlport = "3306"
-var/sqldb = "white"
-var/sqllogin = "root"
+var/sqladdress = ""
+var/sqlport = ""
+var/sqldb = ""
+var/sqllogin = ""
 var/sqlpass = ""
 
 	// For FTP requests. (i.e. downloading runtime logs.)

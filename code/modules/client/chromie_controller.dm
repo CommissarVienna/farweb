@@ -1,29 +1,28 @@
 var/silenceofpigs = FALSE
 var/trapokalipsis = FALSE
 var/global/list/hiden_obols = list()
-/client/proc/ChromieReturn(client/user, var/cost, var/name, var/desc)
-	if(!user)
-		return
+/client/proc/ChromieReturn(var/cost, var/name, var/desc)
 	if(!cost)
-		return
+		return FALSE
 	if(current_server == "S3")
-		return
-	if(info.chromosomes < cost)
+		return FALSE
+	if(chromie_holder.chromie_number < cost)
 		to_chat(usr, "Not enough chromosomes.")
-		return
-	if(info.chromosomes >= cost)
-		info.AdjustChromies(cost*-1) // multiply by negative one to make the value negative
-		ChromieDO(user, name)
+		return FALSE
+	if(chromie_holder.chromie_number >= cost)
+		AdjustChromies(cost*-1) // multiply by negative one to make the value negative
+		ChromieDO(name)
 		to_chat(usr, "<span class='excomm'>[cost] Chromosomes lost!</span>")
+		return TRUE
 
-/client/proc/ChromieDO(mob/user, var/name)
+/client/proc/ChromieDO(var/name)
 	if(current_server == "S3")
 		return
 	switch(name)
 		if("Limpar Cromossomos")
 			return
 		if("ReRolarSpecial")
-			var/mob/new_player/N = user
+			var/mob/new_player/N = usr
 			if(N.special || SpecialRolledList.Find(N.ckey))
 				if(SpecialRolledList.Find(N.ckey))
 					SpecialRolledList.Remove(N.ckey)
@@ -38,7 +37,7 @@ var/global/list/hiden_obols = list()
 			message_admins("[src] has launched the Babylon.", 1)
 			world << sound('sound/AI/shuttlecalled.ogg')
 		if("RetirarVice")
-			var/mob/living/carbon/human/H = user
+			var/mob/living/carbon/human/H = usr
 			if(H.vice)
 				H.vice = null
 				H.viceneed = 0
@@ -46,16 +45,16 @@ var/global/list/hiden_obols = list()
 				return
 		if("SilencePigs")
 			to_chat(world, "<p style='font-size:22px'><span class='passivebold'>[src.key] grants us Silence of the Pigs!</span></p>")
-			world << 'pigdeath.ogg'
+			world << 'sound/pigdeath.ogg'
 			silenceofpigs = TRUE
 			return
 		if("Trapokalipsis")
 			trapokalipsis = TRUE
 			to_chat(world, "<p style='font-size:22px'><span class='passivebold'>[src.key] grants us Trapokalipsis!</span></p>")
-			trapapoc = ckeywhitelistweb.Copy()
-			world << 'ladyend.ogg'
+			donation_trap = ckeywhitelistweb.Copy()
+			world << 'sound/effects/ladyend.ogg'
 		if("ForceAspect")
-			var/mob/new_player/N = user
+			var/mob/new_player/N = usr
 			var/events_pick = subtypesof(/datum/round_event)
 			var/list/events_choose
 			for(var/datum/round_event/E in events_pick)
@@ -72,30 +71,30 @@ var/global/list/hiden_obols = list()
 				to_chat(N, "[number]. <b>[R.name]</b> - [R.event_message]")
 				number++
 		if("ReceiveObols")
-			var/obj/item/weapon/card/id/ID = found_ring_by_human(user)
+			var/obj/item/card/id/ID = found_ring_by_human(usr)
 			if(!ID)
-				hiden_obols += user.ckey
-				to_chat(user, "<i>I hide them somewhere, but where...</i>")
+				hiden_obols += usr.ckey
+				to_chat(usr, "<i>I hide them somewhere, but where...</i>")
 			else
-				to_chat(user, "Did i receive it?")
+				to_chat(usr, "Did I receive it?")
 				ID.receivePayment(50)
 
-/client/proc/ChromieWinorLoose(mob/user, var/value)
+/client/proc/ChromieWinorLoose(var/value)
 	var/chromossomeTXT
 	if(!value)
 		return
 	if(current_server == "S3")
 		return
 	if(value > 0)
-		info.AdjustChromies(value)
+		AdjustChromies(value)
 		chromossomeTXT = "<span class='passivebold'>[value] Chromosomes gained!</span>"
 		if(value > 3)
 			chromossomeTXT = "<span class='passivebold'>[value] Chromosomes gained!</span>"
 		to_chat(src, chromossomeTXT)
 	if(value < 0)
-		if(info.chromosomes <= -5)
+		if(chromie_holder.chromie_number <= -5)
 			return
-		info.AdjustChromies(value)
+		AdjustChromies(value)
 		cromosperdidos += value
 		chromossomeTXT = "<span class='excomm'>[value] Chromosomes lost!</span>"
 		if(value > -3)
@@ -112,7 +111,7 @@ var/global/list/hiden_obols = list()
 	var/descE = "Voce vai limpar todos os cromossomos dos jogadores."
 	var/cost = 100
 
-	ChromieReturn(usr, cost, nameE, descE)
+	ChromieReturn(cost, nameE, descE)
 
 
 /client/verb/allMig()
@@ -125,16 +124,19 @@ var/global/list/hiden_obols = list()
 	var/descE = "Voce vai fazer o gamemode All Mig."
 	var/cost = 100
 
-	ChromieReturn(usr, cost, nameE, descE)
+	ChromieReturn(cost, nameE, descE)
 
-/*/client/verb/callCharon()
+/client/verb/callCharon()
 	set category = "Chromossomes"
 	set name = "ChamarCharon"
 	set desc = "Voce vai chamar a Charon."
 
 	var/nameE = "Chamar a Babylon"
-	var/descE = "Voce vai chamar a Babylon."
+	var/descE = "You will call the Babylon."
 	var/cost = 10
+
+	if(!ChromieReturn(cost, nameE, descE)) //This one isn't in the chromieDO proc for some reason.
+		return
 
 	if(ticker.mode.config_tag == "kingwill" && world.time < 80 MINUTES)
 		to_chat(usr, "<span class='combatbold'>The tribunal will not allow the Babylon to be launched.</span>")
@@ -154,8 +156,6 @@ var/global/list/hiden_obols = list()
 	log_game("[key_name(usr)] has launched the Babylon.")
 	message_admins("[key_name_admin(usr)] has launched the Babylon.", 1)
 
-	ChromieReturn(usr, cost, nameE, descE)*/
-
 /client/verb/jobConcealCustom()
 	set category = "Chromossomes"
 	set name = "EscondercargoCustom"
@@ -165,7 +165,7 @@ var/global/list/hiden_obols = list()
 	var/descE = "Voce vai se conceder um cargo customizado."
 	var/cost = 10
 
-	ChromieReturn(usr, cost, nameE, descE)
+	ChromieReturn(cost, nameE, descE)
 
 /client/verb/jobConceal()
 	set category = "Chromossomes"
@@ -176,7 +176,7 @@ var/global/list/hiden_obols = list()
 	var/descE = "Voce vai se conceder um cargo."
 	var/cost = 2
 
-	ChromieReturn(usr, cost, nameE, descE)
+	ChromieReturn(cost, nameE, descE)
 
 /client/verb/rerollSpecial()
 	set category = "Chromossomes"
@@ -187,7 +187,7 @@ var/global/list/hiden_obols = list()
 	var/descE = "Voce vai dar reroll em seu Special."
 	var/cost = 2
 
-	ChromieReturn(usr, cost, nameE, descE)
+	ChromieReturn(cost, nameE, descE)
 
 /client/verb/Trapokalipsis()
 	set category = "Chromossomes"
@@ -201,7 +201,7 @@ var/global/list/hiden_obols = list()
 	if(trapokalipsis)
 		return
 
-	ChromieReturn(usr, cost, nameE, descE)
+	ChromieReturn(cost, nameE, descE)
 
 /client/verb/removeVice()
 	set category = "Chromossomes"
@@ -215,7 +215,7 @@ var/global/list/hiden_obols = list()
 	if(!ticker || ticker.current_state != GAME_STATE_PLAYING)
 		to_chat(src, "The round is either not ready, or has already finished...")
 		return 0
-	ChromieReturn(usr, cost, nameE, descE)
+	ChromieReturn(cost, nameE, descE)
 
 /client/verb/silencePigs()
 	set category = "Chromossomes"
@@ -227,7 +227,7 @@ var/global/list/hiden_obols = list()
 	var/cost = 2
 	if(silenceofpigs)
 		return
-	ChromieReturn(usr, cost, nameE, descE)
+	ChromieReturn(cost, nameE, descE)
 
 /client/verb/ForceAspect()
 	set category = "Chromossomes"
@@ -242,7 +242,7 @@ var/global/list/hiden_obols = list()
 		to_chat(usr, "It's only useble before round begins.")
 		return
 
-	ChromieReturn(usr, cost, nameE, descE)
+	ChromieReturn(cost, nameE, descE)
 
 /client/verb/ForcePadla()
 	set category = "Chromossomes"
@@ -257,7 +257,7 @@ var/global/list/hiden_obols = list()
 		to_chat(usr, "Wait for round start.")
 		return
 
-	ChromieReturn(usr, cost, nameE, descE)
+	ChromieReturn(cost, nameE, descE)
 
 /client/verb/ReceiveObols()
 	set category = "Chromossomes"
@@ -272,4 +272,13 @@ var/global/list/hiden_obols = list()
 		to_chat(usr, "I need to be human, after all...")
 		return
 
-	ChromieReturn(usr, cost, nameE, descE)
+	ChromieReturn(cost, nameE, descE)
+
+/datum/admins/proc/change_chromies()
+	set name = "ChangeChromies"
+	set hidden = 1
+	if(!check_rights(R_SERVER))
+		to_chat(usr, "You don't have the  rights! O, you don't have the rights!")
+		return
+	var/new_number = input("Enter chromie amount", "Chromies") as num
+	usr.client.chromie_holder.chromie_number += new_number

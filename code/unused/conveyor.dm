@@ -92,8 +92,8 @@
 // attack with item, place item on conveyor
 
 /obj/machinery/conveyor/attackby(var/obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/grab))	// special handling if grabbing a mob
-		var/obj/item/weapon/grab/G = I
+	if(istype(I, /obj/item/grab))	// special handling if grabbing a mob
+		var/obj/item/grab/G = I
 		G.affecting.Move(src.loc)
 		qdel(G)
 		return
@@ -117,7 +117,7 @@
 
 			// else if no mob in loc, then allow coil to be placed
 
-	else if(istype(I, /obj/item/weapon/wirecutters))
+	else if(istype(I, /obj/item/wirecutters))
 		var/mob/M = locate() in src.loc
 		if(M && M.buckled == src)
 			M.buckled = null

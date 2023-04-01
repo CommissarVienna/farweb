@@ -54,7 +54,7 @@
 #define I_HELP		"help"
 #define I_DISARM	"disarm"
 #define I_GRAB		"grab"
-#define I_HURT		"harm"
+#define I_HURT		"hurt"
 #define I_DODGE		"dodge"
 #define I_PARRY		"parry"
 
@@ -93,8 +93,6 @@
 
 
 #define MIN_SUPPLIED_LAW_NUMBER 15
-#define MAX_SUPPLIED_LAW_NUMBER 50
-
 #define MAX_SUPPLIED_LAW_NUMBER 50
 
 // NT's alignment towards the character
@@ -283,3 +281,10 @@
 #define ARMOR_CHAINMAIL 30
 #define ARMOR_METAL 40
 #define ARMOR_FODIDA 50
+
+#define RIGHT_HAND "Right-Handed"
+#define LEFT_HAND "Left-Handed"
+#define AMBIDEXTROUS "Ambidextrous"
+
+#define LEGAL_RELIGION	"Gray Church"
+#define ILLEGAL_RELIGION	"Thanati"

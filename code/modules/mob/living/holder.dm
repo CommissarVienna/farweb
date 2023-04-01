@@ -33,7 +33,7 @@
 		return FALSE
 	if(isliving(loc))
 		var/mob/living/L = loc
-		to_chat(L, "<span class='combat'>[pick(nao_consigoen)] \the [held_mob] has escaped my grasp!</span>")
+		to_chat(L, "<span class='combat'>[pick(fnord)] \the [held_mob] has escaped my grasp!</span>")
 		L.drop_from_inventory(src)
 	held_mob.forceMove(get_turf(src))
 	held_mob.dir = SOUTH

@@ -42,20 +42,13 @@
 	for(var/obj/I in client?.usingPlanes)
 		if(istype(I, /obj/blur_planemaster)) continue
 		if(istype(I, /obj/lighting_plane)) continue
-		//I.add_filter("cur", 1, list("type" = "bloom", size = 0.1, offset =0.2, alpha =55))
-		//I.add_filter("cur", 1, list("type" = "blur", size = 0.4))
-		//if(istype(I, /obj/screen/plane_master)) continue
-		//I.add_filter("cor", 3, list("type" = "color", color=aspX, space=FILTER_COLOR_HSL))
-		//I.add_filter("shadow", 4, list("type" = "drop_shadow", x=0, y=2, size=4, color = "#04080FAA"))
 
 /mob/add_filter_effects()
 	if(!client) return
 	var/obj/screen_controller/p0 = new
 	var/obj/blur_planemaster/p_1 = new
 	var/obj/screen_controller/p2 = new
-	var/obj/screen/plane_master/shadowcasting/p3 = new
 	var/obj/screen_controller/p4 = new
-	var/obj/screen_controller/p5 = new
 
 	var/obj/screen/plane_master/vision_cone_target/VC = new //ALWAYS DEFINE THIS, WEIRD SHIT HAPPENS OTHERWISE
 	var/obj/screen/plane_master/vision_cone/primary/mob = new//creating new masters to remove things from vision.
@@ -67,14 +60,8 @@
 	p_1.render_target = "all-1"
 	p2.plane = 15
 	p2.render_target = "all2"
-	p3.plane = SHADOWCASTING_PLANE
-	p3.add_filter("turf_blocker", 5, list("type" = "alpha", render_source="all4", flags=MASK_INVERSE))
-	p3.render_target = "all3"
 	p4.plane = 21
 	p4.render_target = "all4"
-	p5.plane = 22
-	p5.render_target = "all5"
-	p5.add_filter("shadowcaster", 5, list("type" = "alpha", render_source="all3", flags=MASK_INVERSE))
 
 	mob.plane = 10
 	mob.render_target = "mob"
@@ -82,9 +69,8 @@
 
 	//height
 	p_1.add_filter("blur", 4, list("type" = "blur", size=1))
-	//p6.add_filter("bloom", 5, list("type" = "bloom", threshold = "#f27d0c", size = 6, offset = 10, alpha = 100))
 
-	client.screen.Add(p0, p_1, p2, p3, p4, p5, VC, mob, lighting)
+	client.screen.Add(p0, p_1, p2, p4, VC, mob, lighting)
 
 /proc/screen_thingo_plane(var/obj/A, var/_x = 1.35, var/_y = 1.12)
 	set waitfor = 0
@@ -135,10 +121,9 @@
 
 	if(moodscreen)
 		screen_loop_alpha(moodscreen)
-	//visible_message("<font color ='#649568'><b>[src]</b> sua frio em desespero.")
 	to_chat(src, "<font color ='#649568'>Cold sweat drips down your face!</font>")
 	if(firefear)
-		src << 'red_fear.ogg'
+		src << 'sound/webbers/red_fear.ogg'
 	else if (src.gender == MALE)
 		playsound(src.loc, pick('sound/voice/maletired1.ogg','sound/voice/maletired2.ogg','sound/voice/maletired3.ogg'), 90, 0, -1)
 	else
@@ -157,16 +142,21 @@
 
 	for(var/obj/I in client?.usingPlanes)
 		if(I.plane == -10) continue //shitcode but if it's blur plane, don't blur it more.
-		if(I.plane == 18) continue //shitcode but if it's SHADOWCASTING plane, don't blur it more.
 		I.add_filter("blur", 20, list("type" = "blur"))
 		var/filter = I.get_filter("blur")
 		screen_blur(filter, blurintensity, time)
-		spawn(time)
-			I?.remove_filter("blur")
+		if(time>0)
+			spawn(time)
+				I?.remove_filter("blur")
 
 /proc/screen_blur(var/filter, var/size=1, time=50)
 	set waitfor = 0
 	animate(filter, size=1, time=50)
+
+/mob/living/carbon/human/proc/remove_blur()
+	for(var/obj/I in client?.usingPlanes)
+		if(I.plane == -10) continue //shitcode but if it's blur plane, don't blur it more.
+		I?.remove_filter("blur")
 
 
 /mob/living/carbon/human/proc/heart_beat_loop(intensity = 15)

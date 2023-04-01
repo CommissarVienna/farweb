@@ -48,7 +48,7 @@
 /obj/machinery/shielding/energyconverter/attack_hand(mob/user as mob)
 	return interact(user)
 
-/obj/machinery/shielding/energyconverter/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/shielding/energyconverter/attackby(obj/item/W as obj, mob/user as mob)
 	return attack_hand(user)
 
 /obj/machinery/shielding/energyconverter/attack_paw(mob/user as mob)

@@ -19,55 +19,34 @@ obj/machinery/door/airlock/orbital/gates/proc/healthcheck()
 		broken = 1
 	return
 
-/obj/machinery/door/proc/Jitter(var/type)
-	var/old_x = pixel_x
-	var/old_y = pixel_y
-	if(!isshaking)
-		isshaking = TRUE
-		switch(type)
-			if(1)
-				pixel_x += 1
-				pixel_y += 1
-				sleep(0.5)
-				pixel_x += 1
-				pixel_y += 1
-				sleep(0.5)
-				pixel_x = old_x
-				pixel_y = old_y
-				isshaking = FALSE
-			if(2)
-				pixel_x += 1
-				pixel_y -= 1
-				sleep(0.5)
-				pixel_x += 1
-				pixel_y -= 1
-				sleep(0.5)
-				pixel_x = old_x
-				pixel_y = old_y
-				isshaking = FALSE
-			if(3)
-				pixel_x -= 1
-				pixel_y += 1
-				sleep(0.5)
-				pixel_x -= 1
-				pixel_y += 1
-				sleep(0.5)
-				pixel_x = old_x
-				pixel_y = old_y
-				isshaking = FALSE
-	else
-		return
+/obj/machinery/door/proc/Jitter(poxel_x, poxel_y, tempo)
+
+	var/pexel_x = rand(-5, 5)
+	var/pexel_y = rand(-5, 5)
+	var/tempe = rand(10, 40)
+
+	if(poxel_x)
+		pexel_x = poxel_x
+	if(poxel_y)
+		pexel_y = poxel_y
+	if(tempo)
+		tempe = tempo
+	animate(src, pixel_x = pexel_x, pixel_y = pexel_y, time = tempe/10)
+	spawn(tempe/10)
+		animate(src, pixel_x = 0, pixel_y = 0, time = 1)
 
 obj/machinery/door/airlock/orbital/gates/attack_hand(mob/user as mob)
 	if(!user)
 		return playsound(loc, 'sound/effects/metalwall.ogg', 80, 1)
 	playsound(loc, 'sound/effects/metalwall.ogg', 80, 1)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	var/pexel_x = rand(-8, 8)
+	var/pexel_y = rand(-8, 8)
+	var/tempe = rand(10, 100)
 	for(var/obj/machinery/door/airlock/orbital/gates/GATE in range(src,3))
 		if(GATE.airlock_tag == src.airlock_tag && !GATE.broken)
-			var/picktype = pick(1,2,3)
-			GATE.Jitter(picktype)
-			src.Jitter(picktype)
+			GATE.Jitter(pexel_x, pexel_y, tempe)
+			src.Jitter(pexel_x, pexel_y, tempe)
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		if(H.species.can_shred(H))
@@ -101,12 +80,14 @@ obj/machinery/door/airlock/orbital/gates/attackby(obj/item/W as obj, mob/user as
 	src.health -= W.force * 0.75
 	playsound(src.loc, 'sound/effects/metalwall.ogg', 80, 1)
 	visible_message("<span class='danger'>[src] has been hit by [user] with [W].</span>")
+	var/pexel_x = rand(-8, 8)
+	var/pexel_y = rand(-8, 8)
+	var/tempe = rand(10, 100)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	for(var/obj/machinery/door/airlock/orbital/gates/GATE in range(src,3))
 		if(GATE.airlock_tag == src.airlock_tag && !GATE.broken)
-			var/picktype = pick(1,2,3)
-			GATE.Jitter(picktype)
-			src.Jitter(picktype)
+			GATE.Jitter(pexel_x, pexel_y, tempe)
+			src.Jitter(pexel_x, pexel_y, tempe)
 	if(src.health <= 0)
 		src.healthcheck()
 
@@ -187,6 +168,7 @@ obj/machinery/door/airlock/orbital/gates/ex/healthcheck()
 	autoclose = 0
 	opacity = 0
 	layer = 2
+	plane = 0
 	density = 0
 	icon = 'icons/life/escotilha.dmi'
 	icon_state = "door_closed"
@@ -205,7 +187,7 @@ obj/machinery/door/airlock/orbital/gates/ex/healthcheck()
 			if(istype(M, /mob/living/carbon/human))
 				M.icon = 'icons/life/burnmotherfucker.dmi'
 				M.icon_state = "fire_s"
-				playsound(M.loc, 'flesh_burning.ogg', 80, 1)
+				playsound(M.loc, 'sound/effects/flesh_burning.ogg', 80, 1)
 				M.emote("agonyscream")
 				new/obj/effect/decal/cleanable/ash
 				M.dust()
@@ -220,21 +202,20 @@ obj/machinery/door/airlock/orbital/gates/ex/healthcheck()
 	processing_objects.Add(src)
 	close()
 
-/obj/machinery/door/airlock/orbital/gates/magma/open(mob/living/carbon/human/M as mob)
+/obj/machinery/door/airlock/orbital/gates/magma/open()
 	fechado = 0
 	playsound(src.loc, 'sound/lfwbsounds/lava_open.ogg', 30, 1)
 	flick("door_opening", src)
 	spawn(10)
 		icon_state = "door_open"
-	for(M in src.loc)
-		if(istype(M, /mob/living/carbon/human))
-			M.icon = 'icons/life/burnmotherfucker.dmi'
-			M.icon_state = "fire_s"
-			playsound(M.loc, 'flesh_burning.ogg', 80, 1)
-			M.emote("agonyscream")
-			new/obj/effect/decal/cleanable/ash
-			M.dust()
-			return
+	for(var/mob/living/carbon/human/M in src.loc)
+		M.icon = 'icons/life/burnmotherfucker.dmi'
+		M.icon_state = "fire_s"
+		playsound(M.loc, 'sound/effects/flesh_burning.ogg', 80, 1)
+		M.emote("agonyscream")
+		new/obj/effect/decal/cleanable/ash
+		M.dust()
+		return
 
 /obj/machinery/door/airlock/orbital/gates/magma/close()
 	fechado = 1
@@ -247,11 +228,11 @@ obj/machinery/door/airlock/orbital/gates/ex/healthcheck()
 	return 0
 
 /obj/machinery/door/airlock/orbital/gates/magma/Crossed(mob/living/carbon/human/M as mob|obj)
-	if(!fechado)
+	if(!fechado && icon_state == "door_open")
 		if(istype(M, /mob/living/carbon/human))
-			if(!M.jumping)
+			if(!M.throwing)
 				M.icon = 'icons/life/burnmotherfucker.dmi'
-				playsound(M.loc, 'flesh_burning.ogg', 80, 1)
+				playsound(M.loc, 'sound/effects/flesh_burning.ogg', 80, 1)
 				M.icon_state = "fire_s"
 				M.emote("agonyscream")
 				spawn(10)

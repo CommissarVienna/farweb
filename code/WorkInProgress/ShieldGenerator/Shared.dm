@@ -4,7 +4,7 @@
 
 /obj/machinery/shieldsbutton
 	name = "Toggle Shields"
-	icon = 'airlock_machines.dmi'
+	icon = 'icons/obj/airlock_machines.dmi'
 	icon_state = "access_button_standby"
 	var/toggle = 0
 

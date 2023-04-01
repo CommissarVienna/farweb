@@ -2,7 +2,7 @@
 	name = "Soulbreaker Teleporter"
 	desc = "Used to control a linked teleportation Hub and Station."
 	icon_state = "teleport"
-	circuit = "/obj/item/weapon/circuitboard/teleporter"
+	circuit = "/obj/item/circuitboard/teleporter"
 
 /obj/machinery/computer/soulbreaker/attack_hand(mob/living/carbon/human/M as mob)
 	if(M.handcuffed || M.legcuffed)
@@ -10,7 +10,7 @@
 	if(!M.canmove)
 		return
 	to_chat(M, "Searching...")
-	playsound(src.loc, 'console_interact7.ogg', 60, 0)
+	playsound(src.loc, 'sound/webbers/console_interact7.ogg', 60, 0)
 	for(var/mob/living/carbon/human/H in mob_list)
 		if(istype(H.amulet, /obj/item/clothing/head/amulet/breaker))
 			H.forceMove(src.loc)
@@ -20,7 +20,7 @@
 	name = "Soulbreaker Slave Seller"
 	desc = "Used to control a linked teleportation Hub and Station."
 	icon_state = "teleport"
-	circuit = "/obj/item/weapon/circuitboard/teleporter"
+	circuit = "/obj/item/circuitboard/teleporter"
 	var/list/slavetype = "Work"
 	var/totalpoints = 0
 	var/requiredpoints = 800
@@ -29,12 +29,13 @@
 /obj/machinery/computer/sellbreaker/New()
 	requiredpoints = rand(650,900)
 
-/obj/machinery/computer/sellbreaker/examine()
-	to_chat(usr, "It's in [slavetype] mode. [totalpoints]/[requiredpoints] points left!")
+/obj/machinery/computer/sellbreaker/examine(mob/user)
+	..()
+	to_chat(user, "It's in [slavetype] mode. [totalpoints]/[requiredpoints] points left!")
 
 /obj/machinery/computer/sellbreaker/attack_hand(mob/living/carbon/human/M as mob)
 	to_chat(M, "Searching...")
-	playsound(src.loc, 'console_interact7.ogg', 60, 0)
+	playsound(src.loc, 'sound/webbers/console_interact7.ogg', 60, 0)
 	for(var/obj/structure/stool/bed/chair/breaker/B in range(src,2))
 		if(istype(B.buckled_mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = B.buckled_mob
@@ -56,6 +57,9 @@
 							randomamount = rand(100,125)
 					if("Work")
 						randomamount = rand(100,125)
+			
+			if(H.happiness <= MOOD_LEVEL_SAD2)//Broken people sell better.
+				randomamount += 100 
 			soulbroken.Add(H.real_name)
 			H.buckled = null
 			H:anchored = initial(H.anchored)
@@ -77,4 +81,4 @@
 		if("Noble")
 			slavetype = "Work"
 	to_chat(user, "SLAVE TYPE: [slavetype]")
-	playsound(src.loc, 'console_interact7.ogg', 60, 0)
+	playsound(src.loc, 'sound/webbers/console_interact7.ogg', 60, 0)

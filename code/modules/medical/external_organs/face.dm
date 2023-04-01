@@ -13,6 +13,7 @@
 	iconsdamage = "head"
 	head_icon_needed = 1
 	mask_color = "#ffffff"
+	no_draw = TRUE
 
 /datum/organ/external/face/take_damage(brute, burn, sharp, edge, used_weapon = null, list/forbidden_limbs = list(), armor, specialAttack)
 	..(brute, burn, sharp, edge, used_weapon, forbidden_limbs, armor, specialAttack)

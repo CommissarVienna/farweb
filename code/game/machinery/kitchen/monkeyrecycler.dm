@@ -11,8 +11,8 @@
 	active_power_usage = 50
 	var/grinded = 0
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/weapon/wrench))
+	attackby(obj/item/W as obj, mob/user as mob)
+		if (istype(W, /obj/item/wrench))
 			if (src.anchored)
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 				user << "\blue You begin to unfasten \the [src] from the floor..."
@@ -41,8 +41,8 @@
 
 	if (src.stat != 0) //NOPOWER etc
 		return
-	if (istype(O, /obj/item/weapon/grab))
-		var/obj/item/weapon/grab/G = O
+	if (istype(O, /obj/item/grab))
+		var/obj/item/grab/G = O
 		var/grabbed = G.affecting
 		if(istype(grabbed, /mob/living/carbon/monkey))
 			var/mob/living/carbon/monkey/target = grabbed
@@ -68,7 +68,7 @@
 		user << "\blue The machine hisses loudly as it condenses the grinded monkey meat. After a moment, it dispenses a brand new monkey cube."
 		playsound(src.loc, 'sound/machines/hiss.ogg', 50, 1)
 		grinded -= 5
-		new /obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped(src.loc)
+		new /obj/item/reagent_containers/food/snacks/monkeycube/wrapped(src.loc)
 		user << "\blue The machine's display flashes that it has [grinded] monkeys worth of material left."
 	else
 		user << "\red The machine needs at least 5 monkeys worth of material to produce a monkey cube. It only has [grinded]."

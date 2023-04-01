@@ -39,9 +39,3 @@
 	parts &= ~flag
 	if(!parts)
 		qdel(src)
-
-/obj/item/device/modkit/tajaran
-	name = "tajara hardsuit modification kit"
-	desc = "A kit containing all the needed tools and parts to modify a hardsuit for another user. This one looks like it's meant for Tajara."
-	to_helmet = /obj/item/clothing/head/helmet/space/rig/tajara
-	to_suit = /obj/item/clothing/suit/space/rig/tajara

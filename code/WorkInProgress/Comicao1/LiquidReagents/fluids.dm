@@ -1,5 +1,5 @@
 /obj/reagent
-	icon = 'reagents.dmi'
+	icon = 'icons/life/reagents.dmi'
 	icon_state = "reagent"
 	name = "liquid"
 	density = 0
@@ -33,7 +33,7 @@
 	if(istype(A, /area/dunwell/station/riverarea))
 		if(prob(8))
 			var/fishtype
-			fishtype = pick(/obj/item/sea/deadfish, /obj/item/sea/seastar, /obj/item/weapon/reagent_containers/food/snacks/fish/fish1, /obj/item/weapon/reagent_containers/food/snacks/fish/fish2, /obj/item/weapon/reagent_containers/food/snacks/fish/fish3, /obj/item/weapon/reagent_containers/food/snacks/fish/fish4, /obj/item/weapon/reagent_containers/food/snacks/fish/fish5)
+			fishtype = pick(/obj/item/sea/deadfish, /obj/item/sea/seastar, /obj/item/reagent_containers/food/snacks/fish/fish1, /obj/item/reagent_containers/food/snacks/fish/fish2, /obj/item/reagent_containers/food/snacks/fish/fish3, /obj/item/reagent_containers/food/snacks/fish/fish4, /obj/item/reagent_containers/food/snacks/fish/fish5)
 			new fishtype(src.loc)
 
 	if(istype(loc, /turf/simulated/floor/plating/dirt2))
@@ -55,6 +55,8 @@
 		qdel(src)
 	if(depth < MINIMUM_VALUE_TO_PROCCESS) return
 	if(depth > MINIMUM_VALUE_TO_PROCCESS)
+		update_dirs()
+		update_atoms()
 		for(var/dir in ableDirs)
 			var/turf/simulated/T = get_step(src, dir)
 			if(T && T.liquid && src.depth > T.liquid.depth+src.depth/12 || T && T.liquid == null)
@@ -122,7 +124,7 @@
 		var/obj/reagent/R = src.liquid
 		if(R.reagents?.total_volume && H?.zone_sel?.selecting == "mouth")
 			if(H.wear_mask && H.wear_mask.flags & MASKCOVERSMOUTH)
-				to_chat(H, "<span class='combat'>[pick(nao_consigoen)] my mask is in the way!</span>")
+				to_chat(H, "<span class='combat'>[pick(fnord)] my mask is in the way!</span>")
 			R.reagents.reaction(H, INGEST, override = R.depth)
 			visible_message("<span class='bname'>⠀[H]</span> drinks from \the [R]!</span>")
 			playsound(R, 'sound/items/drink.ogg', rand(10, 50), 1)
@@ -135,7 +137,7 @@
 			var/obj/reagent/R = O.liquid
 			if(R.reagents?.total_volume && H?.zone_sel?.selecting == "mouth")
 				if(H.wear_mask && H.wear_mask.flags & MASKCOVERSMOUTH)
-					to_chat(H, "<span class='combat'>[pick(nao_consigoen)] my mask is in the way!</span>")
+					to_chat(H, "<span class='combat'>[pick(fnord)] my mask is in the way!</span>")
 				R.reagents.reaction(H, INGEST, override = R.depth)
 				visible_message("<span class='bname'>⠀[H]</span> drinks from \the [R]!</span>")
 				playsound(R, 'sound/items/drink.ogg', rand(10, 50), 1)
@@ -161,8 +163,8 @@
 			if(R.depth < 10)
 				qdel(R)
 
-		if(istype(O, /obj/item/weapon/flame))
-			var/obj/item/weapon/flame/FF = O
+		if(istype(O, /obj/item/flame))
+			var/obj/item/flame/FF = O
 			if(FF.lit && R.reagents.reagent_list.len)
 				var/datum/reagent/RR = R.reagents.get_random_reagent()
 				if(RR.flammable)
@@ -170,11 +172,11 @@
 					F.chanceToGrow += 200
 					qdel(R)
 
-		if(istype(O, /obj/item/weapon/alicate))
-			var/obj/item/weapon/alicate/A = O
-			var/obj/item/weapon/ore/refined/lw/lw = safepick(A.contents)
+		if(istype(O, /obj/item/alicate))
+			var/obj/item/alicate/A = O
+			var/obj/item/ore/refined/lw/lw = safepick(A.contents)
 			if(A.contents.len && lw.itemToBecome && lw.percentageToBecome >= MAX_SMITHING)
-				var/obj/item/weapon/WE = new lw.itemToBecome(user.loc)
+				var/obj/item/WE = new lw.itemToBecome(user.loc)
 				WE.quality = lw.qualidadeBarra
 				WE.New()
 				A.contents.Cut()
@@ -183,8 +185,8 @@
 				playsound(src.loc, sound_to_go, 50, 0)
 
 		if(R.depth >= 10 && user.a_intent != "hurt")
-			if (istype(O, /obj/item/weapon/reagent_containers))
-				var/obj/item/weapon/reagent_containers/RG = O
+			if (istype(O, /obj/item/reagent_containers))
+				var/obj/item/reagent_containers/RG = O
 				R.reagents.trans_to(RG, R.reagents.total_volume/6)
 				user.visible_message("<span class='passivebold'>[user]</span><span class='passive'> fills \the [RG] on \the [R].</span>")
 				playsound(R, pick('sound/webbers/water_max1.ogg', 'sound/webbers/water_max2.ogg'), rand(35, 50), 1)

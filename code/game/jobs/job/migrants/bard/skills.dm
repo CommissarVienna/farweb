@@ -5,6 +5,8 @@
 /mob/living/carbon/human/proc/remembersong()
 	set hidden = 0
 	set name = "RememberSong"
+	set desc = "Remember a Song"
+	set category = "gpc"
 
 	if(!check_perk(/datum/perk/singer))
 		return
@@ -28,6 +30,8 @@
 /mob/living/carbon/human/proc/sing()
 	set hidden = 0
 	set name = "Sing"
+	set desc = "Sing"
+	set category = "gpc"
 
 	if(!check_perk(/datum/perk/singer))
 		return

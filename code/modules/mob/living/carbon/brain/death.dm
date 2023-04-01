@@ -37,7 +37,7 @@
 	if(container && istype(container, /obj/item/device/mmi))
 		qdel(container)//Gets rid of the MMI if there is one
 	if(loc)
-		if(istype(loc,/obj/item/weapon/reagent_containers/food/snacks/organ/brain))
+		if(istype(loc,/obj/item/reagent_containers/food/snacks/organ/brain))
 			qdel(loc)//Gets rid of the brain item
 	spawn(15)
 		if(animation)	qdel(animation)

@@ -3,7 +3,6 @@
 /datum/job/bartender
 	title = "Bartender"
 	flag = BARTENDER
-	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 1
@@ -28,35 +27,51 @@
 	title = "Tribunal Veteran"
 	titlebr = "Veterano do Tribunal"
 	flag = TRIBVET
-	department_head = list("Head of Personnel")
 	department_flag = MEDSCI
 	faction = "Station"
+	stat_mods = list(STAT_ST = 2, STAT_DX = -2, STAT_HT = -1, STAT_IN = 0)
 	total_positions = 3
 	spawn_positions = 3
 	supervisors = "Life"
 	jobdesc = "Once apart of the King’s Army, you have lost your legs and with it your service. However, you have gained acknowledgement and respect - so far as that will take you in a wheelchair."
 	selection_color = "#dddddd"
-	idtype = /obj/item/weapon/card/id/ltgrey
+	idtype = /obj/item/card/id/ltgrey
 	access = list()
 	minimal_access = list()
 	latejoin_locked = FALSE
 	thanati_chance = 1
 	sex_lock = MALE
 	minimal_character_age = 25
+	skill_mods = list(
+	list(SKILL_MELEE,5,5),
+	list(SKILL_RANGE,6,6),
+	list(SKILL_UNARM,0,2),
+	list(SKILL_FARM,0),
+	list(SKILL_COOK,0),
+	list(SKILL_ENGINE,0),
+	list(SKILL_SURG,0,3),
+	list(SKILL_MEDIC,0,3),
+	list(SKILL_CLEAN,0),
+	list(SKILL_CLIMB,0),
+	list(SKILL_STEAL,2,2),
+	list(SKILL_OBSERV, 3,3),
+	list(SKILL_BOAT, 0),
+	)
 
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
 			return 0
 		..()
-		if(H?.client?.info?.chromosomes >= 5)
+		if(H?.client?.chromie_holder.chromie_number >= 5)
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/ordinator/old(H), slot_w_uniform)
+
 			if(prob(20))
 				H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/vest/flakjacket/old/coat(H), slot_wear_suit)
 				H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/lw/ordinator/old/vietnam(H), slot_head)
 			else
 				H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/vest/flakjacket/old(H), slot_wear_suit)
 				H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/lw/ordinator/old(H), slot_head)
-			H.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/grinder/old(H), slot_back)
+			H.equip_to_slot_or_del(new /obj/item/gun/projectile/automatic/grinder/old(H), slot_back)
 			if(prob(50))
 				H.equip_to_slot_or_del(new /obj/item/ammo_magazine/external/grinder(H), slot_r_store)
 		else
@@ -70,109 +85,77 @@
 					H.equip_to_slot_or_del(new /obj/item/clothing/head/ushanka(H), slot_head)
 		H.nutrition = 200
 		H.add_perk(/datum/perk/lessstamina)
-		H.hidratacao = 150
-		for(var/obj/item/weapon/reagent_containers/food/snacks/organ/O in H.organ_storage)
+		H.hydration = 150
+		for(var/obj/item/reagent_containers/food/snacks/organ/O in H.organ_storage)
 			O.bumorgans()
 		for(var/organ_name in list("l_foot","r_foot","l_leg","r_leg"))
 			var/datum/organ/external/O = H.get_organ(organ_name)
-			//O.amputated = TRUE
-			//O.status |= ORGAN_ROBOT
 			O.amputated = TRUE
 			O.droplimb(1,0,0, TRUE)
 		return 1
-
-/datum/job/chef
-	title = "Innkeeper"
-	titlebr = "Taverneiro"
-	flag = CHEF
-	department_head = list("Head of Personnel")
-	department_flag = CIVILIAN
-	faction = "Station"
-	total_positions = 1
-	spawn_positions = 1
-	supervisors = "the baron"
-	jobdesc = "The owner of The Old Cock inn. The people are hungry, and you&#8217;re starving for their coin, so feed them! You know just about everyone, and get to hear rumors from those temporarily passing through Firethorn. The soilers often grow the ingredients you use for your delicious stews and provide the arellit meat for your juicy burgers, and they know you&#8217;re not cheap."
-	selection_color = "#dddddd"
-	idtype = /obj/item/weapon/card/id/ltgrey
-	access = list(innkeep)
-	minimal_access = list(innkeep)
-	thanati_chance = 75
-	sex_lock = MALE
-	money = 14
-
-	equip(var/mob/living/carbon/human/H)
-		if(!H)
-			return 0
-		..()
-		H.voicetype = "noble"
-		H.equip_to_slot_or_del(new /obj/item/clothing/under/soviet(H), slot_w_uniform)
-		H.equip_to_slot_or_del(new /obj/item/clothing/suit/chef(H), slot_wear_suit)
-		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/cheap(H), slot_wrist_r)
-		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/brown(H), slot_shoes)
-		H.equip_to_slot_or_del(new /obj/item/weapon/rag(H), slot_r_store)
-		H.add_perk(/datum/perk/lessstamina)
-		return 1
-
 /datum/job/chefwife
-	title = "Innkeeper Wife"
+	title = "Madam"
 	titlebr = "Esposa do Taverneiro"
 	flag = INNKEEPERWIFE
-	department_head = list("Head of Personnel")
 	department_flag = MEDSCI
 	faction = "Station"
+	stat_mods = list(STAT_ST = 0, STAT_DX = 1, STAT_HT = -1, STAT_IN = 0)
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the baron"
+	supervisors = "the pusher"
 	selection_color = "#dddddd"
-	idtype = /obj/item/weapon/card/id/ltgrey
-	access = list(innkeep)
-	minimal_access = list(innkeep)
-	jobdesc = "The darling wife of the Innkeeper - you run a family business. Loving your husband and cooking food while he tends to the hungry patrons is often your daily excercise. Some men flash awry looks at you, but its often met by the sound of a pumping shotgun."
+	idtype = /obj/item/card/id/ltgrey
+	access = list(innkeep, brothel, amuser)
+	minimal_access = list(innkeep, brothel, amuser)
+	jobdesc = "The Pusher`s longest worker, and close associate. You help him run both his signature den and the newly bought Inn, cooking food while he tends to his clients and keeping the amusers in line is often your daily excercise. Some men flash awry looks at you, but its often met by the sound of a pumping shotgun or the clinking of coins, after all you arent a regular amuser anymore."
 	thanati_chance = 75
 	money = 13
 	sex_lock = FEMALE
+	skill_mods = list(
+	list(SKILL_MELEE,0),
+	list(SKILL_RANGE, 2,2),
+	list(SKILL_FARM,3,3),
+	list(SKILL_COOK,7,9),
+	list(SKILL_ENGINE,0),
+	list(SKILL_SURG,2,2),
+	list(SKILL_MEDIC,0),
+	list(SKILL_CLEAN, 3),
+	list(SKILL_CLIMB,2,2),
+	list(SKILL_OBSERV, 2,2),
+	list(SKILL_RIDE,5,10),
+	list(SKILL_PARTY,3,5),
+	list(SKILL_STEAL,2,4),
+	)
 
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
 			return 0
 		..()
 		if(H.gender == MALE)
-			H.voicetype = "noble"
-			H.equip_to_slot_or_del(new /obj/item/clothing/under/soviet(H), slot_w_uniform)
-			H.equip_to_slot_or_del(new /obj/item/clothing/suit/chef(H), slot_wear_suit)
-			H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/cheap(H), slot_wrist_r)
-			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/brown(H), slot_shoes)
-			H.equip_to_slot_or_del(new /obj/item/weapon/rag(H), slot_r_store)
-			H.add_perk(/datum/perk/lessstamina)
-			return 1
-
-		H.voicetype = "noble"
-		H.equip_to_slot_or_del(new /obj/item/clothing/under/soviet(H), slot_w_uniform)
-		H.equip_to_slot_or_del(new /obj/item/clothing/suit/chef/wife(H), slot_wear_suit)
+			H.set_species("Femboy")
+		H.voicetype = pick("noble","sketchy")
+		H.equip_to_slot_or_del(new /obj/item/clothing/under/rebelsuccessor(H), slot_w_uniform)
+		H.equip_to_slot_or_del(new /obj/item/clothing/suit/donor/slojanko/dress(H), slot_wear_suit)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/cheap(H), slot_wrist_r)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/brown(H), slot_shoes)
-		H.equip_to_slot_or_del(new /obj/item/weapon/rag(H), slot_r_store)
-		H.add_perk(/datum/perk/lessstamina)
+		H.equip_to_slot_or_del(new /obj/item/rag(H), slot_r_store)
+		H.add_perk(/datum/perk/morestamina)
+		if(prob(80))
+			H.virgin = FALSE
 		return 1
-
-/datum/job/chefwife/set_runtime_title(var/mob/living/carbon/human/H)
-	for(var/datum/relation/family/R in H.mind.relations)
-		if(R.relation_holder.current.job == "Innkeeper")
-			return "Innkeeper [R.connected_relation.name]"
-	return "Innkeeper Consociate"
 
 /datum/job/butler
 	title = "Butler"
 	titlebr = "Mordomo"
 	flag = BUTLER
-	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
+	stat_mods = list(STAT_ST = 1, STAT_DX = 1, STAT_HT = -1, STAT_IN = 1)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the baron"
 	selection_color = "#dddddd"
-	idtype = /obj/item/weapon/card/id/ltgrey
+	idtype = /obj/item/card/id/ltgrey
 	access = list(keep)
 	minimal_access = list(keep)
 	jobdesc = "The chief manservant and personal servant to the Baron. You handle all predictable and unpredictable needs of the household. Be it organizing stock for the scullery, preparing food for the Baron&#8217;s family and his guests, or arranging social events at the cost of the treasury."
@@ -180,6 +163,18 @@
 	money = 27
 	latejoin_locked = TRUE
 	sex_lock = MALE
+	skill_mods = list(
+	list(SKILL_MELEE,2,2),
+	list(SKILL_RANGE,2,2),
+	list(SKILL_FARM,4,4),
+	list(SKILL_COOK,5,5),
+	list(SKILL_ENGINE,0),
+	list(SKILL_SURG,2,2),
+	list(SKILL_CLIMB,2,2),
+	list(SKILL_MEDIC,2,2),
+	list(SKILL_CLEAN,4,4),
+	list(SKILL_OBSERV, 2,2),
+	)
 
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
@@ -190,7 +185,7 @@
 		H.equip_to_slot_or_del(new /obj/item/clothing/suit/chef/butler(H), slot_wear_suit)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/captain(H), slot_wrist_r)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/brown(H), slot_shoes)
-		H.equip_to_slot_or_del(new /obj/item/weapon/rag(H), slot_r_store)
+		H.equip_to_slot_or_del(new /obj/item/rag(H), slot_r_store)
 		H.add_perk(/datum/perk/lessstamina)
 		return 1
 
@@ -198,22 +193,35 @@
 	title = "Sitzfrau"
 	titlebr = "Sitzfrau"
 	flag = SITZFRAU
-	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
+	stat_mods = list(STAT_ST = -1, STAT_DX = 1, STAT_HT = -1, STAT_IN = 2)
 	total_positions = 1
 	spawn_positions = 1
 	jobdesc = "The head housekeeper of the Baron&#8217;s female staff and personal servant. Your pecking order consists of the maids and child servants beneath you. Being the sole teacher and caretaker responsible for the upbringing Baron&#8217;s progeny, they consider you as much a mother as their real one."
 	jobdescbr = "The head housekeeper of the Baron&#8217;s female staff and personal servant. Your pecking order consists of the maids and child servants beneath you. Being the sole teacher and caretaker responsible for the upbringing Baron&#8217;s progeny, they consider you as much a mother as their real one."
 	supervisors = "the baron"
 	selection_color = "#dddddd"
-	idtype = /obj/item/weapon/card/id/ltgrey
+	idtype = /obj/item/card/id/ltgrey
 	access = list(keep)
 	minimal_access = list(keep)
 	thanati_chance = 75
 	latejoin_locked = TRUE
 	sex_lock = FEMALE
 	money = 25
+	skill_mods = list(
+	list(SKILL_MELEE,0),
+	list(SKILL_RANGE,1,1),
+	list(SKILL_FARM,4,4),
+	list(SKILL_COOK,5,5),
+	list(SKILL_ENGINE,0),
+	list(SKILL_SURG,2,2),
+	list(SKILL_CLIMB,2,2),
+	list(SKILL_MEDIC,2,2),
+	list(SKILL_CLEAN,5,6),
+	list(SKILL_MUSIC, 0),
+	list(SKILL_OBSERV, 2,2),
+	)
 
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
@@ -223,7 +231,7 @@
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/sitzfrau(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/captain(H), slot_wrist_r)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/brown(H), slot_shoes)
-		H.equip_to_slot_or_del(new /obj/item/weapon/rag(H), slot_r_store)
+		H.equip_to_slot_or_del(new /obj/item/rag(H), slot_r_store)
 		H.add_perk(/datum/perk/lessstamina)
 		return 1
 
@@ -231,18 +239,31 @@
 	title = "Prophet"
 	titlebr = "Profeta"
 	flag = CONSYTE
-	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
+	stat_mods = list(STAT_ST = -4, STAT_DX = 8, STAT_HT = -4, STAT_IN = 2)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the spark."
 	selection_color = "#dddddd"
-	idtype = /obj/item/weapon/card/id/ltgrey
+	idtype = /obj/item/card/id/ltgrey
 	access = list()
 	minimal_access = list()
 	jobdesc = "A heretic miracle worker who&#8217;s usefulness to the residents of the fortress has granted them temporary amnesty from execution. Said to belong to the Cult of Cons, the Consytes and some unknowing residents refer to him as the &#8217;Prophet&#8217; - blasphemy, if you&#8217;ve ever heard it. Able to receive and recite visions in great detail before they happen, the Bishop often dissuades any acknowledgement to these &#8217;Truths&#8217;. But sometimes you can&#8217;t help but feel its not a coincidence..."
 	jobdescbr = "A heretic miracle worker who&#8217;s usefulness to the residents of the fortress has granted them temporary amnesty from execution. Said to belong to the Cult of Cons, the Consytes and some unknowing residents refer to him as the &#8217;Prophet&#8217; - blasphemy, if you&#8217;ve ever heard it. Able to receive and recite visions in great detail before they happen, the Bishop often dissuades any acknowledgement to these &#8217;Truths&#8217;. But sometimes you can&#8217;t help but feel its not a coincidence..."
+	skill_mods = list(
+	list(SKILL_MELEE,5,5),
+	list(SKILL_RANGE,0),
+	list(SKILL_FARM,0),
+	list(SKILL_COOK,3,3),
+	list(SKILL_ENGINE,0),
+	list(SKILL_SURG,2,2),
+	list(SKILL_MEDIC,2,2),
+	list(SKILL_CLEAN,2,2),
+	list(SKILL_CLIMB,3,3),
+	list(SKILL_SWIM,2,2),
+	list(SKILL_OBSERV, 2,2),
+	)
 
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
@@ -251,19 +272,19 @@
 		H.voicetype = "noble"
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/consyte(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/cheap(H), slot_wrist_r)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/consyte(H), slot_back)
+		H.equip_to_slot_or_del(new /obj/item/storage/backpack/consyte(H), slot_back)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/brown(H), slot_shoes)
-		H.verbs += /mob/living/carbon/human/verb/respark
-		H.verbs += /mob/living/carbon/human/verb/choir
+		H.add_verb(list(/mob/living/carbon/human/proc/respark,
+		/mob/living/carbon/human/proc/choir))
 		H.add_perk(/datum/perk/morestamina)
 		H.consyte = TRUE
 		H.religion = "ConsCult"
 		H.status_flags |= STATUS_NO_PAIN
 		return 1
 
-/mob/living/carbon/human/verb/respark()
-	set name = "respark"
-	set desc="Brings someone back to life!"
+/mob/living/carbon/human/proc/respark()
+	set desc = "Respark"
+	set category = "gpc"
 
 	if(!consyte)
 		return
@@ -282,67 +303,16 @@
 			return
 		visible_message("<span class='examinebold'>[src]</span> <span class='examine'>bends down and kisses</span> <span class='examinebold'>[H]</span><span class='examine'> on the lips.</span>")
 		H.respark_revival()
-		H.verbs += /mob/living/carbon/human/verb/respark
-		H.verbs += /mob/living/carbon/human/verb/choir
+		H.add_verb(list(/mob/living/carbon/human/proc/respark,
+		/mob/living/carbon/human/proc/choir))
 		H.consyte = TRUE
 		H.religion = "ConsCult"
+		H.status_flags |= STATUS_NO_PAIN // All cons cultists now feel no pain
 		return 1
-/*
-	if(!isturf(loc)){
-		return
-	}
 
-	var/turf/F = get_step(src, dir)
-	for(var/mob/living/carbon/human/H in F.contents){
-		if(H.species.name != "Human"){
-			return
-		}
-		if(H.stat != DEAD){
-			return
-		}
-		if(iszombie(H) || iszombie(src)){
-			return
-		}
-		if(H == src)
-			return
-		var/datum/organ/external/affectedorgan = H.get_organ(BP_HEAD)
-		if(affectedorgan.amputated || affectedorgan.status & ORGAN_DESTROYED)
-			return
-
-
-		visible_message("<span class='bname'>[src]</span> bends down and kisses [H] on the lips.")
-		H.respark_revival()
-		H.verbs += /mob/living/carbon/human/proc/respark
-		H.verbs += /mob/living/carbon/human/proc/choir
-		return 1
-	}
-	for(var/mob/living/carbon/human/H in loc.contents){
-		if(H.species.name != "Human"){
-			return
-		}
-		if(H.stat != DEAD){
-			return
-		}
-		if(iszombie(H) || iszombie(src)){
-			return
-		}
-
-		var/datum/organ/external/affectedorgan = H.get_organ(BP_HEAD)
-		if(affectedorgan.amputated || affectedorgan.status & ORGAN_DESTROYED)
-			return
-		visible_message("<span class='bname'>[src]</span> bends down and kisses [H] on the lips.")
-		H.respark_revival()
-		H.verbs += /mob/living/carbon/human/proc/respark
-		H.verbs += /mob/living/carbon/human/proc/choir
-		return 1
-	}
-	to_chat(src, "There's no one nearby to revive.")
-	return
-*/
-/mob/living/carbon/human/verb/choir()
-	set hidden = 0
-	set category = "Consyte"
-	set name = "Choir"
+/mob/living/carbon/human/proc/choir()
+	set desc = "Choir"
+	set category = "gpc"
 	if(!consyte)
 		return
 	if(!consyte_voice)
@@ -364,9 +334,9 @@
 	title = "Urchin"
 	titlebr = "Garoto de Rua"
 	flag = URCHIN
-	department_head = list("Head of Personnel")
 	department_flag = MEDSCI
 	faction = "Station"
+	stat_mods = list(STAT_ST = -2, STAT_DX = 1, STAT_HT = -3, STAT_IN = -1)
 	total_positions = 3
 	spawn_positions = -1
 	supervisors = "No one"
@@ -375,6 +345,20 @@
 	minimal_access = list()
 	jobdesc = "Lost street kids are littered among the homeless in Firethorn. Often starting an early life of crime, they are malleable to the influences of the more opportunistic residents. Downtrodden and without a home to return to, they often find themselves turning to the local consyte for shelter and food."
 	jobdescbr = "Lost street kids are littered among the homeless in Firethorn. Often starting an early life of crime, they are malleable to the influences of the more opportunistic residents. Downtrodden and without a home to return to, they often find themselves turning to the local consyte for shelter and food."
+	skill_mods = list(
+	list(SKILL_MELEE,0),
+	list(SKILL_RANGE,0),
+	list(SKILL_KNIFE,0,1),
+	list(SKILL_FARM,0),
+	list(SKILL_COOK,0),
+	list(SKILL_ENGINE,0),
+	list(SKILL_SURG,0),
+	list(SKILL_MEDIC,0),
+	list(SKILL_CLEAN,0),
+	list(SKILL_CLIMB,5,5),
+	list(SKILL_STEAL,3,3),
+	list(SKILL_OBSERV, 2,2),
+	)
 
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
@@ -387,20 +371,20 @@
 		H.religion = "Gray Church"
 		H.real_name =  "[first_name]"
 		H.name = H.real_name
-		H.verbs += /mob/living/carbon/human/proc/tellTheTruth
+		H.add_verb(/mob/living/carbon/human/proc/tellTheTruth)
 		if(prob(80))
 			H.add_perk(/datum/perk/illiterate)
-		for(var/obj/item/weapon/reagent_containers/food/snacks/organ/O in H.organ_storage)
+		for(var/obj/item/reagent_containers/food/snacks/organ/O in H.organ_storage)
 			O.bumorgans()
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/urchin(H), slot_w_uniform)
 		var/pickitem = pick("knife","syringe","teddybear","teddybear2","dob","coupon","duster")
 		switch(pickitem)
 			if("knife")
-				H.equip_to_slot_or_del(new /obj/item/weapon/kitchen/utensil/knife(H), slot_r_store)
+				H.equip_to_slot_or_del(new /obj/item/kitchen/utensil/knife(H), slot_r_store)
 			if("syringe")
-				H.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/syringe(H), slot_r_store)
+				H.equip_to_slot_or_del(new /obj/item/reagent_containers/syringe(H), slot_r_store)
 			if("dob")
-				H.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/pill/lifeweb/blotter/DOB(H), slot_r_store)
+				H.equip_to_slot_or_del(new /obj/item/reagent_containers/pill/lifeweb/blotter/DOB(H), slot_r_store)
 			if("coupon")
 				H.equip_to_slot_or_del(new /obj/item/coupon/food(H), slot_r_store)
 			if("teddybear1")
@@ -408,16 +392,16 @@
 			if("teddybear2")
 				H.equip_to_slot_or_del(new /obj/item/toy/teddybear/pink(H), slot_r_hand)
 			if("duster")
-				H.equip_to_slot_or_del(new /obj/item/weapon/melee/classic_baton/club/knuckleduster(H), slot_r_hand)
+				H.equip_to_slot_or_del(new /obj/item/melee/classic_baton/club/knuckleduster(H), slot_r_hand)
 		return 1
 
 /datum/job/bum
 	title = "Bum"
 	titlebr = "Mendigo"
 	flag = HOBO
-	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
+	stat_mods = list(STAT_ST = -1, STAT_DX = -1, STAT_HT = -1, STAT_IN = -1)
 	total_positions = 14
 	spawn_positions = -1
 	supervisors = "No one"
@@ -427,7 +411,21 @@
 	minimal_access = list()
 	jobdesc = "A veteran of the streets, you&#8217;ve lived and breathed them all your life. The rancid smell of the sewers is now numb to your senses and you&#8217;ve survived off the pickings of the dead vermin you find in the dark alleyways. People think you&#8217;re dirt - but the streets have changed you, and you know the truth."
 	jobdescbr = "Você perdeu uma vida decente, o respeito da sociedade e sua própria mente, e não se arrepende de nada. Hoje à noite alguém vai te matar só por diversão."
-
+	skill_mods = list(
+	list(SKILL_MELEE,0),
+	list(SKILL_RANGE,0),
+	list(SKILL_FARM,0),
+	list(SKILL_COOK,0,2),
+	list(SKILL_ENGINE,0),
+	list(SKILL_SURG,0),
+	list(SKILL_MEDIC,0),
+	list(SKILL_CLEAN,0),
+	list(SKILL_CLIMB,3,5),
+	list(SKILL_STEAL,1,3),
+	list(SKILL_SWIM,0),
+	list(SKILL_UNARM,0,1),
+	list(SKILL_OBSERV, 2,2),
+	)
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
 			return 0
@@ -441,32 +439,39 @@
 		H.name = H.real_name
 		H.hygiene = -400
 		H.nutrition = rand(80, 180)
-		H.hidratacao = 150
-		H.verbs += /mob/living/carbon/human/proc/tellTheTruth
+		H.hydration = 150
+		H.add_verb(/mob/living/carbon/human/proc/tellTheTruth)
 		if(prob(80))
 			H.add_perk(/datum/perk/illiterate)
 		if(prob(5))
-			H.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/pistol/magnum66/screamer23(H), slot_l_hand)
-			H.my_skills.ADD_SKILL(SKILL_RANGE, 11)
-		for(var/obj/item/weapon/reagent_containers/food/snacks/organ/O in H.organ_storage)
+			H.equip_to_slot_or_del(new /obj/item/gun/projectile/automatic/pistol/magnum66/screamer23(H), slot_l_hand)
+			H.my_skills.add_skill(SKILL_RANGE, 4)
+		for(var/obj/item/reagent_containers/food/snacks/organ/O in H.organ_storage)
 			O.bumorgans()
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/migrant/bum(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/clothing/head/ushanka/nushanka(H), slot_head)
 		H.equip_to_slot_or_del(new /obj/item/watch, slot_wrist_r)
-		if(H?.client.info.chromosomes >= 5)
+		if(H?.client.chromie_holder.chromie_number >= 5)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/veteran_bum(H), slot_head)
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/veteran_bum(H), slot_wear_suit)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/veteran_bum(H), slot_shoes)
 			H.equip_to_slot_or_del(new /obj/item/clothing/gloves/veteran_bum(H), slot_gloves)
 
+		var/datum/organ/external/mouth/O = locate(/datum/organ/external/mouth) in H.organs
+		if(O)//Bums are missing most of their teeth.
+			O.teeth_list.Cut()
+			var/obj/item/stack/teeth/T = new H.species.teeth_type(O)
+			T.amount = rand(1, 15)
+			O.teeth_list += T
+
 		var/pickitem = pick("knife","syringe","teddybear","teddybear2","dob","coupon","duster","switchblade")
 		switch(pickitem)
 			if("knife")
-				H.equip_to_slot_or_del(new /obj/item/weapon/kitchen/utensil/knife(H), slot_r_store)
+				H.equip_to_slot_or_del(new /obj/item/kitchen/utensil/knife(H), slot_r_store)
 			if("syringe")
-				H.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/syringe/heroin(H), slot_r_store)
+				H.equip_to_slot_or_del(new /obj/item/reagent_containers/syringe/heroin(H), slot_r_store)
 			if("dob")
-				H.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/pill/lifeweb/blotter/DOB(H), slot_r_store)
+				H.equip_to_slot_or_del(new /obj/item/reagent_containers/pill/lifeweb/blotter/DOB(H), slot_r_store)
 			if("coupon")
 				H.equip_to_slot_or_del(new /obj/item/coupon/food(H), slot_r_store)
 			if("teddybear1")
@@ -474,17 +479,17 @@
 			if("teddybear2")
 				H.equip_to_slot_or_del(new /obj/item/toy/teddybear/pink(H), slot_r_hand)
 			if("duster")
-				H.equip_to_slot_or_del(new /obj/item/weapon/melee/classic_baton/club/knuckleduster(H), slot_r_hand)
+				H.equip_to_slot_or_del(new /obj/item/melee/classic_baton/club/knuckleduster(H), slot_r_hand)
 			if("switchblade")
-				H.equip_to_slot_or_del(new /obj/item/weapon/kitchen/utensil/knife/switchblade(H), slot_r_hand)
+				H.equip_to_slot_or_del(new /obj/item/kitchen/utensil/knife/switchblade(H), slot_r_hand)
 		if(prob(2))
 			H.real_name =  "[first_name] The Strong"
 			H.name = H.real_name
-			H.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(13,13))
-			H.my_stats.st = rand(18,25)
-			H.my_stats.ht = rand(20,25)
-			H.my_stats.dx = rand(12,15)
-			H.my_stats.it = rand(3,5)
+			H.my_skills.change_skill(SKILL_MELEE, rand(8,8))
+			H.my_stats.change_stat(STAT_ST , 15)
+			H.my_stats.change_stat(STAT_HT , 15)
+			H.my_stats.change_stat(STAT_DX , 4)
+			H.my_stats.change_stat(STAT_IN , -5)
 			if(H.gender != FEMALE)
 				H.mutations += FAT
 		return 1
@@ -498,13 +503,24 @@
 	faction = "Station"
 	total_positions = 8
 	spawn_positions = 3
+	stat_mods = list(STAT_ST = 2, STAT_DX = 0, STAT_HT = 2, STAT_IN = 0)
 	selection_color = "#ffeeee"
-	idtype = /obj/item/weapon/card/id
+	idtype = /obj/item/card/id
 	access = list()
 	jobdesc = "A sellsword of Firethorn, you joined the local mercenary&#8217;s guild for a chance of landing a paying job. You have yet to find one."
 	minimal_access = list()
 	latejoin_locked = FALSE
 	thanati_chance = 12
+	skill_mods = list(
+	list(SKILL_MELEE,4,4),
+	list(SKILL_RANGE,2,2),
+	list(SKILL_UNARM,0,2),
+	list(SKILL_CLIMB,3,4),
+	list(SKILL_SWIM,2,3),
+	list(SKILL_OBSERV, 3,3),
+	list(SKILL_SURG,0),
+	list(SKILL_MEDIC,0),
+	)
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
 			return 0
@@ -520,21 +536,24 @@
 		H.stat = UNCONSCIOUS
 		H.voicetype = pick("noble","strong","sketchy")
 		H.verbs += /mob/living/carbon/human/proc/pegaclassemerc
-		H.updatePig()
+		H.updateStatPanel()
 		return 1
 
 
 /mob/living/carbon/human/proc/pegaclassemerc()
 	set hidden = 0
-	set category = "Migrant"
+	set category = "gpc"
 	set name = "PegaclasseMerc"
 	set desc="Choose your Merc class!"
 	var/list/mercList = list("Mercenary")
 	if(migclass)
 		return
-	if(reddawn_merc.Find(src.ckey))
+	if(doing_something)
+		return
+	doing_something = TRUE
+	if(tier_marduk.Find(src.ckey) || donation_reddawn.Find(src.ckey))
 		mercList.Add("Ex-Red Dawn Mercenary")
-	if(seaspotter_merc.Find(src.ckey))
+	if(tier_marduk.Find(src.ckey) || donation_seaspotter.Find(src.ckey))
 		mercList.Add("Ex-Seaspotter Mercenary")
 	sleep(10)
 	if(migclass)
@@ -555,9 +574,9 @@
 			src.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet(src), slot_wrist_l)
 			src.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/jackboots(src), slot_shoes)
 
-			src.my_skills.ADD_SKILL(SKILL_CLIMB, 4)
-			src.my_skills.ADD_SKILL(SKILL_RANGE, 2)
-			src.my_skills.ADD_SKILL(SKILL_MELEE, 1)
+			src.my_skills.add_skill(SKILL_CLIMB, 4)
+			src.my_skills.add_skill(SKILL_RANGE, 2)
+			src.my_skills.add_skill(SKILL_MELEE, 1)
 
 		if("Ex-Seaspotter Mercenary")
 			src.job = "Mercenary"
@@ -565,11 +584,11 @@
 			src.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet(src), slot_wrist_l)
 			src.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/jackboots(src), slot_shoes)
 
-			src.my_skills.ADD_SKILL(SKILL_SWIM, 4)
-			src.my_skills.ADD_SKILL(SKILL_RANGE, 1)
+			src.my_skills.add_skill(SKILL_SWIM, 4)
+			src.my_skills.add_skill(SKILL_RANGE, 1)
 
 	if(src.ckey in black_cloak)
-		src.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/merccloak(src), slot_back)
+		src.equip_to_slot_or_del(new /obj/item/storage/backpack/merccloak(src), slot_back)
 	var/list/mercWeapons = list("Axe","Spear","Sword","Club")
 	sleep(10)
 	if(migclass)
@@ -579,39 +598,42 @@
 		return
 	switch(mercWeapon)
 		if("Axe")
-			src.equip_to_slot_or_del(new /obj/item/weapon/hatchet(src), slot_l_hand)
-			src.my_skills.CHANGE_SKILL(SKILL_SWING, rand(0,3))
+			src.equip_to_slot_or_del(new /obj/item/hatchet(src), slot_l_hand)
+			src.my_skills.change_skill(SKILL_SWING, rand(0,3))
 		if("Spear")
-			src.equip_to_slot_or_del(new /obj/item/weapon/claymore/spear(src), slot_l_hand)
-			src.my_skills.CHANGE_SKILL(SKILL_STAFF, rand(0,3))
+			src.equip_to_slot_or_del(new /obj/item/claymore/spear(src), slot_l_hand)
+			src.my_skills.change_skill(SKILL_STAFF, rand(0,3))
 		if("Sword")
 			src.equip_to_slot_or_del(new /obj/item/sheath/claymore(src), slot_l_hand)
-			src.my_skills.CHANGE_SKILL(SKILL_SWORD, rand(0,3))
+			src.my_skills.change_skill(SKILL_SWORD, rand(0,3))
 		/*if("Combat Knives")
-			src.equip_to_slot_or_del(new /obj/item/weapon/kitchen/utensil/knife/combat(src), slot_l_hand)
-			src.equip_to_slot_or_del(new /obj/item/weapon/kitchen/utensil/knife/combat(src), slot_r_hand)
-			src.my_skills.CHANGE_SKILL(SKILL_KNIFE, rand(0,3))*/
+			src.equip_to_slot_or_del(new /obj/item/kitchen/utensil/knife/combat(src), slot_l_hand)
+			src.equip_to_slot_or_del(new /obj/item/kitchen/utensil/knife/combat(src), slot_r_hand)
+			src.my_skills.change_skill(SKILL_KNIFE, rand(0,3))*/
 		if("Club")
-			src.equip_to_slot_or_del(new /obj/item/weapon/melee/classic_baton/mace(src), slot_l_hand)
-			src.my_skills.CHANGE_SKILL(SKILL_SWING, rand(0,3))
+			src.equip_to_slot_or_del(new /obj/item/melee/classic_baton/mace(src), slot_l_hand)
+			src.my_skills.change_skill(SKILL_SWING, rand(0,3))
 	src.can_stand = 1
 	src.sleeping = 0
 	src.stat = CONSCIOUS
 	src.migclass = "Mercenary"
+	verbs -= /mob/living/carbon/human/proc/pegaclassemerc
+	doing_something = FALSE
+	updateStatPanel()
 
 /datum/job/jester
 	title = "Jester"
 	titlebr = "Bobo da corte"
 	flag = CLOWN
-	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
+	stat_mods = list(STAT_ST = 0, STAT_DX = 0, STAT_HT = 0, STAT_IN = 0)
 	faction = "Station"
 	jobdesc = "A sufferer of dwarfism whose talent for being small and making a fool of himself has brought him to the attention of the Baron&#8217;s court. His limitless ability for self-deprecation is often met with those laughing at him - not with him."
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the duke"
 	selection_color = "#dddddd"
-	idtype = /obj/item/weapon/card/id/ltgrey
+	idtype = /obj/item/card/id/ltgrey
 	access = list(keep)
 	minimal_access = list(keep)
 	thanati_chance = 90
@@ -625,77 +647,76 @@
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/jester_hat(H), slot_head)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/jester_shoes(H), slot_shoes)
 			H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet(H), slot_wrist_r)
-			H.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/pistol/jester(H), slot_r_hand)
-			H.equip_to_slot_or_del(new /obj/item/weapon/grenade/syndieminibomb/frag/fake(H), slot_l_hand)
-			H.combat_music = pick('jester_combat.ogg')
+			H.equip_to_slot_or_del(new /obj/item/gun/projectile/automatic/pistol/jester(H), slot_r_hand)
+			H.equip_to_slot_or_del(new /obj/item/grenade/syndieminibomb/frag/fake(H), slot_l_hand)
+			H.combat_music = pick('sound/music/jester_combat.ogg')
 			H.add_perk(/datum/perk/lessstamina)
 			H.add_perk(/datum/perk/singer)
 			H.height = rand(100,130)
 			H << sound(H.combat_music, repeat = 1, wait = 0, volume = 50, channel = 12)
 			H << sound(null, repeat = 0, wait = 0, volume = 0, channel = 12)
 			H.create_kg()
-			H.my_skills.CHANGE_SKILL(SKILL_MELEE, 5)
-			H.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(8,8))
-			H.my_skills.CHANGE_SKILL(SKILL_MUSIC, 9)
-			H.my_skills.CHANGE_SKILL(SKILL_UNARM, rand(0,2))
-			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(0,0))
-			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, 9)
-			H.my_skills.CHANGE_SKILL(SKILL_BOAT, 10)
-			H.my_stats.st = rand(9,15)
-			H.my_stats.ht = rand(10,12)
-			H.my_stats.dx = rand(6,7)
-			H.my_stats.it = rand(9,10)
-			H.my_stats.pr = rand(8,9)
-			H.verbs += /mob/living/carbon/human/proc/apelidar
-			H.verbs += /mob/living/carbon/human/proc/malabares
-			H.verbs += /mob/living/carbon/human/proc/rememberjoke
-			H.verbs += /mob/living/carbon/human/proc/joke
-			H.verbs += /mob/living/carbon/human/proc/remembersong
-			H.verbs += /mob/living/carbon/human/proc/sing
+			H.my_skills.change_skill(SKILL_MELEE, 0)
+			H.my_skills.change_skill(SKILL_RANGE, rand(2,2))
+			H.my_skills.change_skill(SKILL_MUSIC, 2)
+			H.my_skills.change_skill(SKILL_UNARM, rand(0,1))
+			H.my_skills.change_skill(SKILL_CLEAN, rand(0,0))
+			H.my_skills.change_skill(SKILL_CLIMB, 2)
+			H.my_skills.change_skill(SKILL_BOAT, 10)
+
+			H.my_stats.change_stat(STAT_ST , rand(0, 4))
+			H.my_stats.change_stat(STAT_HT , 2)
+			H.my_stats.change_stat(STAT_DX , -3)
+			H.my_stats.change_stat(STAT_IN , -1)
+			H.add_verb(list(/mob/living/carbon/human/proc/apelidar,
+			/mob/living/carbon/human/proc/malabares,
+			/mob/living/carbon/human/proc/rememberjoke,
+			/mob/living/carbon/human/proc/joke,
+			/mob/living/carbon/human/proc/remembersong,
+			/mob/living/carbon/human/proc/sing))
 			return 1
 		else
 			H.voicetype = "midget"
-			idtype = /obj/item/weapon/card/id/jester
+			idtype = /obj/item/card/id/jester
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/jester_court(H), slot_w_uniform)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/jester_court(H), slot_head)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/jester_court(H), slot_shoes)
 			H.equip_to_slot_or_del(new /obj/item/clothing/gloves/jester(H), slot_gloves)
 			H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet(H), slot_wrist_r)
-			H.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/pistol/jester(H), slot_r_store)
-			H.equip_to_slot_or_del(new /obj/item/weapon/grenade/syndieminibomb/frag/fake(H), slot_l_store)
-			H.verbs += /mob/living/carbon/human/proc/apelidar
-			H.verbs += /mob/living/carbon/human/proc/malabares
-			H.verbs += /mob/living/carbon/human/proc/rememberjoke
-			H.verbs += /mob/living/carbon/human/proc/joke
-			H.verbs += /mob/living/carbon/human/proc/remembersong
-			H.verbs += /mob/living/carbon/human/proc/sing
+			H.equip_to_slot_or_del(new /obj/item/gun/projectile/automatic/pistol/jester(H), slot_r_store)
+			H.equip_to_slot_or_del(new /obj/item/grenade/syndieminibomb/frag/fake(H), slot_l_store)
+			H.add_verb(list(/mob/living/carbon/human/proc/apelidar,
+			/mob/living/carbon/human/proc/malabares,
+			/mob/living/carbon/human/proc/rememberjoke,
+			/mob/living/carbon/human/proc/joke,
+			/mob/living/carbon/human/proc/remembersong,
+			/mob/living/carbon/human/proc/sing))
 			H.acrobat = 1
-			H.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(6,6))
-			H.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(12,12))
-			H.my_skills.CHANGE_SKILL(SKILL_FARM, rand(0,0))
-			H.my_skills.CHANGE_SKILL(SKILL_COOK, rand(7,7))
-			H.my_skills.CHANGE_SKILL(SKILL_ENGINE, 0)
-			H.my_skills.CHANGE_SKILL(SKILL_SURG, 8)
-			H.my_skills.CHANGE_SKILL(SKILL_CLIMB, rand(17,17))
-			H.my_skills.CHANGE_SKILL(SKILL_MEDIC, rand(5,5))
-			H.my_skills.CHANGE_SKILL(SKILL_CLEAN, rand(6,9))
-			H.my_skills.CHANGE_SKILL(SKILL_MUSIC, rand(14,17))
-			H.my_skills.CHANGE_SKILL(SKILL_THROW, rand(14,16))
-			H.my_skills.CHANGE_SKILL(SKILL_STEAL, rand(13,17))
-			H.my_skills.CHANGE_SKILL(SKILL_SWIM, rand(12,17))
-			H.my_skills.CHANGE_SKILL(SKILL_OBSERV, rand(14,15))
-			H.my_stats.st = rand(7,8)
-			H.my_stats.ht = rand(8,9)
-			H.my_stats.dx = rand(13,16)
-			H.my_stats.it = rand(11,12)
-			H.my_stats.pr = rand(13,15)
+			H.my_skills.change_skill(SKILL_MELEE, rand(2,2))
+			H.my_skills.change_skill(SKILL_RANGE, rand(5,5))
+			H.my_skills.change_skill(SKILL_FARM, rand(0,0))
+			H.my_skills.change_skill(SKILL_COOK, rand(0,2))
+			H.my_skills.change_skill(SKILL_ENGINE, 0)
+			H.my_skills.change_skill(SKILL_SURG, 0)
+			H.my_skills.change_skill(SKILL_CLIMB, rand(10,10))
+			H.my_skills.change_skill(SKILL_MEDIC, rand(0,0))
+			H.my_skills.change_skill(SKILL_CLEAN, rand(6,9))
+			H.my_skills.change_skill(SKILL_MUSIC, rand(7,10))
+			H.my_skills.change_skill(SKILL_THROW, rand(7,10))
+			H.my_skills.change_skill(SKILL_STEAL, rand(6,10))
+			H.my_skills.change_skill(SKILL_SWIM, rand(5,10))
+			H.my_skills.change_skill(SKILL_OBSERV, rand(7,8))
+			H.my_stats.change_stat(STAT_ST , -1)
+			H.my_stats.change_stat(STAT_HT , -1)
+			H.my_stats.change_stat(STAT_DX , 5)
+			H.my_stats.change_stat(STAT_IN , 1)
 			H.add_perk(/datum/perk/morestamina)
 			H.add_perk(/datum/perk/singer)
 			H.add_perk(/datum/perk/ref/jumper)
-			if(H.wear_id && istype(H.wear_id, /obj/item/weapon/card/id))
-				var/obj/item/weapon/card/id/I = H.wear_id
+			if(H.wear_id && istype(H.wear_id, /obj/item/card/id))
+				var/obj/item/card/id/I = H.wear_id
 				I.icon_state = "id_jester"
-			H.combat_music = pick('jester_combat.ogg')
+			H.combat_music = pick('sound/music/jester_combat.ogg')
 			H << sound(H.combat_music, repeat = 1, wait = 0, volume = 50, channel = 12)
 			H << sound(null, repeat = 0, wait = 0, volume = 0, channel = 12)
 			H.create_kg()
@@ -707,6 +728,8 @@
 /mob/living/carbon/human/var/list/jokes_remembered = list() //jokes remembered by Jester, so he can use them later.
 
 /mob/living/carbon/human/proc/apelidar()
+	set desc = "Give a Nickname!"
+	set category = "gpc"
 	if(stat) return
 	var/list/lista = list()
 	for(var/mob/M in view(7))
@@ -728,7 +751,7 @@
 
 		log_game("([src.ckey])[src.real_name] gave ([M.ckey])[M.real_name] the nickname: [responseTwo]")
 		if(findtext(responseTwo, config.ic_filter_regex))
-			src << 'vam_ban.ogg'
+			src << 'sound/vam_ban.ogg'
 			to_chat("THAT'S SO FUNNY!")
 			var/datum/organ/internal/heart/HE = (locate() in internal_organs)
 			if(HE)
@@ -744,6 +767,8 @@
 		M.nickname = responseTwo
 
 /mob/living/carbon/human/proc/malabares()
+	set desc = "Juggling!"
+	set category = "gpc"
 	if(malabares)
 		qdel(malabares)
 		malabares = null
@@ -808,8 +833,10 @@
 		//3 billion% intentional
 
 /mob/living/carbon/human/proc/rememberjoke()
+	set desc = "Remember a Joke"
+	set category = "gpc"
 	var/list/joke_to_safe
-	var/list/begining_list = list("One day, an Inquisitor walks into a brothel", "A Southerner and a Northerner meet each other in the cave", "The Baron returns from the campaign", "A Migrant arrives at the throne room", "The Bookkeeper asks the Baron for a favor", "The Jester decided to make a joke", "A woman calls for help", "The Heir and the Successor locked themselves in a room", "(ANOTHER)")
+	var/list/begining_list = list("One day, an Inquisitor walks into a brothel", "A Southerner and a Northerner meet each other in the cave", "The Baron returns from the campaign", "A Migrant arrives at the throne room", "The Merchant asks the Baron for a favor", "The Jester decided to make a joke", "A woman calls for help", "The Heir and the Successor locked themselves in a room", "(ANOTHER)")
 	if(stat) return
 	var/joke_name = sanitize(input(src, "Choose the name of your joke!", "Joke", "") as text)
 	if(!length(joke_name))
@@ -837,6 +864,8 @@
 
 
 /mob/living/carbon/human/proc/joke()
+	set desc = "Joke"
+	set category = "gpc"
 	if(stat) return
 	if(is_joking)
 		is_joking = FALSE
@@ -870,15 +899,15 @@
 
 	for(var/mob/living/carbon/human/M in view(7, src))
 		if(M == src) continue
-		var/stat_math = round((M.my_stats.ht + M.my_stats.it) / 2) + M.my_stats.wp
+		var/stat_math = round((M.my_stats.get_stat(STAT_HT) + M.my_stats.get_stat(STAT_IN)) / 2) + M.my_stats.get_stat(STAT_WP)
 		var/list/roll_result = roll3d6(M, stat_math, howfunny * -1, FALSE, TRUE)
 		switch(roll_result[GP_RESULT])
 			if(GP_SUCCESS, GP_CRITSUCCESS)
 				spawn(rand(1,3))
 					if(roll_result[GP_RESULT] == GP_CRITSUCCESS)
-						M.my_stats.wp += 1
+						M.my_stats.change_stat(STAT_WP, 1)
 					M.emote("laugh")
-			if(GP_FAILED)
+			if(GP_FAIL)
 				spawn(rand(1,3))
 					if(prob(50))
 						M.emote("laugh")
@@ -888,7 +917,7 @@
 						M.emote("laugh")
 			if(GP_CRITFAIL)
 				spawn(rand(1,3))
-					if(prob(20 - M.my_stats.ht))
+					if(prob(20 - M.my_stats.get_stat(STAT_HT)))
 						var/datum/organ/internal/heart/HE = (locate() in M.internal_organs)
 						if(HE)
 							HE.heart_attack()
@@ -909,20 +938,36 @@
 	title = "Soiler"
 	titlebr = "Agricultor"
 	flag = BOTANIST
-	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
+	stat_mods = list(STAT_ST = 2, STAT_DX = -2, STAT_HT = 1, STAT_IN = -2)
 	total_positions = 3
 	spawn_positions = 2
 	supervisors = "the Duke and the Chef."
 	selection_color = "#dddddd"
-	idtype = /obj/item/weapon/card/id/hydro
+	idtype = /obj/item/card/id/hydro
 	access = list(soilery)
 	minimal_access = list(soilery)
 	jobdesc = "The life blood of the fort. Many people rely on you to supply crops. They provide Firethorn with its freshest produce and arellits for both food and riding. Most of Firethorn&#8217;s food production is domestic and bought locally from the soilers who market to both individuals and businesses within the fort."
 	jobdescbr = "The life blood of the fort. Many people rely on you to supply crops. They provide Firethorn with its freshest produce and arellits for both food and riding. Most of Firethorn&#8217;s food production is domestic and bought locally from the soilers who market to both individuals and businesses within the fort."
 	thanati_chance = 75
 	money = 5
+	skill_mods = list(
+	list(SKILL_MELEE,2,2),
+	list(SKILL_RIDE,5,6),
+	list(SKILL_RANGE,0),
+	list(SKILL_UNARM,0,2),
+	list(SKILL_FARM,7,8),
+	list(SKILL_COOK,2,2),
+	list(SKILL_ENGINE,0),
+	list(SKILL_SURG,0),
+	list(SKILL_MEDIC,0),
+	list(SKILL_CLEAN,0),
+	list(SKILL_CLIMB,2,2),
+	list(SKILL_SWIM,2,2),
+	list(SKILL_OBSERV, 2,2),
+	list(SKILL_TAN, 4,6),
+	)
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
 			return 0
@@ -943,23 +988,36 @@
 //Cargo
 
 /datum/job/qm
-	title = "Bookkeeper"
+	title = "Merchant"
 	titlebr = "Agente de Vendas"
 	flag = QUARTERMASTER
-	department_head = list("Duke")
 	department_flag = CIVILIAN
 	faction = "Station"
+	stat_mods = list(STAT_ST = 0, STAT_DX = 3, STAT_HT = -1, STAT_IN = 3)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the merchant guild"
 	selection_color = "#dddddd"
-	idtype = /obj/item/weapon/card/id/qm
+	idtype = /obj/item/card/id/qm
 	access = list(merchant)
 	minimal_access = list(merchant)
 	latejoin_locked = TRUE
 	thanati_chance = 33
-	jobdesc = "A newcomer from somewhere in the east, rumors say he&#8217;s a known book maker and came to Firethorn to outrun tribunal troops."
+	jobdesc = "A newcomer from somewhere far from the South, rumors say hes the scion of a wealthy merchant family from Gahan, but ever since opening up their trade post they havent confirmed or denied these claims. Buy wholesale and foist! Not everyone in Firethorn has money to pay at your premium prices. You could still give these losers tasks in exchange for a discount."
 	jobdescbr = "A newcomer from somewhere in the east, rumors say he&#8217;s a known book maker and came to Firethorn to outrun tribunal troops."
+	skill_mods = list(
+	list(SKILL_MELEE,2,2),
+	list(SKILL_RANGE,5,5),
+	list(SKILL_FARM,0),
+	list(SKILL_COOK,0),
+	list(SKILL_ENGINE,0),
+	list(SKILL_SURG,2,2),
+	list(SKILL_MEDIC,2,2),
+	list(SKILL_CLEAN,2,2),
+	list(SKILL_CLIMB,2,2),
+	list(SKILL_OBSERV, 3,3),
+	list(SKILL_BOAT, 0),
+	)
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
 			return 0
@@ -969,7 +1027,7 @@
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/new_cut_alt(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/boots(H), slot_shoes)
 		H.equip_to_slot_or_del(new /obj/item/clothing/suit/new_cut(H), slot_wear_suit)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/new_cut(H), slot_back)
+		H.equip_to_slot_or_del(new /obj/item/storage/backpack/new_cut(H), slot_back)
 		H.equip_to_slot_or_del(new /obj/item/clothing/head/cap(H), slot_head)
 		//H.jewish = TRUE
 		H.add_perk(/datum/perk/ref/value)
@@ -978,24 +1036,39 @@
 
 
 /datum/job/cargo_tech
-	title = "Grayhound"
+	title = "Docker"
 	titlebr = "Doqueiro"
 	flag = CARGOTECH
-	department_head = list("Bookkeeper")
 	department_flag = CIVILIAN
 	faction = "Station"
+	stat_mods = list(STAT_ST = 2, STAT_DX = 0, STAT_HT = 1, STAT_IN = -1)
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "the merchant and the BARON"
 	selection_color = "#dddddd"
-	idtype = /obj/item/weapon/card/id/qm
+	idtype = /obj/item/card/id/qm
 	access = list(merchant)
 	minimal_access = list(merchant)
 	sex_lock = MALE
 	money = 12
-	jobdesc = "Hired by the Bookkeeper for manual labor, you work their shop and docks by assisting them with unloading their goods from the barge and ensuring they don&#8217;t have to do physical duties. Do it well enough and your boss may be gracious enough to pay you."
-	jobdescbr = "Hired by the Bookkeeper for manual labor, you work their shop and docks by assisting them with unloading their goods from the barge and ensuring they don&#8217;t have to do physical duties. Do it well enough and your boss may be gracious enough to pay you."
+	jobdesc = "Hired by the Merchant for manual labor, you work their shop and docks by assisting them with unloading their goods from the barge and ensuring they don&#8217;t have to do physical duties. Do it well enough and your boss may be gracious enough to pay you."
+	jobdescbr = "Hired by the Merchant for manual labor, you work their shop and docks by assisting them with unloading their goods from the barge and ensuring they don&#8217;t have to do physical duties. Do it well enough and your boss may be gracious enough to pay you."
 	thanati_chance = 70
+	skill_mods = list(
+	list(SKILL_MELEE,3,3),
+	list(SKILL_RANGE,2,2),
+	list(SKILL_UNARM,1,2),
+	list(SKILL_FARM,0),
+	list(SKILL_COOK,0),
+	list(SKILL_ENGINE,0),
+	list(SKILL_SURG,0),
+	list(SKILL_CLIMB, 4),
+	list(SKILL_MEDIC,0),
+	list(SKILL_CLEAN,1,2),
+	list(SKILL_SWIM,2,2),
+	list(SKILL_OBSERV, 2,2),
+	list(SKILL_BOAT, 0),
+	)
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
 			return 0
@@ -1005,9 +1078,9 @@
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/new_cut(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/jackboots(H), slot_shoes)
 		H.equip_to_slot_or_del(new /obj/item/clothing/head/cap(H), slot_head)
-		H.equip_to_slot_or_del(new /obj/item/clothing/suit/new_cut_alt2(H), slot_wear_suit)
+		H.equip_to_slot_or_del(new /obj/item/clothing/suit/new_cut/new_cut_alt2(H), slot_wear_suit)
 		H.equip_to_slot_or_del(new /obj/item/clothing/gloves/fingerless(H), slot_gloves)
-		H.equip_to_slot_or_del(new /obj/item/weapon/melee/classic_baton/club/knuckleduster(H), slot_l_store)
+		H.equip_to_slot_or_del(new /obj/item/melee/classic_baton/club/knuckleduster(H), slot_l_store)
 		H.add_perk(/datum/perk/docker)
 		H.terriblethings = TRUE
 		H.add_perk(/datum/perk/ref/strongback)
@@ -1019,14 +1092,13 @@
 /datum/job/mining
 	title = "Miner"
 	flag = MINER
-	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 3
 	spawn_positions = 3
 	supervisors = "the quartermaster and the head of personnel"
 	selection_color = "#dddddd"
-	idtype = /obj/item/weapon/card/id/engie
+	idtype = /obj/item/card/id/engie
 	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mint, access_mining, access_mining_station)
 	minimal_access = list(access_mining, access_mint, access_mining_station, access_mailsorting)
 
@@ -1037,14 +1109,14 @@
 		..()
 		H.voicetype = "strong"
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/headset_cargo (H), slot_l_ear)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/industrial(H), slot_back)
+		H.equip_to_slot_or_del(new /obj/item/storage/backpack/industrial(H), slot_back)
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/miner(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/device/pda/shaftminer(H), slot_belt)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/black(H), slot_shoes)
 		H.equip_to_slot_or_del(new /obj/item/clothing/gloves/fingerless(H), slot_gloves)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H.back), slot_in_backpack)
-		H.equip_to_slot_or_del(new /obj/item/weapon/crowbar(H), slot_in_backpack)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/bag/ore(H), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/storage/box/engineer(H.back), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/crowbar(H), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/storage/bag/ore(H), slot_in_backpack)
 		return 1
 */
 
@@ -1052,25 +1124,45 @@
 	title = "Amuser"
 	titlebr = "Prostituta"
 	flag = HOOKER
-	department_head = list("Trader")
 	department_flag = CIVILIAN
 	faction = "Station"
+	stat_mods = list(STAT_ST = -1, STAT_DX = 1, STAT_HT = -1, STAT_IN = -1)
 	total_positions = 2
 	spawn_positions = 3
 	supervisors = "Your customer and the pusher."
 	selection_color = "#ae00ff"
 	access = list(amuser)
 	minimal_access = list(amuser)
-	idtype = /obj/item/weapon/card/id/ltgrey
+	idtype = /obj/item/card/id/ltgrey
 	sex_lock = FEMALE
 	thanati_chance = 75
 	money = 3
 	jobdesc = "The lady of the night, a seductress who welcomes men into her soft embrace for coin. The pusher is your pimp, and he&#8217;s expecting a cut of the earnings. Enticing men these nights is not that hard - nights get dreary and lonely after all, but with the recent arrival of the Inquisition, you&#8217;ve noticed your frequent visitors become strangely chaste in your presence."
 	jobdescbr = "Após a chegada da Inquisição, os homens da fortaleza tornaram-se subitamente ... assexuados. Eles têm medo de uma reeducação que agrada a Deus e incapacitante ou apenas se sublimam em fanatismo, intrigas e expectativa de uma matança? De qualquer forma, você deve se esforçar para lembrá-los de simples alegrias corporais."
+	skill_mods = list(
+	list(SKILL_MELEE,0),
+	list(SKILL_RANGE,0),
+	list(SKILL_FARM,0),
+	list(SKILL_COOK,0),
+	list(SKILL_ENGINE,0),
+	list(SKILL_SURG,0),
+	list(SKILL_MEDIC,0),
+	list(SKILL_RIDE,5,10),
+	list(SKILL_PARTY,3,5),
+	list(SKILL_CLEAN,0),
+	list(SKILL_CLIMB,8,8),
+	list(SKILL_STEAL,2,4),
+	list(SKILL_SWIM,0),
+	list(SKILL_MUSIC, 0),
+	list(SKILL_KNIFE,0,2),
+	list(SKILL_OBSERV, 2,2),
+	)
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
 			return 0
 		..()
+		if(H.gender == MALE)
+			H.set_species("Femboy")
 		H.equip_to_slot_or_del(new /obj/item/clothing/suit/hooker(H), slot_wear_suit)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/fetish(H), slot_shoes)
 		//H.equip_to_slot_or_del(new /obj/item/clothing/gloves/fingerless(H), slot_gloves)
@@ -1087,14 +1179,14 @@
 	title = "Scuff"
 	titlebr = "Scuff"
 	flag = SCUFF
-	department_head = list("Captain")
 	department_flag = MEDSCI
 	faction = "Station"
+	stat_mods = list(STAT_ST = -1, STAT_DX = 0, STAT_HT = -2, STAT_IN = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "Your parents."
 	selection_color = "#ddddff"
-	idtype = /obj/item/weapon/card/id/other
+	idtype = /obj/item/card/id/other
 	minimal_player_age = 10
 	money = 5
 	latejoin_locked = FALSE
@@ -1103,6 +1195,20 @@
 	access = list(brothel)
 	jobdesc = "A street urchin caught up under the pusher&#8217;s influence. He gets you to do menial jobs he can&#8217;t be caught doing, like nicking the jingling bags around people&#8217;s necks and working your way into people&#8217;s pockets. He promises you compensation, too. Sometimes you get your share."
 	minimal_access = list(brothel, amuser)
+	skill_mods = list(
+	list(SKILL_MELEE,2,2),
+	list(SKILL_RANGE,2,2),
+	list(SKILL_FARM,0),
+	list(SKILL_COOK,0),
+	list(SKILL_ENGINE,0),
+	list(SKILL_SURG,0),
+	list(SKILL_MEDIC,0),
+	list(SKILL_KNIFE,0,3),
+	list(SKILL_CLEAN,2,2),
+	list(SKILL_CLIMB,5,5),
+	list(SKILL_STEAL,4,4),
+	list(SKILL_OBSERV, 2,2),
+	)
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
 			return 0
@@ -1122,20 +1228,35 @@
 	title = "Pusher"
 	titlebr = "Pusher"
 	flag = SMUGGLER
-	department_head = null
 	department_flag = CIVILIAN
 	faction = "Station"
+	stat_mods = list(STAT_ST = 1, STAT_DX = -1, STAT_HT = -1, STAT_IN = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "The loan sharks and your luck."
 	selection_color = "#ae00ff"
-	access = list(brothel, amuser)
-	minimal_access = list(brothel, amuser)
-	idtype = /obj/item/weapon/card/id/ltgrey
-	money = 20
+	access = list(innkeep, brothel, amuser)
+	minimal_access = list(innkeep, brothel, amuser)
+	idtype = /obj/item/card/id/ltgrey
+	money = 70
 	thanati_chance = 75
-	jobdesc = "Those who come by the den to purchase your blood plungers range from nobility to dirt, and you&#8217;re here to sell them sex and indulge in all of their immoral hedonism. You hear the kids calling you the coolest person in the fortress, and you make sure that the obol-less bums spend it on a hit once it finally looks like they&#8217;ve made some dough. You&#8217;re looked up to by scoundrels and vermin, and are a target for those looking to challenge your drug trade. You won&#8217;t let that happen."
+	jobdesc = "The new owner of The Old Cock Inn, the perfect front for your den of vices and a good way to draw people in, after all, you know practically everyone and get to hear rumors from those temporarily passing through Firethorn, you even get money from anyone not interested in your downstairs merchandise. Those who come by the den to purchase your blood plungers range from nobility to dirt, and you&#8217;re here to sell them sex and indulge in all of their immoral hedonism. You hear the kids calling you the coolest person in the fortress, and you make sure that the obol-less bums spend it on a hit once it finally looks like they&#8217;ve made some dough. You&#8217;re looked up to by scoundrels and vermin, and are a target for those looking to challenge your drug trade. You won&#8217;t let that happen."
 	jobdescbr = "Those who come by the den to purchase your blood plungers range from nobility to dirt, and you&#8217;re here to sell them sex and indulge in all of their immoral hedonism. You hear the kids calling you the coolest person in the fortress, and you make sure that the obol-less bums spend it on a hit once it finally looks like they&#8217;ve made some dough. You&#8217;re looked up to by scoundrels and vermin, and are a target for those looking to challenge your drug trade. You won&#8217;t let that happen."
+	skill_mods = list(
+	list(SKILL_MELEE,4,4),
+	list(SKILL_RANGE,2,2),
+	list(SKILL_UNARM, 0,2),
+	list(SKILL_FARM,1,2),
+	list(SKILL_COOK,7,9),
+	list(SKILL_ENGINE,0),
+	list(SKILL_CLIMB,3,3),
+	list(SKILL_SURG,2,3),
+	list(SKILL_MEDIC,2,3),
+	list(SKILL_CLEAN,1,2),
+	list(SKILL_PARTY, 6,7),
+	list(SKILL_CLIMB,2,2),
+	list(SKILL_OBSERV, 2,2),
+	)
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
 			return 0
@@ -1147,11 +1268,11 @@
 		H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/pusher(H), slot_wear_suit)
 		H.mind.time_to_pay = rand(15, 40)
 		if(prob(50))
-			H.equip_to_slot_or_del(new /obj/item/weapon/flame/lighter/zippo(H), slot_r_store)
+			H.equip_to_slot_or_del(new /obj/item/flame/lighter/zippo(H), slot_r_store)
 		else
-			H.equip_to_slot_or_del(new /obj/item/weapon/kitchen/utensil/knife/switchblade(H), slot_r_store)
-		H.equip_to_slot_or_del(new /obj/item/weapon/melee/classic_baton/club/knuckleduster(H), slot_l_store)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/briefcase(H), slot_r_hand)
+			H.equip_to_slot_or_del(new /obj/item/kitchen/utensil/knife/switchblade(H), slot_r_store)
+		H.equip_to_slot_or_del(new /obj/item/melee/classic_baton/club/knuckleduster(H), slot_l_store)
+		H.equip_to_slot_or_del(new /obj/item/storage/briefcase(H), slot_r_hand)
 		H.terriblethings = TRUE
 
 		spawn while(H.mind)
@@ -1170,7 +1291,6 @@
 /datum/job/clown
 	title = "Clown"
 	flag = CLOWN
-	department_head = list("Head of Personnel")
 	department_flag = CIVILIAN
 	faction = "Station"
 	total_positions = 1
@@ -1185,17 +1305,17 @@
 		if(!H)
 			return 0
 		..()
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/clown(H), slot_back)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/storage/backpack/clown(H), slot_back)
+		H.equip_to_slot_or_del(new /obj/item/storage/box/survival(H.back), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/clown(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/clown_shoes(H), slot_shoes)
 		H.equip_to_slot_or_del(new /obj/item/device/pda/clown(H), slot_belt)
 		H.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/clown_hat(H), slot_wear_mask)
-		H.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/food/snacks/grown/banana(H), slot_in_backpack)
-		H.equip_to_slot_or_del(new /obj/item/weapon/bikehorn(H), slot_in_backpack)
-		H.equip_to_slot_or_del(new /obj/item/weapon/stamp/clown(H), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/reagent_containers/food/snacks/grown/banana(H), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/bikehorn(H), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/stamp/clown(H), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/toy/crayon/rainbow(H), slot_in_backpack)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/fancy/crayons(H), slot_in_backpack)
+		H.equip_to_slot_or_del(new /obj/item/storage/fancy/crayons(H), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/toy/waterflower(H), slot_in_backpack)
 		H.mutations.Add(CLUMSY)
 		return 1
@@ -1205,19 +1325,32 @@
 	title = "Misero"
 	titlebr = "Misero"
 	flag = JANITOR
-	department_head = list("Captain")
 	department_flag = CIVILIAN
 	faction = "Station"
+	stat_mods = list(STAT_ST = 3, STAT_DX = 0, STAT_HT = 2, STAT_IN = -5)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the Baron"
 	selection_color = "#dddddd"
 	access = list(lifeweb)
 	minimal_access = list(lifeweb)
-	idtype = /obj/item/weapon/card/id/ltgrey
+	idtype = /obj/item/card/id/ltgrey
 	jobdesc = "Proven too dumb to be a mortus, the misero cannot work the lifeweb. Instead, he cleans up after the mortii, keeps the streets washed, and deals with the burial of the deceased in the graveyard."
 	jobdescbr = "Proven too dumb to be a mortus, the misero cannot work the lifeweb. Instead, he cleans up after the mortii, keeps the streets washed, and deals with the burial of the deceased in the graveyard."
 	thanati_chance = 75
+	skill_mods = list(
+	list(SKILL_MELEE,2,2),
+	list(SKILL_RANGE,0),
+	list(SKILL_FARM,0),
+	list(SKILL_COOK,2,2),
+	list(SKILL_ENGINE,0),
+	list(SKILL_CLEAN,6,8),
+	list(SKILL_CLIMB,2,2),
+	list(SKILL_SWIM,0),
+	list(SKILL_UNARM,0,2),
+	list(SKILL_SWING,0,2),
+	list(SKILL_OBSERV, 0),
+	)
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
 			return 0
@@ -1240,9 +1373,9 @@
 	title = "Patriarch"
 	titlebr = "Patriarca"
 	flag = LAWYER
-	department_head = list("Duke")
 	department_flag = CIVILIAN
 	faction = "Station"
+	stat_mods = list(STAT_ST = 1, STAT_DX = 0, STAT_HT = 0, STAT_IN = 2)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the baron and the northern law"
@@ -1253,6 +1386,21 @@
 	jobdesc = "The most respected man in the fortress outside of the Baron himself. He is one of the eldest residents, with a large family to show for it. He handles domestic disputes and ensures that the law is adhered. Residents often find themselves coming to him for advice."
 	latejoin_locked = FALSE
 	thanati_chance = 75
+	skill_mods = list(
+	list(SKILL_MELEE,2,2),
+	list(SKILL_RANGE, 2,2),
+	list(SKILL_FARM,0),
+	list(SKILL_COOK,2,2),
+	list(SKILL_ENGINE,0),
+	list(SKILL_SURG,0),
+	list(SKILL_MEDIC,0),
+	list(SKILL_CLEAN,0),
+	list(SKILL_CLIMB,2,2),
+	list(SKILL_PARTY,0),
+	list(SKILL_SWIM,2,2),
+	list(SKILL_MUSIC, 0),
+	list(SKILL_OBSERV, 2,2),
+	)
 	equip(var/mob/living/carbon/human/H)
 		if(!H)
 			return 0
@@ -1268,6 +1416,8 @@
 //		H.verbs += /mob/living/carbon/human/proc/duel
 		return 1
 
+
+//TODO: re-enable these.
 /mob/living/carbon/human/proc/execution()
 	set hidden = 0
 	set category = "Law"

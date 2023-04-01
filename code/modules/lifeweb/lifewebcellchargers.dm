@@ -4,7 +4,7 @@ var/list/affectedItems = list()
 
 /obj/machinery/web_recharger
 	name = "battery charger"
-	icon = 'LW2.dmi'
+	icon = 'icons/obj/LW2.dmi'
 	icon_state = "battery_station"
 	anchored = 1
 	use_power = 1
@@ -12,17 +12,17 @@ var/list/affectedItems = list()
 	flammable = 0
 	var/active_area
 	var/blood_usage = 0
-	var/obj/item/weapon/cell/web/charging = null
+	var/obj/item/cell/web/charging = null
 	var/powered = FALSE
 	var/image/powerOverlay
 
-obj/item/weapon/cell/web/New()
+obj/item/cell/web/New()
     ..()
 
     for(var/x = 0; x <= charge; x++)
         item_worth++
 
-obj/item/weapon/cell/web/empty/New()
+obj/item/cell/web/empty/New()
     ..()
 
     charge = 0
@@ -31,9 +31,9 @@ obj/item/weapon/cell/web/empty/New()
 /obj/machinery/web_recharger/attackby(obj/item/W, mob/user)
     updatepoweroverlay()
     if(!charging)
-        if(istype(W, /obj/item/weapon/cell/web))
-            var/obj/item/weapon/cell/web/oldCell = W
-            charging = new /obj/item/weapon/cell/web(src)
+        if(istype(W, /obj/item/cell/web))
+            var/obj/item/cell/web/oldCell = W
+            charging = new /obj/item/cell/web(src)
             charging.charge = oldCell.charge
             powered = TRUE
 
@@ -52,20 +52,20 @@ obj/item/weapon/cell/web/empty/New()
             var/mob/living/carbon/human/H = user
 
             var/obj/item/I = H.get_active_hand()
-            var/obj/item/weapon/cell/web/oldCell = charging
+            var/obj/item/cell/web/oldCell = charging
 
             if(!I)
-                var/obj/item/weapon/cell/web/handCell = null
+                var/obj/item/cell/web/handCell = null
                 if(H.hand)
-                    H.equip_to_slot_or_del(new /obj/item/weapon/cell/web(H), slot_l_hand)
+                    H.equip_to_slot_or_del(new /obj/item/cell/web(H), slot_l_hand)
 
-                    if(istype(H.l_hand, /obj/item/weapon/cell/web))
+                    if(istype(H.l_hand, /obj/item/cell/web))
                         handCell = H.l_hand
 
                 else
-                    H.equip_to_slot_or_del(new /obj/item/weapon/cell/web(H), slot_r_hand)
+                    H.equip_to_slot_or_del(new /obj/item/cell/web(H), slot_r_hand)
 
-                    if(istype(H.r_hand, /obj/item/weapon/cell/web))
+                    if(istype(H.r_hand, /obj/item/cell/web))
                         handCell = H.r_hand
 
                 handCell.charge = oldCell.charge
@@ -85,11 +85,11 @@ obj/item/weapon/cell/web/empty/New()
 
 /obj/machinery/web_recharger/New()
     ..()
-    charging = new /obj/item/weapon/cell/web(src)
+    charging = new /obj/item/cell/web(src)
     //var/powered = TRUE
-    overlays += icon('LW2.dmi', "bbattery")
+    overlays += icon('icons/obj/LW2.dmi', "bbattery")
 
-    powerOverlay = image('LW2.dmi', icon_state="battery_station_overlay")
+    powerOverlay = image('icons/obj/LW2.dmi', icon_state="battery_station_overlay")
     overlays += powerOverlay
     for(var/area/A in world)
         if(A.name == active_area)
@@ -111,7 +111,7 @@ obj/item/weapon/cell/web/empty/New()
                 newIconState = "ob75"
             if(76 to INFINITY)
                 newIconState = "ob100"
-    powerOverlay = image('LW2.dmi', icon_state=newIconState)
+    powerOverlay = image('icons/obj/LW2.dmi', icon_state=newIconState)
     overlays += powerOverlay
 
 /obj/machinery/light/New()
@@ -180,12 +180,12 @@ obj/item/weapon/cell/web/empty/New()
 
 /obj/machinery/door/airlock/attackby(obj/item/W, mob/user)
     if(!lwOn)
-        if(istype(W, /obj/item/weapon/crowbar))
+        if(istype(W, /obj/item/crowbar))
             open()
             return 0
     ..()
 
-/obj/item/weapon/cell/web/examine()
+/obj/item/cell/web/examine()
     to_chat(usr, "The battery meter shows... <b>[charge]</b>")
 
 /obj/machinery/web_recharger/examine()
@@ -193,12 +193,12 @@ obj/item/weapon/cell/web/empty/New()
     if(charging)
         to_chat(usr, "The battery meter shows... <b>[charging.charge]</b>")
 
-/obj/item/weapon/cell/crap/leet/examine()
+/obj/item/cell/crap/leet/examine()
     to_chat(usr, "The battery meter shows... <b>[charge / 10]</b")
 
-/obj/item/weapon/cell/crap/leet/attackby(obj/item/W, mob/user)
-    if(istype(W, /obj/item/weapon/cell/web))
-        var/obj/item/weapon/cell/web/WW = W
+/obj/item/cell/crap/leet/attackby(obj/item/W, mob/user)
+    if(istype(W, /obj/item/cell/web))
+        var/obj/item/cell/web/WW = W
 
         if(WW.charge >= 10 && charge < 1000)
             WW.charge -= 10

@@ -28,3 +28,4 @@
 	var/size_multiplier = 1
 	throw_range = 3
 	var/glindcooldown = 0
+	var/dom_hand = RIGHT_HAND

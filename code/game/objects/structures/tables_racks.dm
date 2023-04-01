@@ -19,7 +19,7 @@
 	anchored = 1.0
 	layer = 2.8
 	throwpass = 1	//You can throw objects over this, despite it's density.")
-	parts = /obj/item/weapon/table_parts
+	parts = /obj/item/table_parts
 	var/busy = 0
 
 	var/flipped = 0
@@ -369,7 +369,7 @@
 		if(user.canmove)
 			climb_table(user)
 			return
-	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+	if ((!( istype(O, /obj/item) ) || user.get_active_hand() != O))
 		return
 	if(isrobot(user))
 		return
@@ -380,9 +380,9 @@
 	return
 
 
-/obj/structure/table/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
-		var/obj/item/weapon/grab/G = W
+/obj/structure/table/attackby(obj/item/W as obj, mob/user as mob)
+	if (istype(W, /obj/item/grab) && get_dist(src,user)<2)
+		var/obj/item/grab/G = W
 		if(G.state == 2 && G.assailant.zone_sel.selecting == "head")
 			if(ishuman(G.affecting))
 				G.affecting.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been smashed on a table by [G.assailant.name] ([G.assailant.ckey])</font>")
@@ -435,7 +435,7 @@
 			qdel(W)
 		return
 
-	if (istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/wrench))
 		user << "\blue Now disassembling table"
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		if(do_after(user,50))
@@ -445,7 +445,7 @@
 	if(isrobot(user))
 		return
 
-	if(istype(W, /obj/item/weapon/melee/energy/blade))
+	if(istype(W, /obj/item/melee/energy/blade))
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(5, 0, src.loc)
 		spark_system.start()
@@ -600,7 +600,7 @@
 
 /obj/structure/table/proc/tablepush(obj/item/I, mob/user)
 	if(get_dist(src, user) < 2)
-		var/obj/item/weapon/grab/G = I
+		var/obj/item/grab/G = I
 		if(G.affecting.buckled)
 			user << "<span class='warning'>[G.affecting] is buckled to [G.affecting.buckled]!</span>"
 			return 0
@@ -644,7 +644,7 @@
 		visible_message("<span class='warning'>[src] breaks!</span>")
 		playsound(src.loc, "shatter", 50, 1)
 		new frame(src.loc)
-		new /obj/item/weapon/shard(src.loc)
+		new /obj/item/shard(src.loc)
 		qdel(src)
 
 
@@ -653,7 +653,7 @@
 		visible_message("<span class='warning'>[src] breaks!</span>")
 		playsound(src.loc, "shatter", 50, 1)
 		new frame(src.loc)
-		new /obj/item/weapon/shard(src.loc)
+		new /obj/item/shard(src.loc)
 		qdel(src)
 		user.Weaken(5)
 
@@ -665,7 +665,7 @@
 	name = "wooden table"
 	desc = "Do not apply fire to this. Rumour says it burns easily."
 	icon_state = "wood_table"
-	parts = /obj/item/weapon/table_parts/wood
+	parts = /obj/item/table_parts/wood
 	health = 50
 /*
  * Reinforced tables
@@ -676,7 +676,7 @@
 	icon_state = "reinf_table"
 	health = 200
 	var/status = 2
-	parts = /obj/item/weapon/table_parts/reinforced
+	parts = /obj/item/table_parts/reinforced
 
 /obj/structure/table/reinforced/lw
 	icon_state = "tablelw"
@@ -687,9 +687,9 @@
 	else
 		return ..()
 
-/obj/structure/table/reinforced/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+/obj/structure/table/reinforced/attackby(obj/item/W as obj, mob/user as mob)
+	if (istype(W, /obj/item/weldingtool))
+		var/obj/item/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
 			if(src.status == 2)
 				user << "\blue Now weakening the reinforced table"
@@ -708,7 +708,7 @@
 			return
 		return
 
-	if (istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/wrench))
 		if(src.status == 2)
 			return
 
@@ -720,14 +720,14 @@
  */
 /obj/structure/rack
 	name = "rack"
-	desc = "Different from the Middle Ages version."
+	desc = "Different from the Middle Ages version, but still pretty close."
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "rack"
-//	density = 1
+	density = 1
 	flags = FPRINT
 	anchored = 1.0
 	throwpass = 1	//You can throw objects over this, despite it's density.
-	parts = /obj/item/weapon/rack_parts
+	parts = /obj/item/rack_parts
 
 /obj/structure/rack/iron
 	icon_state = "rack1"
@@ -784,7 +784,7 @@
 	if(get_dist(src,user) <= 1)
 		if(narrow == 1)
 			if(!(ishuman(usr)  && istype(usr:species, /datum/species/human/alien)))
-				to_chat(user,"<span class='combatbold'>[pick(nao_consigoen)] the table is too narrow!</span>")
+				to_chat(user,"<span class='combatbold'>[pick(fnord)] the table is too narrow!</span>")
 				return
 
 		if(user.stat)
@@ -805,8 +805,6 @@
 	return
 
 /obj/structure/rack/lwtable/Crossed(var/mob/living/M as mob)
-	if(istype(src, /obj/structure/table/glass))
-		return 0
 	if(!flipped)
 		if(istype(M))
 			M.pixel_y = 12
@@ -825,7 +823,7 @@
 		if(user.canmove)
 			climb_table(user)
 			return
-	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+	if ((!( istype(O, /obj/item) ) || user.get_active_hand() != O))
 		return
 	if(isrobot(user))
 		return
@@ -878,9 +876,9 @@
 	return 0
 
 
-/obj/structure/rack/lwtable/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
-		var/obj/item/weapon/grab/G = W
+/obj/structure/rack/lwtable/attackby(obj/item/W, mob/user)
+	if (istype(W, /obj/item/grab) && get_dist(src,user)<2)
+		var/obj/item/grab/G = W
 		if(G.state == 2 && G.assailant.zone_sel.selecting == "head")
 			if(ishuman(G.affecting))
 				G.affecting.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been smashed on a table by [G.assailant.name] ([G.assailant.ckey])</font>")
@@ -926,7 +924,7 @@
 	if(isrobot(user))
 		return
 
-	if(istype(W, /obj/item/weapon/melee/energy/blade))
+	if(istype(W, /obj/item/melee/energy/blade))
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(5, 0, src.loc)
 		spark_system.start()
@@ -937,6 +935,8 @@
 		destroy()
 
 	user.drop_item(src)
+	if(W.table_sound)
+		playsound(src, W.table_sound, 50, FALSE)
 	return
 
 /obj/structure/rack/lwtable/ex_act()
@@ -1047,7 +1047,7 @@
 		return 0
 
 /obj/structure/rack/MouseDrop_T(obj/O as obj, mob/user as mob)
-	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+	if ((!( istype(O, /obj/item) ) || user.get_active_hand() != O))
 		return
 	if(isrobot(user))
 		return
@@ -1056,9 +1056,10 @@
 		step(O, get_dir(O, src))
 	return
 
-/obj/structure/rack/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/wrench))
-		new /obj/item/weapon/rack_parts( src.loc )
+/*
+/obj/structure/rack/attackby(obj/item/W as obj, mob/user as mob)
+	if (istype(W, /obj/item/wrench))
+		new /obj/item/rack_parts( src.loc )
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		qdel(src)
 		return
@@ -1067,7 +1068,7 @@
 	user.drop_item()
 	if(W && W.loc)	W.loc = src.loc
 	return
-
+*/
 /obj/structure/rack/meteorhit(obj/O as obj)
 	qdel(src)
 

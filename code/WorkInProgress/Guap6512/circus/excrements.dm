@@ -106,7 +106,7 @@
 	if (istype(AM, /mob/living/carbon))
 		var/mob/living/carbon/M =	AM
 
-		for(var/obj/item/weapon/shield/generator/G in M.contents)
+		for(var/obj/item/shield/generator/G in M.contents)
 			if(G.active)
 				G.failure(M)
 
@@ -164,7 +164,7 @@
 	..()
 	return
 
-/obj/item/weapon/reagent_containers/food/snacks/poo
+/obj/item/reagent_containers/food/snacks/poo
 	name = "poo"
 	desc = "A chocolately surprise!"
 	icon = 'icons/obj/poop.dmi'
@@ -181,17 +181,20 @@
 		//..()
 		//if(reagents.total_volume)
 		//	src.reagents.handle_reactions()
-		playsound(src.loc, "sound/effects/squishy.ogg", 40, 1)
-		processing_objects.Remove(src)
-		var/turf/T = src.loc
-		if(!istype(T, /turf/space))
-			new /obj/effect/decal/cleanable/poo(T)
-		qdel(src)
-		..()
+		if(istype(hit_atom, /turf/simulated/floor/open))//Make poo fall.
+			..()
+		else
+			playsound(src.loc, "sound/effects/squishy.ogg", 40, 1)
+			processing_objects.Remove(src)
+			var/turf/T = src.loc
+			if(!istype(T, /turf/space))
+				new /obj/effect/decal/cleanable/poo(T)
+			qdel(src)
+			..()
 //#####BOTTLES#####
 
 //PISS
-/obj/item/weapon/reagent_containers/glass/bottle/urine
+/obj/item/reagent_containers/glass/bottle/urine
 	name = "urine bottle"
 	desc = "A small bottle. Contains urine."
 	icon = 'icons/obj/chemical.dmi'
@@ -258,7 +261,7 @@
 		//Poo in the loo.
 		var/obj/structure/toilet/T = locate() in src.loc
 		var/mob/living/M = locate() in src.loc
-		var/obj/item/weapon/reagent_containers/glass/G = locate() in src.loc
+		var/obj/item/reagent_containers/glass/G = locate() in src.loc
 		if(species && species.has_organ["stomach"])
 			var/datum/organ/internal/stomach/L = internal_organs_by_name["stomach"]
 			if(!L)
@@ -300,11 +303,11 @@
 
 
 		//Poo on the face.
-		else if(M != src && M.lying)//Can only shit on them if they're lying down.
+		else if(M && M != src && M.lying)//Can only shit on them if they're lying down.
 			message = "<span class='looksatbold'>⠀[src]</span> <span class='looksat'>shits right on</span> <span class='looksatbold'>[M]'s</span> <span class='looksat'>face!</span>"
 			M.reagents.add_reagent("poo", 10)
 
-		else if(G && !G.reagents.total_volume != G.reagents.maximum_volume)
+		else if(G && !(G.reagents.total_volume >= G.reagents.maximum_volume))
 			G.reagents.add_reagent("poo", 10)
 			G.update_icon()
 			message = "<span class='looksatbold'>⠀[src]</span> <span class='looksat'>defecates into the [G].</span>"
@@ -321,10 +324,10 @@
 			if(goldXoomed)
 				var/typeCoin = pick("/gold", "/silver", "")
 				var/amount = rand(1, 20)
-				var/path = text2path("/obj/item/weapon/spacecash[typeCoin]/c[amount]")
+				var/path = text2path("/obj/item/spacecash[typeCoin]/c[amount]")
 				new path(location)
 			else
-				var/obj/item/weapon/reagent_containers/food/snacks/poo/V = new/obj/item/weapon/reagent_containers/food/snacks/poo(location)
+				var/obj/item/reagent_containers/food/snacks/poo/V = new/obj/item/reagent_containers/food/snacks/poo(location)
 				if(src.reagents)
 					src.reagents.trans_to(V, rand(1,5))
 
@@ -347,7 +350,7 @@
 	var/obj/structure/urinal/U = locate() in src.loc
 	var/obj/structure/toilet/T = locate() in src.loc
 	var/obj/structure/sink/S = locate() in src.loc
-	var/obj/item/weapon/reagent_containers/glass/G = locate() in src.loc
+	var/obj/item/reagent_containers/glass/G = locate() in src.loc
 	if(U || S || T)//In the urinal or sink.
 		message = "<span class='looksatbold'>⠀[src]</span> <span class='looksat'>urinates into the [U ? U : T ? T : S ? S : "something"].</span>"
 		src.reagents.remove_any(rand(1,8))
@@ -358,7 +361,7 @@
 		adjust_hygiene(-10)
 		add_event("embarassment2", /datum/happiness_event/hygiene/pee)
 		src.bladder -= rand(200,300)
-	else if(G && !G.reagents.total_volume != G.reagents.maximum_volume)
+	else if(G && !(G.reagents.total_volume >= G.reagents.maximum_volume))
 		G.reagents.add_reagent("urine", 10)
 		G.update_icon()
 		src.bladder -= rand(200,300)

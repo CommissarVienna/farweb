@@ -23,18 +23,18 @@
 	..()
 	sleep(2)
 	if(prob(50))
-		new /obj/item/weapon/storage/backpack/industrial(src)
+		new /obj/item/storage/backpack/industrial(src)
 	else
-		new /obj/item/weapon/storage/backpack/satchel_eng(src)
+		new /obj/item/storage/backpack/satchel_eng(src)
 	new /obj/item/device/radio/headset/headset_cargo(src)
 	new /obj/item/clothing/under/rank/miner(src)
 	new /obj/item/clothing/gloves/black(src)
 	new /obj/item/clothing/shoes/lw/black(src)
 	new /obj/item/device/analyzer(src)
-	new /obj/item/weapon/storage/bag/ore(src)
-	new /obj/item/weapon/flame/torch/lantern(src)
-	new /obj/item/weapon/shovel(src)
-	new /obj/item/weapon/pickaxe(src)
+	new /obj/item/storage/bag/ore(src)
+	new /obj/item/flame/torch/lantern(src)
+	new /obj/item/shovel(src)
+	new /obj/item/pickaxe(src)
 	new /obj/item/clothing/glasses/meson(src)
 
 
@@ -114,7 +114,7 @@ proc/move_mining_shuttle()
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "shuttle"
 	req_access = list(access_mining)
-	circuit = "/obj/item/weapon/circuitboard/mining_shuttle"
+	circuit = "/obj/item/circuitboard/mining_shuttle"
 	var/hacked = 0
 	var/location = 0 //0 = station, 1 = mining base
 
@@ -155,18 +155,18 @@ proc/move_mining_shuttle()
 
 	updateUsrDialog()
 
-/obj/machinery/computer/mining_shuttle/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/computer/mining_shuttle/attackby(obj/item/W as obj, mob/user as mob)
 
-	if (istype(W, /obj/item/weapon/card/emag))
+	if (istype(W, /obj/item/card/emag))
 		src.req_access = list()
 		hacked = 1
 		usr << "You fried the consoles ID checking system. It's now available to everyone!"
 
-	else if(istype(W, /obj/item/weapon/screwdriver))
+	else if(istype(W, /obj/item/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
 			var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
-			var/obj/item/weapon/circuitboard/mining_shuttle/M = new /obj/item/weapon/circuitboard/mining_shuttle( A )
+			var/obj/item/circuitboard/mining_shuttle/M = new /obj/item/circuitboard/mining_shuttle( A )
 			for (var/obj/C in src)
 				C.loc = src.loc
 			A.circuit = M
@@ -174,7 +174,7 @@ proc/move_mining_shuttle()
 
 			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
-				new /obj/item/weapon/shard( src.loc )
+				new /obj/item/shard( src.loc )
 				A.state = 3
 				A.icon_state = "3"
 			else
@@ -196,7 +196,7 @@ proc/move_mining_shuttle()
 */
 /*****************************Pickaxe********************************/
 
-/obj/item/weapon/pickaxe
+/obj/item/pickaxe
 	name = "pickaxe"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "pickaxe"
@@ -217,7 +217,7 @@ proc/move_mining_shuttle()
 	var/drill_sound = null
 	var/drill_verb = "picking"
 	embedicon = "pickaxe"
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	smelted_return = /obj/item/ore/refined/lw/ironlw
 
 	var/excavation_amount = 100
 
@@ -286,7 +286,7 @@ proc/move_mining_shuttle()
 
 /*****************************Shovel********************************/
 
-/obj/item/weapon/shovel
+/obj/item/shovel
 	name = "shovel"
 	desc = "A shovel for digging and bashing someone's skull when necessary."
 	icon = 'icons/obj/items.dmi'
@@ -303,34 +303,38 @@ proc/move_mining_shuttle()
 	attack_verb = list("bashed", "bludgeoned", "thrashed", "whacked")
 	full = 0
 	icon_state = "shovel"
-	drop_sound = 'shovel_drop.ogg'
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	hitsound = "shovel"
+	swing_sound = "shovelswing"
+	drop_sound = 'sound/effects/shovel_drop.ogg'
+	smelted_return = /obj/item/ore/refined/lw/ironlw
 
-/obj/item/weapon/shovel/update_icon()
+/obj/item/shovel/update_icon()
 	if(src.contents.len)
 		icon_state = "shovel1"
 	else
 		icon_state = "shovel0"
 
-/obj/item/weapon/shovel/attack(mob/living/carbon/human/M as mob, mob/living/carbon/human/user as mob) //wtf is this shit
+/obj/item/shovel/attack(var/mob/living/carbon/human/M, var/mob/living/carbon/human/user) //This is really fucking bad.
 	..()
+	if(!..()) return //Something else failed don't bother with this at all.
 	if(user.zone_sel.selecting == "head")
-		if(prob(40))
-			if (user.a_intent == "hurt")
-				if(user.combat_mode)
-					if(M.combat_mode == FALSE)
-						if(user.my_stats.st >= 11)
-							if(M.my_stats.ht < 12)
-								if(!..()) return
-								M.Stun(8)
-								M.Weaken(8)
-								M.Paralyse(8)
-								M.ear_deaf = max(M.ear_deaf,6)
-								M.Jitter(8)
-								for(var/mob/O in viewers(M))
-									if (O.client)	O.show_message("\red <B>[M] has been beaten with \the [src] by [user]!</B>", 1, "\red You hear someone fall", 2)
+		var/bother_with_this = TRUE
+		var/obj/item/clothing/worn_helmet = M.head
+		if(worn_helmet)
+			if(worn_helmet.armor_type >= ARMOR_CHAINMAIL)//Check if they're wearing strong armor.
+				bother_with_this = FALSE
+		if(user.dir != M.dir)//Check if we're behind them.
+			bother_with_this = FALSE
+		if(bother_with_this)//Ok they're not wearing head armor and we are behind them, roll to knock them out.
+			if(prob(50))
+				M.Stun(8)
+				M.Weaken(8)
+				M.Paralyse(8)
+				M.ear_deaf = max(M.ear_deaf,6)
+				M.Jitter(8)
 
-/obj/item/weapon/shovel/spade
+
+/obj/item/shovel/spade
 	name = "spade"
 	desc = "A small tool for digging and moving dirt."
 	icon_state = "spade"

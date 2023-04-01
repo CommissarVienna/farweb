@@ -109,7 +109,7 @@
 				qdel(A)
 				return
 
-			if(istype(A, /obj/item/weapon/disk/nuclear)) // Don't let nuke disks travel Z levels  ... And moving this shit down here so it only fires when they're actually trying to change z-level.
+			if(istype(A, /obj/item/disk/nuclear)) // Don't let nuke disks travel Z levels  ... And moving this shit down here so it only fires when they're actually trying to change z-level.
 				qdel(A) //The disk's Destroy() proc ensures a new one is created
 				return
 
@@ -117,7 +117,7 @@
 				overmap_spacetravel(src,A)
 				return
 
-			var/list/disk_search = A.search_contents_for(/obj/item/weapon/disk/nuclear)
+			var/list/disk_search = A.search_contents_for(/obj/item/disk/nuclear)
 			if(!isemptylist(disk_search))
 				if(istype(A, /mob/living))
 					var/mob/living/MM = A
@@ -132,10 +132,10 @@
 						else if(MM.y >= world.maxy -TRANSITIONEDGE)
 							MM.inertia_dir = 2
 					else
-						for(var/obj/item/weapon/disk/nuclear/N in disk_search)
+						for(var/obj/item/disk/nuclear/N in disk_search)
 							qdel(N)//Make the disk respawn it is on a clientless mob or corpse
 				else
-					for(var/obj/item/weapon/disk/nuclear/N in disk_search)
+					for(var/obj/item/disk/nuclear/N in disk_search)
 						qdel(N)//Make the disk respawn if it is floating on its own
 				return
 
@@ -304,12 +304,12 @@
 	heat_capacity = 700000
 	thermal_conductivity = 0.025
 
-/turf/space/hull/attackby(obj/item/weapon/C as obj, mob/user as mob)
+/turf/space/hull/attackby(obj/item/C as obj, mob/user as mob)
 	if(!C)
 		return
 	if(!user)
 		return
-	if(istype(C, /obj/item/weapon/wrench))
+	if(istype(C, /obj/item/wrench))
 		user << "\blue Removing rods..."
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 80, 1)
 		if(do_after(user, 30))

@@ -7,6 +7,7 @@
 	w_class = 3.0
 	neck_use = TRUE
 	item_state = "gas_mask"
+	blocks_vision = TRUE
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
 	siemens_coefficient = 0.9
@@ -39,13 +40,14 @@
 	desc = "A close-fitting tactical mask that can be connected to an air supply."
 	icon_state = "swat"
 	siemens_coefficient = 0.7
+	blocks_vision = FALSE
 
 /obj/item/clothing/mask/gas/church
 	name = "practicus mask"
 	desc = "A close-fitting tactical mask that can be connected to an air supply."
-	icon_state = "church0"
-	var/on_state = "church1"
-	var/off_state = "church0"
+	icon_state = "hgasmask0"
+	var/on_state = "hgasmask1"
+	var/off_state = "hgasmask0"
 	siemens_coefficient = 0.7
 	wrist_use = TRUE
 	flags = FPRINT | TABLEPASS | MASKCOVERSMOUTH | MASKCOVERSEYES | BLOCK_GAS_SMOKE_EFFECT | MASKINTERNALS | BLOCKHAIR
@@ -70,54 +72,17 @@
 	var/vchange = 0//This didn't do anything before. It now checks if the mask has special functions/N
 	origin_tech = "syndicate=4"
 
-/obj/item/clothing/mask/gas/voice/space_ninja
-	name = "ninja mask"
-	desc = "A close-fitting mask that acts both as an air d_filter and a post-modern fashion statement."
-	icon_state = "s-ninja"
-	item_state = "s-ninja_mask"
-	vchange = 1
-	siemens_coefficient = 0.2
-
 /obj/item/clothing/mask/gas/clown_hat
 	name = "clown wig and mask"
 	desc = "A true prankster's facial attire. A clown is incomplete without his wig and mask."
 	icon_state = "clown"
-	item_state = "clown_hat"
-
-/obj/item/clothing/mask/gas/sexyclown
-	name = "sexy-clown wig and mask"
-	desc = "A feminine clown mask for the dabbling crossdressers or female entertainers."
-	icon_state = "sexyclown"
-	item_state = "sexyclown"
-
-/obj/item/clothing/mask/gas/mime
-	name = "mime mask"
-	desc = "The traditional mime's mask. It has an eerie facial posture."
-	icon_state = "mime"
-	item_state = "mime"
+	item_state = "clown"
 
 /obj/item/clothing/mask/gas/monkeymask
 	name = "monkey mask"
 	desc = "A mask used when acting as a monkey."
 	icon_state = "monkeymask"
 	item_state = "monkeymask"
-
-/obj/item/clothing/mask/gas/sexymime
-	name = "sexy mime mask"
-	desc = "A traditional female mime's mask."
-	icon_state = "sexymime"
-	item_state = "sexymime"
-
-/obj/item/clothing/mask/gas/death_commando
-	name = "Death Commando Mask"
-	icon_state = "death_commando_mask"
-	item_state = "death_commando_mask"
-	siemens_coefficient = 0.2
-
-/obj/item/clothing/mask/gas/cyborg
-	name = "cyborg visor"
-	desc = "Beep boop"
-	icon_state = "death"
 
 /obj/item/clothing/mask/gas/owl_mask
 	name = "owl mask"

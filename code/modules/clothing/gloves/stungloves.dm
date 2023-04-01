@@ -1,4 +1,4 @@
-/obj/item/clothing/gloves/attackby(obj/item/weapon/W, mob/user)
+/obj/item/clothing/gloves/attackby(obj/item/W, mob/user)
 	if(istype(src, /obj/item/clothing/gloves/boxing))	//quick fix for stunglove overlay not working nicely with boxing gloves.
 		user << "<span class='notice'>That won't work.</span>"	//i'm not putting my lips on that!
 		..()
@@ -20,7 +20,7 @@
 		else
 			user << "<span class='notice'>[src] is not suitable for wiring.</span>"
 
-	else if(istype(W, /obj/item/weapon/cell))
+	else if(istype(W, /obj/item/cell))
 		if(!wired)
 			user << "<span class='notice'>[src] need to be wired first.</span>"
 		else if(!cell)
@@ -32,7 +32,7 @@
 		else
 			user << "<span class='notice'>[src] already have a cell.</span>"
 
-	else if(istype(W, /obj/item/weapon/wirecutters) || istype(W, /obj/item/weapon/surgery_tool/scalpel))
+	else if(istype(W, /obj/item/wirecutters) || istype(W, /obj/item/surgery_tool/scalpel))
 		if(cell)
 			cell.updateicon()
 			cell.loc = get_turf(src.loc)

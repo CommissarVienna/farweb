@@ -13,7 +13,7 @@
 /obj/structure/sharpener
 	name = "grinding stone"
 	desc = "A grinding stone used to sharpen weapons"
-	icon = 'structures.dmi'
+	icon = 'icons/obj/structures.dmi'
 	icon_state = "grinding"
 	density = 1
 	anchored = 0
@@ -36,7 +36,7 @@
 		return
 
 	if(M.wear_mask && M.wear_mask.flags & MASKCOVERSMOUTH)
-		to_chat(M, "<span class='combat'>[pick(nao_consigoen)] my mask is in the way!</span>")
+		to_chat(M, "<span class='combat'>[pick(fnord)] my mask is in the way!</span>")
 		return
 
 	var/datum/reagents/reagents = new/datum/reagents(2)
@@ -47,7 +47,7 @@
 	reagents.trans_to(H, 2)
 	visible_message("<span class='bname'>[H]</span> drinks from \the [src]!</span>")
 	H.bladder += rand(1,3) //For peeing
-	H.hidratacao += 10
+	H.hydration += 10
 	playsound(M.loc, 'sound/items/drink.ogg', rand(10, 50), 1)
 	return
 
@@ -62,12 +62,12 @@
 		var/mob/living/carbon/human/H = M
 		if(H.job == "Jester")
 			H.say("Pipipipipipipipi...")
-			playsound(M.loc, 'elchavo.ogg', rand(30, 50), 0)
+			playsound(M.loc, 'sound/elchavo.ogg', rand(30, 50), 0)
 
-/obj/structure/water/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/alicate))
-		var/obj/item/weapon/alicate/A = W
-		var/obj/item/weapon/ore/refined/lw/lw = safepick(A.contents)
+/obj/structure/water/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/alicate))
+		var/obj/item/alicate/A = W
+		var/obj/item/ore/refined/lw/lw = safepick(A.contents)
 		if(A.contents.len && lw.itemToBecome && lw.percentageToBecome >= MAX_SMITHING)
 			for(var/i = 1, i <= lw.amountsDone, i++)
 				var/obj/item/WE = new lw.itemToBecome(user.loc)
@@ -78,8 +78,8 @@
 			var/sound_to_go = pick('sound/effects/quench_barrel1.ogg', 'sound/effects/quench_barrel2.ogg')
 			src.quenched = TRUE
 			playsound(src.loc, sound_to_go, 50, 0)
-	if (istype(W, /obj/item/weapon/reagent_containers))
-		var/obj/item/weapon/reagent_containers/RG = W
+	if (istype(W, /obj/item/reagent_containers))
+		var/obj/item/reagent_containers/RG = W
 		RG.reagents.add_reagent("water", min(RG.volume - RG.reagents.total_volume, RG.amount_per_transfer_from_this))
 		if(quenched)
 			RG.reagents.add_reagent("????", min(RG.volume - RG.reagents.total_volume, RG.amount_per_transfer_from_this))
@@ -199,28 +199,28 @@
 
 /obj/structure/forja/attack_hand(mob/user)
 	if(onfire)
-		playsound(src.loc, 'torch_snuff.ogg', 50, 0)
+		playsound(src.loc, 'sound/effects/torch_snuff.ogg', 50, 0)
 		onfire = 0
 		update_icon()
 
-/obj/structure/forja/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/forja/attackby(obj/item/W as obj, mob/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-	if(istype(W, /obj/item/weapon/flame))
-		var/obj/item/weapon/flame/F = W
+	if(istype(W, /obj/item/flame))
+		var/obj/item/flame/F = W
 		if(F.lit)
 			onfire = 1
-			playsound(src.loc, 'torch_light.ogg', 50, 0)
+			playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
 			user.visible_message("<span class='passivebold'>[user]</span> <span class='passive'>lights the [src]!</span>")
 			update_icon()
 		else	if(onfire)
 			F.lit = 1
 			F.update_icon()
 
-	if(istype(W, /obj/item/weapon/alicate))
-		var/obj/item/weapon/alicate/A = W
-		var/obj/item/weapon/ore/refined/lw/lw = safepick(A.contents)
+	if(istype(W, /obj/item/alicate))
+		var/obj/item/alicate/A = W
+		var/obj/item/ore/refined/lw/lw = safepick(A.contents)
 		if(A.contents.len && onfire)
-			lw.temperatura += 10
+			lw.temperature += 10
 			user.visible_message("<span class='passivebold'>[user]</span> <span class='passive'>heats the ingot in [src]!</span>")
 			A.update_icon()
 
@@ -315,19 +315,19 @@
 /obj/structure/anvil/process()
 	update_icon()
 
-/obj/structure/anvil/attackby(obj/item/weapon/W, mob/living/user)
+/obj/structure/anvil/attackby(obj/item/W, mob/living/user)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-	if(istype(W, /obj/item/weapon/alicate))
-		var/obj/item/weapon/alicate/A = W
+	if(istype(W, /obj/item/alicate))
+		var/obj/item/alicate/A = W
 		var/obj/structure/anvil/L = src
-		var/obj/item/weapon/ore/refined/lw/lw = safepick(A.contents)
+		var/obj/item/ore/refined/lw/lw = safepick(A.contents)
 		if(length(A.contents))
 			//comicao por favor para de botar o return na mesma linha do if
 			//pfv fica muito feio pelo amor
 			//pfv nao usa .len usa length() menos chance de causar runtimes
 			if(length(L.contents))
 				return
-			if(lw.temperatura <= 0)
+			if(lw.temperature <= 0)
 				to_chat(user, "<span class='combatbold'>The ingot is too cold.</span>")
 				return
 			else
@@ -344,18 +344,18 @@
 			A.update_icon()
 			L.update_icon()
 
-	if(istype(W, /obj/item/weapon/carverhammer))
-		var/obj/item/weapon/carverhammer/S = W
+	if(istype(W, /obj/item/carverhammer))
+		var/obj/item/carverhammer/S = W
 		var/obj/structure/anvil/L = src
-		var/obj/item/weapon/ore/refined/lw/lw = safepick(L.contents)
+		var/obj/item/ore/refined/lw/lw = safepick(L.contents)
 		var/mob/living/carbon/human/H = user
 		var/smithingModifier
-		if(length(L.contents) && istype(contents, subtypesof(/obj/item/weapon/ore/refined/lw)))
+		if(length(L.contents) && istype(contents, subtypesof(/obj/item/ore/refined/lw)))
 			if(!lw.itemToBecome)
 				var/list/inputlist = list()
 				var/list/tobecomelist = list()
-				for(var/i = 1, i <= lw.coisas_possiveis.len, i++)
-					var/coisas = lw.coisas_possiveis[i]
+				for(var/i = 1, i <= lw.possible_items.len, i++)
+					var/coisas = lw.possible_items[i]
 					var/nome = coisas["name"]
 					var/tobecome = coisas["path"]
 
@@ -371,11 +371,11 @@
 						inputlist += nome
 				var/inputch = input("What do you wish to forge?", "Choose an object") as null|anything in inputlist
 				if(inputch)
-					var/list/items_smithing = lw.coisas_possiveis
+					var/list/items_smithing = lw.possible_items
 					if(length(medal_nominated) && length(lw.medals))
 						items_smithing += lw.medals
 					for(var/i = 1, i <= items_smithing.len, i++)
-						var/coisas = lw.coisas_possiveis[i]
+						var/coisas = lw.possible_items[i]
 						var/nome = coisas["name"]
 						var/tobecome = coisas["path"]
 						var/amountstobecome = coisas["amount"]
@@ -386,10 +386,10 @@
 			if(lw.itemToBecome)
 				var/randomphrasis = pick("smiths", "forges", "shapes", "molds" )
 				if(lw.percentageToBecome <= MAX_SMITHING)
-					if(lw.temperatura <= 0)
+					if(lw.temperature <= 0)
 						to_chat(user, "<span class='combatbold'>The ingot is too cold.</span>")
 						return
-					var/sSkill = H?.my_skills?.GET_SKILL(SKILL_SMITH)
+					var/sSkill = H?.my_skills?.get_skill(SKILL_SMITH)
 					playsound(src.loc, pick('sound/lfwbsounds/bsmith1.ogg', 'sound/lfwbsounds/bsmith2.ogg', 'sound/lfwbsounds/bsmith3.ogg' ,'sound/lfwbsounds/bsmith4.ogg'), 100, 1)
 					user.adjustStaminaLoss(4)
 					if(sSkill <= 2)
@@ -406,8 +406,8 @@
 					lw.percentageToBecome += sSkill + RNG_SMITH + smithingModifier
 					H.learn_skill("smithing", null, lw.qualidadeBarra)
 				else if(lw.percentageToBecome >= MAX_SMITHING)
-					if(lw.percentageToUpgrade >= 1 && lw.temperatura > 0)
-						var/sSkill = H?.my_skills?.GET_SKILL(SKILL_SMITH)
+					if(lw.percentageToUpgrade >= 1 && lw.temperature > 0)
+						var/sSkill = H?.my_skills?.get_skill(SKILL_SMITH)
 						lw.percentageToUpgrade += sSkill + RNG_SMITH + smithingModifier
 						if(prob((lw.qualidadeBarra+4)-(sSkill-2)))
 							user.visible_message("<span class='combatbold'>[user] BREAKS!</span> <span class='combat'>the bar!</span>")
@@ -429,7 +429,7 @@
 								lw.percentageToUpgrade = 0
 								user.visible_message("<span class='passivebold'>[user]</span> <span class='passive'>improves the ingot!</span>")
 							H.learn_skill("smithing", null, lw.qualidadeBarra)
-					else if(lw.percentageToUpgrade >= 1 && lw.temperatura <= 0)
+					else if(lw.percentageToUpgrade >= 1 && lw.temperature <= 0)
 						to_chat(user, "<span class='passive'>The ingot is too cold.</span>")
 					else
 						to_chat(user, "<span class='passivebold'>I already finished it.</span> <span class='passive'>I should quench it in a barrel or in water.</span>")
@@ -437,26 +437,26 @@
 
 
 /obj/structure/anvil/RightClick(mob/living/carbon/human/user)
-	if(istype(user.get_active_hand(), /obj/item/weapon/carverhammer))
+	if(istype(user.get_active_hand(), /obj/item/carverhammer))
 		var/obj/structure/anvil/L = src
-		var/obj/item/weapon/ore/refined/lw/lw = safepick(L.contents)
-		if(lw.percentageToUpgrade <= 0 && lw.percentageToBecome >= 100 && lw.temperatura > 0 && lw.qualidadeBarra <= 6)
+		var/obj/item/ore/refined/lw/lw = safepick(L.contents)
+		if(lw.percentageToUpgrade <= 0 && lw.percentageToBecome >= 100 && lw.temperature > 0 && lw.qualidadeBarra <= 6)
 			user.visible_message("<span class='passivebold'>[user]</span> <span class='passive'>begins to improve the ingot!</span>")
 			lw.percentageToUpgrade += 1
 
 
 /obj/structure/anvil/update_icon()
-	if(contents.len && istype(contents, subtypesof(/obj/item/weapon/ore/refined/lw)))
-		var/obj/item/weapon/ore/refined/lw/lw = safepick(contents)
-		if(lw.temperatura)
+	if(contents.len && istype(contents, subtypesof(/obj/item/ore/refined/lw)))
+		var/obj/item/ore/refined/lw/lw = safepick(contents)
+		if(lw.temperature)
 			icon_state = "anvil1"
-		if(!lw.temperatura)
+		if(!lw.temperature)
 			icon_state = "anvil2"
 	else
 		icon_state = "anvil"
 
 
-/obj/item/weapon/storage/forge
+/obj/item/storage/forge
 	name = "Smelter"
 	desc = "A smelter used to forge ores"
 	icon = 'icons/obj/structures.dmi'
@@ -471,47 +471,51 @@
 		if(!on)
 			for(var/obj/item/A in src.contents)
 				A.loc = src.loc
-		else return
+		
+		else 
+			on = FALSE
+			update_icon()
+			playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 0)
 
-/obj/item/weapon/storage/forge/update_icon()
+/obj/item/storage/forge/update_icon()
 	if(on)
 		icon_state = "smelter1"
 	else
 		icon_state = "smelter"
 
 
-/obj/item/weapon/storage/forge/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/storage/forge/attackby(obj/item/W as obj, mob/user as mob)
 	if(on)
 		return
 
-	if(istype(W, /obj/item/weapon) && !(src.contents.len >= storage_slots))
-		var/obj/item/weapon/L = W
+	if(istype(W, /obj/item) && !(src.contents.len >= storage_slots))
+		var/obj/item/L = W
 		user.drop_item(sound = 0)
 		src.contents += L
 
-	if(istype(W, /obj/item/weapon/flame) && src.contents.len == src.storage_slots)
+	if(istype(W, /obj/item/flame) && src.contents.len == src.storage_slots)
 		var/COAL = 0
 		on = 1
 		update_icon()
-		for(var/obj/item/weapon/ore/lw/L in src.contents)
-			if(istype(L, /obj/item/weapon/ore/lw/coal))
+		for(var/obj/item/ore/lw/L in src.contents)
+			if(istype(L, /obj/item/ore/lw/coal))
 				COAL += 1
-		while(on && COAL ==1 )
+		while(on && COAL == 1 )
 			sleep(10)
 			tocomplete += 10
 			playsound(src.loc, 'sound/effects/smelter_sound.ogg', 50, 1)
 			if(tocomplete >= 160)
 				for(var/i = 1, i <= src.contents.len, i++)
-					var/contentes = src.contents[i] //Isso é proposital
-					if(!istype(contentes, /obj/item/weapon/ore/lw/coal) && istype(contentes, /obj/item/weapon/ore/lw))
-						var/obj/item/weapon/ore/lw/A = contentes
+					var/contents = src.contents[i] //Isso é proposital
+					if(!istype(contents, /obj/item/ore/lw/coal) && istype(contents, /obj/item/ore/lw))
+						var/obj/item/ore/lw/A = contents
 						new A.refined_type(src.loc)
 						src.contents.Cut()
 						A.loc = src.contents
-					else if(istype(contentes, /obj/item))
-						var/obj/item/I = contentes
-						if(I.can_be_smelted_to)
-							new I.can_be_smelted_to(src.loc)
+					else if(istype(contents, /obj/item))
+						var/obj/item/I = contents
+						if(I.smelted_return != null)
+							new I.smelted_return(src.loc)
 							src.contents.Cut()
 				on = 0
 				tocomplete = 0

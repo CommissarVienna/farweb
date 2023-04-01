@@ -1,18 +1,14 @@
 /world
-#ifdef FARWEB_LIVE
+#ifdef NEARWEB_LIVE
 #ifdef SS13_HUB
 	hub = "Exadv1.spacestation13"
 	hub_password = "kMZy3U5jJHSiBQjr"
-	name = "Farweb"
+	name = "Nearweb"
 #else
-	hub = "ThuxTK.Farweb"
-	hub_password = "galaochain1"
-	name = "Farweb"
-#endif
-#else
-	hub = "ThuxTK.Farweb"
+	hub = "Exadv1.spacestation13"
 	hub_password = "SORRYNOPASSWORD"
-	name = "Farweb"
+	name = "Nearweb"
+#endif
 #endif
 /* This is for any host that would like their server to appear on the main SS13 hub.
 To use it, simply replace the password above, with the password found below, and it should work.

@@ -4,8 +4,8 @@
 	stage = 1
 	spread = "Blood"
 	spread_type = BLOOD
-	cure = "No Cure"
-	cure_id = null
+	cure = "Kalocin"
+	cure_id = "kalocin"
 	affected_species = list("Human", "Monkey")
 	permeability_mod = 0.5
 	severity = "Minor"

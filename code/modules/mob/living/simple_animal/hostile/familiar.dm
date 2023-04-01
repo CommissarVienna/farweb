@@ -19,10 +19,10 @@
 	attacktext = "punches"
 	destroy_surroundings = 0
 	search_objects = 0
-	attack_sound = 'fam_att.ogg'
+	attack_sound = 'sound/voice/fam_att.ogg'
 	faction = "creature"
 	speed = 25
-	a_intent = "harm"
+	a_intent = "hurt"
 	wall_smash = 0
 	status_flags = CANPUSH
 	stat_attack = 1
@@ -43,7 +43,7 @@
 	..()
 	if(ishuman(target))
 		var/mob/living/carbon/human/H = target
-		for(var/obj/item/weapon/stone/S in view(10, src))
+		for(var/obj/item/stone/S in view(10, src))
 			sleep(10)
 			S.throw_at(H, 9, 0.5, S)
 			if(prob(5))
@@ -66,7 +66,7 @@
 		else
 			user << "\blue this [src] is dead, medical items won't bring it back to life."
 	if(meat_type && (stat == DEAD))	//if the animal has a meat, and if it is dead.
-		if(istype(O, /obj/item/weapon/kitchenknife) || istype(O, /obj/item/weapon/butch) || istype(O, /obj/item/weapon/kitchen/utensil/knife))
+		if(istype(O, /obj/item/kitchenknife) || istype(O, /obj/item/butch) || istype(O, /obj/item/kitchen/utensil/knife))
 			new meat_type (get_turf(src))
 			new meat_type (get_turf(src))
 			new meat_type (get_turf(src))

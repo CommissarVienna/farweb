@@ -221,10 +221,6 @@ What is the naming convention for planes or layers?
 	#define HUD_ITEM_LAYER       2
 	#define HUD_ABOVE_ITEM_LAYER 3
 
-#define SHADOWCASTING_REFLECTOR_PLANE 16
-
-#define SHADOWCASTING_PLANE 18
-
 
 #define AMBIENT_OCCLUSION filter(type="drop_shadow", x=0, y=-2, size=4, color="#04080FAA")
 
@@ -364,12 +360,3 @@ What is the naming convention for planes or layers?
 /obj/screen/plane_master/vision_cone/inverted/New()
 	. = ..()
 	add_filter("alpha", 4, list("type" = "alpha", render_source="vision_cone_target"))
-
-/obj/screen/plane_master/shadowcasting
-	name = "shadowcasting plane master"
-	plane = SHADOWCASTING_PLANE
-	render_target = "all3"
-
-/obj/screen/plane_master/shadowcasting/New()
-	. = ..()
-	add_filter("blur", 4, list("type" = "blur", size=2))

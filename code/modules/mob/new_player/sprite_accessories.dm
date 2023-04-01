@@ -69,7 +69,7 @@
 
 	longalt
 		name = "Shoulder-length Hair Alt"
-		icon_state = "hair_longfringe"
+		icon_state = "hair_long"
 
 	/*longish
 		name = "Longer Hair"
@@ -207,7 +207,7 @@
 
 	buzz
 		name = "Buzzcut"
-		icon_state = "hair_buzzcut"
+		icon_state = "hair_buzz"
 		gender = MALE
 		species_allowed = list("Human","Unathi")
 

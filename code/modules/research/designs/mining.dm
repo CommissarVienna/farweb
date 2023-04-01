@@ -9,7 +9,7 @@
 	req_tech = list("materials" = 3, "powerstorage" = 2, "engineering" = 2)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 2000, "$glass" = 500, "$silver" = 500)
-	build_path = /obj/item/weapon/pickaxe/jackhammer
+	build_path = /obj/item/pickaxe/jackhammer
 
 /datum/design/drill
 	name = "Mining Drill"
@@ -18,7 +18,7 @@
 	req_tech = list("materials" = 2, "powerstorage" = 3, "engineering" = 2)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 6000, "$glass" = 1000) //expensive, but no need for miners.
-	build_path = /obj/item/weapon/pickaxe/drill
+	build_path = /obj/item/pickaxe/drill
 /*
 /datum/design/kinetic_accelerator
 	name = "Proto-kinetic accelerator"
@@ -27,7 +27,7 @@
 	req_tech = list("materials" = 3, "powerstorage" = 2, "engineering" = 2)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 2000, "$glass" = 500, "$silver" = 500)
-	build_path = /obj/item/weapon/gun/energy/kinetic_accelerator
+	build_path = /obj/item/gun/energy/kinetic_accelerator
 */
 /datum/design/plasmacutter
 	name = "Plasma Cutter"
@@ -37,7 +37,7 @@
 	build_type = PROTOLATHE
 	materials = list("$metal" = 1500, "$glass" = 500, "$gold" = 500, "$plasma" = 500)
 	reliability_base = 79
-	build_path = /obj/item/weapon/gun/energy/plasmacutter
+	build_path = /obj/item/gun/energy/plasmacutter
 
 /datum/design/pick_diamond
 	name = "Diamond Pickaxe"
@@ -46,7 +46,7 @@
 	req_tech = list("materials" = 6)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 500, "$diamond" = 3000)
-	build_path = /obj/item/weapon/pickaxe/diamond
+	build_path = /obj/item/pickaxe/diamond
 
 /datum/design/drill_diamond
 	name = "Diamond Mining Drill"
@@ -56,7 +56,7 @@
 	build_type = PROTOLATHE
 	materials = list("$metal" = 3000, "$glass" = 1000, "$diamond" = 3750) //Yes, a whole diamond is needed.
 	reliability_base = 79
-	build_path = /obj/item/weapon/pickaxe/diamonddrill
+	build_path = /obj/item/pickaxe/diamonddrill
 
 
 

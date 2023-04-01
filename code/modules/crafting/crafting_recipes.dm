@@ -93,7 +93,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	id = "toilet"
 	skillRequired = SKILL_CRAFT
 	skill_value = 5
-	materials = list(/obj/item/weapon/stone = 3)
+	materials = list(/obj/item/stone = 3)
 	desc_materials = "3 stone"
 	path_type = /obj/structure/toilet/stone
 
@@ -111,7 +111,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	id = "fireplace"
 	skillRequired = SKILL_CRAFT
 	skill_value = 7
-	materials = list(/obj/item/weapon/stone = 4, /obj/item/weapon/ore/lw/coal = 1)
+	materials = list(/obj/item/stone = 4, /obj/item/ore/lw/coal = 1)
 	desc_materials = "4 stone, 1 coal"
 	path_type = /obj/structure/fireplace/off
 
@@ -178,7 +178,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	skill_value = 2
 	materials = list(/obj/item/stack/sheet/wood = 1)
 	desc_materials = "1 shroomwood logs"
-	path_type = /obj/item/weapon/flame/torch
+	path_type = /obj/item/flame/torch
 	max_count = 3
 	nostructure = FALSE
 
@@ -189,7 +189,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	skill_value = 2
 	materials = list(/obj/item/stack/sheet/wood = 1)
 	desc_materials = "1 shroomwood logs"
-	path_type = /obj/item/weapon/kitchen/utensil/knife/dagger/wood_stake
+	path_type = /obj/item/kitchen/utensil/knife/dagger/wood_stake
 	max_count = 5
 	nostructure = FALSE
 
@@ -200,7 +200,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	id = "stonefloor"
 	skillRequired = SKILL_MASON
 	skill_value = 7
-	materials = list(/obj/item/weapon/stone = 1)
+	materials = list(/obj/item/stone = 1)
 	desc_materials = "1 stone"
 	path_type = /turf/simulated/floor/lifeweb/stone/handmade
 	under_self = TRUE
@@ -210,7 +210,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	id = "stonewall"
 	skillRequired = SKILL_MASON
 	skill_value = 7
-	materials = list(/obj/item/weapon/stone = 3)
+	materials = list(/obj/item/stone = 3)
 	desc_materials = "3 stone"
 	path_type = /turf/simulated/wall/stone
 
@@ -219,7 +219,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	id = "torchwall"
 	skillRequired = SKILL_MASON
 	skill_value = 5
-	materials = list(/obj/item/weapon/stone = 2)
+	materials = list(/obj/item/stone = 2)
 	desc_materials = "2 stone"
 	path_type = /obj/structure/torchwall/empty
 	under_self = TRUE
@@ -231,7 +231,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	id = "pillar"
 	skillRequired = SKILL_MASON
 	skill_value = 7
-	materials = list(/obj/item/weapon/stone = 2)
+	materials = list(/obj/item/stone = 2)
 	desc_materials = "2 stone"
 	path_type = /obj/structure/lifeweb/statue/pillar
 
@@ -240,7 +240,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	id = "forja"
 	skillRequired = SKILL_MASON
 	skill_value = 7
-	materials = list(/obj/item/weapon/stone = 5, /obj/item/weapon/ore/lw/coal = 1)
+	materials = list(/obj/item/stone = 5, /obj/item/ore/lw/coal = 1)
 	desc_materials = "5 stone, 1 coal"
 	path_type = /obj/structure/forja
 
@@ -249,7 +249,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	id = "anvil"
 	skillRequired = SKILL_MASON
 	skill_value = 7
-	materials = list(/obj/item/weapon/stone = 6)
+	materials = list(/obj/item/stone = 6)
 	desc_materials = "6 stone"
 	path_type = /obj/structure/anvil
 
@@ -258,16 +258,16 @@ proc/pick_craft_recipe(var/recipe_id)
 	id = "smelter"
 	skillRequired = SKILL_MASON
 	skill_value = 7
-	materials = list(/obj/item/weapon/stone = 6)
+	materials = list(/obj/item/stone = 6)
 	desc_materials = "6 stone"
-	path_type = /obj/item/weapon/storage/forge
+	path_type = /obj/item/storage/forge
 
 /datum/craft_recipe/mason/furnace
 	name = "Furnace"
 	id = "furnace"
 	skillRequired = SKILL_MASON
 	skill_value = 7
-	materials = list(/obj/item/weapon/stone = 5)
+	materials = list(/obj/item/stone = 5)
 	desc_materials = "5 stone"
 	path_type = /obj/machinery/microwave
 
@@ -280,7 +280,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	skill_value = 5
 	materials = list(/obj/item/stack/sheet/wood = 2)
 	desc_materials = "2 shroomwood logs"
-	path_type = /obj/item/weapon/melee/classic_baton/woodenclub
+	path_type = /obj/item/melee/classic_baton/woodenclub
 	nostructure = FALSE
 
 /datum/craft_recipe/weapons/woodspear
@@ -290,7 +290,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	skill_value = 5
 	materials = list(/obj/item/stack/sheet/wood = 3)
 	desc_materials = "3 shroomwood logs"
-	path_type = /obj/item/weapon/claymore/wspear
+	path_type = /obj/item/claymore/wspear
 	nostructure = FALSE
 
 /datum/craft_recipe/weapons/woodsword
@@ -300,7 +300,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	skill_value = 5
 	materials = list(/obj/item/stack/sheet/wood = 2)
 	desc_materials = "2 shroomwood logs"
-	path_type = /obj/item/weapon/claymore/wood
+	path_type = /obj/item/claymore/wood
 	nostructure = FALSE
 
 //OTHER//
@@ -312,7 +312,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	skill_value = 3
 	materials = list(/obj/item/stack/sheet/wood = 2)
 	desc_materials = "2 shroomwood logs"
-	path_type = /obj/item/weapon/shovel
+	path_type = /obj/item/shovel
 	max_count = 3
 	nostructure = FALSE
 
@@ -323,7 +323,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	skill_value = 3
 	materials = list(/obj/item/stack/sheet/wood = 1)
 	desc_materials = "1 shroomwood logs"
-	path_type = /obj/item/weapon/reagent_containers/glass/wood
+	path_type = /obj/item/reagent_containers/glass/wood
 	max_count = 5
 	nostructure = FALSE
 
@@ -334,7 +334,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	skill_value = 3
 	materials = list(/obj/item/stack/sheet/wood = 3)
 	desc_materials = "3 shroomwood logs"
-	path_type = /obj/item/weapon/reagent_containers/glass/bucket
+	path_type = /obj/item/reagent_containers/glass/bucket
 	nostructure = FALSE
 
 //CULT//
@@ -346,7 +346,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	id = "angelstatue"
 	skillRequired = SKILL_CRAFT
 	skill_value = 7
-	materials = list(/obj/item/weapon/stone = 5)
+	materials = list(/obj/item/stone = 5)
 	desc_materials = "5 stone"
 	path_type = /obj/structure/lifeweb/statue/angel2
 
@@ -356,7 +356,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	cult_type = "Gray Church"
 	skillRequired = SKILL_CRAFT
 	skill_value = 7
-	materials = list(/obj/item/weapon/stone = 5)
+	materials = list(/obj/item/stone = 5)
 	desc_materials = "5 stone"
 	path_type = /obj/structure/lifeweb/statue/wcross
 
@@ -366,7 +366,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	cult_type = "Old Ways"
 	skillRequired = SKILL_CRAFT
 	skill_value = 3
-	materials = list(/obj/item/weapon/stone = 5)
+	materials = list(/obj/item/stone = 5)
 	desc_materials = "5 stone"
 	path_type = /obj/structure/oldways/lazaro
 
@@ -376,7 +376,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	cult_type = "Old Ways"
 	skillRequired = SKILL_CRAFT
 	skill_value = 3
-	materials = list(/obj/item/weapon/stone = 5)
+	materials = list(/obj/item/stone = 5)
 	desc_materials = "5 stone"
 	path_type = /obj/structure/oldways/boto
 
@@ -386,7 +386,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	cult_type = "Old Ways"
 	skillRequired = SKILL_CRAFT
 	skill_value = 3
-	materials = list(/obj/item/weapon/stone = 5)
+	materials = list(/obj/item/stone = 5)
 	desc_materials = "5 stone"
 	path_type = /obj/structure/oldways/guarani
 
@@ -397,7 +397,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	cult_type = "Old Ways"
 	skillRequired = SKILL_CRAFT
 	skill_value = 3
-	materials = list(/obj/item/weapon/stone = 5)
+	materials = list(/obj/item/stone = 5)
 	desc_materials = "5 stone"
 	path_type = /obj/structure/oldways/alefau
 
@@ -407,7 +407,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	cult_type = "Old Ways"
 	skillRequired = SKILL_CRAFT
 	skill_value = 3
-	materials = list(/obj/item/weapon/stone = 5)
+	materials = list(/obj/item/stone = 5)
 	desc_materials = "5 stone"
 	path_type = /obj/structure/oldways/irineo
 
@@ -417,7 +417,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	cult_type = "Old Ways"
 	skillRequired = SKILL_CRAFT
 	skill_value = 3
-	materials = list(/obj/item/weapon/stone = 5)
+	materials = list(/obj/item/stone = 5)
 	desc_materials = "5 stone"
 	path_type = /obj/structure/oldways/lula
 
@@ -430,7 +430,7 @@ proc/pick_craft_recipe(var/recipe_id)
 	skill_value = 5
 	materials = list(/obj/item/stack/sheet/leather = 2)
 	desc_materials = "2 leather"
-	path_type = /obj/item/weapon/storage/backpack/satchel
+	path_type = /obj/item/storage/backpack/satchel
 	nostructure = FALSE
 
 /datum/craft_recipe/tanning/leather_pants

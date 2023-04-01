@@ -4,9 +4,9 @@
 
 /datum/surgery_step/brain/bone_chips
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/hemostat = 100, 		\
-	/obj/item/weapon/wirecutters = 75, 		\
-	/obj/item/weapon/kitchen/utensil/fork = 20
+	/obj/item/surgery_tool/hemostat = 100, 		\
+	/obj/item/wirecutters = 75, 		\
+	/obj/item/kitchen/utensil/fork = 20
 	)
 
 	priority = 3
@@ -39,8 +39,8 @@
 
 /datum/surgery_step/brain/hematoma
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/FixOVein = 100, \
-	/obj/item/weapon/surgery_tool/suture = 100, \
+	/obj/item/surgery_tool/FixOVein = 100, \
+	/obj/item/surgery_tool/suture = 100, \
 	/obj/item/stack/cable_coil = 75
 	)
 
@@ -61,7 +61,7 @@
 	end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		user.visible_message("\blue [user] mends hematoma in [target]'s brain with \the [tool].",	\
 		"\blue You mend hematoma in [target]'s brain with \the [tool].")
-		playsound(user.loc, 'sewing.ogg', 50, 1, -3)
+		playsound(user.loc, 'sound/effects/sewing.ogg', 50, 1, -3)
 		var/datum/organ/internal/brain/sponge = target.internal_organs_by_name["brain"]
 		if (sponge)
 			sponge.damage = 20

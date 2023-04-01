@@ -67,8 +67,8 @@ proc/isRitualPlace(var/turf/place)
 	return
 
 proc/debug(var/text, var/mob/living/carbon/human/H,)
-	H.my_stats.st += 2
-	H.updatePig()
+	H.my_stats.change_stat(STAT_ST , 2)
+	H.updateStatPanel()
 
 //N = NORTH
 //NE = NORTHEAST
@@ -83,29 +83,29 @@ proc/debug(var/text, var/mob/living/carbon/human/H,)
 var/global/list/thanatiRitual = list(
 list(
 list(
-/obj/item/weapon/flame/candle, //NE
-/obj/item/weapon/flame/candle, //E
-/obj/item/weapon/flame/candle, //SE
+/obj/item/flame/candle, //NE
+/obj/item/flame/candle, //E
+/obj/item/flame/candle, //SE
 0, //S
-/obj/item/weapon/flame/candle, //SW
-/obj/item/weapon/flame/candle, //W
+/obj/item/flame/candle, //SW
+/obj/item/flame/candle, //W
 0, //N
-/obj/item/weapon/flame/candle, //NW
-/obj/item/weapon/spacecash/c1), //C
+/obj/item/flame/candle, //NW
+/obj/item/spacecash/c1), //C
 cultistType = "Malice",
 function = /proc/blackJudgment,
 arguments = ""
 ),
 list(
 list(
-/obj/item/weapon/organ/head, //NE
+/obj/item/organ/head, //NE
 /mob/living/carbon/human, //E
-/obj/item/weapon/organ/head, //SE
+/obj/item/organ/head, //SE
 0, //S
-/obj/item/weapon/organ/head, //SW
+/obj/item/organ/head, //SW
 /mob/living/carbon/human, //W
-/obj/item/weapon/reagent_containers/food/snacks/organ/liver, //N
-/obj/item/weapon/organ/head, //NW
+/obj/item/reagent_containers/food/snacks/organ/liver, //N
+/obj/item/organ/head, //NW
 /mob/living/carbon/human), //C
 cultistType = "Malice",
 function = /proc/rage,
@@ -116,10 +116,10 @@ list(
 0, //NE
 0, //E
 0, //SE
-/obj/item/weapon/organ/, //S
+/obj/item/organ/, //S
 0, //SW
 0, //W
-/obj/item/weapon/flame/candle, //N
+/obj/item/flame/candle, //N
 0, //NW
 0), //C
 cultistType = "Malice",
@@ -144,29 +144,29 @@ arguments = ""
 list(
 list(
 0, //NE
-/obj/item/weapon/bone, //E
+/obj/item/bone, //E
 0, //SE
-/obj/item/weapon/flame/candle, //S
+/obj/item/flame/candle, //S
 0, //SW
-/obj/item/weapon/bone, //W
-/obj/item/weapon/bone, //N
+/obj/item/bone, //W
+/obj/item/bone, //N
 0, //NW
-/obj/item/weapon/reagent_containers/food/snacks/meat), //C
+/obj/item/reagent_containers/food/snacks/meat), //C
 cultistType = null,
 function = /proc/livingDead,
 arguments = ""
 ),
 list(
 list(
-/obj/item/weapon/shard, //NE
-/obj/item/weapon/shard, //E
-/obj/item/weapon/shard, //SE
-/obj/item/weapon/shard, //S
-/obj/item/weapon/shard, //SW
-/obj/item/weapon/shard, //W
-/obj/item/weapon/shard, //N
-/obj/item/weapon/shard, //NW
-/obj/item/weapon/photo), //C
+/obj/item/shard, //NE
+/obj/item/shard, //E
+/obj/item/shard, //SE
+/obj/item/shard, //S
+/obj/item/shard, //SW
+/obj/item/shard, //W
+/obj/item/shard, //N
+/obj/item/shard, //NW
+/obj/item/photo), //C
 cultistType = null,
 function = /proc/loneliness,
 arguments = ""
@@ -181,7 +181,7 @@ list(
 0, //W
 0, //N
 0, //NW
-/obj/item/weapon/paper), //C
+/obj/item/paper), //C
 cultistType = null,
 function = /proc/propaganda,
 arguments = ""
@@ -191,12 +191,12 @@ list(
 0, //NE
 0, //E
 0, //SE
-/obj/item/weapon/organ/l_foot, //S
+/obj/item/organ/l_foot, //S
 0, //SW
 0, //W
-/obj/item/weapon/organ/r_foot, //N
+/obj/item/organ/r_foot, //N
 0, //NW
-/obj/item/weapon/photo), //C
+/obj/item/photo), //C
 cultistType = null,
 function = /proc/thecall,
 arguments = ""
@@ -204,12 +204,12 @@ arguments = ""
 list(
 list(
 0, //NE
-/obj/item/weapon/reagent_containers/food/snacks/organ/brain, //E
+/obj/item/reagent_containers/food/snacks/organ/brain, //E
 0, //SE
-/obj/item/weapon/reagent_containers/food/snacks/organ/brain, //S
+/obj/item/reagent_containers/food/snacks/organ/brain, //S
 0, //SW
-/obj/item/weapon/reagent_containers/food/snacks/organ/brain, //W
-/obj/item/weapon/reagent_containers/food/snacks/organ/brain, //N
+/obj/item/reagent_containers/food/snacks/organ/brain, //W
+/obj/item/reagent_containers/food/snacks/organ/brain, //N
 0, //NW
 /mob/living/carbon/human/monster), //C
 cultistType = null,
@@ -221,12 +221,12 @@ list(
 0, //NE
 0, //E
 0, //SE
-/obj/item/weapon/flame/candle, //S
+/obj/item/flame/candle, //S
 0, //SW
 0, //W
-/obj/item/weapon/flame/candle, //N
+/obj/item/flame/candle, //N
 0, //NW
-/obj/item/weapon/stone), //C
+/obj/item/stone), //C
 cultistType = null, // speech
 function = /proc/grandGathering, // Grand Gathering
 arguments = ""
@@ -256,7 +256,7 @@ list(
 0, //W
 /obj/item/tzchernobog, //N
 0, //NW
-/obj/item/weapon/photo), //C
+/obj/item/photo), //C
 cultistType = null, // traps
 function = /proc/falseTarget, // False Target
 arguments = ""
@@ -265,12 +265,12 @@ arguments = ""
 list(
 list(
 0, //NE
-/obj/item/weapon/flame/candle, //E
+/obj/item/flame/candle, //E
 0, //SE
-/obj/item/weapon/flame/candle, //S
+/obj/item/flame/candle, //S
 0, //SW
-/obj/item/weapon/flame/candle, //W
-/obj/item/weapon/flame/candle, //N
+/obj/item/flame/candle, //W
+/obj/item/flame/candle, //N
 0, //NW
 /mob/living/carbon/human), //C
 cultistType = null, // traps
@@ -279,7 +279,7 @@ arguments = ""
 ),
 
 )
-// /obj/item/weapon/shard
+// /obj/item/shard
 proc/ritual(var/turf/locc)
 	var/list/L = list(
 	get_step(locc, NORTHEAST),

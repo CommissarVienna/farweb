@@ -27,8 +27,8 @@ var/global/list/datum/stack_recipe/metal_recipes = list ( \
 		new/datum/stack_recipe("teal comfy chair", /obj/structure/stool/bed/chair/comfy/teal, 2, one_per_turf = 1, on_floor = 1), \
 		), 2), \
 	null, \
-	new/datum/stack_recipe("table parts", /obj/item/weapon/table_parts, 2), \
-	new/datum/stack_recipe("rack parts", /obj/item/weapon/rack_parts), \
+	new/datum/stack_recipe("table parts", /obj/item/table_parts, 2), \
+	new/datum/stack_recipe("rack parts", /obj/item/rack_parts), \
 	new/datum/stack_recipe("closet", /obj/structure/closet, 2, time = 15, one_per_turf = 1, on_floor = 1), \
 	null, \
 	new/datum/stack_recipe("canister", /obj/machinery/portable_atmospherics/canister, 10, time = 15, one_per_turf = 1, on_floor = 1), \
@@ -60,7 +60,7 @@ var/global/list/datum/stack_recipe/metal_recipes = list ( \
 		new/datum/stack_recipe("multi-tile airlock assembly", /obj/structure/door_assembly/multi_tile, 4, time = 50, one_per_turf = 1, on_floor = 1), \
 		), 4), \
 	null, \
-	new/datum/stack_recipe("grenade casing", /obj/item/weapon/grenade/chem_grenade), \
+	new/datum/stack_recipe("grenade casing", /obj/item/grenade/chem_grenade), \
 	new/datum/stack_recipe("light fixture frame", /obj/item/light_fixture_frame, 2), \
 	new/datum/stack_recipe("small light fixture frame", /obj/item/light_fixture_frame/small, 1), \
 	null, \
@@ -131,22 +131,23 @@ var/global/list/datum/stack_recipe/wood_recipes = list ( \
 	new/datum/stack_recipe("fireplace", /obj/structure/fireplace/alt, 5, time = 25, one_per_turf = 1, on_floor = 1), \
 	new/datum/stack_recipe("campfire", /obj/structure/campfire, 3, time = 5, one_per_turf = 1, on_floor = 1), \
 	new/datum/stack_recipe("wood floor", /turf/simulated/floor/lifeweb/wood, 1, time = 5, one_per_turf = 1, on_floor = 1),\
-	new/datum/stack_recipe("torch", /obj/item/weapon/flame/torch, 2, time = 5, one_per_turf = 1, on_floor = 1),\
-	new/datum/stack_recipe("wooden spear", /obj/item/weapon/claymore/wspear, 3, time = 5, one_per_turf = 1, on_floor = 1),\
-	new/datum/stack_recipe("wooden club", /obj/item/weapon/melee/classic_baton/woodenclub, 2, time = 5, one_per_turf = 1, on_floor = 1),\
+	new/datum/stack_recipe("torch", /obj/item/flame/torch, 2, time = 5, one_per_turf = 1, on_floor = 1),\
+	new/datum/stack_recipe("wooden spear", /obj/item/claymore/wspear, 3, time = 5, one_per_turf = 1, on_floor = 1),\
+	new/datum/stack_recipe("wooden club", /obj/item/melee/classic_baton/woodenclub, 2, time = 5, one_per_turf = 1, on_floor = 1),\
 	new/datum/stack_recipe("wooden chest", /obj/structure/closet/crate, 3, time = 10, one_per_turf = 1, on_floor = 1),\
-	new/datum/stack_recipe("wooden mug",/obj/item/weapon/reagent_containers/glass/wood, 1),\
+	new/datum/stack_recipe("wooden mug",/obj/item/reagent_containers/glass/wood, 1),\
 	)
 
 /obj/item/stack/sheet/wood
 	name = "shroomwood log"
 	desc = "One can only guess that this is a bunch of wood."
 	singular_name = "wood plank"
+	icon = 'icons/obj/items.dmi'
 	icon_state = "shroomlog1"
 	item_state = "logs"
 	origin_tech = "materials=1;biotech=1"
 	max_amount = 5
-	drop_sound = 'wooden_drop.ogg'
+	drop_sound = 'sound/items/wooden_drop.ogg'
 	item_worth = 6
 	weight = 15
 
@@ -214,14 +215,14 @@ var/global/list/datum/stack_recipe/wood_recipes = list ( \
  * Cardboard
  */
 var/global/list/datum/stack_recipe/cardboard_recipes = list ( \
-	new/datum/stack_recipe("box", /obj/item/weapon/storage/box), \
-	new/datum/stack_recipe("light tubes", /obj/item/weapon/storage/box/lights/tubes), \
-	new/datum/stack_recipe("light bulbs", /obj/item/weapon/storage/box/lights/bulbs), \
-	new/datum/stack_recipe("mouse traps", /obj/item/weapon/storage/box/mousetraps), \
+	new/datum/stack_recipe("box", /obj/item/storage/box), \
+	new/datum/stack_recipe("light tubes", /obj/item/storage/box/lights/tubes), \
+	new/datum/stack_recipe("light bulbs", /obj/item/storage/box/lights/bulbs), \
+	new/datum/stack_recipe("mouse traps", /obj/item/storage/box/mousetraps), \
 	new/datum/stack_recipe("cardborg suit", /obj/item/clothing/suit/cardborg, 3), \
 	new/datum/stack_recipe("cardborg helmet", /obj/item/clothing/head/cardborg), \
 	new/datum/stack_recipe("pizza box", /obj/item/pizzabox), \
-	new/datum/stack_recipe("folder", /obj/item/weapon/folder), \
+	new/datum/stack_recipe("folder", /obj/item/folder), \
 )
 
 /obj/item/stack/sheet/cardboard	//BubbleWrap

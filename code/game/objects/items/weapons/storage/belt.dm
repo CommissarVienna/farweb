@@ -1,4 +1,4 @@
-/obj/item/weapon/storage/belt
+/obj/item/storage/belt
 	name = "leather belt"
 	desc = "A leather belt with extra wide pouches that can hold a variety of items."
 	icon = 'icons/obj/clothing/belts.dmi'
@@ -9,7 +9,7 @@
 	slot_flags = SLOT_BELT
 	attack_verb = list("whipped", "lashed", "disciplined")
 
-/obj/item/weapon/storage/belt/proc/can_use()
+/obj/item/storage/belt/proc/can_use()
 	if(!ismob(loc)) return 0
 	var/mob/M = loc
 	if(src in M.get_equipped_items())
@@ -18,7 +18,7 @@
 		return 0
 
 
-/obj/item/weapon/storage/belt/MouseDrop(obj/over_object as obj, src_location, over_location)
+/obj/item/storage/belt/MouseDrop(obj/over_object as obj, src_location, over_location)
 	var/mob/M = usr
 	if(!istype(over_object, /obj/screen))
 		return ..()
@@ -36,17 +36,17 @@
 
 
 
-/obj/item/weapon/storage/belt/utility
+/obj/item/storage/belt/utility
 	name = "tool-belt" //Carn: utility belt is nicer, but it bamboozles the text parsing.
 	desc = "Can hold various tools."
 	icon_state = "utilitybelt"
 	item_state = "utility"
 	can_hold = list(
-		"/obj/item/weapon/crowbar",
-		"/obj/item/weapon/screwdriver",
-		"/obj/item/weapon/weldingtool",
-		"/obj/item/weapon/wirecutters",
-		"/obj/item/weapon/wrench",
+		"/obj/item/crowbar",
+		"/obj/item/screwdriver",
+		"/obj/item/weldingtool",
+		"/obj/item/wirecutters",
+		"/obj/item/wrench",
 		"/obj/item/device/multitool",
 		"/obj/item/device/flashlight",
 		"/obj/item/stack/cable_coil",
@@ -55,53 +55,53 @@
 		"/obj/item/taperoll/engineering")
 
 
-/obj/item/weapon/storage/belt/utility/full/New()
+/obj/item/storage/belt/utility/full/New()
 	..()
-	new /obj/item/weapon/screwdriver(src)
-	new /obj/item/weapon/wrench(src)
-	new /obj/item/weapon/weldingtool(src)
-	new /obj/item/weapon/crowbar(src)
-	new /obj/item/weapon/wirecutters(src)
+	new /obj/item/screwdriver(src)
+	new /obj/item/wrench(src)
+	new /obj/item/weldingtool(src)
+	new /obj/item/crowbar(src)
+	new /obj/item/wirecutters(src)
 	new /obj/item/stack/cable_coil(src,30,pick("red","yellow","orange"))
 
 
-/obj/item/weapon/storage/belt/utility/atmostech/New()
+/obj/item/storage/belt/utility/atmostech/New()
 	..()
-	new /obj/item/weapon/screwdriver(src)
-	new /obj/item/weapon/wrench(src)
-	new /obj/item/weapon/weldingtool(src)
-	new /obj/item/weapon/crowbar(src)
-	new /obj/item/weapon/wirecutters(src)
+	new /obj/item/screwdriver(src)
+	new /obj/item/wrench(src)
+	new /obj/item/weldingtool(src)
+	new /obj/item/crowbar(src)
+	new /obj/item/wirecutters(src)
 	new /obj/item/device/t_scanner(src)
 
 
 
-/obj/item/weapon/storage/belt/medical
+/obj/item/storage/belt/medical
 	name = "medical belt"
 	desc = "Can hold various medical equipment."
 	icon_state = "medicalbelt"
 	item_state = "medical"
 	can_hold = list(
 		"/obj/item/device/healthanalyzer",
-		"/obj/item/weapon/dnainjector",
-		"/obj/item/weapon/reagent_containers/dropper",
-		"/obj/item/weapon/reagent_containers/glass/beaker",
-		"/obj/item/weapon/reagent_containers/glass/bottle",
-		"/obj/item/weapon/reagent_containers/pill",
-		"/obj/item/weapon/reagent_containers/syringe",
-		"/obj/item/weapon/reagent_containers/glass/dispenser",
-		"/obj/item/weapon/flame/lighter/zippo",
-		"/obj/item/weapon/storage/fancy/cigarettes",
-		"/obj/item/weapon/storage/pill_bottle",
+		"/obj/item/dnainjector",
+		"/obj/item/reagent_containers/dropper",
+		"/obj/item/reagent_containers/glass/beaker",
+		"/obj/item/reagent_containers/glass/bottle",
+		"/obj/item/reagent_containers/pill",
+		"/obj/item/reagent_containers/syringe",
+		"/obj/item/reagent_containers/glass/dispenser",
+		"/obj/item/flame/lighter/zippo",
+		"/obj/item/storage/fancy/cigarettes",
+		"/obj/item/storage/pill_bottle",
 		"/obj/item/stack/medical",
 		"/obj/item/device/flashlight/pen",
 		"/obj/item/clothing/mask/surgical",
 		"/obj/item/clothing/gloves/latex",
-	        "/obj/item/weapon/reagent_containers/hypospray"
+	        "/obj/item/reagent_containers/hypospray"
 	)
 
 
-/obj/item/weapon/storage/belt/security
+/obj/item/storage/belt/security
 	name = "security belt"
 	desc = "Can hold security gear like handcuffs and flashes."
 	icon_state = "securitybelt"
@@ -110,35 +110,35 @@
 	max_w_class = 3
 	max_combined_w_class = 21
 	can_hold = list(
-		"/obj/item/weapon/grenade/flashbang",
-		"/obj/item/weapon/reagent_containers/spray/pepper",
-		"/obj/item/weapon/handcuffs",
+		"/obj/item/grenade/flashbang",
+		"/obj/item/reagent_containers/spray/pepper",
+		"/obj/item/handcuffs",
 		"/obj/item/device/flash",
 		"/obj/item/clothing/glasses",
 		"/obj/item/ammo_casing/shotgun",
 		"/obj/item/ammo_magazine",
-		"/obj/item/weapon/reagent_containers/food/snacks/donut/normal",
-		"/obj/item/weapon/reagent_containers/food/snacks/donut/jelly",
-		"/obj/item/weapon/melee/baton",
-		"/obj/item/weapon/flame/lighter/zippo",
-		"/obj/item/weapon/cigpacket",
+		"/obj/item/reagent_containers/food/snacks/donut/normal",
+		"/obj/item/reagent_containers/food/snacks/donut/jelly",
+		"/obj/item/melee/baton",
+		"/obj/item/flame/lighter/zippo",
+		"/obj/item/cigpacket",
 		"/obj/item/clothing/glasses/hud/security",
 		"/obj/item/device/flashlight",
 		"/obj/item/device/pda",
 		"/obj/item/device/radio/headset",
-		"/obj/item/weapon/melee",
+		"/obj/item/melee",
 		"/obj/item/taperoll/police",
-		"/obj/item/weapon/gun/energy/taser",
-		"/obj/item/weapon/cell/crap",
-		"/obj/item/weapon/gun/energy/gun",
-		"/obj/item/weapon/gun/energy/taser",
-		"/obj/item/weapon/gun/energy/laser",
-		"/obj/item/weapon/gun/energy/stunrevolver",
-		"/obj/item/weapon/gun/energy/ionrifle"
+		"/obj/item/gun/energy/taser",
+		"/obj/item/cell/crap",
+		"/obj/item/gun/energy/gun",
+		"/obj/item/gun/energy/taser",
+		"/obj/item/gun/energy/laser",
+		"/obj/item/gun/energy/stunrevolver",
+		"/obj/item/gun/energy/ionrifle"
 		)
 
 
-/obj/item/weapon/storage/belt/champion
+/obj/item/storage/belt/champion
 	name = "championship belt"
 	desc = "Proves to the world that you are the strongest!"
 	icon_state = "championbelt"
@@ -148,46 +148,46 @@
 		"/obj/item/clothing/mask/luchador"
 		)
 
-/obj/item/weapon/storage/belt/inflatable
+/obj/item/storage/belt/inflatable
 	name = "inflatable duck"
 	desc = "No bother to sink or swim when you can just float!"
 	icon_state = "inflatable"
 	item_state = "inflatable"
 
-/obj/item/weapon/storage/belt/security/tactical
+/obj/item/storage/belt/security/tactical
 	name = "combat belt"
 	desc = "Can hold security gear like handcuffs and flashes, with more pouches for more storage."
 	icon_state = "swatbelt"
 	item_state = "swatbelt"
-	var/obj/item/weapon/gun/holstered = null
+	var/obj/item/gun/holstered = null
 	storage_slots = 9
 	max_w_class = 3
 	max_combined_w_class = 21
 	can_hold = list(
-		"/obj/item/weapon/grenade/flashbang",
-		"/obj/item/weapon/reagent_containers/spray/pepper",
-		"/obj/item/weapon/handcuffs",
+		"/obj/item/grenade/flashbang",
+		"/obj/item/reagent_containers/spray/pepper",
+		"/obj/item/handcuffs",
 		"/obj/item/device/flash",
 		"/obj/item/clothing/glasses",
 		"/obj/item/ammo_casing/shotgun",
 		"/obj/item/ammo_magazine",
-		"/obj/item/weapon/reagent_containers/food/snacks/donut/normal",
-		"/obj/item/weapon/reagent_containers/food/snacks/donut/jelly",
-		"/obj/item/weapon/melee/baton",
-		"/obj/item/weapon/gun/energy/taser",
-		"/obj/item/weapon/flame/lighter/zippo",
-		"/obj/item/weapon/cigpacket",
+		"/obj/item/reagent_containers/food/snacks/donut/normal",
+		"/obj/item/reagent_containers/food/snacks/donut/jelly",
+		"/obj/item/melee/baton",
+		"/obj/item/gun/energy/taser",
+		"/obj/item/flame/lighter/zippo",
+		"/obj/item/cigpacket",
 		"/obj/item/clothing/glasses/hud/security",
 		"/obj/item/device/flashlight",
 		"/obj/item/device/pda",
 		"/obj/item/device/radio/headset",
-		"/obj/item/weapon/melee",
+		"/obj/item/melee",
 		"/obj/item/taperoll/police",
-		"/obj/item/weapon/gun/energy/taser"
+		"/obj/item/gun/energy/taser"
 		)
 
 
-/obj/item/weapon/storage/belt/security/tactical/verb/holster()
+/obj/item/storage/belt/security/tactical/verb/holster()
 	set name = "Holster"
 	set category = "Object"
 	set src in usr
@@ -195,10 +195,10 @@
 	if(usr.stat) return
 
 	if(!holstered)
-		if(!istype(usr.get_active_hand(), /obj/item/weapon/gun))
+		if(!istype(usr.get_active_hand(), /obj/item/gun))
 			usr << "\blue You need your gun equiped to holster it."
 			return
-		var/obj/item/weapon/gun/W = usr.get_active_hand()
+		var/obj/item/gun/W = usr.get_active_hand()
 		if (!W.isHandgun())
 			usr << "\red This gun won't fit in \the belt!"
 			return
@@ -219,14 +219,14 @@
 			usr.put_in_hands(holstered)
 		holstered = null
 
-/obj/item/weapon/storage/belt/military
+/obj/item/storage/belt/military
 	name = "military belt"
 	desc = "A syndicate combat belt designed to hold a large variety of weapons and gadgets. Property of the Gorlex Marauders."
 	icon_state = "militarybelt"
 	item_state = "military"
 	storage_slots = 7
 
-/obj/item/weapon/storage/belt/military/snake
+/obj/item/storage/belt/military/snake
 	name = "sneak belt"
 	desc = "An old combat belt designed to hold a large variety of weapons and gadgets."
 	icon_state = "securitybelt"
@@ -234,7 +234,7 @@
 	storage_slots = 7
 	max_w_class = 5.0
 
-/obj/item/weapon/storage/belt/janitor
+/obj/item/storage/belt/janitor
 	name = "janibelt"
 	desc = "A purple leather belt designed to hold most janitorial supplies."
 	icon_state = "janibelt"
@@ -242,10 +242,10 @@
 	storage_slots = 6
 	max_w_class = 4 // Set to this so the  light replacer can fit.
 	can_hold = list(
-		"/obj/item/weapon/grenade/chem_grenade/cleaner",
+		"/obj/item/grenade/chem_grenade/cleaner",
 		"/obj/item/device/lightreplacer",
 		"/obj/item/device/flashlight",
-		"/obj/item/weapon/reagent_containers/spray",
-		"/obj/item/weapon/soap",
-		"/obj/item/weapon/holosign_creator"
+		"/obj/item/reagent_containers/spray",
+		"/obj/item/soap",
+		"/obj/item/holosign_creator"
 		)

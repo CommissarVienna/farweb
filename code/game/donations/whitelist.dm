@@ -1,65 +1,67 @@
-/////////////FATES/////////////
-//SEASPOTTER MERC
-var/global/list/seaspotter_merc = list("comicao1")
-//RED DAWN MERC
-var/global/list/reddawn_merc = list("comicao1")
-//MERCENARY
-var/global/list/mercenary_donor = list("comicao1")
-//URCHIN
-var/global/list/urchin_donor = list("comicao1")
-//TRIBUNAL VET
-var/global/list/tribunal_vet = list()
-//LORD
-var/global/list/lord = list()
-//CRUSADER
-var/global/list/crusader = list()
-//TOPHAT
-var/global/list/tophat = list()//list("Willkito")
-//MONK
-var/global/list/monk = list()
-//FUTA
-var/global/list/futa = list()
-//30CM
-var/global/list/mobilephone = list("bailol", "comicao1", "matkotaur", "darklordchinchin")
-//TELEFONE
-var/global/list/remigrator = list("johnegbert3")
-//REMIGRATION
-var/global/list/thirtycm = list("johnegbert3")
-//TRAP APOC
-var/global/list/trapapoc = list("comicao1")
-//OUTLAW
-var/global/list/outlaw = list()
-//ADULT SQUIRE
-var/global/list/adultsquire = list()
-//ITEMS
-var/global/list/waterbottledonation = list()
-var/global/list/luxurydonation = list()
-var/global/list/pjack = list()
-//OOC COLOR
-var/global/list/customooccolorlist = list()
+// TODO: Find a better way to do this, could datumize donations like vices are. I don't like the look of this file. ~ Raiddean
+//** PATRON TIERS **//
+// SQUIRE TIER
+var/global/list/tier_squire = list()
+// TIAMAT TIER
+var/global/list/tier_tiamat = list()
+// MARDUK TIER
+var/global/list/tier_marduk = list()
+// CRUSADER TIER
+var/global/list/tier_crusader = list()
 
-var/global/list/coolboombox = list("bailol", "comicao1", "spookypineapple")
+//** SEASPOTTER MERC **//
+var/global/list/donation_seaspotter = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+//** RED DAWN MERC **//
+var/global/list/donation_reddawn = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+//** MERCENARY **//
+var/global/list/donation_mercenary = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+//** CRUSADER **//
+var/global/list/donation_crusader = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+//** MONK **//
+var/global/list/donation_monk = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+//** FUTA **//
+var/global/list/donation_futa = list()
+//** MOBILE PHONE **//
+var/global/list/donation_mobilephone = list()
+//** REMIGRATION **//
+var/global/list/donation_remigrator = list("raiddean", "coroneljones", "benblu", "tigers101")
+//** 30CM **//
+var/global/list/donation_30cm = list("raiddean", "coroneljones", "benblu", "tigers101")
+//** TRAP **//
+var/global/list/donation_trap = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+//** OUTLAW **//
+var/global/list/donation_outlaw = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+//** ITEMS **//
+var/global/list/donation_waterbottle = list("raiddean")
+var/global/list/donation_lecheryamulet = list("raiddean")
+//** OOC COLOR **//
+var/global/list/donation_mycolor = list("raiddean", "coroneljones", "benblu", "tigers101")
 
-var/global/list/singer = list("matkotaur", "bailol")
+//** LORD **//
+var/global/list/lord = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
 
-var/global/list/weeDonator = list("bailol", "darklordchinchin")
-var/global/list/baliset = list("bailol", "comicao1", "darklevel", "matkotaur", "darklordchinchin")
-var/global/list/black_cloak = list("bailol", "wesdo", "matkotaur", "darklordchinchin", "necbromancer", "sylphyn", "t1gws")
+var/global/list/coolboombox = list("raiddean", "coroneljones", "benblu", "tigers101")
+
+var/global/list/singer = list()
+
+var/global/list/weeDonator = list()
+var/global/list/baliset = list()
+var/global/list/black_cloak = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
 var/global/list/bee_queen = list("ltkoepple")
 
-var/global/list/secret_devs = list("comicao1", "darklevel", "ssix", "frozenguy5")
-
-var/global/list/patreons = list("darklevel")
+var/global/list/patreons = list("deathws", "ooglepunk", "enzoman", "toastertime")
 #define PIGPLUS 1
 #define COMRADE 2
 #define VILLAIN 3
 
 /proc/build_donations_list()
+    build_tier_squire()
+    build_tier_tiamat()
+    build_tier_marduk()
+    build_tier_crusader()
     build_seaspotter()
     build_reddawn()
-    build_lord()
     build_crusader()
-    build_tophat()
     build_monk()
     build_futa()
     build_30cm()
@@ -67,221 +69,181 @@ var/global/list/patreons = list("darklevel")
     build_outlaw()
     build_waterbottle()
     build_luxurydonation()
-    build_pjack()
     build_customooccolor()
     build_mercenary_donor()
-    build_squire_donor()
-    build_tribvet_donor()
-    build_urchin_donor()
     build_mobilephone()
-    build_weeDonator()
-    build_baliset()
-    //set_donation_locks() //NAO ATIVAR ISSO FICA NO MASTER_CONTROLLER.DM
+
+// The SQL queries for the below procs need to select from the previous tier and join them together - for example Crusader gets all the benefits of the previous tiers.
+/proc/build_tier_squire()
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM tier_squire;")
+    if(!queryInsert.Execute())
+        world.log << queryInsert.ErrorMsg()
+        queryInsert.Close()
+        return
+    while(queryInsert.NextRow())
+        tier_squire.Add(queryInsert.item[1])
+
+/proc/build_tier_tiamat()
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM tier_tiamat;")
+    if(!queryInsert.Execute())
+        world.log << queryInsert.ErrorMsg()
+        queryInsert.Close()
+        return
+    while(queryInsert.NextRow())
+        tier_squire.Add(queryInsert.item[1])
+        tier_tiamat.Add(queryInsert.item[1])
+
+/proc/build_tier_marduk()
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM tier_marduk;")
+    if(!queryInsert.Execute())
+        world.log << queryInsert.ErrorMsg()
+        queryInsert.Close()
+        return
+    while(queryInsert.NextRow())
+        tier_squire.Add(queryInsert.item[1])
+        tier_tiamat.Add(queryInsert.item[1])
+        tier_marduk.Add(queryInsert.item[1])
+
+/proc/build_tier_crusader()
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM tier_crusader;")
+    if(!queryInsert.Execute())
+        world.log << queryInsert.ErrorMsg()
+        queryInsert.Close()
+        return
+    while(queryInsert.NextRow())
+        tier_squire.Add(queryInsert.item[1])
+        tier_tiamat.Add(queryInsert.item[1])
+        tier_marduk.Add(queryInsert.item[1])
+        tier_crusader.Add(queryInsert.item[1])
+
 
 /proc/build_mobilephone()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM mobilephone;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_mobilephone;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        mobilephone.Add(queryInsert.item[1])//KKKKKKKKKKKKKKKKKKKKKKKK RETARDADO
-
-/proc/build_baliset()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM baliset;")
-    if(!queryInsert.Execute())
-        world.log << queryInsert.ErrorMsg()
-        queryInsert.Close()
-        return
-    while(queryInsert.NextRow())
-        baliset.Add(queryInsert.item[1])
-
-/proc/build_weeDonator()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM weeDonator;")
-    if(!queryInsert.Execute())
-        world.log << queryInsert.ErrorMsg()
-        queryInsert.Close()
-        return
-    while(queryInsert.NextRow())
-        weeDonator.Add(queryInsert.item[1])
+        donation_mobilephone.Add(queryInsert.item[1])//KKKKKKKKKKKKKKKKKKKKKKKK RETARDADO
 
 /proc/build_remigrator()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM remigrator;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_remigrator;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        remigrator.Add(queryInsert.item[1])
+        donation_remigrator.Add(queryInsert.item[1])
 
 /proc/build_seaspotter()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM seaspotter_merc;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_seaspotter;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        seaspotter_merc.Add(queryInsert.item[1])
+        donation_seaspotter.Add(queryInsert.item[1])
 
 /proc/build_reddawn()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM reddawn_merc;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_reddawn;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        reddawn_merc.Add(queryInsert.item[1])
-
-/proc/build_tribvet_donor()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM tribvet_donor;")
-    if(!queryInsert.Execute())
-        world.log << queryInsert.ErrorMsg()
-        queryInsert.Close()
-        return
-    while(queryInsert.NextRow())
-        tribunal_vet.Add(queryInsert.item[1])
+        donation_reddawn.Add(queryInsert.item[1])
 
 /proc/build_mercenary_donor()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM mercenary_donor;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_mercenary;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        mercenary_donor.Add(queryInsert.item[1])
-
-/proc/build_squire_donor()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM squire_donor;")
-    if(!queryInsert.Execute())
-        world.log << queryInsert.ErrorMsg()
-        queryInsert.Close()
-        return
-    while(queryInsert.NextRow())
-        adultsquire.Add(queryInsert.item[1])
-
-/proc/build_urchin_donor()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM urchin_donor;")
-    if(!queryInsert.Execute())
-        world.log << queryInsert.ErrorMsg()
-        queryInsert.Close()
-        return
-    while(queryInsert.NextRow())
-        urchin_donor.Add(queryInsert.item[1])
+        donation_mercenary.Add(queryInsert.item[1])
 
 /proc/set_donation_locks()
     for(var/datum/job/job in job_master.occupations)
         if(job.title == "Mercenary")
-            job.donation_lock = mercenary_donor.Copy()
-        if(job.title == "Urchin")
-            job.donation_lock = urchin_donor.Copy()
-        if(job.title == "Tribunal Veteran")
-            job.donation_lock = tribunal_vet.Copy()
-
-/proc/build_lord()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM lord;")
-    if(!queryInsert.Execute())
-        world.log << queryInsert.ErrorMsg()
-        queryInsert.Close()
-        return
-    while(queryInsert.NextRow())
-        lord.Add(queryInsert.item[1])
+            job.donation_lock = donation_mercenary.Copy()
 
 /proc/build_crusader()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM crusader;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_crusader;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        crusader.Add(queryInsert.item[1])
-
-/proc/build_tophat()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM tophat;")
-    if(!queryInsert.Execute())
-        world.log << queryInsert.ErrorMsg()
-        queryInsert.Close()
-        return
-    while(queryInsert.NextRow())
-        tophat.Add(queryInsert.item[1])
+        donation_crusader.Add(queryInsert.item[1])
 
 /proc/build_monk()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM monk;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_monk;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        monk.Add(queryInsert.item[1])
+        donation_monk.Add(queryInsert.item[1])
 
 /proc/build_futa()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM futa;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_futa;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        futa.Add(queryInsert.item[1])
-
+        donation_futa.Add(queryInsert.item[1])
 
 /proc/build_30cm()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM 30cm;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_30cm;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        thirtycm.Add(queryInsert.item[1])
+        donation_30cm.Add(queryInsert.item[1])
 
 /proc/build_trapapoc()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM trapapoc;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_trap;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        trapapoc.Add(queryInsert.item[1])
+        donation_trap.Add(queryInsert.item[1])
 
 /proc/build_outlaw()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM outlaw;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_outlaw;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        outlaw.Add(queryInsert.item[1])
+        donation_outlaw.Add(queryInsert.item[1])
 
 /proc/build_waterbottle()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM waterbottledonation;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_waterbottle;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        waterbottledonation.Add(queryInsert.item[1])
+        donation_waterbottle.Add(queryInsert.item[1])
 
 /proc/build_luxurydonation()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM luxurydonation;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_lecheryamulet;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        luxurydonation.Add(queryInsert.item[1])
-
-/proc/build_pjack()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM pjack;")
-    if(!queryInsert.Execute())
-        world.log << queryInsert.ErrorMsg()
-        queryInsert.Close()
-        return
-    while(queryInsert.NextRow())
-        pjack.Add(queryInsert.item[1])
+        donation_lecheryamulet.Add(queryInsert.item[1])
 
 /proc/build_customooccolor()
-    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM customooccolorlist;")
+    var/DBQuery/queryInsert = dbcon.NewQuery("Select ckey FROM donation_mycolor;")
     if(!queryInsert.Execute())
         world.log << queryInsert.ErrorMsg()
         queryInsert.Close()
         return
     while(queryInsert.NextRow())
-        customooccolorlist.Add(queryInsert.item[1])
+        donation_mycolor.Add(queryInsert.item[1])

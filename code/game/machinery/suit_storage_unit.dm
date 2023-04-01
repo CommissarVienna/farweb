@@ -52,30 +52,6 @@
 	HELMET_TYPE = /obj/item/clothing/head/helmet/space
 	MASK_TYPE = /obj/item/clothing/mask/breath
 
-/obj/machinery/suit_storage_unit/engineering_unit
-	SUIT_TYPE = /obj/item/clothing/suit/space
-	HELMET_TYPE = /obj/item/clothing/head/helmet/space
-	MASK_TYPE = /obj/item/clothing/mask/breath
-	STORAGE_TYPE = /obj/item/clothing/shoes/magboots
-
-/obj/machinery/suit_storage_unit/ce_unit
-	SUIT_TYPE = /obj/item/clothing/suit/space/rig/elite
-	HELMET_TYPE = /obj/item/clothing/head/helmet/space/rig/elite
-	MASK_TYPE = /obj/item/clothing/mask/breath
-	STORAGE_TYPE = /obj/item/clothing/shoes/magboots
-
-/obj/machinery/suit_storage_unit/mining_unit
-	SUIT_TYPE = /obj/item/clothing/suit/space
-	HELMET_TYPE = /obj/item/clothing/head/helmet/space
-	MASK_TYPE = /obj/item/clothing/mask/breath
-	STORAGE_TYPE = /obj/item/clothing/shoes/magboots
-
-/obj/machinery/suit_storage_unit/syndicate_unit
-	SUIT_TYPE = /obj/item/clothing/head/helmet/space/rig/syndi
-	HELMET_TYPE = /obj/item/clothing/suit/space/rig/syndi
-	MASK_TYPE = /obj/item/clothing/mask/gas/syndicate
-	STORAGE_TYPE = /obj/item/clothing/shoes/magboots
-
 /obj/machinery/suit_storage_unit/soulbreaker_unit
 	SUIT_TYPE = /obj/item/clothing/suit/armor/vest/security/soulbreaker
 	HELMET_TYPE = /obj/item/clothing/head/helmet/soulbreaker
@@ -91,29 +67,7 @@
 	SUIT_TYPE = /obj/item/clothing/suit/storage/vest/flakjacket
 	HELMET_TYPE = /obj/item/clothing/head/helmet/lw/ordinator
 	MASK_TYPE = /obj/item/clothing/mask/breath
-	STORAGE_TYPE = /obj/item/weapon/tank/emergency_oxygen
-
-/obj/machinery/suit_storage_unit/medical_unit
-	SUIT_TYPE = /obj/item/clothing/suit/space/rig/medical
-	HELMET_TYPE = /obj/item/clothing/head/helmet/space/rig/medical
-	MASK_TYPE = /obj/item/clothing/mask/breath
-
-/obj/machinery/suit_storage_unit/atmos_unit
-	SUIT_TYPE = /obj/item/clothing/suit/space/rig/atmos
-	HELMET_TYPE = /obj/item/clothing/head/helmet/space/rig/atmos
-	MASK_TYPE = /obj/item/clothing/mask/breath
-
-/obj/machinery/suit_storage_unit/cap_unit
-	SUIT_TYPE = /obj/item/clothing/suit/armor/captain
-	HELMET_TYPE = /obj/item/clothing/head/helmet/space/capspace
-	MASK_TYPE = /obj/item/clothing/mask/gas
-	STORAGE_TYPE = /obj/item/weapon/tank/jetpack/oxygen
-
-/obj/machinery/suit_storage_unit/security_unit
-	SUIT_TYPE = /obj/item/clothing/suit/space/rig/security
-	HELMET_TYPE = /obj/item/clothing/head/helmet/space/rig/security
-	MASK_TYPE = /obj/item/clothing/mask/breath
-	STORAGE_TYPE = /obj/item/clothing/shoes/magboots
+	STORAGE_TYPE = /obj/item/tank/emergency_oxygen
 
 /obj/machinery/suit_storage_unit/New()
 	src.update_icon()
@@ -365,7 +319,7 @@
 				if(!src.issuperUV)
 					for(var/obj/item/ITEM in src)
 						ITEM.clean_blood()
-					if(istype(STORAGE, /obj/item/weapon/reagent_containers/food))
+					if(istype(STORAGE, /obj/item/reagent_containers/food))
 						qdel(STORAGE)
 				else //It was supercycling, destroy everything
 					src.HELMET = null
@@ -467,14 +421,14 @@
 /obj/machinery/suit_storage_unit/attackby(obj/item/I as obj, mob/user as mob)
 	if(!src.ispowered)
 		return
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if(istype(I, /obj/item/screwdriver))
 		src.panelopen = !src.panelopen
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 		user << text("<font color='blue'>You [] the unit's maintenance panel.</font>",(src.panelopen ? "open up" : "close") )
 		src.updateUsrDialog()
 		return
-	if ( istype(I, /obj/item/weapon/grab) )
-		var/obj/item/weapon/grab/G = I
+	if ( istype(I, /obj/item/grab) )
+		var/obj/item/grab/G = I
 		if( !(ismob(G.affecting)) )
 			return
 		if (!src.isopen)

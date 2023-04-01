@@ -19,10 +19,10 @@
 					var/turf/belower = locate(below.x, below.y, below.z-1)
 					if(istype(belower, /turf/simulated/floor/open))
 						var/turf/belowerer = locate(belower.x, belower.y, belower.z-1)
-						if(istype(belowerer, /turf/simulated/floor/open))
-							var/turf/belowerer2 = locate(belower.x, belower.y, belower.z-1)
-						else
-							T.vis_contents += belowerer
+						//if(istype(belowerer, /turf/simulated/floor/open))
+						//	var/turf/belowerer2 = locate(belower.x, belower.y, belower.z-1)
+						//else
+						T.vis_contents += belowerer
 					else
 						T.vis_contents += belower
 				if(!istype(below, /turf/simulated/floor/open))

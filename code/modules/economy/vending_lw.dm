@@ -17,8 +17,8 @@
 	..()
 
 /obj/machinery/food_machine/attackby(obj/item/I as obj, mob/living/carbon/human/user as mob)
-	var/obj/item/weapon/spacecash/CA = I
-	if(istype(CA,/obj/item/weapon/spacecash))
+	var/obj/item/spacecash/CA = I
+	if(istype(CA,/obj/item/spacecash))
 		if(CA.worth < 10)
 			to_chat(user, "I need 10 obols.")
 		else if(CA.worth > 10)
@@ -26,7 +26,7 @@
 		else if(CA.worth == 10)
 			qdel(CA)
 			playsound(src.loc, 'sound/machines/coin_ins.ogg', 30, 0)
-			var/obj/item/weapon/reagent_containers/food/snacks/candy/C = new (user.loc)
+			var/obj/item/reagent_containers/food/snacks/candy/C = new (user.loc)
 			C.name = "candy"
 			supply_shuttle.points += 5
 		else
@@ -34,5 +34,5 @@
 	if(istype(I, /obj/item/coupon/food))
 		qdel(I)
 		playsound(src.loc, 'sound/machines/coin_ins.ogg', 30, 0)
-		var/obj/item/weapon/reagent_containers/food/snacks/candy/C = new (user.loc)
+		var/obj/item/reagent_containers/food/snacks/candy/C = new (user.loc)
 		C.name = "candy"

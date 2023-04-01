@@ -12,6 +12,7 @@
 	var/mini_war = FALSE  // Var only for mini war
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/futa = FALSE
+	var/signed_avowal = FALSE
 	plane = 10
 	flammable = 1
 	countsDensity = 0
@@ -60,13 +61,13 @@
 			if(!S.allpointsgathered)
 				if(src.stat != DEAD)
 					if(src.client)
-						src.client.ChromieWinorLoose(src.client, -1)
+						src.client.ChromieWinorLoose(-1)
 					visible_message("<span class='bname'>[src]</span> lets out a beep as \his microexplosive goes off!")
-					playsound(src, 'newBuzzer.ogg', 100, 1, 1)
+					playsound(src, 'sound/effects/newBuzzer.ogg', 100, 1, 1)
 					explosion(src.loc,2,4,6,4)
 
 /mob/living/carbon/human/New(var/new_loc, var/new_species = null)
-	combat_music = 'ravenheart_combat1.ogg'
+	combat_music = 'sound/music/ravenheart_combat1.ogg'
 	disguise_number = rand(1,length(player_list))
 	if(!dna)
 		dna = new /datum/dna(null)
@@ -132,7 +133,7 @@
 		if(istype(tmob, /mob/living/carbon/human))
 
 			for(var/mob/M in range(tmob, 1))
-				if(tmob.pinned.len ||  ((M.pulling == tmob && ( tmob.restrained() && !( M.restrained() ) && M.stat == 0)) || locate(/obj/item/weapon/grab, tmob.grabbed_by.len)) )
+				if(tmob.pinned.len ||  ((M.pulling == tmob && ( tmob.restrained() && !( M.restrained() ) && M.stat == 0)) || locate(/obj/item/grab, tmob.grabbed_by.len)) )
 					if ( !(world.time % 5) )
 						to_chat(src, "[tmob] is restrained, you cannot push past")
 					now_pushing = 0
@@ -153,9 +154,9 @@
 			return
 		if(ishuman(AM))
 			var/mob/living/carbon/human/humanmob = AM
-			if(statcheck(humanmob?.my_stats.st, 9, null, tmob))
+			if(statcheck(humanmob?.my_stats.get_stat(STAT_ST), 9, null, tmob))
 				if(humanmob.combat_mode)
-					if(prob(70+humanmob.my_stats.st))
+					if(prob(70+humanmob.my_stats.get_stat(STAT_ST)))
 						visible_message("<span class='bname'>[src]</span> tries to push <span class='bname'>[AM]</span>")
 						now_pushing = 0
 						return
@@ -170,11 +171,11 @@
 				src << "\red <B>You fail to push [tmob]'s fat ass out of the way.</B>"
 				now_pushing = 0
 				return
-		if(tmob.r_hand && istype(tmob.r_hand, /obj/item/weapon/shield/riot))
+		if(tmob.r_hand && istype(tmob.r_hand, /obj/item/shield/riot))
 			if(prob(99))
 				now_pushing = 0
 				return
-		if(tmob.l_hand && istype(tmob.l_hand, /obj/item/weapon/shield/riot))
+		if(tmob.l_hand && istype(tmob.l_hand, /obj/item/shield/riot))
 			if(prob(99))
 				now_pushing = 0
 				return
@@ -236,7 +237,7 @@
 			b_loss += 60
 
 			for(var/datum/organ/external/E in organs)
-				if(prob(150-src.my_stats.ht*10))
+				if(prob(150-src.my_stats.get_stat(STAT_HT)*10))
 					E.fracture()
 
 			if (prob(getarmor(null, "bomb")))
@@ -259,7 +260,7 @@
 			if (prob(50) && !shielded)
 				Paralyse(10)
 			for(var/datum/organ/external/E in organs)
-				if(prob(110-src.my_stats.ht*10))
+				if(prob(110-src.my_stats.get_stat(STAT_HT)*10))
 					E.fracture()
 
 	var/update = 0
@@ -333,10 +334,10 @@
 	else
 		if(M.attack_sound)
 			playsound(loc, M.attack_sound, 50, 1, 1)
-		if(attempt_dodge(src, M) && src.c_intent == "dodge" && canmove && !src.sleeping && src.stat == 0)
+		if(attempt_dodge(src, M) && src.c_intent == I_DODGE && canmove && !src.sleeping && src.stat == 0)
 			do_dodge()
 			return
-		if(attempt_parry(src, M) && src.c_intent == "parry" && !src.sleeping  && canmove && src.stat == 0)
+		if(attempt_parry(src, M) && src.c_intent == I_PARRY && !src.sleeping  && canmove && src.stat == 0)
 			do_parry(src, M)
 			return
 		for(var/mob/O in viewers(src, null))
@@ -353,7 +354,7 @@
 
 /mob/living/carbon/human/proc/is_loyalty_implanted(mob/living/carbon/human/M)
 	for(var/L in M.contents)
-		if(istype(L, /obj/item/weapon/implant/loyalty))
+		if(istype(L, /obj/item/implant/loyalty))
 			for(var/datum/organ/external/O in M.organs)
 				if(L in O.implants)
 					return 1
@@ -361,7 +362,7 @@
 
 /mob/living/carbon/human/proc/is_mentor_implanted(mob/living/carbon/human/M)
 	for(var/L in M.contents)
-		if(istype(L, /obj/item/weapon/implant/mentor))
+		if(istype(L, /obj/item/implant/mentor))
 			for(var/datum/organ/external/O in M.organs)
 				if(L in O.implants)
 					return 1
@@ -400,8 +401,8 @@
 	<BR><B>Belt:</B> <A href='?src=\ref[src];item=belt'>[(belt ? belt : "<small>Nothing</small>")]</A>
 	<BR><B>Clothes:</B> <A href='?src=\ref[src];item=uniform'>[(w_uniform ? w_uniform : "<small>Nothing</small>")]</A>
 	<BR><B>(Exo)Suit:</B> <A href='?src=\ref[src];item=suit'>[(wear_suit ? wear_suit : "<small>Nothing</small>")]</A>
-	<BR><B>Back:</B> <A href='?src=\ref[src];item=back'>[(back ? back : "<small>Nothing</small>")]</A> [((istype(wear_mask, /obj/item/clothing/mask) && istype(back, /obj/item/weapon/tank) && !( internal )) ? text(" <A href='?src=\ref[];item=internal'>Set Internal</A>", src) : "")]
-	<BR><B>Back II:</B> <A href='?src=\ref[src];item=back2'>[(back2 ? back2 : "<small>Nothing</small>")]</A> [((istype(wear_mask, /obj/item/clothing/mask) && istype(back, /obj/item/weapon/tank) && !( internal )) ? text(" <A href='?src=\ref[];item=internal'>Set Internal</A>", src) : "")]
+	<BR><B>Back:</B> <A href='?src=\ref[src];item=back'>[(back ? back : "<small>Nothing</small>")]</A> [((istype(wear_mask, /obj/item/clothing/mask) && istype(back, /obj/item/tank) && !( internal )) ? text(" <A href='?src=\ref[];item=internal'>Set Internal</A>", src) : "")]
+	<BR><B>Back II:</B> <A href='?src=\ref[src];item=back2'>[(back2 ? back2 : "<small>Nothing</small>")]</A> [((istype(wear_mask, /obj/item/clothing/mask) && istype(back, /obj/item/tank) && !( internal )) ? text(" <A href='?src=\ref[];item=internal'>Set Internal</A>", src) : "")]
 	<BR><B>ID:</B> <A href='?src=\ref[src];item=id'>[(wear_id ? wear_id : "<small>Nothing</small>")]</A>
 	<BR><B>Suit Storage:</B> <A href='?src=\ref[src];item=s_store'>[(s_store ? s_store : "<small>Nothing</small>")]</A>
 	<BR><B>Left Wrist:</B> <A href='?src=\ref[src];item=wrist_l'>[(wrist_l ? wrist_l : "<small>Nothing</small>")]</A>
@@ -429,13 +430,13 @@
 //Useful when player do something with computers
 /mob/living/carbon/human/proc/get_assignment(var/if_no_id = "", var/if_no_job = "")
 	var/obj/item/device/pda/pda = wear_id
-	var/obj/item/weapon/card/id/id = wear_id
+	var/obj/item/card/id/id = wear_id
 	if(istype(wear_id, /obj/item/device/pda))
-		if (pda.id && istype(pda.id, /obj/item/weapon/card/id))
+		if (pda.id && istype(pda.id, /obj/item/card/id))
 			. = pda.id.assignment
 		else
 			. = pda.ownjob
-	else if (istype(wear_id, /obj/item/weapon/card/id))
+	else if (istype(wear_id, /obj/item/card/id))
 		. = id.assignment
 	else
 		return if_no_id
@@ -447,7 +448,7 @@
 //Useful when player do something with computers
 /mob/living/carbon/human/proc/get_authentification_name(var/if_no_id = "Unknown")
 	var/obj/item/device/pda/pda = wear_id
-	var/obj/item/weapon/card/id/id = wear_id
+	var/obj/item/card/id/id = wear_id
 	if (istype(pda))
 		if (pda.id)
 			. = pda.id.registered_name
@@ -463,7 +464,7 @@
 /mob/living/carbon/human/proc/get_visible_name()
 	if(istype(src.wear_id,/obj/item/stolen))
 		return
-	var/obj/item/weapon/card/id/idcard = src.wear_id
+	var/obj/item/card/id/idcard = src.wear_id
 	if( wear_mask && (wear_mask.flags_inv&HIDEFACE) )	//Wearing a mask which hides our face, use id-name if possible
 		if(wear_id)
 			return "[idcard.assignment]"
@@ -474,7 +475,7 @@
 			return "[idcard.assignment]"
 		else
 			return get_id_name("Unknown")
-	if(stealth || brothelstealth)
+	if(isStealth())
 		return get_id_name("R a t")		//MODO STEALTH
 	var/face_name = get_face_name()
 	var/id_name = get_id_name("")
@@ -505,7 +506,7 @@
 		var/obj/item/device/pda/P = wear_id
 		return P.owner
 	if(wear_id)
-		var/obj/item/weapon/card/id/I = wear_id.GetID()
+		var/obj/item/card/id/I = wear_id.GetID()
 		if(I)
 			return I.registered_name
 	return
@@ -639,7 +640,7 @@
 		else if (href_list["interaction"] == "kiss")
 			if( ((Adjacent(P) && !istype(P.loc, /obj/structure/closet)) || (H.loc == P.loc)) && mouthfree && mouthfree_p  && (H.species.flags & HAS_LIPS) && (P.species.flags & HAS_LIPS))
 				if(H.wear_mask && H.wear_mask.flags & MASKCOVERSMOUTH)
-					to_chat(H, "<span class='combat'>[pick(nao_consigoen)] my mask is in the way!</span>")
+					to_chat(H, "<span class='combat'>[pick(fnord)] my mask is in the way!</span>")
 					return
 				if (H.lust == 0)
 					H.visible_message("<span class='erpbold'>[H]</span> <span class='erp'>kisses</span> <span class='erpbold'>[P]</span>")
@@ -652,17 +653,16 @@
 				if(H?.mind?.succubus)
 					if(!P.check_event(H.real_name))
 						to_chat(P, "<span class='horriblestate' style='font-size: 200%;'><b><i>I NEED TO FUCK [H]!</i></b></span>")
-						P.my_stats.st -= 3
-						P.my_stats.dx -= 3
+						src.my_stats.add_mod("succubus\ref[H]", stat_list(ST = -3, DX = -3), override = TRUE) //ref since multiple can kiss you.
 					H.succubus_mood(P)
 				if(H.gender == FEMALE)
 					if(P.gender == MALE || P.gender == FEMALE && P.has_penis() || P.isFemboy())
-						if(P.vice == "Addict (Kisses)")
+						if(P.has_vice("Addict (Kisses)"))
 							P.clear_event("vice")
 							P.viceneed = 0
 				if(H.has_penis())
 					if(P.gender == FEMALE)
-						if(P.vice == "Addict (Kisses)")
+						if(P.has_vice("Addict (Kisses)"))
 							P.clear_event("vice")
 							P.viceneed = 0
 				var/sound_path
@@ -833,7 +833,7 @@
 					if (H.potenzia > 0)
 						H.fuck(H, P, "anal")
 				else
-					var/message = pick("it's not erect...")//, "Êàê-òî íåò æåëàíè[ya]...", "×òî-òî íå îõîòà...", "Íåò, íå ñåé÷àñ.")
+					var/message = pick("it's not erect...")
 					to_chat(H, message)
 		else if (href_list["interaction"] == "vaginal")
 			if (get_dist(H,P) <= 1 && isnude_p && isnude && haspenis && hasanus_p)
@@ -855,9 +855,6 @@
 
 		else if (href_list["interaction"] == "mount")
 			if (get_dist(H,P) <= 1 && isnude && isnude_p && haspenis_p && hasvagina)
-/*				if (P.lust <= 0)
-					var/message = pick("It's not up...")//"Èíñòðóìåíò íå ïåðåâåäåí â ðàáî÷åå ñîñòî[ya]íèå...", "Ó íåãî åùå íå âñòàë...", "À îí ëåæèò...", "Íèêàê íå íàñàäèòüñ[ya]...")
-					H << message*/
 				if(P.erpcooldown == 0)
 					H.fuck(H, P, "mount")
 				else
@@ -895,9 +892,7 @@
 	if(istype(src.glasses, /obj/item/clothing/glasses/sunglasses))
 		number += 1
 	if(istype(src.glasses, /obj/item/clothing/glasses/welding))
-		var/obj/item/clothing/glasses/welding/W = src.glasses
-		if(!W.up)
-			number += 2
+		number += 2
 	return number
 
 
@@ -943,6 +938,30 @@
 		spawn(1200)
 			xylophone=0
 	return
+
+/mob/living/carbon/human/proc/do_vomit()
+	if(is_dreamer(src))
+		return
+	if(!src.reagents || src.nutrition <= 80)
+		visible_message("<span class='pukebold'>[src]</span> <span class='pukes'>gags as if trying to throw up but nothing comes out.</span>", "<span class='pukes'>You gag as you want to throw up, but there's nothing in your stomach!</span>")
+		src.CU()
+		return
+	call_sound_emote("puke")
+	src.visible_message("<span class='pukebold'>[src]</span> <span class='pukes'>throws up!</span>","<span class='pukes'>You throw up!</span>")
+	playsound(loc, 'sound/voice/vomit.ogg', 60, 1)
+	src.hygiene = -400
+	src.CU()
+	src.stuttering += rand(1,3)
+	add_event("hygiene", /datum/happiness_event/hygiene/vomitted)
+
+	var/turf/location = loc
+	if (istype(location, /turf/simulated))
+		location.add_vomit_floor(src, 1)
+
+	nutrition -= rand(20, 30)
+	adjustToxLoss(-3)
+	spawn(350)	//wait 35 seconds before next volley
+		lastpuke = 0
 
 /mob/living/carbon/human/proc/vomit()
 
@@ -1163,7 +1182,7 @@
 		vessel.add_reagent("blood",560-vessel.total_volume)
 		fixblood()
 
-	for (var/obj/item/weapon/organ/head/H in world)
+	for (var/obj/item/organ/head/H in world)
 		if(H.brainmob)
 			if(H.brainmob.real_name == src.real_name)
 				if(H.brainmob.mind)
@@ -1201,62 +1220,62 @@
 /mob/living/carbon/human/proc/add_nose_ears()
 	var/datum/organ/external/head/H = locate() in organs
 	if(istype(H))
-		var/obj/item/weapon/organ/ear/right/R = new
-		var/obj/item/weapon/organ/ear/left/L = new
-		var/obj/item/weapon/organ/nose/N = new
+		var/obj/item/organ/ear/right/R = new
+		var/obj/item/organ/ear/left/L = new
+		var/obj/item/organ/nose/N = new
 		H.nose = N
 		H.ears.Add(R)
 		H.ears.Add(L)
 
 
 /mob/living/carbon/human/proc/add_fingers() //botar dedo nas maos, sim e tudo manual
-	var/datum/organ/external/hand/r_hand/R = locate() in organs
+	var/datum/organ/external/extrem/hand/r_hand/R = locate() in organs
 	if(istype(R))
 		R.fingers.Cut()
-		var/obj/item/weapon/organ/finger/thumb/T1 = new
-		var/obj/item/weapon/organ/finger/index/I2 = new
-		var/obj/item/weapon/organ/finger/middle/M3 = new
-		var/obj/item/weapon/organ/finger/ring/R4 = new
-		var/obj/item/weapon/organ/finger/little/L5 = new
+		var/obj/item/organ/finger/thumb/T1 = new
+		var/obj/item/organ/finger/index/I2 = new
+		var/obj/item/organ/finger/middle/M3 = new
+		var/obj/item/organ/finger/ring/R4 = new
+		var/obj/item/organ/finger/little/L5 = new
 		R.fingers.Add(T1)
 		R.fingers.Add(I2)
 		R.fingers.Add(M3)
 		R.fingers.Add(R4)
 		R.fingers.Add(L5)
-	var/datum/organ/external/hand/l_hand/L = locate() in organs
+	var/datum/organ/external/extrem/hand/l_hand/L = locate() in organs
 	if(istype(L))
 		L.fingers.Cut()
-		var/obj/item/weapon/organ/finger/thumb/T6 = new
-		var/obj/item/weapon/organ/finger/index/I7 = new
-		var/obj/item/weapon/organ/finger/middle/M8 = new
-		var/obj/item/weapon/organ/finger/ring/R9 = new
-		var/obj/item/weapon/organ/finger/little/L10 = new
+		var/obj/item/organ/finger/thumb/T6 = new
+		var/obj/item/organ/finger/index/I7 = new
+		var/obj/item/organ/finger/middle/M8 = new
+		var/obj/item/organ/finger/ring/R9 = new
+		var/obj/item/organ/finger/little/L10 = new
 		L.fingers.Add(T6)
 		L.fingers.Add(I7)
 		L.fingers.Add(M8)
 		L.fingers.Add(R9)
 		L.fingers.Add(L10)
-	var/datum/organ/external/foot/l_foot/L_PE = locate() in organs
+	var/datum/organ/external/extrem/foot/l_foot/L_PE = locate() in organs
 	if(istype(L_PE))
 		L_PE.fingers.Cut()
-		var/obj/item/weapon/organ/finger/big_toe/T11 = new
-		var/obj/item/weapon/organ/finger/index_toe/I12 = new
-		var/obj/item/weapon/organ/finger/middle_toe/M13 = new
-		var/obj/item/weapon/organ/finger/ring_toe/R14 = new
-		var/obj/item/weapon/organ/finger/little_toe/L15 = new
+		var/obj/item/organ/finger/big_toe/T11 = new
+		var/obj/item/organ/finger/index_toe/I12 = new
+		var/obj/item/organ/finger/middle_toe/M13 = new
+		var/obj/item/organ/finger/ring_toe/R14 = new
+		var/obj/item/organ/finger/little_toe/L15 = new
 		L_PE.fingers.Add(T11)
 		L_PE.fingers.Add(I12)
 		L_PE.fingers.Add(M13)
 		L_PE.fingers.Add(R14)
 		L_PE.fingers.Add(L15)
-	var/datum/organ/external/foot/r_foot/R_PE = locate() in organs
+	var/datum/organ/external/extrem/foot/r_foot/R_PE = locate() in organs
 	if(istype(R_PE))
 		R_PE.fingers.Cut()
-		var/obj/item/weapon/organ/finger/big_toe/T16 = new
-		var/obj/item/weapon/organ/finger/index_toe/I17 = new
-		var/obj/item/weapon/organ/finger/middle_toe/M18 = new
-		var/obj/item/weapon/organ/finger/ring_toe/R19 = new
-		var/obj/item/weapon/organ/finger/little_toe/L20 = new
+		var/obj/item/organ/finger/big_toe/T16 = new
+		var/obj/item/organ/finger/index_toe/I17 = new
+		var/obj/item/organ/finger/middle_toe/M18 = new
+		var/obj/item/organ/finger/ring_toe/R19 = new
+		var/obj/item/organ/finger/little_toe/L20 = new
 		R_PE.fingers.Add(T16)
 		R_PE.fingers.Add(I17)
 		R_PE.fingers.Add(M18)
@@ -1326,8 +1345,8 @@
 	class = 0
 	var/list/visible_implants = list()
 	for(var/datum/organ/external/organ in src.organs)
-		for(var/obj/item/weapon/O in organ.implants)
-			if(!istype(O,/obj/item/weapon/implant) && O.w_class > class)
+		for(var/obj/item/O in organ.implants)
+			if(!istype(O,/obj/item/implant) && O.w_class > class)
 				visible_implants += O
 
 	return(visible_implants)
@@ -1337,8 +1356,8 @@
 	for(var/datum/organ/external/organ in src.organs)
 		if(organ.status & ORGAN_SPLINTED) //Splints prevent movement.
 			continue
-		for(var/obj/item/weapon/O in organ.implants)
-			if(!istype(O,/obj/item/weapon/implant) && prob(5)) //Moving with things stuck in you could be bad.
+		for(var/obj/item/O in organ.implants)
+			if(!istype(O,/obj/item/implant) && prob(5)) //Moving with things stuck in you could be bad.
 				// All kinds of embedded objects cause bleeding.
 				var/msg = null
 				switch(rand(1,3))
@@ -1520,21 +1539,16 @@
 		W.add_fingerprint(src)
 
 /mob/living/carbon/human/proc/exam_self()
-//	set name = "Examine Self"
-//	set category = "IC"
-
-
-
 	if(istype(src, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = usr
 		var/msg
 		if(!stat)
-			msg = "<div class='firstdiv'><div class='box'><span class='uppertext'>I'm still alive. I can carry [maxweight] kgs.\n Encumbrance:[weight_state]</span>\n"
+			msg = "<div class='firstdiv'><div class='box'><span class='uppertext'>I'm still alive. I can carry [maxweight] kgs.\n Encumbrance: [weight_state]</span>\n"
 		if(stat == DEAD)
 			msg = "<div class='firstdiv'><div class='box'><span class='uppertext'>I'm dead.</span>\n"
 		else
 			if(sleeping || stat == UNCONSCIOUS)
-				msg = "<div class='firstdiv'><div class='box'><span class='uppertext'>I'm unconscious. I can carry [maxweight] kgs. \n Encumbrance:[weight_state]</span>\n"
+				msg = "<div class='firstdiv'><div class='box'><span class='uppertext'>I'm unconscious. I can carry [maxweight] kgs. \n Encumbrance: [weight_state]</span>\n"
 			if(stat == UNCONSCIOUS && last_dam >= 100)
 				msg = "<div class='firstdiv'><div class='box'><span class='uppertext'>I'm dying.</span>\n"
 
@@ -1542,7 +1556,7 @@
 			var/list/status = list()
 			var/hurts = org.painLW
 
-			if(!reagents.has_reagent("dentrine") || !reagents.has_reagent("morphine"))
+			if(feel_pain_check())
 				switch(hurts)
 					if(1 to 15)
 						status += "<span class='lpexamine'><small>pain</small></span>"
@@ -1562,7 +1576,7 @@
 				status += "<span class='missingnew'><big>MISSING</big></span>"
 			if(org.status & ORGAN_MUTATED)
 				status += "<span class='magentatext'>MISSHAPEN</span>"
-			if(org.germ_level >= 1)
+			if(org.germ_level >= INFECTION_LEVEL_ONE)
 				status += "<span class='redtext'>FESTERING</span>"
 			if(org.status & ORGAN_BLEEDING)
 				status += "<span class='redtext'>BLEEDING</span>"
@@ -1582,7 +1596,8 @@
 			if(org.status & ORGAN_TENDON)
 				status += "<span class='magentatext'>TENDON</span>"
 			if(!org.is_usable())
-				status += "<span class='missingnew'>UNUSABLE</span>"
+				if(!istype(org, /datum/organ/external/head) && !istype(org, /datum/organ/external/chest) && !istype(org, /datum/organ/external/throat))
+					status += "<span class='missingnew'>UNUSABLE</span>"
 			if(istype(org, /datum/organ/external/head))
 				var/datum/organ/external/head/HEADD = org
 				if(HEADD.brained)
@@ -1590,7 +1605,10 @@
 			if(status.len)
 				msg += "<span class='statustext'>¤ [capitalize(org.display_name)]: [english_listt(status)]</span>\n"
 			else
-				msg += "<span class='statustext'>¤ [capitalize(org.display_name)]: OK</span>\n"
+				var/ok_msg = "OK"
+				if(isrev)
+					ok_msg = "<span class ='passivebold'>INTEGRAL</span>"
+				msg += "<span class='statustext'>¤ [capitalize(org.display_name)]: [ok_msg]</span>\n"
 
 		to_chat(src, "[msg]</div></div>", 10)
 
@@ -1753,6 +1771,7 @@
 				H.hide_cone()
 				animate(client, pixel_x = world.icon_size*_x, pixel_y = world.icon_size*_y, time = 2, easing = SINE_EASING)
 				set_face_dir(dir)//Face what we're zoomed in on.
+				src.visible_message("<span class='notice'>[src] peers into the distance.</span>")
 	else
 		if(do_normal_zoom)
 			if(ishuman(src))
@@ -1769,9 +1788,13 @@
 	var/intent = user.a_intent
 	var/datum/organ/external/affectedorgan = src.get_organ(user.zone_sel.selecting)
 	var/list/allowedCheckPulse = list("right hand", "right arm", "left arm", "left hand")
-	if(intent == "hurt")
-		do_combat_rmb(user)
-		return
+	if(user.combat_mode)
+		if(user.Adjacent(src))
+			var/obj/item/I = user.get_active_hand()
+			if(!I)
+				return
+			I.attack(src, user, user.zone_sel.selecting, TRUE)
+			return
 	if(intent == "help" && allowedCheckPulse.Find(affectedorgan.display_name))
 		src.check_pulse(user)
 		return
@@ -1791,10 +1814,10 @@
 
 /mob/living/carbon/human/proc/combatfail(var/failchance, var/meleereq)
 	if(src.m_intent != "walk")
-		if(prob(5+src.my_skills.GET_SKILL(SKILL_MELEE)+src.my_stats.dx))
+		if(prob(5+src.my_skills.get_skill(SKILL_MELEE)+src.my_stats.get_stat(STAT_DX)))
 			return
 	else
-		if(prob(60+src.my_skills.GET_SKILL(SKILL_MELEE)+src.my_stats.dx))
+		if(prob(60+src.my_skills.get_skill(SKILL_MELEE)+src.my_stats.get_stat(STAT_DX)))
 			return
 
 /mob/living/carbon/human/proc/god_text()
@@ -1887,3 +1910,8 @@ mob/living/carbon/human/Destroy()
 		S.key = "[src.old_key]"
 		if(src.old_key && src.religion == "Thanati")
 			S.thanati = TRUE
+
+/mob/living/carbon/human/proc/has_vice(var/name)
+	if(src.vice?.name == name)
+		return 1
+	return 0

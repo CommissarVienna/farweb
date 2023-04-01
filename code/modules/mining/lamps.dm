@@ -138,6 +138,7 @@
 	desc = ""
 	density = 0
 	anchored = 1
+	plane = 21
 
 /obj/machinery/wall_light/New()
 	set_light(3, 5,"#636363")
@@ -199,7 +200,7 @@
 
 /obj/machinery/soulbreaker_light
 	name = "lamp"
-	icon = 'sb_decor.dmi'
+	icon = 'icons/sb_decor.dmi'
 	icon_state = "lamp"
 	desc = ""
 	density = 1
@@ -227,7 +228,7 @@
 
 /obj/effect/soulbreaker_beam
 	name = "soulbreaker light overlay"
-	icon = 'sb_decor.dmi'
+	icon = 'icons/sb_decor.dmi'
 	icon_state = "lampo"
 	plane = 0
 	layer = 3

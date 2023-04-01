@@ -26,7 +26,7 @@
 		tally += wear_suit.slowdown
 
 	if(sprinting && my_stats)
-		tally -= (my_stats.spd / 10) * 2
+		tally -= (my_stats.get_stat(STAT_SPD) / 10) * 2
 
 	if(facing_dir && special != "weirdgait" && shouldTally(actualDir, goingTo))
 		tally += 0.6
@@ -102,8 +102,8 @@
 	if(!canmove && !has_gravity(src))	return 0
 
 	//Do we have a working jetpack
-	if(istype(back, /obj/item/weapon/tank/jetpack) && isturf(loc)) //Second check is so you can't use a jetpack in a mech
-		var/obj/item/weapon/tank/jetpack/J = back
+	if(istype(back, /obj/item/tank/jetpack) && isturf(loc)) //Second check is so you can't use a jetpack in a mech
+		var/obj/item/tank/jetpack/J = back
 		if((movement_dir || J.stabilization_on) && J.allow_thrust(0.01, src))
 			return 1
 	//Do we have working magboots
@@ -151,13 +151,12 @@
 
 /mob/living/carbon/human/Move(NewLoc, direct)
 	if(clinged_turf)
-		if(get_dist(src, clinged_turf) > 1)
-			src.clinged_turf = null
+		to_chat(src, "<span class='passive'>You let go of \the [clinged_turf]</span>")
+		clinged_turf = null
 
 	for(var/organ_name in list("l_foot","r_foot","l_leg","r_leg"))
-		if(resting || lying || buckled){
-			break;
-		}
+		if(resting || lying || buckled)
+			break
 		var/datum/organ/external/E = get_organ(organ_name)
 		if(!E || (E.status & ORGAN_DESTROYED) || !E.is_usable())
 			to_chat(src, "YOU CAN'T MOVE!")
@@ -182,8 +181,7 @@
 	if(shallReset)
 		update_fluid_icon(0, null)
 
-	update_flashlight()
-	for(var/obj/item/weapon/grab/G in grabbed_by)
+	for(var/obj/item/grab/G in grabbed_by)
 		if(G.assailant == G.affecting)
 			continue
 		if(lastDir)
@@ -191,11 +189,11 @@
 			return
 
 	if(prob(1) && prob(1) && prob(50))
-		if(src.belt && istype(src.belt, /obj/item/weapon/claymore))
-			var/obj/item/weapon/claymore/C = src.belt
+		if(src.belt && istype(src.belt, /obj/item/claymore))
+			var/obj/item/claymore/C = src.belt
 			src.drop_from_inventory(C)
-		if(src.s_store && istype(src.s_store, /obj/item/weapon/claymore))
-			var/obj/item/weapon/claymore/C = src.s_store
+		if(src.s_store && istype(src.s_store, /obj/item/claymore))
+			var/obj/item/claymore/C = src.s_store
 			src.drop_from_inventory(C)
 
 	if(client && client.lfwbopen)

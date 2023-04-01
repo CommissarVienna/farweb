@@ -589,7 +589,7 @@ datum
 			on_reaction(var/datum/reagents/holder, var/created_volume)
 				var/location = get_turf(holder.my_atom)
 				for(var/i = 1, i <= created_volume, i++)
-					new /obj/item/weapon/reagent_containers/food/snacks/tofu(location)
+					new /obj/item/reagent_containers/food/snacks/tofu(location)
 				return
 
 		chocolate_bar
@@ -601,7 +601,7 @@ datum
 			on_reaction(var/datum/reagents/holder, var/created_volume)
 				var/location = get_turf(holder.my_atom)
 				for(var/i = 1, i <= created_volume, i++)
-					new /obj/item/weapon/reagent_containers/food/snacks/chocolatebar(location)
+					new /obj/item/reagent_containers/food/snacks/chocolatebar(location)
 				return
 
 		chocolate_bar2
@@ -613,7 +613,7 @@ datum
 			on_reaction(var/datum/reagents/holder, var/created_volume)
 				var/location = get_turf(holder.my_atom)
 				for(var/i = 1, i <= created_volume, i++)
-					new /obj/item/weapon/reagent_containers/food/snacks/chocolatebar(location)
+					new /obj/item/reagent_containers/food/snacks/chocolatebar(location)
 				return
 
 		hot_coco
@@ -639,7 +639,7 @@ datum
 			result_amount = 1
 			on_reaction(var/datum/reagents/holder, var/created_volume)
 				var/location = get_turf(holder.my_atom)
-				new /obj/item/weapon/reagent_containers/food/snacks/sliceable/cheesewheel(location)
+				new /obj/item/reagent_containers/food/snacks/sliceable/cheesewheel(location)
 				return
 
 		syntiflesh
@@ -650,7 +650,7 @@ datum
 			result_amount = 1
 			on_reaction(var/datum/reagents/holder, var/created_volume)
 				var/location = get_turf(holder.my_atom)
-				new /obj/item/weapon/reagent_containers/food/snacks/meat/syntiflesh(location)
+				new /obj/item/reagent_containers/food/snacks/meat/syntiflesh(location)
 				return
 
 		hot_ramen

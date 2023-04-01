@@ -11,26 +11,37 @@
 	level = 3
 	plane = 21
 	explosion_resistance = 1
+	var/obj/mainParticle = null
 
 /obj/structure/vent_gas/New()
 	..()
-	processo()
+	mainParticle = new/obj/particles/gas(src.loc)
 
-/obj/structure/vent_gas/proc/processo()
-	INICIO
-	sleep(20)
-	spawn(45)
-		playsound(src.loc, 'sound/machines/loop_vent.ogg', 10, 0, 3)
-	for(var/i = 0; 6 > i; i++)
-		var/obj/effect/gas_particle/O = new(src.loc)
-		animate(O, pixel_y = rand(50, 98), time=rand(14,20))
-		sleep(5)
-		spawn(20)
-			animate(O, alpha = 0, time = 20)
-			spawn(20)
-				qdel(O)
-	goto INICIO
+/obj/particles/gas/New()
+	..()
+	mouse_opacity = 0
+	var/particles/gas/F = new
+	src.pixel_y = 12
+	src.plane = 22
+	particles += F
+	mainParticle = F
 
+particles/gas
+	width = 100
+	height = 200
+	count = 20
+	spawning = 1
+	lifespan = 25
+	fade = 1
+	grow = 0
+	velocity = list(0, 0)
+	position = generator("circle", 0, 0, NORMAL_RAND)
+	gravity = list(0, 0.15)
+	icon = 'icons/obj/gas_particles.dmi'
+	scale       =   generator("vector", list(0.3, 0.3), list(1,1), NORMAL_RAND)
+	rotation    =   30
+	spin        =   generator("num", -5, 5)
+/*
 /obj/effect/gas_particle
 	name = "gas particles"
 	icon = 'icons/effects/effects.dmi'
@@ -41,12 +52,8 @@
 	plane = 15
 	alpha = 120
 	mouse_opacity = 0
-
-/obj/effect/gas_particle/New()
-	..()
-	src.pixel_x = rand(-5,5)
-	src.pixel_y = rand(-5, 2)
-	src.icon = turn(src.icon,rand(0,90))
+	pixel_y = 12
+*/
 
 /obj/structure/vent_gas_deactivated
 	desc = "A large ventilation panel attached to the wall."

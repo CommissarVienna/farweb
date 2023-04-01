@@ -5,7 +5,7 @@ both support lists which are better to use if you're adding/removing multiple ve
 to make verbs appear in the panel. You'll need to set the verb's caregory to one of ("craft","verb","emotes","gpc","cross","crown","fangs","dead","villain")
 and set its desc to what you want the verb to appear as in the statpanel.
 */
-/client/
+/client
 	var/scrollbarready = 0
 	var/statpanel_loaded = FALSE
 	var/list/stat_tabs = list()
@@ -19,24 +19,24 @@ and set its desc to what you want the verb to appear as in the statpanel.
 	var/hidden as num
 
 
-client/proc/add_verb(var/path)
+/client/proc/add_verb(var/path)
 	verbs |= path
 	mob?.updateStatPanel()
 
 
-client/proc/remove_verb(var/path)
+/client/proc/remove_verb(var/path)
 	verbs -= path
 	mob?.updateStatPanel()
 
-mob/proc/add_verb(var/path)
+/mob/proc/add_verb(var/path)
 	verbs |= path
 	updateStatPanel()
 
-mob/proc/remove_verb(var/path)
+/mob/proc/remove_verb(var/path)
 	verbs -= path
 	updateStatPanel()
 
-client/proc/init_panel()
+/client/proc/init_panel()
 	if(!statpanel_loaded)
 		spawn(10)
 			init_panel()
@@ -48,21 +48,15 @@ client/proc/init_panel()
 	newtext(mob.noteUpdate())
 	current_button = "note"
 
-client/verb/debug_panel()
+/client/verb/debug_panel()
 	init_panel()
 
 
 /client/proc/loadDataPig()
-#ifndef FARWEB_LIVE
 	var/list/common_dirs = list(
 		"code/statpanel/html/rsc/",
 		"code/statpanel/html/html/"
 	)
-#else
-	var/list/common_dirs = list(
-		"code/statpanel/html/buttons/"
-	)
-#endif
 	for (var/path in common_dirs)
 		var/list/filenames = flist(path)
 		for(var/filename in filenames)
@@ -155,6 +149,7 @@ client/verb/debug_panel()
 	if(!newcontent || newcontent == "")
 		return
 	src << output(list2params(list("[newcontent]")), "outputwindow.browser:InputMsg")
+
 /client/proc/changebuttoncontent(var/idcontent = "", var/newcontent = "")
 	return
 	if(!statpanel_loaded)
@@ -221,7 +216,7 @@ client/verb/debug_panel()
 
 
 /client/proc/optionsUpdate()
-	return "<tr><td>" + generateVerbList(list(list("OOC", "OOC"),list(".helpmenu", "Yardım Menüsü"), list("Adminhelp", "Admin Help"), list(".togglefullscreen", "Toggle Fullscreen"), list("LobbyMusic", "Toggle Lobby Music"), list("Midis", "Toggle Midis"), list("AmbiVolume", "Ambience Volume (0-255)"), list("MusicVolume", "Music Volume (0, 255)"))) + "</td></tr>"
+	return "<tr><td>" + generateVerbList(list(list("OOC", "OOC"), list("Adminhelp", "Admin Help"), list(".togglefullscreen", "Toggle Fullscreen"), list("LobbyMusic", "Toggle Lobby Music"), list("Midis", "Toggle Midis"), list("FixChat", "Fix chat"), list("AmbiVolume", "Ambience Volume (0-255)"), list("MusicVolume", "Music Volume (0, 255)"))) + "</td></tr>"
 
 
 /client/proc/chromeUpdate()
@@ -235,7 +230,7 @@ client/verb/debug_panel()
 	newHTML += {"<span class='statstable'><table>\
 <tr>\
 <td><span class = 'ST smaller'>ST: [src.my_stats.get_stat(STAT_ST)]<BR>HT: [src.my_stats.get_stat(STAT_HT)]<BR>IN: [src.my_stats.get_stat(STAT_IN)]<BR>DX: [src.my_stats.get_stat(STAT_DX)]</span></th>\
-<td><span class = 'ST smaller MINOR'>PR: [src.my_stats.get_stat(STAT_PR)]<BR>IM: [src.my_stats.get_stat(STAT_IM)]<BR>WP: [src.my_stats.get_stat(STAT_WP)]<BR>CR: [client.info?.chromosomes]</span></th>\
+<td><span class = 'ST smaller MINOR'>PR: [src.my_stats.get_stat(STAT_PR)]<BR>IM: [src.my_stats.get_stat(STAT_IM)]<BR>WP: [src.my_stats.get_stat(STAT_WP)]<BR>CR: [client.chromie_holder.chromie_number]</span></th>\
 </tr>\
 </table></span>"}
 
@@ -250,11 +245,11 @@ client/verb/debug_panel()
 	var/lobby = ""
 	if(ticker.current_state == GAME_STATE_PREGAME)
 		lobby += "Time to Start: <span id='timestart'>[ticker.pregame_timeleft]</span><BR>"
-		lobby += "Chromosomes: [client.info?.chromosomes]<BR>"
+		lobby += "Chromosomes: [client.chromie_holder.chromie_number]<BR>"
 	if(ticker.current_state == GAME_STATE_PLAYING)
 		lobby += "Next Migrant Wave: [ticker.migwave_timeleft]s<BR>"
 		lobby += "Migrants: [ticker.migrants_inwave.len]/[ticker.migrant_req]<BR>"
-		lobby += "Chromosomes: [client.info?.chromosomes]"
+		lobby += "Chromosomes: [client.chromie_holder.chromie_number]"
 		for(var/client/C in ticker.migrants_inwave)
 			var/religioncheck = ""
 			var/gendercheck = "M"
@@ -267,7 +262,7 @@ client/verb/debug_panel()
 			if(C.prefs.gender != MALE)
 				gendercheck = "F"
 
-			lobby += "<BR><b>[C.ckey]</b> ([C.prefs.age] [gendercheck]) [familycheck][religioncheck]"
+			lobby += "<BR><b>[C.prefs.real_name]</b> ([C.prefs.age] [gendercheck]) [familycheck][religioncheck]"
 		lobby += "<BR><BR><i>! - Pagan </i> <i>* - Family</i>"
 	newHTML += {"<span style='color:#600; font-weight:bold;'>[lobby]</span>"}
 	return newHTML
@@ -275,26 +270,21 @@ client/verb/debug_panel()
 /mob/dead/observer/noteUpdate()
 	var/newHTML = ""
 	var/note = ""
-	note += "Chromosomes: [client.info?.chromosomes]<BR>"
+	note += "Chromosomes: [client.chromie_holder.chromie_number]<BR>"
 	note += "Pain: [wraith_pain]<BR>"
 	newHTML += {"<span style='color:#600; font-weight:bold;'>[note]</span>"}
 	return newHTML
 
 
 /client/proc/lobbyPig()
-#ifndef FARWEB_LIVE
 	src << browse('code/chatpanel/browserassets/html/chatpanel.html', "window=browseroutput")
 	src << browse('code/statpanel/html/html/statpanel.html', "window=outputwindow.browser; size=411x330;")
-#else
-	src << browse('code/chatpanel/browserassets/html/chatpanel.html', "window=browseroutput")
-	src << browse('code/statpanel/html/html/statpanel.html', "window=outputwindow.browser; size=411x330;")
-#endif
 
 client/proc/defaultButton(var/button)
 	var/newHTML
 	switch(button)
 		if("verbs")
-			newHTML = {"<table><tr><td>[generateVerbList(list(list("DisguiseVoice", "Disguise Voice"), list("Warn", "Warn"), list("Dance", "Dance"), list("Try to Vomit", "Try to Vomit"), list("Pee", "Pee"), list("Stop", "Stop")))]</td>"} + {"<td>[generateVerbList(list(list("Notes", "Memories"), list("Pray", "Pray"), list("Clean", "Clean"), list("Masturbate", "Masturbate"), list("Poo", "Poo")), 2)]</td></tr></table>"}
+			newHTML = {"<table><tr><td>[generateVerbList(list(list("DisguiseVoice", "Disguise Voice"), list("Warn", "Warn"), list("Dance", "Dance"), list("vomit", "Try to Vomit"), list("Pee", "Pee"), list(".asktostop", "Stop")))]</td>"} + {"<td>[generateVerbList(list(list("Notes", "Memories"), list("Pray", "Pray"), list("Clean", "Clean"), list("Masturbate", "Masturbate"), list("Poo", "Poo")), 2)]</td></tr></table>"}
 		if("emotes")
 			newHTML =  {"<table><tr><td>[generateVerbList(list(list("Slap", "Slap"), list("Nod", "Nod"), list("Praise", "Cross"), list("Hug", "Hug"), list("Bow", "Bow"), list("Scream", "Scream"), list("Whimper", "Whimper"), list("Laugh", "Laugh"), list("Sigh", "Sigh"), list("Clearthroat", "Clear Throat"), list("Collapse", "Collapse")))]</td>"} + {"<td>[generateVerbList(list(list("Kiss", "Kiss"), list("LickLips", "Lick Lips"), list("Cough", "Cough"), list("SpitonSomeone", "Spit on Someone"), list("Yawn", "Yawn"), list("Wink", "Wink"), list("Grumble", "Grumble"), list("Cry", "Cry"), list("Hem", "Hem"), list("Smile", "Smile")), 2)]</td></tr></table>"}
 		if("craft")

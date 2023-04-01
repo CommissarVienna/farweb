@@ -1,4 +1,4 @@
-/obj/item/weapon/storage/drawer
+/obj/item/storage/drawer
 	name = "drawer"
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "drawer"
@@ -9,35 +9,35 @@
 	w_class = 8.0
 	max_w_class = 8
 
-/obj/item/weapon/storage/drawer/utility
+/obj/item/storage/drawer/utility
 	icon_state = "utility"
 
-/obj/item/weapon/storage/drawer/furniture
+/obj/item/storage/drawer/furniture
 	icon_state = "furniture1"
 
-/obj/item/weapon/storage/drawer/furniture/New()
+/obj/item/storage/drawer/furniture/New()
 	..()
 	icon_state = "furniture[rand(1,6)]"
 
-/obj/item/weapon/storage/drawer/New()
+/obj/item/storage/drawer/New()
 	..()
 	spawn(1)
 		for(var/obj/item/I in src.loc)
 			if(I.density || I.anchored || I == src) continue
 			I.loc = src
 
-/obj/item/weapon/storage/drawer/attack_hand(mob/user as mob)
+/obj/item/storage/drawer/attack_hand(mob/user as mob)
 	orient2hud(user)          // dunno why it wasn't before
 	if(user.s_active)
 		user.s_active.close(user)
 	show_to(user)
-	playsound(src.loc, 'drawer_sound.ogg', 75, 0)
+	playsound(src.loc, 'sound/effects/drawer_sound.ogg', 75, 0)
 	user.visible_message("<span class='passivebold'>[user.name] opens the [src].</span>")
 
-/obj/item/weapon/storage/mail_box/kick_act()
+/obj/item/storage/mail_box/kick_act()
 	return
 
-/obj/item/weapon/storage/mail_box
+/obj/item/storage/mail_box
 	name = "mail box"
 	desc = "a mail box utilised to send posting cards"
 	icon = 'icons/lifeplat/facamaluca.dmi'
@@ -49,17 +49,17 @@
 	max_w_class = 8
 	plane = 21
 
-/obj/item/weapon/storage/mail_box/New()
+/obj/item/storage/mail_box/New()
 	..()
-	new/obj/item/weapon/pen(src)
-	new/obj/item/weapon/paper(src)
-	new/obj/item/weapon/paper(src)
-	new/obj/item/weapon/paper(src)
+	new/obj/item/pen(src)
+	new/obj/item/paper(src)
+	new/obj/item/paper(src)
+	new/obj/item/paper(src)
 
-/obj/item/weapon/storage/mail_box/RightClick(mob/living/carbon/human/user as mob)
+/obj/item/storage/mail_box/RightClick(mob/living/carbon/human/user as mob)
 	. = ..()
 
-	for(var/obj/item/weapon/package/P in evermail_ref)
+	for(var/obj/item/package/P in evermail_ref)
 		if(P.ToPerson == user.real_name)
 			alert("There's a package with my name.")
 			switch(alert("Will you take the package?", "PACKAGE", "Yes", "No"))
@@ -72,7 +72,7 @@
 				if("No")
 					return
 
-	for(var/obj/item/weapon/letter/P in evermail_ref)
+	for(var/obj/item/letter/P in evermail_ref)
 		if(P.ToPerson == user.real_name)
 			alert("There's a mail with my name.")
 			switch(alert("Will you take the package?", "PACKAGE", "Yes", "No"))
@@ -85,10 +85,10 @@
 				if("No")
 					return
 
-	if(istype(user.wear_id, /obj/item/weapon/card/id/churchkeeper) && Inquisitor_Points >= 0)
+	if(istype(user.wear_id, /obj/item/card/id/churchkeeper) && Inquisitor_Points >= 0)
 		var/list/EQUIPMENT = list()
 
-		var/list/WHAT = list(list("Baton(3)", /obj/item/weapon/melee/classic_baton/tonfa),list("Noctis-5(6)", /obj/item/weapon/gun/energy/taser/leet/noctis), list("Witch Hunter Hat(1)", /obj/item/clothing/head/witchhunter), list("Inquisitor Cap(1)", /obj/item/clothing/head/inquisihat), list("Harat-83 Pistol(7)", /obj/item/weapon/gun/projectile/newRevolver/duelista/harat), list("Harat-83 Ammo(1)", /obj/item/stack/bullets/Harat/seven), list("Handcuffs(1)", /obj/item/weapon/handcuffs), list("Sword(3)", /obj/item/weapon/claymore), list("Sword(3)", /obj/item/weapon/claymore), list("Silver Dagger(1)", /obj/item/weapon/kitchen/utensil/knife/dagger/silver), list("Silver Dagger(1)", /obj/item/weapon/kitchen/utensil/knife/dagger/silver), list("Club(2)", /obj/item/weapon/melee/classic_baton/club), list("Crossbow(1)", /obj/item/weapon/crossbow), list("Crossbow Bolts(1)", /obj/item/weapon/arrow), list("Energy Shield(3)", /obj/item/weapon/shield/generator), list("Silver Obols(2)", /obj/item/weapon/spacecash/silver/c15), list("Gas Mask(1)", /obj/item/clothing/mask/gas/church), list("Gas Grenade(1)", /obj/item/weapon/grenade/smokebomb/church), list("Flashbang(1)", /obj/item/weapon/grenade/flashbang), list("Satchel(2)", /obj/item/weapon/storage/backpack/minisatchelchurch), list("Telescopic Staff(2)", /obj/item/weapon/melee/telebaton), list("Fencer Gloves(1)", /obj/item/clothing/gloves/black/inquisitor), list("INKVD Cap(1)", /obj/item/clothing/head/inqcap), list("Black Bag(1)", /obj/item/clothing/head/blackbag), list("Noctis Recharger(1)", /obj/item/weapon/cell/crap/leet/noctis), list("Sonic Screwdriver(10)", /obj/item/weapon/sonic_screwdriver), list("Sunglasses(1)", /obj/item/clothing/glasses/sunglasses))
+		var/list/WHAT = list(list("Baton(3)", /obj/item/melee/classic_baton/tonfa),list("Noctis-5(6)", /obj/item/gun/energy/taser/leet/noctis), list("Witch Hunter Hat(1)", /obj/item/clothing/head/witchhunter), list("Inquisitor Cap(1)", /obj/item/clothing/head/inquisihat), list("Harat-83 Pistol(7)", /obj/item/gun/projectile/newRevolver/duelista/harat), list("Harat-83 Ammo(1)", /obj/item/stack/bullets/Harat/seven), list("Handcuffs(1)", /obj/item/handcuffs), list("Sword(3)", /obj/item/claymore), list("Sword(3)", /obj/item/claymore), list("Silver Dagger(1)", /obj/item/kitchen/utensil/knife/dagger/silver), list("Silver Dagger(1)", /obj/item/kitchen/utensil/knife/dagger/silver), list("Club(2)", /obj/item/melee/classic_baton/club), list("Crossbow(1)", /obj/item/crossbow), list("Crossbow Bolts(1)", /obj/item/arrow), list("Energy Shield(3)", /obj/item/shield/generator), list("Silver Obols(2)", /obj/item/spacecash/silver/c15), list("Gas Mask(1)", /obj/item/clothing/mask/gas/church), list("Gas Grenade(1)", /obj/item/grenade/smokebomb/church), list("Flashbang(1)", /obj/item/grenade/flashbang), list("Satchel(2)", /obj/item/storage/backpack/minisatchelchurch), list("Telescopic Staff(2)", /obj/item/melee/telebaton), list("Fencer Gloves(1)", /obj/item/clothing/gloves/black/inquisitor), list("INKVD Cap(1)", /obj/item/clothing/head/inqcap), list("Black Bag(1)", /obj/item/clothing/head/blackbag), list("Noctis Recharger(1)", /obj/item/cell/crap/leet/noctis), list("Sonic Screwdriver(10)", /obj/item/sonic_screwdriver), list("Sunglasses(1)", /obj/item/clothing/glasses/sunglasses))
 
 		for(var/list/L in WHAT)
 			EQUIPMENT.Add(L[1])
@@ -102,19 +102,19 @@
 					return
 				Inquisitor_Points -= price
 				var/A = L[2]
-				playsound(src.loc, pick('mail1.ogg', 'mail2.ogg', 'mail3.ogg', 'mail4.ogg'), 75, 1)
+				playsound(src.loc, pick('sound/effects/mail1.ogg', 'sound/effects/mail2.ogg', 'sound/effects/mail3.ogg', 'sound/effects/mail4.ogg'), 75, 1)
 				return new A(src)
-/obj/item/weapon/storage/mail_box/attack_hand(mob/user as mob)
+/obj/item/storage/mail_box/attack_hand(mob/user as mob)
 	orient2hud(user)          // dunno why it wasn't before
 	if(user.s_active)
 		user.s_active.close(user)
 	show_to(user)
-	playsound(src.loc, 'drawer_sound.ogg', 75, 0)
+	playsound(src.loc, 'sound/effects/drawer_sound.ogg', 75, 0)
 	user.visible_message("<span class='passivebold'>[user.name] opens the [src].</span>")
 
-/obj/item/weapon/storage/mail_box/attackby(obj/item/I as obj, mob/living/carbon/human/user as mob)
-	if(istype(I, /obj/item/weapon/package))
-		var/obj/item/weapon/package/P = I
+/obj/item/storage/mail_box/attackby(obj/item/I as obj, mob/living/carbon/human/user as mob)
+	if(istype(I, /obj/item/package))
+		var/obj/item/package/P = I
 		var/fromPerson = input(user, "From who?", "SENDER") as text
 		var/toPerson = input(user, "To who?", "DESTINATARY") as text
 		P.FromPerson = fromPerson
@@ -124,8 +124,8 @@
 		evermail_ref.receive(P)
 		return
 
-	if(istype(I, /obj/item/weapon/avowal))
-		var/obj/item/weapon/avowal/A = I
+	if(istype(I, /obj/item/avowal))
+		var/obj/item/avowal/A = I
 		if(A.signedby)
 			for(var/mob/living/carbon/human/H in mob_list)
 				if(H.job == "Inquisitor")
@@ -136,10 +136,10 @@
 					to_chat(H, "5 Points recieved for the avowal.")
 					if( Inquisitor_Type == "Month's Inquisitor")
 						if(H.mind.avowals_of_guilt_sent == 6)
-							H?.client?.ChromieWinorLoose(H.client, 3)
+							H?.client?.ChromieWinorLoose(3)
 
-	if(istype(I, /obj/item/weapon/paper))
-		var/obj/item/weapon/paper/A = I
+	if(istype(I, /obj/item/paper))
+		var/obj/item/paper/A = I
 		if(ticker.mode.config_tag == "siege" && user.job == "Count")
 			var/datum/game_mode/siege/S = ticker.mode
 			if(S.siegewar)
@@ -170,7 +170,7 @@
 			user.drop_item()
 			var/fromPerson = input(user, "From who?", "SENDER") as text
 			var/toPerson = input(user, "To who?", "DESTINATARY") as text
-			var/obj/item/weapon/letter/carta = new(A.loc)
+			var/obj/item/letter/carta = new(A.loc)
 			carta.FromPerson = fromPerson
 			carta.ToPerson = toPerson
 			carta.desc = "From [fromPerson] to [toPerson]"
@@ -179,9 +179,9 @@
 	else
 		..()
 
-var/global/obj/item/weapon/storage/evermail/evermail_ref = null
+var/global/obj/item/storage/evermail/evermail_ref = null
 
-/obj/item/weapon/storage/evermail
+/obj/item/storage/evermail
 	name = "evermail"
 	icon = 'icons/lifeplat/facamaluca.dmi'
 	icon_state = "evermail0"
@@ -192,7 +192,7 @@ var/global/obj/item/weapon/storage/evermail/evermail_ref = null
 	w_class = 8.0
 	max_w_class = 8
 
-/obj/item/weapon/storage/evermail/New()
+/obj/item/storage/evermail/New()
 	..()
 	spawn(1)
 		for(var/obj/item/I in src.loc)
@@ -200,15 +200,15 @@ var/global/obj/item/weapon/storage/evermail/evermail_ref = null
 			I.loc = src
 	evermail_ref = src
 
-/obj/item/weapon/storage/evermail/attack_hand(mob/user as mob)
+/obj/item/storage/evermail/attack_hand(mob/user as mob)
 	orient2hud(user)          // dunno why it wasn't before
 	if(user.s_active)
 		user.s_active.close(user)
 	show_to(user)
-	playsound(src.loc, 'drawer_sound.ogg', 75, 1)
+	playsound(src.loc, 'sound/effects/drawer_sound.ogg', 75, 1)
 	user.visible_message("<span class='passivebold'>[user.name] opens the [src].</span>")
 
-/obj/item/weapon/storage/evermail/proc/receive(var/obj/item/P, var/isImportantMessage=0)
+/obj/item/storage/evermail/proc/receive(var/obj/item/P, var/isImportantMessage=0)
 	flick("evermail1", src)
 	P.loc = src
 	if(isImportantMessage)
@@ -219,8 +219,8 @@ var/global/obj/item/weapon/storage/evermail/evermail_ref = null
 		to_chat(world, "<br>")
 	else
 		playsound(src.loc, 'sound/webbers/interferencia.ogg', 100, 1)
-	if(istype(P, /obj/item/weapon/package))
-		var/obj/item/weapon/package/pacote = P
+	if(istype(P, /obj/item/package))
+		var/obj/item/package/pacote = P
 		for(var/mob/living/carbon/human/H in mob_list)
 			if(H.client && H.real_name == pacote.ToPerson)
 				var/mayRecieve = 0
@@ -235,8 +235,8 @@ var/global/obj/item/weapon/storage/evermail/evermail_ref = null
 				if(mayRecieve)
 					to_chat(H, "<span class='passive'>[icon2html(B, H)] Your bracelet blinks. You have received a mail.")
 					H << 'sound/webbers/mail_generic.ogg'
-	if(istype(P, /obj/item/weapon/letter))
-		var/obj/item/weapon/letter/pacote = P
+	if(istype(P, /obj/item/letter))
+		var/obj/item/letter/pacote = P
 		for(var/mob/living/carbon/human/H in mob_list)
 			if(H.client && H.real_name == pacote.ToPerson)
 				var/mayRecieve = 0
@@ -252,7 +252,7 @@ var/global/obj/item/weapon/storage/evermail/evermail_ref = null
 					to_chat(H, "<span class='passive'>[icon2html(B, H)] Your bracelet blinks. You have received a mail.")
 					H << 'sound/webbers/mail_generic.ogg'
 
-/obj/item/weapon/package
+/obj/item/package
 	name = "package"
 	gender = PLURAL
 	icon = 'icons/obj/bureaucracy.dmi'
@@ -267,14 +267,14 @@ var/global/obj/item/weapon/storage/evermail/evermail_ref = null
 	var/FromPerson
 	var/ToPerson
 
-/obj/item/weapon/package/attack_self(mob/user)
+/obj/item/package/attack_self(mob/user)
 	playsound(src.loc, 'sound/webbers/unpackage.ogg', 75, 1)
 	if(do_after(user, 20))
 		for(var/obj/item/I in src)
 			I.loc = get_turf(user)
 		qdel(src)
 
-/obj/item/weapon/letter
+/obj/item/letter
 	name = "letter"
 	gender = PLURAL
 	icon = 'icons/obj/bureaucracy.dmi'
@@ -289,7 +289,7 @@ var/global/obj/item/weapon/storage/evermail/evermail_ref = null
 	var/FromPerson
 	var/ToPerson
 
-/obj/item/weapon/letter/attack_self(mob/user)
+/obj/item/letter/attack_self(mob/user)
 	playsound(src.loc, 'sound/webbers/unpackage.ogg', 75, 1)
 	if(do_after(user, 20))
 		for(var/obj/item/I in src)

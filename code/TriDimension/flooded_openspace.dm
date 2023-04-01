@@ -7,6 +7,7 @@
 			playsound(src.loc, 'sound/effects/fst_water_jump_down_01.ogg', 80, 1, -1)
 			src.visible_message("<span class='bname'>[src.name]</span> rises!")
 
+
 /mob/proc/swim_down()
 	var/turf/simulated/below = locate(loc.x, loc.y, loc.z-1)
 	if(istype(loc, /turf/simulated/floor/open))
@@ -15,3 +16,5 @@
 			src.forceMove(below)
 			playsound(src.loc, 'sound/effects/fst_water_jump_down_01.ogg', 80, 1, -1)
 			src.visible_message("<span class='bname'>[src.name]</span> dives in!")
+			if(client)
+				client.color = WATER_COLOR

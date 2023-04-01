@@ -9,25 +9,25 @@
 	icon_state = "apron"
 	item_state = "apron"
 	blood_overlay_type = "armor"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-	allowed = list (/obj/item/weapon/reagent_containers/spray/plantbgone,/obj/item/device/analyzer/plant_analyzer,/obj/item/seeds,/obj/item/weapon/reagent_containers/glass/fertilizer,/obj/item/weapon/minihoe)
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS_TOGETHER
+	allowed = list (/obj/item/reagent_containers/spray/plantbgone,/obj/item/device/analyzer/plant_analyzer,/obj/item/seeds,/obj/item/reagent_containers/glass/fertilizer,/obj/item/minihoe)
 
 //Captain
 
 /obj/item/clothing/suit/minerapron
-	name = "apron"
-	desc = "A basic apron."
+	name = "work apron"
+	desc = "A basic working apron."
 	icon_state = "miner"
 	item_state = "miner"
 	blood_overlay_type = "armor"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS_TOGETHER
 
 /obj/item/clothing/suit/armitage
 	name = "armitage"
 	icon_state = "armitage"
 	item_state = "armitage"
 	blood_overlay_type = "armor"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS_TOGETHER
 
 /obj/item/clothing/suit/inspector
 	name = "inspector"
@@ -42,14 +42,22 @@
 	icon_state = "baroness"
 	item_state = "baroness"
 	blood_overlay_type = "armor"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS_TOGETHER
 	fatmaywear = 1
 
 /obj/item/clothing/suit/donor/slojanko/dress
 	name = "Revealing Dress"
 	desc = "A beautiful  dress."
-	icon_state = "donor_slojanko_revealingdress"
-	item_state = "donor_slojanko_revealingdress"
+	icon_state = "revealingdress"
+	item_state = "revealingdress"
+	blood_overlay_type = "armor"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS_TOGETHER
+
+/obj/item/clothing/suit/chaser
+	name = "black robes"
+	desc = "The black robe."
+	icon_state = "chaser"
+	item_state = "chaser"
 	blood_overlay_type = "armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
@@ -65,15 +73,15 @@
 	icon_state = "nun"
 	item_state = "nun"
 	blood_overlay_type = "armor"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS_TOGETHER
 
 /obj/item/clothing/suit/maiddress
 	name = "Maid Dress"
 	desc = "A old maid dress."
-	icon_state = "maid"
-	item_state = "maid"
+	icon_state = "servdress"
+	item_state = "servdress"
 	blood_overlay_type = "armor"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS_TOGETHER
 	fatmaywear = 1
 
 /obj/item/clothing/suit/succdress
@@ -82,17 +90,15 @@
 	icon_state = "dress"
 	item_state = "dress"
 	blood_overlay_type = "armor"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|LEGS_TOGETHER
 	fatmaywear = 1
 
 /obj/item/clothing/suit/succdress/child
-	name = "Successor Dress"
-	desc = "A beautiful bright red dress."
-	icon_state = "successordress"
-	item_state = "successordress"
-	blood_overlay_type = "armor"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-	child_exclusive = 1
+	desc = "A beautiful black dress."
+	icon_state = "heirdress"
+	item_state = "heirdress"
+	species_restricted = list("Child")
+	fatmaywear = FALSE
 
 /obj/item/clothing/suit/child_coldsuit
 	name = "cold suit"
@@ -100,7 +106,7 @@
 	item_state = "yminer"
 	blood_overlay_type = "armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-	child_exclusive = 1
+	species_restricted = list("Child")
 
 
 /obj/item/clothing/suit/captunic
@@ -121,12 +127,24 @@
 /obj/item/clothing/suit/storage/pusher
 	name = "pusher's jacket"
 	desc = "Smells like blood."
-	icon_state = "pusher_closed"
-	var/closed_icon = "pusher_closed"
-	var/open_icon = "pusher_open"
+	icon_state = "jacket"
+	var/closed_icon = "jacket"
+	var/open_icon = "jacket_o"
 	item_state = "bio_suit"
 	body_parts_covered = UPPER_TORSO|ARMS
 	var/closed = TRUE
+
+/obj/item/clothing/suit/storage/pusher/attackhand_right(mob/living/carbon/human/H)
+	if(closed)
+		closed = FALSE
+		icon_state = open_icon
+	else
+		closed = TRUE
+		icon_state = closed_icon
+	playsound(src, 'sound/items/zip.ogg', 50, 1)
+	H.visible_message("<span class='notice'>[H] [closed ? "zips up" : "unzips"] \the [src].</span>")
+	H.update_inv_wear_suit()
+	update_icon()
 
 /obj/item/clothing/suit/storage/fjacket
 	name = "odd jacket"
@@ -143,25 +161,11 @@
 	flags = FPRINT | TABLEPASS
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 
-/obj/item/clothing/suit/storage/pusher/attackhand_right(mob/living/carbon/human/H)
-	if(closed)
-		closed = FALSE
-		icon_state = open_icon
-	else
-		closed = TRUE
-		icon_state = closed_icon
-	playsound(src, 'zip.ogg', 50, 1)
-	H.visible_message("<span class='notice'>[H] [closed ? "zips up" : "unzips"] \the [src].</span>")
-	H.update_inv_wear_suit()
-	update_icon()
-
-
-
 /obj/item/clothing/suit/storage/vest/tribunal
 	name = "ordinator's winter jacket"
 	icon_state = "ordjacket"
 	item_state = "bio_suit"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS_TOGETHER
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS
@@ -176,14 +180,14 @@
 	desc = "Smells like blood."
 	icon_state = "redjacket"
 	item_state = "bio_suit"
-	body_parts_covered = UPPER_TORSO|ARMS
+	body_parts_covered = UPPER_TORSO|ARMS|LEGS_TOGETHER
 
 /obj/item/clothing/suit/baron
 	name = "baron's garments"
 	desc = "Worn by a Baron to show their class."
 	icon_state = "baron"
 	item_state = "bio_suit"
-	body_parts_covered = UPPER_TORSO|ARMS
+	body_parts_covered = UPPER_TORSO|ARMS|LEGS|LEGS_TOGETHER
 	fatmaywear = 1
 
 /obj/item/clothing/suit/new_cut
@@ -191,24 +195,14 @@
 	desc = "Worn by a New Cut gang to show their class."
 	icon_state = "new_cut"
 	item_state = "bio_suit"
-	body_parts_covered = UPPER_TORSO|ARMS
+	body_parts_covered = UPPER_TORSO|ARMS|LEGS_TOGETHER
 	fatmaywear = 1
 
-/obj/item/clothing/suit/new_cut_alt
-	name = "mafiaman suit"
-	desc = "Worn by a New Cut gang to show their class."
+/obj/item/clothing/suit/new_cut/new_cut_alt
 	icon_state = "new_cut_alt"
-	item_state = "bio_suit"
-	body_parts_covered = UPPER_TORSO|ARMS
-	fatmaywear = 1
 
-/obj/item/clothing/suit/new_cut_alt2
-	name = "mafiaman suit"
-	desc = "Worn by a New Cut gang to show their class."
-	icon_state = "new_cut_alt2"
-	item_state = "bio_suit"
-	body_parts_covered = UPPER_TORSO|ARMS
-	fatmaywear = 1
+/obj/item/clothing/suit/new_cut/new_cut_alt2
+
 
 /obj/item/clothing/suit/lordking
 	name = "baron's garments"
@@ -217,6 +211,7 @@
 	item_state = "bio_suit"
 	body_parts_covered = UPPER_TORSO|ARMS
 	fatmaywear = 1
+	simple_icon = TRUE
 
 /obj/item/clothing/suit/furcoat
 	name = "fur coat"
@@ -276,21 +271,21 @@
 	desc = "This suit says to you 'hush'!"
 	icon_state = "chaplain_hoodie"
 	item_state = "chaplain_hoodie"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|LEGS_TOGETHER
 
 /obj/item/clothing/suit/vampirehunter
 	name = "Vampire hunter garments"
 	desc = "This suit says to you 'hush'!"
 	icon_state = "arbiter"
 	item_state = "arbiter"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|LEGS_TOGETHER
 
 //Chaplain
 /obj/item/clothing/suit/nun
 	name = "nun robe"
 	icon_state = "nun"
 	item_state = "nun"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|HANDS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|HANDS|LEGS_TOGETHER
 	flags_inv = HIDEJUMPSUIT
 
 //Chef
@@ -302,7 +297,7 @@
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.50
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
-	allowed = list (/obj/item/weapon/kitchenknife,/obj/item/weapon/butch)
+	allowed = list (/obj/item/kitchenknife,/obj/item/butch)
 
 /obj/item/clothing/suit/chef/wife
 	name = "Innkeeper's wife garment"
@@ -311,6 +306,7 @@
 	item_state = "inndress"
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.50
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS_TOGETHER
 
 //Chef
 /obj/item/clothing/suit/chef/classic
@@ -319,7 +315,7 @@
 	icon_state = "apronchef"
 	item_state = "apronchef"
 	blood_overlay_type = "armor"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS
 
 /obj/item/clothing/suit/hunter
 	name = "Hunter coat"
@@ -327,7 +323,7 @@
 	icon_state = "huntercoat"
 	item_state = "huntercoat"
 	armor = list(melee = 20, bullet = 30, laser = 0, energy = 10, bomb = 15, bio = 0, rad = 0)
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
 
 /obj/item/clothing/suit/chef/butler
 	name = "butler jacket"
@@ -345,7 +341,7 @@
 	item_state = "det_suit"
 	blood_overlay_type = "coat"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
-	allowed = list(/obj/item/weapon/tank/emergency_oxygen, /obj/item/device/flashlight,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/flame/lighter,/obj/item/device/detective_scanner,/obj/item/device/taperecorder)
+	allowed = list(/obj/item/tank/emergency_oxygen, /obj/item/device/flashlight,/obj/item/gun/energy,/obj/item/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/storage/fancy/cigarettes,/obj/item/flame/lighter,/obj/item/device/detective_scanner,/obj/item/device/taperecorder)
 	armor = list(melee = 50, bullet = 10, laser = 25, energy = 10, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/suit/storage/det_suit/black
@@ -357,7 +353,7 @@
 	desc = "A forensics technician jacket."
 	item_state = "det_suit"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
-	allowed = list(/obj/item/weapon/tank/emergency_oxygen, /obj/item/device/flashlight,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/device/detective_scanner,/obj/item/device/taperecorder)
+	allowed = list(/obj/item/tank/emergency_oxygen, /obj/item/device/flashlight,/obj/item/gun/energy,/obj/item/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/device/detective_scanner,/obj/item/device/taperecorder)
 	armor = list(melee = 10, bullet = 10, laser = 15, energy = 10, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/suit/storage/forensics/red
@@ -378,7 +374,7 @@
 	item_state = "hazard"
 	blood_overlay_type = "armor"
 	allowed = list (/obj/item/device/analyzer, /obj/item/device/flashlight, /obj/item/device/multitool, /obj/item/device/pipe_painter, /obj/item/device/radio, /obj/item/device/t_scanner, \
-	/obj/item/weapon/crowbar, /obj/item/weapon/screwdriver, /obj/item/weapon/weldingtool, /obj/item/weapon/wirecutters, /obj/item/weapon/wrench, /obj/item/weapon/tank/emergency_oxygen)
+	/obj/item/crowbar, /obj/item/screwdriver, /obj/item/weldingtool, /obj/item/wirecutters, /obj/item/wrench, /obj/item/tank/emergency_oxygen)
 
 //Lawyer
 /obj/item/clothing/suit/storage/lawyer/bluejacket
@@ -413,8 +409,8 @@
 	icon_state = "fr_jacket_open"
 	item_state = "fr_jacket"
 	blood_overlay_type = "armor"
-	allowed = list(/obj/item/stack/medical, /obj/item/weapon/reagent_containers/dropper, /obj/item/weapon/reagent_containers/hypospray, /obj/item/weapon/reagent_containers/syringe, \
-	/obj/item/device/healthanalyzer, /obj/item/device/flashlight, /obj/item/device/radio, /obj/item/weapon/tank/emergency_oxygen)
+	allowed = list(/obj/item/stack/medical, /obj/item/reagent_containers/dropper, /obj/item/reagent_containers/hypospray, /obj/item/reagent_containers/syringe, \
+	/obj/item/device/healthanalyzer, /obj/item/device/flashlight, /obj/item/device/radio, /obj/item/tank/emergency_oxygen)
 
 	verb/toggle()
 		set name = "Toggle Jacket Buttons"

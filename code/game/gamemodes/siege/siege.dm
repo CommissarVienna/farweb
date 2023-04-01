@@ -23,7 +23,7 @@
 	var/specialgang = FALSE
 	var/siegewar = FALSE
 	var/flagdropped = FALSE
-	var/obj/item/weapon/paper/war_paper
+	var/obj/item/paper/war_paper
 	var/camp_attack
 	var/camp_time = 30 MINUTES
 	var/result
@@ -32,7 +32,7 @@
 	for(var/mob/new_player/player in player_list)
 		for(var/mob/new_player/player2 in player_list)
 			for(var/mob/new_player/player3 in player_list)
-				if(player.ready && player.client.work_chosen == "Baron" && player2.ready && player2.client.work_chosen == "Inquisitor"&& player3.ready && player3.client.work_chosen == "Bookkeeper")
+				if(player.ready && player.client.work_chosen == "Baron" && player2.ready && player2.client.work_chosen == "Inquisitor"&& player3.ready && player3.client.work_chosen == "Merchant")
 					return 1
 	return 0
 
@@ -54,7 +54,7 @@
 			new /mob/living/carbon/human/skinless(T)
 		for(var/mob/living/carbon/human/F in siegerslist)
 			to_chat(F, "<span class='excomm'>AMBUSH!!!</span>")
-			F << sound(pick('ambush1.ogg','ambush2.ogg','ambush3.ogg','ambush4.ogg','ambush5.ogg','ambush6.ogg'))
+			F << sound(pick('sound/lfwbambimusic/ambush1.ogg','sound/lfwbambimusic/ambush2.ogg','sound/lfwbambimusic/ambush3.ogg','sound/lfwbambimusic/ambush4.ogg','sound/lfwbambimusic/ambush5.ogg','sound/lfwbambimusic/ambush6.ogg'))
 		camp_attack = world.time
 	if(flagdropped)
 		for(var/mob/living/carbon/human/F in siegerslist)
@@ -127,28 +127,28 @@
 					switch(H.job)
 						if("Count")
 							if(specialrifleman)
-								H?.client?.ChromieWinorLoose(H, 5)
+								H?.client?.ChromieWinorLoose(5)
 							else
-								H?.client?.ChromieWinorLoose(H, 10)
+								H?.client?.ChromieWinorLoose(10)
 						if("Count Hand")
 							if(specialtownguard)
-								H?.client?.ChromieWinorLoose(H, 3)
+								H?.client?.ChromieWinorLoose(3)
 							else
-								H?.client?.ChromieWinorLoose(H, 8)
+								H?.client?.ChromieWinorLoose(8)
 						if("Count Heir")
 							if(specialgang)
-								H?.client?.ChromieWinorLoose(H, 3)
+								H?.client?.ChromieWinorLoose(3)
 							else
-								H?.client?.ChromieWinorLoose(H, 8)
+								H?.client?.ChromieWinorLoose(8)
 						else
-							H?.client?.ChromieWinorLoose(H, 2)
+							H?.client?.ChromieWinorLoose(2)
 
 		if(SIEGE_DRAW_MARRIAGE)
 			var/list/areas = get_areas(/area/dunwell/station/church)
 			for(var/area/A in areas)
 				for(var/mob/living/carbon/human/H in A)
 					to_chat(H, "<span class='passivebold'>Hooray we survive!</span>")
-					H?.client?.ChromieWinorLoose(H, 1)
+					H?.client?.ChromieWinorLoose(1)
 
 		if(SIEGE_FAILED_REINFORCEMENT, SIEGE_FAILED_COUNT)
 			for(var/mob/living/carbon/human/H in mob_list)
@@ -157,8 +157,8 @@
 				to_chat(H, "<span class='passivebold'>Hooray we survive!</span>")
 				switch(H.job)
 					if("Baron")
-						H?.client?.ChromieWinorLoose(H, 3)
+						H?.client?.ChromieWinorLoose(3)
 					if("Hand", "Marduk", "Incarn", "Sheriff")
-						H?.client?.ChromieWinorLoose(H, 2)
+						H?.client?.ChromieWinorLoose(2)
 					if("Heir", "Successor", "Baroness", "Baroness Bodyguard", "Tiamat", "Squire")
-						H?.client?.ChromieWinorLoose(H, 1)
+						H?.client?.ChromieWinorLoose(1)

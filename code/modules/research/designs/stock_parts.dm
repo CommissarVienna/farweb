@@ -10,7 +10,7 @@
 					"materials" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 15000, "$glass" = 5000) //hardcore
-	build_path = /obj/item/weapon/storage/part_replacer
+	build_path = /obj/item/storage/part_replacer
 */
 
 /datum/design/basic_capacitor
@@ -20,7 +20,7 @@
 	req_tech = list("powerstorage" = 1)
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/stock_parts/capacitor
+	build_path = /obj/item/stock_parts/capacitor
 
 /datum/design/basic_sensor
 	name = "Basic Sensor Module"
@@ -29,7 +29,7 @@
 	req_tech = list("magnets" = 1)
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 50, "$glass" = 20)
-	build_path = /obj/item/weapon/stock_parts/scanning_module
+	build_path = /obj/item/stock_parts/scanning_module
 
 /datum/design/micro_mani
 	name = "Micro Manipulator"
@@ -38,7 +38,7 @@
 	req_tech = list("materials" = 1, "programming" = 1)
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 30)
-	build_path = /obj/item/weapon/stock_parts/manipulator
+	build_path = /obj/item/stock_parts/manipulator
 
 /datum/design/basic_micro_laser
 	name = "Basic Micro-Laser"
@@ -47,7 +47,7 @@
 	req_tech = list("magnets" = 1)
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 10, "$glass" = 20)
-	build_path = /obj/item/weapon/stock_parts/micro_laser
+	build_path = /obj/item/stock_parts/micro_laser
 
 /datum/design/basic_matter_bin
 	name = "Basic Matter Bin"
@@ -56,7 +56,7 @@
 	req_tech = list("materials" = 1)
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 80)
-	build_path = /obj/item/weapon/stock_parts/matter_bin
+	build_path = /obj/item/stock_parts/matter_bin
 
 /datum/design/adv_capacitor
 	name = "Advanced Capacitor"
@@ -65,7 +65,7 @@
 	req_tech = list("powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/stock_parts/capacitor/adv
+	build_path = /obj/item/stock_parts/capacitor/adv
 
 /datum/design/adv_sensor
 	name = "Advanced Sensor Module"
@@ -74,7 +74,7 @@
 	req_tech = list("magnets" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 20)
-	build_path = /obj/item/weapon/stock_parts/scanning_module/adv
+	build_path = /obj/item/stock_parts/scanning_module/adv
 
 /datum/design/nano_mani
 	name = "Nano Manipulator"
@@ -83,7 +83,7 @@
 	req_tech = list("materials" = 3, "programming" = 2)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 30)
-	build_path = /obj/item/weapon/stock_parts/manipulator/nano
+	build_path = /obj/item/stock_parts/manipulator/nano
 
 /datum/design/high_micro_laser
 	name = "High-Power Micro-Laser"
@@ -92,7 +92,7 @@
 	req_tech = list("magnets" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 10, "$glass" = 20)
-	build_path = /obj/item/weapon/stock_parts/micro_laser/high
+	build_path = /obj/item/stock_parts/micro_laser/high
 
 /datum/design/adv_matter_bin
 	name = "Advanced Matter Bin"
@@ -101,7 +101,7 @@
 	req_tech = list("materials" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 80)
-	build_path = /obj/item/weapon/stock_parts/matter_bin/adv
+	build_path = /obj/item/stock_parts/matter_bin/adv
 
 /datum/design/super_capacitor
 	name = "Super Capacitor"
@@ -111,7 +111,7 @@
 	build_type = PROTOLATHE
 	reliability_base = 71
 	materials = list("$metal" = 50, "$glass" = 50, "$gold" = 20)
-	build_path = /obj/item/weapon/stock_parts/capacitor/super
+	build_path = /obj/item/stock_parts/capacitor/super
 
 /datum/design/phasic_sensor
 	name = "Phasic Sensor Module"
@@ -121,7 +121,7 @@
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 20, "$silver" = 10)
 	reliability_base = 72
-	build_path = /obj/item/weapon/stock_parts/scanning_module/phasic
+	build_path = /obj/item/stock_parts/scanning_module/phasic
 
 /datum/design/pico_mani
 	name = "Pico Manipulator"
@@ -131,7 +131,7 @@
 	build_type = PROTOLATHE
 	materials = list("$metal" = 30)
 	reliability_base = 73
-	build_path = /obj/item/weapon/stock_parts/manipulator/pico
+	build_path = /obj/item/stock_parts/manipulator/pico
 
 /datum/design/ultra_micro_laser
 	name = "Ultra-High-Power Micro-Laser"
@@ -141,7 +141,7 @@
 	build_type = PROTOLATHE
 	materials = list("$metal" = 10, "$glass" = 20, "$uranium" = 10)
 	reliability_base = 70
-	build_path = /obj/item/weapon/stock_parts/micro_laser/ultra
+	build_path = /obj/item/stock_parts/micro_laser/ultra
 
 /datum/design/super_matter_bin
 	name = "Super Matter Bin"
@@ -151,7 +151,7 @@
 	build_type = PROTOLATHE
 	materials = list("$metal" = 80)
 	reliability_base = 75
-	build_path = /obj/item/weapon/stock_parts/matter_bin/super
+	build_path = /obj/item/stock_parts/matter_bin/super
 
 
 // Bluespace
@@ -163,7 +163,7 @@
 	req_tech = list("programming" = 3, "magnets" = 4, "materials" = 4, "bluespace" = 2)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 80, "$silver" = 20)
-	build_path = /obj/item/weapon/stock_parts/subspace/ansible
+	build_path = /obj/item/stock_parts/subspace/ansible
 
 /datum/design/hyperwave_filter
 	name = "Hyperwave filter"
@@ -172,7 +172,7 @@
 	req_tech = list("programming" = 3, "magnets" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 40, "$silver" = 10)
-	build_path = /obj/item/weapon/stock_parts/subspace/filter
+	build_path = /obj/item/stock_parts/subspace/filter
 
 /datum/design/subspace_amplifier
 	name = "Subspace Amplifier"
@@ -181,7 +181,7 @@
 	req_tech = list("programming" = 3, "magnets" = 4, "materials" = 4, "bluespace" = 2)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 10, "$gold" = 30, "$uranium" = 15)
-	build_path = /obj/item/weapon/stock_parts/subspace/amplifier
+	build_path = /obj/item/stock_parts/subspace/amplifier
 
 /datum/design/subspace_treatment
 	name = "Subspace Treatment Disk"
@@ -190,7 +190,7 @@
 	req_tech = list("programming" = 3, "magnets" = 2, "materials" = 4, "bluespace" = 2)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 10, "$silver" = 20)
-	build_path = /obj/item/weapon/stock_parts/subspace/treatment
+	build_path = /obj/item/stock_parts/subspace/treatment
 
 /datum/design/subspace_analyzer
 	name = "Subspace Analyzer"
@@ -199,7 +199,7 @@
 	req_tech = list("programming" = 3, "magnets" = 4, "materials" = 4, "bluespace" = 2)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 10, "$gold" = 15)
-	build_path = /obj/item/weapon/stock_parts/subspace/analyzer
+	build_path = /obj/item/stock_parts/subspace/analyzer
 
 /datum/design/subspace_crystal
 	name = "Ansible Crystal"
@@ -208,7 +208,7 @@
 	req_tech = list("magnets" = 4, "materials" = 4, "bluespace" = 2)
 	build_type = PROTOLATHE
 	materials = list("$glass" = 1000, "$silver" = 20, "$gold" = 20)
-	build_path = /obj/item/weapon/stock_parts/subspace/crystal
+	build_path = /obj/item/stock_parts/subspace/crystal
 
 /datum/design/subspace_transmitter
 	name = "Subspace Transmitter"
@@ -217,4 +217,4 @@
 	req_tech = list("magnets" = 5, "materials" = 5, "bluespace" = 3)
 	build_type = PROTOLATHE
 	materials = list("$glass" = 100, "$silver" = 10, "$uranium" = 15)
-	build_path = /obj/item/weapon/stock_parts/subspace/transmitter
+	build_path = /obj/item/stock_parts/subspace/transmitter

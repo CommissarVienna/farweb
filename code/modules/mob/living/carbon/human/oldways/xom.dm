@@ -117,10 +117,10 @@ var/xomPhrases = list("Hora da zueira!", "Já foi mamado por um deus?", "Deus me
 /mob/living/carbon/human/proc/yourenew(var/fontSize = "133%", var/textColor = "#808080  ", var/name = "Xom")
 	visible_message("<span style='font-size: [fontSize]'><span class='saybasic'><b style='color: [textColor]'>[name]</b></span> <span class='sayverb'>exclaims, </span>\"<span class='saybasic'><b>Você é novo!</b></span></span>\"")
 
-	my_stats.st += rand(-3, 3)
-	my_stats.it += rand(-3, 3)
-	my_stats.dx += rand(-3, 3)
-	my_stats.ht += rand(-3, 3)
+	my_stats.change_stat(STAT_ST , rand(-3,3))
+	my_stats.change_stat(STAT_HT , rand(-3,3))
+	my_stats.change_stat(STAT_DX , rand(-3,3))
+	my_stats.change_stat(STAT_IN , rand(-3,3))
 
 /mob/living/carbon/human/proc/wingame(var/fontSize = "133%", var/textColor = "#808080  ", var/name = "Xom")
 	visible_message("<span style='font-size: [fontSize]'><span class='saybasic'><b style='color: [textColor]'>[name]</b></span> <span class='sayverb'>exclaims, </span>\"<span class='saybasic'><b>Do you want to know the truth?</b></span></span>\"")
@@ -132,7 +132,6 @@ var/xomPhrases = list("Hora da zueira!", "Já foi mamado por um deus?", "Deus me
 /mob/living/carbon/human/proc/givechromies(var/fontSize = "133%", var/textColor = "#808080", var/name = "Xom")
 	if(!client)
 		return
-	var/client/C = client
 	to_chat(src, "<span style='font-size: [fontSize]'><span class='saybasic'><b style='color: [textColor]'>[name]</b></span> <span class='sayverb'>exclaims, </span>\"<span class='saybasic'><b>Toma um presente pra você!</b></span></span>\"")
 
 	var/timesToChromie = rand(1, 4)
@@ -140,12 +139,12 @@ var/xomPhrases = list("Hora da zueira!", "Já foi mamado por um deus?", "Deus me
 	for(var/x = 0; x != timesToChromie; x++)
 		var/randChromies = rand(1, 5)
 		removeLater += randChromies
-		C.ChromieWinorLoose(src, randChromies)
+		client.ChromieWinorLoose(randChromies)
 		sleep(1)
 
 	spawn(rand(70, 130))
 		to_chat(src, "<span style='font-size: [fontSize]'><span class='saybasic'><b style='color: [textColor]'>[name]</b></span> <span class='sayverb'>exclaims, </span>\"<span class='saybasic'><b>Era brinks! Não gosto de gente do seu tipo!</b></span></span>\"")
-		C.ChromieWinorLoose(src, -1 * removeLater)
+		client.ChromieWinorLoose(-1 * removeLater)
 
 /mob/living/carbon/human/proc/letsseeafriend(var/fontSize = "133%", var/textColor = "#808080", var/name = "Xom")
 	var/list/friends = list()
@@ -226,10 +225,9 @@ var/xomPhrases = list("Hora da zueira!", "Já foi mamado por um deus?", "Deus me
 	spawn(50)
 		var/datum/organ/external/head/H = get_organ("head")
 		neckXommed = 1
-		if(H.headwrenched){
+		if(H.headwrenched)
 			H.unwrenchedhead()
 			return
-		}
 		H.wrenchedhead()
 
 

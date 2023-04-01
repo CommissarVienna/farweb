@@ -41,7 +41,7 @@
 	var/damage_type = BRUTE //BRUTE, BURN, TOX, OXY, CLONE are the only things that should be in here
 	var/nodamage = 0 //Determines if the projectile will skip any damage inflictions
 	var/flag = "bullet" //Defines what armor to use when it hits things.  Must be set to bullet, laser, energy,or bomb	//Cael - bio and rad are also valid
-	var/projectile_type = "/obj/item/projectile"
+	var/projectile_type = /obj/item/projectile
 	var/kill_count = 50 //This will de-increment every process(). When 0, it will delete the projectile.
 		//Effects
 	var/stun = 0
@@ -53,7 +53,7 @@
 	var/eyeblur = 0
 	var/drowsy = 0
 	var/agony = 0
-	var/embed = 0 // whether or not the projectile can embed itself in the mob
+	embed = 0 // whether or not the projectile can embed itself in the mob
 
 	var/range = 0
 	var/proj_hit = 0
@@ -101,9 +101,6 @@
 		return output //Send it back to the gun!
 
 	Bump(atom/A as mob|obj|turf|area)
-		if(A == firer)
-			loc = A.loc
-			return 0 //cannot shoot yourself
 
 		if(bumped)	return 0
 		var/forcedodge = 0 // force the projectile to pass
@@ -119,13 +116,13 @@
 			// close distance, actually RAISE the chance to hit.
 			var/distance = get_dist(starting,loc)
 			var/miss_modifier = 20
-			/*if (istype(shot_from,/obj/item/weapon/gun))	//If you aim at someone beforehead, it'll hit more often. CODE ESTRANHO
-				var/obj/item/weapon/gun/daddy = shot_from //Kinda balanced by fact you need like 2 seconds to aim	  NAO SEI PRA QUE SERVE, COMENTEI
+			/*if (istype(shot_from,/obj/item/gun))	//If you aim at someone beforehead, it'll hit more often. CODE ESTRANHO
+				var/obj/item/gun/daddy = shot_from //Kinda balanced by fact you need like 2 seconds to aim	  NAO SEI PRA QUE SERVE, COMENTEI
 				if (daddy.target && original in daddy.target) //As opposed to no-delay pew pew
 					miss_modifier += -30*/
 			if(istype(firer, /mob/living/carbon/human))
 				var/mob/living/carbon/human = firer
-				miss_modifier += (human.my_skills.GET_SKILL(SKILL_RANGE) + 20) * -1
+				miss_modifier += (human.my_skills.get_skill(SKILL_RANGE) + 20) * -1
 
 			var/ERRADO
 			var/mob/living/carbon/human/H = firer
@@ -133,7 +130,7 @@
 			var/never_miss = FALSE
 			if(!istype(original, /mob))
 				ModiFier = 1
-			var/obj/item/weapon/WW = shot_from
+			var/obj/item/WW = shot_from
 			if(!WW.wielded)
 				ModiFier -= pick(0,0.5,1)
 				if(WW.weight >= 6)
@@ -151,7 +148,7 @@
 			var/list/roll = roll3d6(H,SKILL_RANGE, ModiFier)
 			var/result = roll[GP_RESULT]
 			switch(result)
-				if(GP_FAILED)
+				if(GP_FAIL)
 					ERRADO = TRUE
 				if(GP_CRITFAIL)
 					ERRADO = TRUE
@@ -159,7 +156,7 @@
 					ERRADO = FALSE
 				if(GP_CRITSUCCESS)
 					ERRADO = FALSE
-			if(istype(WW, /obj/item/weapon/gun/projectile/shotgun/princess/nevermiss))
+			if(istype(WW, /obj/item/gun/projectile/shotgun/princess/nevermiss))
 				ModiFier += 200
 				never_miss = TRUE
 				forcedodge = 0 // force the projectile to pass
@@ -195,7 +192,7 @@
 				to_chat(M, "<span class='hitbold'>You've been shot in the [parse_zone(def_zone)] by the</span> <span class='hitbold'>[src.name]!</span>")
 			else if(forcedodge != -1)
 				var/moreTXT = ""
-				var/HT = HH.my_stats.ht
+				var/HT = HH.my_stats.get_stat(STAT_HT)
 				var/datum/organ/external/E = HH.organs_by_name[def_zone]
 				var/datum/organ/internal/I = pick(E?.internal_organs)
 				if(lethal)

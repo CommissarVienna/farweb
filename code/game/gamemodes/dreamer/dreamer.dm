@@ -14,30 +14,25 @@
 	for(var/mob/new_player/player in player_list)
 		for(var/mob/new_player/player2 in player_list)
 			for(var/mob/new_player/player3 in player_list)
-				if(player.ready && player.client.work_chosen == "Baron" && player2.ready && player2.client.work_chosen == "Inquisitor"&& player3.ready && player3.client.work_chosen == "Bookkeeper")
+				if(player.ready && player.client.work_chosen == "Baron" && player2.ready && player2.client.work_chosen == "Inquisitor"&& player3.ready && player3.client.work_chosen == "Merchant")
 					return 1
 	return 0
-/datum/game_mode/proc/greet_dreamer(var/datum/mind/dreamer)
+/datum/game_mode/proc/greet_dreamer(datum/mind/dreamer)
 	//ticker.mode.learn_basic_spells(current)
 	to_chat(dreamer.current,"<span class='dreamershitfuckcomicao1'>Another NIGHT here. This labyrinthine fortress TWISTS and DISTORTS, something shimmers under the CRACKS. I know in my VISIONS, something GREATER lies beyond this LIFE.</span>")
 	to_chat(dreamer.current,"<span class='dreamershitfuckcomicao1'>I shall CUT my BONDS, only beneath the skin does the TRUTH lay.</span>")
 	to_chat(dreamer.current,"<span class='dreamershitfuckcomicao1'>Dream #1: FOLLOWING my HEART shall be the WHOLE of the law.</span>")
 	return
-/datum/game_mode/proc/finalize_dreamer(var/datum/mind/dreamer)
+/datum/game_mode/proc/finalize_dreamer(datum/mind/dreamer)
 	dreamer.special_role = "Waker"
 	var/datum/antagonist/dreamer/M = new()
 	dreamer.antag_datums = M
 	var/mob/living/carbon/human/H = dreamer.current
 	H.combat_music = 'sound/lfwbsounds/bloodlust1.ogg'
-	H.my_skills.CHANGE_SKILL(SKILL_MELEE, 17)
-	H.my_skills.CHANGE_SKILL(SKILL_RANGE, 13)
-	H.my_skills.CHANGE_SKILL(SKILL_CRAFT, 15)
 	H.vice = "Graphomaniac"
-	H.my_stats.st = rand(20,25)
-	H.my_stats.dx += rand(5,5)
-	H.my_stats.ht = rand(20,25)
+
 	H.verbs += /mob/living/carbon/human/proc/dreamer
-	H.updatePig()
+	H.verbs += /mob/living/carbon/human/proc/dreamerArchetypes
 	H.consyte = 0
 	H.status_flags |= STATUS_NO_PAIN
 	starringlist += "[H.key] "
@@ -46,7 +41,7 @@
 			H.religion = "Gray Church"
 
 /datum/game_mode/dreamer/pre_setup()
-	var/list/possible_dreamers = get_players_for_role(BE_TRAITOR)
+	var/list/possible_dreamers = get_players_for_antag()
 	var/max_dreamer = 1
 
 	for(var/j = 0, j < max_dreamer, j++)

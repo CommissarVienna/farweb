@@ -1,5 +1,6 @@
 var/list/clients = list()							//list of all clients
 var/list/admins = list()							//list of all clients whom are admins
+var/list/puppeteers = list("raiddean", "coroneljones", "alanii") //actual people responsible for handling donoses, bans and ranks/deranks.
 var/list/directory = list()							//list of all ckeys with associated client
 
 //Since it didn't really belong in any other category, I'm putting this here
@@ -27,6 +28,7 @@ var/global/list/all_languages[0]
 var/global/list/language_keys[0]					//table of say codes for all languages
 var/global/list/whitelisted_species = list("Human")
 var/global/list/in_character_filter = list()
+var/global/list/ooc_filter = list()
 // Posters
 var/global/list/datum/poster/poster_designs = typesof(/datum/poster) - /datum/poster
 
@@ -46,15 +48,18 @@ var/global/list/skin_styles_female_list = list()		//unused
 	//Underwear
 var/global/list/underwear_m = list("None") //Curse whoever made male/female underwear diffrent colours
 var/global/list/underwear_f = list("None")
-var/global/list/vices = list("Kleptomaniac","Photographer","Addict (Kisses)","Smoker", "Sexoholic", "Necrophile", "Alcoholic","Masochist","Pyromaniac","Sensitivity", "Pothead", "Addict (Heroin)", "Addict (Buffout)","Addict (Mentats)","Addict (Stimulants)","Voyeur", "Disability (No Right Eye)", "Disability (No Left Eye)")
+var/global/list/vices = list()
+var/global/list/vice_names = list()
 	//Backpacks
 var/global/list/backbaglist = list("Nothing")
 
 var/global/list/table_recipes = list()
 
-var/global/list/lightflickersounds = list('light_flicker101.ogg','light_flicker102.ogg','light_flicker103.ogg','light_flicker104.ogg','light_flicker105.ogg','light_flicker106.ogg','light_flicker107.ogg','light_flicker108.ogg','light_flicker109.ogg',
-'light_flicker110.ogg','light_flicker111.ogg','light_flicker112.ogg','light_flicker113.ogg','light_flicker114.ogg','light_flicker115.ogg','light_flicker116.ogg','light_flicker117.ogg','light_flicker118.ogg','light_flicker119.ogg','light_flicker120.ogg',
-'light_flicker121.ogg','light_flicker122.ogg','light_flicker123.ogg','light_flicker124.ogg')
+var/global/list/lightflickersounds = list('sound/machines/light_flicker101.ogg','sound/machines/light_flicker102.ogg','sound/machines/light_flicker103.ogg','sound/machines/light_flicker104.ogg','sound/machines/light_flicker105.ogg','sound/machines/light_flicker106.ogg','sound/machines/light_flicker107.ogg','sound/machines/light_flicker108.ogg','sound/machines/light_flicker109.ogg',
+'sound/machines/light_flicker110.ogg','sound/machines/light_flicker111.ogg','sound/machines/light_flicker112.ogg','sound/machines/light_flicker113.ogg','sound/machines/light_flicker114.ogg','sound/machines/light_flicker115.ogg','sound/machines/light_flicker116.ogg','sound/machines/light_flicker117.ogg','sound/machines/light_flicker118.ogg','sound/machines/light_flicker119.ogg','sound/machines/light_flicker120.ogg',
+'sound/machines/light_flicker121.ogg','sound/machines/light_flicker122.ogg','sound/machines/light_flicker123.ogg','sound/machines/light_flicker124.ogg')
+var/list/init_obj = list()
+
 //////////////////////////
 /////Initial Building/////
 //////////////////////////
@@ -119,6 +124,12 @@ var/global/list/lightflickersounds = list('light_flicker101.ogg','light_flicker1
 	for(var/T in paths)
 		var/datum/language/L = new T
 		all_languages[L.name] = L
+
+	paths = typesof(/datum/vice)-/datum/vice-/datum/vice/chem_addict
+	for(var/T in paths)
+		var/datum/vice/V = new T
+		vices[V.name] = V
+		vice_names += V.name
 
 	for (var/language_name in all_languages)
 		var/datum/language/L = all_languages[language_name]

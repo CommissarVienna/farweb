@@ -41,15 +41,15 @@
 	icon_state = "toilet[open][cistern]"
 
 /obj/structure/toilet/attackby(obj/item/I as obj, mob/living/user as mob)
-	if(istype(I, /obj/item/weapon/grab))
-		var/obj/item/weapon/grab/G = I
+	if(istype(I, /obj/item/grab))
+		var/obj/item/grab/G = I
 
 		if(isliving(G.affecting))
 			var/mob/living/GM = G.affecting
 
 			if(G.state>1)
 				if(!GM.loc == get_turf(src))
-					user << "<span class='notice'>[GM.name] needs to be on the toilet.</span>"
+					to_chat(user, "<span class='combat'>[GM.name] needs to be on the toilet.</span>")
 					return
 				if(open && !swirlie)
 					user.visible_message("<span class='danger'>[user] starts to give [GM.name] a swirlie!</span>", "<span class='notice'>You start to give [GM.name] a swirlie!</span>")
@@ -63,7 +63,7 @@
 					user.visible_message("<span class='danger'>[user] slams [GM.name] into the [src]!</span>", "<span class='notice'>You slam [GM.name] into the [src]!</span>")
 					GM.adjustBruteLoss(8)
 			else
-				user << "<span class='notice'>You need a tighter grip.</span>"
+				to_chat(user, "<span class='combat'>You need a tighter grip.</span>")
 
 /obj/structure/urinal
 	name = "urinal"
@@ -74,8 +74,8 @@
 	anchored = 1
 
 /obj/structure/urinal/attackby(obj/item/I as obj, mob/user as mob)
-	if(istype(I, /obj/item/weapon/grab))
-		var/obj/item/weapon/grab/G = I
+	if(istype(I, /obj/item/grab))
+		var/obj/item/grab/G = I
 		if(isliving(G.affecting))
 			var/mob/living/GM = G.affecting
 			if(G.state>1)
@@ -91,13 +91,14 @@
 
 /obj/machinery/shower
 	name = "shower"
-	desc = "The HS-451."
+	desc = "A nice hot shower would be nice, shame it costs money."
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "shower"
 	density = 0
 	anchored = 1
 	use_power = 0
-	plane = 15
+	layer = OBJ_LAYER
+	var/paid = TRUE
 	var/on = 0
 	var/obj/effect/mist/mymist = null
 	var/ismist = 0				//needs a var so we can make it linger~
@@ -105,6 +106,10 @@
 	var/mobpresent = 0		//true if there is a mob on the shower's loc, this is to ease process()
 	var/loaded = 0
 //add heat controls? when emagged, you can freeze to death in it?
+
+/obj/machinery/shower/noble
+	paid = 0
+	desc = "A much fancier shower. This one doesn't require money."
 
 /obj/effect/mist
 	name = "mist"
@@ -115,14 +120,14 @@
 	mouse_opacity = 0
 
 /obj/machinery/shower/attack_hand(mob/M as mob)
-	if(loaded <= 0)
+	if(paid && loaded <= 0)
 		return
 	if(on)
 		return
 
 	on = TRUE
 	update_icon()
-	playsound(src.loc, 'visor.ogg', 30, 1, -1)
+	playsound(src.loc, 'sound/effects/visor.ogg', 30, 1, -1)
 	if (M.loc == loc)
 		wash(M)
 	for (var/atom/movable/G in src.loc)
@@ -133,9 +138,9 @@
 		loaded--
 
 /obj/machinery/shower/attackby(obj/item/I as obj, mob/living/carbon/human/user as mob)
-	if(!istype(I, /obj/item/weapon/spacecash))
+	if(!istype(I, /obj/item/spacecash))
 		return ..()
-	var/obj/item/weapon/spacecash/C = I
+	var/obj/item/spacecash/C = I
 	if(C.worth != C.singularvalue)
 		return
 
@@ -266,14 +271,14 @@
 		var/turf/tile = loc
 		loc.clean_blood()
 		for(var/obj/effect/E in tile)
-			if(istype(E,/obj/effect/rune) || istype(E,/obj/effect/decal/cleanable) || istype(E,/obj/effect/overlay))
+			if(istype(E,/obj/effect/decal/cleanable) || istype(E,/obj/effect/overlay))
 				qdel(E)
 
 /obj/machinery/shower/proc/call_update_shower()
 	if(!on)
 		update_icon()
 
-/obj/item/weapon/bikehorn/rubberducky
+/obj/item/bikehorn/rubberducky
 	name = "rubber ducky"
 	desc = "Rubber ducky you're so fine, you make bathtime lots of fuuun. Rubber ducky I'm awfully fooooond of yooooouuuu~"	//thanks doohl
 	icon = 'icons/obj/watercloset.dmi'
@@ -296,11 +301,11 @@
 	if(get_dist(src,M) >= 2)
 		return
 	if(broken)
-		to_chat(H, "<span class='combatbold'>[pick(nao_consigoen)] it's broken!</span>")
+		to_chat(H, "<span class='combatbold'>[pick(fnord)] it's broken!</span>")
 		return
 
 	if(M.wear_mask && M.wear_mask.flags & MASKCOVERSMOUTH)
-		to_chat(M, "<span class='combat'>[pick(nao_consigoen)] my mask is in the way!</span>")
+		to_chat(M, "<span class='combat'>[pick(fnord)] my mask is in the way!</span>")
 		return
 
 	var/datum/reagents/reagents = new/datum/reagents(3)
@@ -309,7 +314,7 @@
 	reagents.trans_to(H, 3)
 	visible_message("<span class='bname'>⠀[H]</span> drinks from \the [src]!</span>")
 	H.bladder += rand(1,3) //For peeing
-	H.hidratacao += 10
+	H.hydration += 10
 	spawn(10)
 		H.add_event("sink", /datum/happiness_event/misc/iwanttodie)
 	playsound(M.loc, 'sound/effects/sink.ogg', rand(10, 50), 1)
@@ -323,7 +328,7 @@
 		return
 
 	if(broken)
-		to_chat(M, "<span class='combatbold'>[pick(nao_consigoen)] it's broken!</span>")
+		to_chat(M, "<span class='combatbold'>[pick(fnord)] it's broken!</span>")
 		return
 
 	if(!Adjacent(M))
@@ -367,11 +372,11 @@
 				to_chat(user, "<span class='passive'>You begin repairing \the [src]...</span>")
 				if(do_after(user, 30))
 					broken = FALSE
-		to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)] it's broken!</span>")
+		to_chat(user, "<span class='combatbold'>[pick(fnord)] it's broken!</span>")
 		return
 
-	if (istype(O, /obj/item/weapon/reagent_containers))
-		var/obj/item/weapon/reagent_containers/RG = O
+	if (istype(O, /obj/item/reagent_containers))
+		var/obj/item/reagent_containers/RG = O
 		RG.reagents.add_reagent("water", min(RG.volume - RG.reagents.total_volume, RG.amount_per_transfer_from_this))
 		user.visible_message("<span class='passivebold'>[user]</span><span class='passive'> fills \the [RG] using \the [src].</span>")
 		playsound(src.loc, 'sound/effects/sink.ogg', rand(35, 50), 1)

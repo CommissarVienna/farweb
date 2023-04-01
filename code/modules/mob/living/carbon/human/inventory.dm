@@ -1,6 +1,7 @@
 /mob/living/carbon/human/verb/quick_equip()
 	set name = "quick-equip"
 	set hidden = 1
+	return //This is broken for now.
 
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
@@ -56,11 +57,11 @@
 		if(slot_glasses)
 			return has_organ("head")
 		if(slot_gloves)
-			return has_organ("l_hand") && has_organ("r_hand")
+			return has_organ("l_hand") || has_organ("r_hand")
 		if(slot_head)
 			return has_organ("head")
 		if(slot_shoes)
-			return has_organ("r_foot") && has_organ("l_foot")
+			return has_organ("r_foot") || has_organ("l_foot")
 		if(slot_wear_suit)
 			return has_organ("chest")
 		if(slot_w_uniform)
@@ -112,12 +113,14 @@
 		glasses = null
 		success = 1
 		update_inv_glasses()
+		handle_regular_hud_updates()
 	else if (W == head)
 		head = null
 		if((W.flags & BLOCKHAIR) || (W.flags & BLOCKHEADHAIR))
 			update_hair(0)	//rebuild hair
 		success = 1
 		update_inv_head()
+		handle_regular_hud_updates()
 	else if (W == l_ear)
 		l_ear = null
 		success = 1
@@ -290,6 +293,7 @@
 			src.glasses = W
 			W.equipped(src, slot)
 			update_inv_glasses(redraw_mob)
+			handle_regular_hud_updates()
 		if(slot_gloves)
 			src.gloves = W
 			W.equipped(src, slot)
@@ -298,9 +302,8 @@
 			src.head = W
 			if((head.flags & BLOCKHAIR) || (head.flags & BLOCKHEADHAIR))
 				update_hair(redraw_mob)	//rebuild hair
-			if(istype(W,/obj/item/clothing/head/kitty))
-				W.update_icon(src)
 			W.equipped(src, slot)
+			handle_regular_hud_updates()
 			update_inv_head(redraw_mob)
 		if(slot_shoes)
 			src.shoes = W
@@ -453,7 +456,7 @@
 					qdel(src)
 					return
 			if("internal")
-				if ((!( (istype(target.wear_mask, /obj/item/clothing/mask) && istype(target.back, /obj/item/weapon/tank) && !( target.internal )) ) && !( target.internal )))
+				if ((!( (istype(target.wear_mask, /obj/item/clothing/mask) && istype(target.back, /obj/item/tank) && !( target.internal )) ) && !( target.internal )))
 					qdel(src)
 
 	var/list/L = list( "syringe", "pill", "drink", "dnainjector", "fuel")
@@ -808,7 +811,7 @@ It can still be worn/put on as normal.
 							for(var/mob/O in viewers(source, null))
 								O.show_message("<span class='passivebold'>[source]</span> <span class='passive'>performs CPR on [target]!</span>", 1)
 							to_chat(target, "<span class='passive'>You feel a breath of fresh air enter your lungs.</span>")
-						if(GP_FAILED)
+						if(GP_FAIL)
 							for(var/mob/O in viewers(source, null))
 								O.show_message("<span class='combatbold'>[source]</span> <span class='combat'>performs CPR on [target]!</span>", 1)
 						if(GP_CRITFAIL)
@@ -839,10 +842,10 @@ It can still be worn/put on as normal.
 
 				// source << "\red Repeat at least every 7 seconds."
 		if("dnainjector")
-			var/obj/item/weapon/dnainjector/S = item
+			var/obj/item/dnainjector/S = item
 			if(S)
 				S.add_fingerprint(source)
-				if (!( istype(S, /obj/item/weapon/dnainjector) ))
+				if (!( istype(S, /obj/item/dnainjector) ))
 					S.inuse = 0
 					qdel(src)
 				S.inject(target, source)
@@ -866,11 +869,11 @@ It can still be worn/put on as normal.
 				if (!( istype(target.wear_mask, /obj/item/clothing/mask) ))
 					return
 				else
-					if (istype(target.back, /obj/item/weapon/tank))
+					if (istype(target.back, /obj/item/tank))
 						target.internal = target.back
-					else if (istype(target.s_store, /obj/item/weapon/tank))
+					else if (istype(target.s_store, /obj/item/tank))
 						target.internal = target.s_store
-					else if (istype(target.belt, /obj/item/weapon/tank))
+					else if (istype(target.belt, /obj/item/tank))
 						target.internal = target.belt
 					if (target.internal)
 						for(var/mob/M in viewers(target, 1))

@@ -5,14 +5,8 @@ var/interquote = pick("I hate this place and I would do anything to get out of h
 "Be happy that it happened, not sad that it ends","This world is a machine! A Machine for Pigs! Fit only for the slaughtering of pigs!",
 "I am begging you. You made me. You are my Creator, my Father. You cannot destroy me!","I have you now, creature. I will destroy you.",
 "It is over. It is time to end this madness.","He who makes a beast of himself removes himself from the pain of being human.")
-var/brquote = pick("Odeio este lugar e faria qualquer coisa para sair daqui, que o grande senhor tenha misericórdia de nós.",
-"Todos os porcos devem morrer.", "Não há anjos no céu; eles estão todos aqui em baixo.", "Construa suas asas ao descer.", "Sou um covarde, enfie sua faca em mim." ,
-"A morte é apenas uma ameaça por causa da felicidade.", "Três podem guardar um segredo, se dois deles estiverem mortos.", "Carne consciente. Carne que ama. Carne dos sonhos.",
-"Fiquem felizes com o que aconteceu, não tristes que isso acabe", "Este mundo é uma máquina! Uma Máquina para Porcos! Destina-se apenas ao abate de porcos!",
-"Eu estou te implorando. Você me fez. Você é meu Criador, meu Pai. Você não pode me destruir!", "Eu tenho você agora, criatura. Eu vou destruir você.",
-"Acabou. É hora de acabar com essa loucura.", "Aquele que faz de si mesmo um animal afasta-se da dor de ser humano.")
 /obj/effect/lobby_image
-	name = "Farweb"
+	name = "Nearweb"
 	desc = "Theatre of pain."
 	icon = 'icons/misc/fullscreen.dmi'
 	icon_state = "title"
@@ -41,27 +35,28 @@ var/brquote = pick("Odeio este lugar e faria qualquer coisa para sair daqui, que
 	..()
 	if(ticker?.current_state != GAME_STATE_PLAYING)
 		for(var/mob/new_player/N in mob_list)
-			to_chat(N, "⠀<span class='passivebold'>[capitalize(usr.key)] joined the game.</span>")
+			to_chat(N, "⠀<span class='passivebold'>A new player has joined the game</span>")
+	message_admins("<span class='notice'>Login: [key], id:[computer_id], ip:[client.address]</span>")
 	var/list/locinfo = client?.get_loc_info()
 	update_Login_details()	//handles setting lastKnownIP and computer_id for use by the ban systems as well as checking for multikeying
-	winset(src, null, "mainwindow.title='Farweb'")//Making it so window is named what it's named.
+	winset(src, null, "mainwindow.title='Nearweb'")//Making it so window is named what it's named.
 	if(join_motd)
 		if(guardianlist.Find(ckey(src.client.key)))
 			to_chat(src, "Welcome, <span class='graytextbold'>[capitalize(usr.ckey)]</span>! Your reliability level: <span class='guardianlobby'>Guardian</span>")
 		else if(src.client in admins)
 			to_chat(src, "Welcome, <span class='graytextbold'>[capitalize(usr.ckey)]</span>! Your reliability level: <span class='adminlobby'>[src.client.holder.rank]</span>")
-		else if(comradelist.Find(ckey(src.client.key)))
+		else if(access_comrade.Find(ckey(src.client.key)))
 			to_chat(src, "Welcome, <span class='graytextbold'>[capitalize(usr.ckey)]</span>! Your reliability level: <span class='comradelobby'>Comrade</span>")
-		else if(villainlist.Find(ckey(src.client.key)))
+		else if(access_villain.Find(ckey(src.client.key)))
 			to_chat(src, "Welcome, <span class='graytextbold'>[capitalize(usr.ckey)]</span>! Your reliability level: <span class='villainlobby'>Villain</span>")
-		else if(pigpluslist.Find(ckey(src.client.key)))
+		else if(access_pigplus.Find(ckey(src.client.key)))
 			to_chat(src, "Welcome, <span class='graytextbold'>[capitalize(usr.ckey)]</span>! Your reliability level: <span class='graytextbold'>Experienced Pig</span>")
 		else
 			to_chat(src, "Welcome, <span class='graytextbold'>[capitalize(usr.ckey)]</span>! Your reliability level: <span class='graytextbold'>Pig</span>")
-		to_chat(src, "Press <a href='?src=\ref[src];action=f12'>F12</a> find your death!")
+		//to_chat(src, "Press <a href='?src=\ref[src];action=f12'>F12</a> find your death!")
 		to_chat(src, "Map of the week:</span> <span class='bname'><i>[currentmaprotation]</i></span>")
 		to_chat(src, "Country: <span class='bname'>[capitalize(locinfo["country"])]</span>")
-		to_chat(src, "<span class='lobby'>Farweb</span>   <span class='lobbyy'>Story #[story_id]</span>")
+		to_chat(src, "<span class='lobby'>Nearweb</span>   <span class='lobbyy'>Story #[story_id]</span>")
 		to_chat(src, "<span class='bname'><b>Interzone:</span></b> <i>\"[interquote]\"</i>")
 	if(ticker && ticker.current_state == GAME_STATE_PLAYING && master_mode == "inspector")
 		to_chat(src, "\n<div class='firstdivmood'><div class='moodbox'><span class='graytext'>You may join as the Inspector or his bodyguard.</span>\n<span class='feedback'><a href='?src=\ref[src];acao=joininspectree'>1. I want to.</a></span>\n<span class='feedback'><a href='?src=\ref[src];acao=nao'>2. I'll pass.</a></span></div></div>")
@@ -78,22 +73,13 @@ var/brquote = pick("Odeio este lugar e faria qualquer coisa para sair daqui, que
 		loc = locate(1,1,1)
 	lastarea = loc
 
-	//unlock_medal("First Timer", 0, "Welcome!", "easy")
 
 	sight |= SEE_TURFS
 	player_list |= src
 	client.screen += lobby_image
 
-/*
-	var/list/watch_locations = list()
-	for(var/obj/effect/landmark/landmark in landmarks_list)
-		if(landmark.tag == "landmark*new_player")
-			watch_locations += landmark.loc
-
-	if(watch_locations.len>0)
-		loc = pick(watch_locations)
-*/
 	new_player_panel()
+	src << output(list2params(list(0)), "outputwindow.browser:ChangeTheme")
 	spawn(40)
 		if(client)
 			client.playtitlemusic()

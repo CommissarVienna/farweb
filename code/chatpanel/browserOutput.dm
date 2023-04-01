@@ -42,15 +42,12 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("data/iconCache.sav")) //Cache of ic
 	set waitfor = FALSE
 	if(!owner)
 		return
-#ifndef FARWEB_LIVE
 	var/datum/asset/stuff = get_asset_datum(/datum/asset/chatpanel)
 	stuff.register()
 	stuff.send(owner)
-#endif
-	/*
-	spawn(0)
-		owner << browse('code/chatpanel/browserassets/html/chatpanel.html', "window=browseroutput")
-*/
+	
+	owner << browse('code/chatpanel/browserassets/html/chatpanel.html', "window=browseroutput")
+
 /datum/chatOutput/Topic(href, list/href_list)
 	if(usr.client != owner)
 		return TRUE

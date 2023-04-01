@@ -28,7 +28,7 @@
 				src.sortTag = O.currTag
 				playsound(src.loc, 'sound/machines/twobeep.ogg', 100, 1)
 
-		else if(istype(W, /obj/item/weapon/pen))
+		else if(istype(W, /obj/item/pen))
 			var/str = copytext(sanitize(input(usr,"Label text?","Set label","")),1,MAX_NAME_LEN)
 			if(!str || !length(str))
 				usr << "\red Invalid text."
@@ -69,7 +69,7 @@
 				src.sortTag = O.currTag
 				playsound(src.loc, 'sound/machines/twobeep.ogg', 100, 1)
 
-		else if(istype(W, /obj/item/weapon/pen))
+		else if(istype(W, /obj/item/pen))
 			var/str = copytext(sanitize(input(usr,"Label text?","Set label","")),1,MAX_NAME_LEN)
 			if(!str || !length(str))
 				usr << "\red Invalid text."
@@ -94,14 +94,14 @@
 	if(!istype(target))	//this really shouldn't be necessary (but it is).	-Pete
 		return
 	if(istype(target, /obj/item/smallDelivery) || istype(target,/obj/structure/bigDelivery) \
-	|| istype(target, /obj/item/weapon/evidencebag) || istype(target, /obj/structure/closet/body_bag))
+	|| istype(target, /obj/item/evidencebag) || istype(target, /obj/structure/closet/body_bag))
 		return
 	if(target.anchored)
 		return
 	if(target in user)
 		return
 
-	if(istype(target, /obj/item) && !(istype(target, /obj/item/weapon/storage) && !istype(target,/obj/item/weapon/storage/box)))
+	if(istype(target, /obj/item) && !(istype(target, /obj/item/storage) && !istype(target,/obj/item/storage/box)))
 		var/obj/item/O = target
 		if(use(1))
 			var/obj/item/smallDelivery/P = new /obj/item/smallDelivery(get_turf(O.loc))	//Aaannd wrap it up!
@@ -151,7 +151,7 @@
 	user.attack_log += text("\[[time_stamp()]\] <font color='blue'>Has used [name] on [target]</font>")
 
 	if(amount <= 0 && !src.loc) //if we used our last wrapping paper, drop a cardboard tube
-		new /obj/item/weapon/c_tube( get_turf(user) )
+		new /obj/item/c_tube( get_turf(user) )
 	return
 
 
@@ -266,7 +266,7 @@
 		if(!I || !user)
 			return
 
-		if(istype(I, /obj/item/weapon/screwdriver))
+		if(istype(I, /obj/item/screwdriver))
 			if(c_mode==0)
 				c_mode=1
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
@@ -277,8 +277,8 @@
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user << "You attach the screws around the power connection."
 				return
-		else if(istype(I,/obj/item/weapon/weldingtool) && c_mode==1)
-			var/obj/item/weapon/weldingtool/W = I
+		else if(istype(I,/obj/item/weldingtool) && c_mode==1)
+			var/obj/item/weldingtool/W = I
 			if(W.remove_fuel(0,user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 				user << "You start slicing the floorweld off the delivery chute."

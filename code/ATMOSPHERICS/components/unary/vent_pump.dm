@@ -275,8 +275,8 @@
 		return
 
 	attackby(obj/item/W, mob/user)
-		if(istype(W, /obj/item/weapon/weldingtool))
-			var/obj/item/weapon/weldingtool/WT = W
+		if(istype(W, /obj/item/weldingtool))
+			var/obj/item/weldingtool/WT = W
 			if (WT.remove_fuel(0,user))
 				user << "\blue Now welding the vent."
 				if(do_after(user, 20))
@@ -308,8 +308,8 @@
 			stat |= NOPOWER
 		update_icon()
 
-	attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
-		if (!istype(W, /obj/item/weapon/wrench))
+	attackby(var/obj/item/W as obj, var/mob/user as mob)
+		if (!istype(W, /obj/item/wrench))
 			return ..()
 		if (!(stat & NOPOWER) && on)
 			user << "\red You cannot unwrench this [src], turn it off first."

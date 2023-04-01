@@ -1,6 +1,6 @@
 /datum/controller/process/fluids/setup()
 	name = "fluid"
-	schedule_interval = 12 // every 0.1 seconds
+	schedule_interval = 4 // every 0.1 seconds
 	start_delay = 8
 
 /datum/controller/process/fluids/started()

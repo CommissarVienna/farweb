@@ -31,7 +31,7 @@
 /mob/living/simple_animal/maggot/Die()
 	layer = MOB_LAYER
 	playsound(src, 'sound/effects/maggotd.ogg', 40, 0, -1)
-	new /obj/item/weapon/reagent_containers/food/snacks/purryingmaggot(src.loc)
+	new /obj/item/reagent_containers/food/snacks/purryingmaggot(src.loc)
 	qdel(src)
 	..()
 

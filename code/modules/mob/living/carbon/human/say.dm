@@ -16,13 +16,6 @@
 		return say_dead(message)
 
 	if(iszombie(src))
-	/*
-		if (message && !(copytext_char(message, 1, 3) == ":z"))
-			if (copytext_char(message, 1, 2) == "*" && !stat)
-				return emote(copytext_char(message, 2))
-			else
-				emote(pick("z_roar","z_shout","z_mutter"))
-				return*/
 		if(message)
 			if(prob(15))
 				message = pick("...Brains...", "...Meaaat...", "...Brains..")
@@ -77,18 +70,21 @@
 			verb="asks"
 
 	if (istype(wear_mask, /obj/item/clothing/mask/muzzle))
-		return
+		playsound(src.loc, pick('sound/voice/headinhands01.ogg', 'sound/voice/headinhands02.ogg', 'sound/voice/headinhands03.ogg', 'sound/voice/headinhands04.ogg' , 'sound/voice/headinhands05.ogg', 'sound/voice/headinhands06.ogg' ,'sound/voice/headinhands07.ogg' ,'sound/voice/headinhands08.ogg'), 50, 0, -1)
+		message = pick("Mmfph!", "Mmmf mrrfff!", "Mmmf mnnf!")
+		verb = "mumbles"
 
 	var/datum/organ/external/mouth = get_organ("mouth")
 	if(mouth.status & ORGAN_DESTROYED)
-		to_chat(src, "<span class='combatbold'>I have a little problem with my mouth!</span>")
-		return
+		message = NoChords(message, 100)
+		//to_chat(src, "<span class='combatbold'>I have a little problem with my mouth!</span>")
+		//return
 
 	if(grabbed_by.len)
 		for(var/x = 1; x <= grabbed_by.len; x++)
 			if(grabbed_by[x])
-				if(istype(grabbed_by[x], /obj/item/weapon/grab))
-					var/obj/item/weapon/grab/G = grabbed_by[x]
+				if(istype(grabbed_by[x], /obj/item/grab))
+					var/obj/item/grab/G = grabbed_by[x]
 
 					if(G.aforgan.display_name == "mouth")
 						to_chat(src, "<span class='combatbold'>Something is holding your mouth!</span>")
@@ -98,12 +94,6 @@
 	message = capitalize(trim(message))
 	if(affecting.hasVocal && affecting.VocalTorn)
 		message = NoChords(message, 100)
-
-	if(province == "Salar" || h_style == "Forelock")
-		message = salarTalk(message)
-
-	if(province == "Wei-Ji Burrows" || voicetype == "gink")
-		message = ginkTalk(message)
 
 	if(speech_problem_flag)
 		var/list/handle_r = handle_speech_problems(message)
@@ -273,9 +263,6 @@
 
 /mob/living/carbon/human/say_understands(var/mob/other,var/datum/language/speaking = null)
 
-	if(has_brain_worms()) //Brain worms translate everything. Even mice and alien speak.
-		return 1
-
 	if(species.can_understand(other))
 		return 1
 
@@ -310,7 +297,8 @@
 
 /mob/living/carbon/human/var/truthcooldown = 0
 /mob/living/carbon/human/proc/tellTheTruth()
-	set name = "tellTheTruth"
+	set desc = "Tell the truth"
+	set category = "gpc"
 	set background = 1
 	if(truthcooldown)
 		return
@@ -330,7 +318,7 @@
 		return mind.changeling.mimicing
 	if(GetSpecialVoice())
 		return GetSpecialVoice()
-	if(stealth || brothelstealth)
+	if(isStealth())
 		return "R a t"
 	if(disguising_voice)
 		return "[ageAndGender2Desc(src.age, src.gender)] #[disguise_number]"

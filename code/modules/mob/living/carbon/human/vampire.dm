@@ -14,19 +14,19 @@
 	src.isVampire = 1
 	src.vice = null
 	src.favorite_beverage = "Blood"
-	src.verbs += /mob/living/carbon/human/proc/expose_fangs
-	src.verbs += /mob/living/carbon/human/proc/blood_strength
-	src.verbs += /mob/living/carbon/human/proc/fortitude
-	src.verbs += /mob/living/carbon/human/proc/celerety
-	src.verbs += /mob/living/carbon/human/proc/dead_eyes
-	src.verbs += /mob/living/carbon/human/proc/heal
-	src.my_stats.it += 5
-	src.my_stats.initit = src.my_stats.it
+	src.my_stats.change_stat(STAT_IN, 5)
+	src.add_verb(list(/mob/living/carbon/human/proc/expose_fangs,
+	/mob/living/carbon/human/proc/blood_strength,
+	/mob/living/carbon/human/proc/fortitude,
+	/mob/living/carbon/human/proc/celerety,
+	/mob/living/carbon/human/proc/dead_eyes,
+	/mob/living/carbon/human/proc/heal))
 
 
 /mob/living/carbon/human/proc/expose_fangs()
-	set category = "Vampire"
+	set category = "fangs"
 	set name = "ExposeFangs"
+	set desc = "Expose Fangs"
 	if(ExposedFang == TRUE)
 		playsound(src.loc, 'sound/effects/fangs0.ogg', 50, 0, -1)
 		src.visible_message("<span class='combatbold'>[src]</span> <span class='combat'>hides fangs!</span>")
@@ -40,8 +40,9 @@
 	return
 
 /mob/living/carbon/human/proc/heal()
-	set category = "Vampire"
+	set category = "fangs"
 	set name = "Heal"
+	set desc = "Heal (150cl)"
 	if(stat == 2) return
 	if(src.vessel.total_volume <= 150)
 		to_chat(src, "<span class='excomm'>I need more blood!</span>")
@@ -53,54 +54,53 @@
 	return
 
 /mob/living/carbon/human/proc/blood_strength()
-	set category = "Vampire"
+	set category = "fangs"
 	set name = "BloodStrength"
+	set desc = "Blood Strength (50cl)"
 	var/maximum = 30
 	if(src.vessel.total_volume <= 50)
 		to_chat(src, "<span class='excomm'>I need more blood!</span>")
 		return
-	if(src.my_stats.st < maximum)
-		src.my_stats.st += 4
+	if(src.my_stats.get_stat(STAT_ST) < maximum)
+		src.my_stats.add_mod("BloodStrength", stat_list(ST = 5), time = 1200,override = TRUE, override_timer = TRUE)
 		src.vessel.remove_reagent("blood",50)
 		src << 'sound/effects/discipline.ogg'
-		spawn(1200)
-			src.my_stats.st = src.my_stats.initst
 	else
 		to_chat(src, "<span class='excomm'>I can't get more than that!</span>")
 
 
 /mob/living/carbon/human/proc/fortitude()
-	set category = "Vampire"
+	set category = "fangs"
 	set name = "Fortitude"
+	set desc = "Fortitude (50cl)"
 	var/maximum = 30
 	if(src.vessel.total_volume <= 50)
 		to_chat(src, "<span class='excomm'>I need more blood!</span>")
 		return
-	if(src.my_stats.ht < maximum)
+	if(src.my_stats.get_stat(STAT_HT) < maximum)
 		src.vessel.remove_reagent("blood",50)
-		src.my_stats.ht += 4
+		src.my_stats.add_mod("Fortitude", stat_list(HT = 4), time = 1200,override = TRUE, override_timer = TRUE)
 		src << 'sound/effects/discipline.ogg'
 		vampireBuffFortitude = 1
 		spawn(1200)
 			vampireBuffFortitude = 0
-			src.my_stats.ht = src.my_stats.initht
 	else
 		to_chat(src, "<span class='excomm'>I can't get more than that!</span>")
 
 /mob/living/carbon/human/proc/celerety()
-	set category = "Vampire"
+	set category = "fangs"
 	set name = "Celerety"
+	set desc = "Celerety (250cl)"
 	if(src.vessel.total_volume <= 250)
 		to_chat(src, "<span class='excomm'>I need more blood!</span>")
 		return
 	if(vampireBuffCelerity != 1)
-		src.my_stats.dx += 6
+		src.my_stats.add_mod("Celerty", stat_list(DX = 6), time = 900 ,override = TRUE, override_timer = TRUE)
 		src.movement_speed_modifier = 3
 		src.vessel.remove_reagent("blood",250)
 		src << 'sound/effects/discipline.ogg'
 		vampireBuffCelerity = 1
 		spawn(900)
-			src.my_stats.dx = src.my_stats.initdx
 			vampireBuffCelerity = 0
 			src.movement_speed_modifier = 1
 	else
@@ -108,7 +108,8 @@
 
 /mob/living/carbon/human/proc/dead_eyes()
 	set name = "DeadEyes"
-	set category = "Undead"
+	set category = "fangs"
+	set desc = "Dead Eyes"
 
 	if (see_invisible == SEE_INVISIBLE_OBSERVER_NOLIGHTING)
 		see_invisible = SEE_INVISIBLE_OBSERVER
@@ -122,7 +123,7 @@
 /mob/living/carbon/human/proc/handle_vampire()
 	stamina_loss = 0
 	nutrition = 450
-	hidratacao = 700
+	hydration = 700
 	src.vessel.remove_reagent("blood", 0.15)
 	src.status_flags |= STATUS_NO_PAIN
 

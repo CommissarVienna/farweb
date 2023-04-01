@@ -81,7 +81,7 @@
 
 /obj/structure/closet/Move()
 	..()
-	playsound(src.loc, 'wooden_move.ogg', 50, 0)
+	playsound(src.loc, 'sound/effects/wooden_move.ogg', 50, 0)
 
 /obj/structure/closet/proc/open()
 	if(src.opened)
@@ -95,7 +95,7 @@
 
 	if(hastrap && !firstopen)
 		if(prob(trapprob))
-			var/monster = pick(/mob/living/carbon/human/monster/strygh,/mob/living/carbon/human/monster/skeleton)
+			var/monster = pick(/mob/living/carbon/human/monster/strygh)
 			new monster(src.loc)
 
 	src.dump_contents()
@@ -213,14 +213,14 @@
 		src.dump_contents()
 		qdel(src)
 
-/obj/structure/closet/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/closet/attackby(obj/item/W as obj, mob/user as mob)
 	if(src.opened)
-		if(istype(W, /obj/item/weapon/grab))
+		if(istype(W, /obj/item/grab))
 			src.MouseDrop_T(W:affecting, user)      //act like they were dragged onto the closet
 		if(istype(W,/obj/item/tk_grab))
 			return 0
-		if(istype(W, /obj/item/weapon/weldingtool))
-			var/obj/item/weapon/weldingtool/WT = W
+		if(istype(W, /obj/item/weldingtool))
+			var/obj/item/weldingtool/WT = W
 			if(!WT.remove_fuel(0,user))
 				user << "<span class='notice'>You need more welding fuel to complete this task.</span>"
 				return
@@ -236,8 +236,8 @@
 			W.loc = src.loc
 	else if(istype(W, /obj/item/stack/packageWrap))
 		return
-	else if(istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	else if(istype(W, /obj/item/weldingtool))
+		var/obj/item/weldingtool/WT = W
 		if(!WT.remove_fuel(0,user))
 			user << "<span class='notice'>You need more welding fuel to complete this task.</span>"
 			return

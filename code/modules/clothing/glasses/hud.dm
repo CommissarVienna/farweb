@@ -13,7 +13,7 @@
 /obj/item/clothing/glasses/hud/health
 	name = "Health Scanner HUD"
 	desc = "A heads-up display that scans the humans in view and provides accurate data about their health status."
-	icon_state = "healthhud"
+	icon_state = "disease"
 	proc
 		RoundHealth(health)
 
@@ -73,12 +73,6 @@
 				holder.icon_state = "hudxeno"
 			else if(foundVirus)
 				holder.icon_state = "hudill"
-			else if(patient.has_brain_worms())
-				var/mob/living/simple_animal/borer/B = patient.has_brain_worms()
-				if(B.controlling)
-					holder.icon_state = "hudbrainworm"
-				else
-					holder.icon_state = "hudhealthy"
 			else
 				holder.icon_state = "hudhealthy"
 			C.images += holder
@@ -178,7 +172,7 @@ obj/item/clothing/glasses/hud/security/supergars
 		var/perpname = perp.name
 		holder = perp.hud_list[ID_HUD]
 		if(perp.wear_id)
-			var/obj/item/weapon/card/id/I = perp.wear_id.GetID()
+			var/obj/item/card/id/I = perp.wear_id.GetID()
 			if(I)
 				perpname = I.registered_name
 				holder.icon_state = "hud[ckey(I.GetJobName())]"
@@ -212,21 +206,21 @@ obj/item/clothing/glasses/hud/security/supergars
 						holder.icon_state = "hudreleased"
 						C.images += holder
 						break
-		for(var/obj/item/weapon/implant/I in perp)
+		for(var/obj/item/implant/I in perp)
 			if(I.implanted)
-				if(istype(I,/obj/item/weapon/implant/tracking))
+				if(istype(I,/obj/item/implant/tracking))
 					holder = perp.hud_list[IMPTRACK_HUD]
 					holder.icon_state = "hud_imp_tracking"
 					C.images += holder
-				if(istype(I,/obj/item/weapon/implant/loyalty))
+				if(istype(I,/obj/item/implant/loyalty))
 					holder = perp.hud_list[IMPLOYAL_HUD]
 					holder.icon_state = "hud_imp_loyal"
 					C.images += holder
-				if(istype(I,/obj/item/weapon/implant/chem))
+				if(istype(I,/obj/item/implant/chem))
 					holder = perp.hud_list[IMPCHEM_HUD]
 					holder.icon_state = "hud_imp_chem"
 					C.images += holder
-				if(istype(I,/obj/item/weapon/implant/mentor))
+				if(istype(I,/obj/item/implant/mentor))
 					holder = perp.hud_list[IMPMENTOR_HUD]
 					holder.icon_state = "hud_imp_mentor"
 					C.images += holder

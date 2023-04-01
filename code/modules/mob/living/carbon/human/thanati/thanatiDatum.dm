@@ -62,6 +62,7 @@ var/global/datum/thanati/thanatiGlobal/thanatiGlobal //Set in world.New()
 /datum/thanati/objective/summonTbog/checkCompletion()
 	return 0 // LMAAAAAAAAAAAAO RAUFDIASNFJUIASDINJASDNASNJASNFASKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
 */
+/*
 /datum/thanati/objective/atleastTen
 	name = "Have atleast ten of our own inside the fortress."
 
@@ -87,3 +88,4 @@ var/global/datum/thanati/thanatiGlobal/thanatiGlobal //Set in world.New()
 		return 1
 	else
 		return 0
+*/

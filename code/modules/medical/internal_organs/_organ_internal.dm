@@ -16,7 +16,7 @@
 	var/robotic = 0 //For being a robot
 	var/removed_type //When removed, forms this object.
 	var/rejecting            // Is this organ already being rejected?
-	var/obj/item/weapon/reagent_containers/food/snacks/organ/organ_holder // If not in a body, held in this item.
+	var/obj/item/reagent_containers/food/snacks/organ/organ_holder // If not in a body, held in this item.
 	var/list/transplant_data
 	var/damagelevel = 1
 	var/stopped_working = 0// for heart attacks and etc
@@ -102,7 +102,7 @@
 /datum/organ/internal/proc/take_damage(amount, var/silent=0)
 	damage += amount * damagelevel
 
-	if(owner.my_stats.ht)
+	if(owner.my_stats.get_stat(STAT_HT))
 		damage = damage
 	owner.custom_pain("<span class='bname'>OOOOH MY [capitalize(name)]!</span>", 1)
 /*	if (!silent)
@@ -142,7 +142,7 @@
 /datum/organ/internal/proc/remove(var/mob/user)
 	if(!removed_type)
 		return 0
-	var/obj/item/weapon/reagent_containers/food/snacks/organ/removed_organ = new removed_type(get_turf(user))
+	var/obj/item/reagent_containers/food/snacks/organ/removed_organ = new removed_type(get_turf(user))
 	if(istype(removed_organ))
 		removed_organ.organ_data = src
 		removed_organ.update()

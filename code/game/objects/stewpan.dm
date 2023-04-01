@@ -8,6 +8,7 @@
 	r_range = 4
 	density = 0
 	var/comesoff = 1
+	particlePath = null
 
 /obj/structure/fireplace/hearth/New()
 	..()
@@ -16,7 +17,16 @@
 /obj/structure/fireplace/hearth/lighted
 	comesoff = 0
 
-/obj/item/weapon/reagent_containers/glass/beaker/stewpan
+/obj/structure/fireplace/hearth/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/reagent_containers/glass/beaker/stewpan))
+		user.drop_item(W)
+		W.loc = src.loc
+		W.pixel_x = 0
+		W.pixel_y = 0
+		return
+	..()
+
+/obj/item/reagent_containers/glass/beaker/stewpan
 	name = "pot"
 	desc = "A pot to stew yourself."
 	icon = 'icons/obj/stewpan.dmi'
@@ -24,9 +34,13 @@
 	item_state = "cannonball"
 	var/fervendo = 0
 	var/leftToFerver = 200
-	drop_sound = 'helm_drop.ogg'
+	drop_sound = 'sound/effects/helm_drop.ogg'
 
-/obj/item/weapon/reagent_containers/glass/beaker/stewpan/process()
+/obj/item/reagent_containers/glass/beaker/stewpan/New()
+	..()
+	processing_objects.Add(src)
+
+/obj/item/reagent_containers/glass/beaker/stewpan/process()
 	var/turf/T = get_turf(src)
 	var/obj/structure/fireplace/hearth/H = locate() in T
 	if(!H || !H.lit || !reagents.total_volume > 0) {
@@ -43,29 +57,30 @@
 
 	if(leftToFerver == 0)
 		visible_message("The stew is ready!")
-		var/name = ""
+		var/name
 
 		for(var/atom/content in src.contents)
 			reagents.remove_reagent("water", 5)
 			content.reagents.trans_to(src, content.reagents.total_volume)
 			name += " [content.name], "
 			qdel(content)
-		src.name = "Pot of [name]"
+		if(name)
+			src.name = "Pot of [name]"
 
 
-/obj/item/weapon/reagent_containers/glass/beaker/stewpan/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/reagent_containers/glass/beaker/stewpan/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 	if(istype(W, /mob/living/simple_animal/mouse))
 		var/mob/living/simple_animal/mouse/M = W
 		user.drop_item(M)
 		contents.Add(M)
-	if(istype(W, /obj/item/weapon/reagent_containers/food/snacks))
-		var/obj/item/weapon/reagent_containers/food/snacks/S = W
+	if(istype(W, /obj/item/reagent_containers/food/snacks))
+		var/obj/item/reagent_containers/food/snacks/S = W
 		user.drop_item(S)
 		contents.Add(S)
 	update_icon()
 
-/obj/item/weapon/reagent_containers/glass/beaker/stewpan/update_icon()
+/obj/item/reagent_containers/glass/beaker/stewpan/update_icon()
 	var/water_volume = reagents.get_reagent_amount("water")
 	if(water_volume >= 5)
 		if(contents.len >= 1 || reagents.get_reagent_amount("nutriment") > 1)
@@ -76,7 +91,7 @@
 		icon_state = "sempty"
 
 
-/obj/item/weapon/reagent_containers/glass/beaker/bowl
+/obj/item/reagent_containers/glass/beaker/bowl
 	name = "bowl"
 	desc = "A bowl."
 	icon = 'icons/obj/stewpan.dmi'
@@ -84,7 +99,7 @@
 	item_state = "cannonball"
 	appearance_flags = KEEP_TOGETHER
 
-/obj/item/weapon/reagent_containers/glass/beaker/bowl/update_icon()
+/obj/item/reagent_containers/glass/beaker/bowl/update_icon()
 	if(reagents)
 		if(reagents.total_volume >= reagents.maximum_volume/2)
 			src.icon_state = "snack_bowl10"
@@ -93,11 +108,11 @@
 		else
 			src.icon_state = "snack_bowl0"
 
-/obj/item/weapon/reagent_containers/glass/beaker/bowl/attackby(obj/item/weapon/W as obj, mob/living/carbon/human/user as mob)
+/obj/item/reagent_containers/glass/beaker/bowl/attackby(obj/item/W as obj, mob/living/carbon/human/user as mob)
 	..()
 	if(reagents.total_volume <= 0) return
-	if(istype(W, /obj/item/weapon/kitchen/utensil/spoon))
-		var/obj/item/weapon/kitchen/utensil/spoon/S = W
+	if(istype(W, /obj/item/kitchen/utensil/spoon))
+		var/obj/item/kitchen/utensil/spoon/S = W
 		user.visible_message("<span class='examinebold'>[user]</span> <span class='examine'>drinks from [src] with the [S]!</span>")
 		reagents.trans_to(user, 5)
 		update_icon()
@@ -106,11 +121,11 @@
 			user.add_event("royalty", /datum/happiness_event/misc/spoon)
 			user.rotate_plane()
 
-	if(istype(W, /obj/item/weapon/kitchen/utensil/fork))
+	if(istype(W, /obj/item/kitchen/utensil/fork))
 		if(!user.royalty)
 			to_chat(user, "I don't know how to eat with a fork.") // Brazilian reality
 			return
-		var/obj/item/weapon/kitchen/utensil/fork/F = W
+		var/obj/item/kitchen/utensil/fork/F = W
 		user.visible_message("<span class='examinebold'>[user]</span> <span class='examine'>eats from [src] with the [F]!</span>")
 		reagents.trans_to(user, 5)
 		update_icon()

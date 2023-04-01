@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/projectile/revolver
+/obj/item/gun/projectile/revolver
 	desc = "A classic revolver. Uses .357 ammo"
 	name = "revolver"
 	icon_state = "revolver"
@@ -9,20 +9,20 @@
 	safety = 0
 	has_safety = 0
 
-/obj/item/weapon/gun/projectile/revolver/duelista
+/obj/item/gun/projectile/revolver/duelista
 	name = "Duelista"
 	icon_state = "duelista"
 	item_worth = 150
 	mag_type = /obj/item/ammo_magazine/internal/cylinder/duelista
 
-/obj/item/weapon/gun/projectile/revolver/chamber_round()
+/obj/item/gun/projectile/revolver/chamber_round()
 	if (chambered || !magazine)
 		return
 	else if (magazine.ammo_count())
 		chambered = magazine.get_round(1)
 	return
 
-/obj/item/weapon/gun/projectile/revolver/verb/spin()
+/obj/item/gun/projectile/revolver/verb/spin()
 	set name = "Spin Chamber"
 	set category = "Object"
 	set desc = "Click to spin your revolver's chamber."
@@ -38,7 +38,7 @@
 		playsound(src, 'sound/lfwbsounds/revolver_spin.ogg', 60, 1)
 		return 1
 
-/obj/item/weapon/gun/projectile/revolver/process_chambered()
+/obj/item/gun/projectile/revolver/process_chambered()
 	var/obj/item/ammo_casing/AC = chambered //Find chambered round
 	if(isnull(AC) || !istype(AC))
 		return 0
@@ -56,7 +56,7 @@
 	AC.update_icon()
 	return 0
 
-/obj/item/weapon/gun/projectile/revolver/get_ammo(var/countchambered = 0, var/countempties = 1)
+/obj/item/gun/projectile/revolver/get_ammo(var/countchambered = 0, var/countempties = 1)
 	var/boolets = 0 //mature var names for mature people
 	if (chambered && countchambered)
 		boolets++
@@ -64,11 +64,11 @@
 		boolets += magazine.ammo_count(countempties)
 	return boolets
 
-/obj/item/weapon/gun/projectile/revolver/examine()
+/obj/item/gun/projectile/revolver/examine()
 	..()
 	usr << "[get_ammo(0,0)] of those are live rounds."
 
-/obj/item/weapon/gun/projectile/revolver/detective
+/obj/item/gun/projectile/revolver/detective
 	desc = "A cheap Martian knock-off of a Smith & Wesson Model 10. Uses .38-Special rounds."
 	name = "revolver"
 	icon_state = "detective"
@@ -76,7 +76,7 @@
 	mag_type = /obj/item/ammo_magazine/internal/cylinder/rev38
 
 
-/obj/item/weapon/gun/projectile/revolver/detective/special_check(var/mob/living/carbon/human/M)
+/obj/item/gun/projectile/revolver/detective/special_check(var/mob/living/carbon/human/M)
 	if(magazine.caliber == initial(magazine.caliber))
 		return 1
 	if(prob(5))
@@ -87,7 +87,7 @@
 		return 0
 	return 1
 
-/obj/item/weapon/gun/projectile/revolver/detective/verb/rename_gun()
+/obj/item/gun/projectile/revolver/detective/verb/rename_gun()
 	set name = "Name Gun"
 	set category = "Object"
 	set desc = "Click to rename your gun."
@@ -100,7 +100,7 @@
 		M << "You name the gun [input]. Say hello to your new friend."
 		return 1
 /*
-/obj/item/weapon/gun/projectile/revolver/detective/verb/reskin_gun()
+/obj/item/gun/projectile/revolver/detective/verb/reskin_gun()
 	set name = "Reskin gun"
 	set category = "Object"
 	set desc = "Click to reskin your gun."
@@ -120,9 +120,9 @@
 		M << "Your gun is now skinned as [choice]."
 		return 1
 */
-/obj/item/weapon/gun/projectile/revolver/detective/attackby(var/obj/item/A as obj, mob/user as mob)
+/obj/item/gun/projectile/revolver/detective/attackby(var/obj/item/A as obj, mob/user as mob)
 	..()
-	if(istype(A, /obj/item/weapon/screwdriver))
+	if(istype(A, /obj/item/screwdriver))
 		if(magazine.caliber == ".38")
 			user << "<span class='notice'>You begin to reinforce the barrel of [src].</span>"
 			if(magazine.ammo_count())
@@ -152,7 +152,7 @@
 
 
 
-/obj/item/weapon/gun/projectile/revolver/mateba
+/obj/item/gun/projectile/revolver/mateba
 	name = "mateba"
 	desc = "When you absolutely, positively need a 10mm hole in the other guy. Uses .357 ammo."	//>10mm hole >.357
 	icon_state = "mateba"

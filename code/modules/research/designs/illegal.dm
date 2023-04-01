@@ -36,4 +36,4 @@
 	req_tech = list("syndicate" = 6, "magnets" = 5, "materials" = 6, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$gold" = 5000, "$silver" = 2000, "$metal" = 4000, "$diamond" = 5000)
-	build_path = /obj/item/weapon/melee/energy/sword
+	build_path = /obj/item/melee/energy/sword

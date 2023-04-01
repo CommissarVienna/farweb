@@ -49,7 +49,7 @@
 	construction_time = 350
 	construction_cost = list("metal"=40000)
 	var/wires = 0.0
-	var/obj/item/weapon/cell/cell = null
+	var/obj/item/cell/cell = null
 
 /obj/item/robot_parts/head
 	name = "robot head"
@@ -217,7 +217,7 @@
 		else
 			user << "\blue The MMI must go in after everything else!"
 
-	if (istype(W, /obj/item/weapon/pen))
+	if (istype(W, /obj/item/pen))
 		var/t = stripped_input(user, "Enter new robot name", src.name, src.created_name, MAX_NAME_LEN)
 		if (!t)
 			return
@@ -230,7 +230,7 @@
 
 /obj/item/robot_parts/chest/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/weapon/cell))
+	if(istype(W, /obj/item/cell))
 		if(src.cell)
 			user << "\blue You have already inserted a cell!"
 			return
@@ -266,7 +266,7 @@
 			W.loc = src
 			src.flash1 = W
 			user << "\blue You insert the flash into the eye socket!"
-	else if(istype(W, /obj/item/weapon/stock_parts/manipulator))
+	else if(istype(W, /obj/item/stock_parts/manipulator))
 		user << "\blue You install some manipulators and modify the head, creating a functional spider-bot!"
 		new /mob/living/simple_animal/spiderbot(get_turf(loc))
 		user.drop_item()
@@ -276,7 +276,7 @@
 	return
 
 /obj/item/robot_parts/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/weapon/card/emag))
+	if(istype(W,/obj/item/card/emag))
 		if(sabotaged)
 			user << "\red [src] is already sabotaged!"
 		else

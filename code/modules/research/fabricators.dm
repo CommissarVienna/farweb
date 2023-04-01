@@ -55,12 +55,12 @@
 
 /obj/machinery/r_n_d/fabricator/RefreshParts()
 	var/T = 0
-	for(var/obj/item/weapon/stock_parts/matter_bin/M in component_parts)
+	for(var/obj/item/stock_parts/matter_bin/M in component_parts)
 		T += M.rating
 	max_material_storage = (initial(max_material_storage)+(T * 37500))
 
 	T = 0
-	for(var/obj/item/weapon/stock_parts/micro_laser/Ma in component_parts)
+	for(var/obj/item/stock_parts/micro_laser/Ma in component_parts)
 		T += Ma.rating
 	if(T >= 1)
 		T -= 1
@@ -70,7 +70,7 @@
 		resource_coeff = diff
 
 	T = 0
-	for(var/obj/item/weapon/stock_parts/manipulator/Ml in component_parts)
+	for(var/obj/item/stock_parts/manipulator/Ml in component_parts)
 		T += Ml.rating
 	if(T>= 2)
 		T -= 2
@@ -222,11 +222,11 @@
 	src.overlays -= "[base_state]_ani"
 	if(being_built)
 		if(part.locked && research_flags &LOCKBOXES)
-			var/obj/item/weapon/storage/lockbox/L
+			var/obj/item/storage/lockbox/L
 			if(research_flags &TRUELOCKS)
-				L = new/obj/item/weapon/storage/lockbox(src) //Make a lockbox
+				L = new/obj/item/storage/lockbox(src) //Make a lockbox
 			else
-				L = new /obj/item/weapon/storage/lockbox/unlockable(src) //Make an unlockable lockbox
+				L = new /obj/item/storage/lockbox/unlockable(src) //Make an unlockable lockbox
 			being_built.loc = L //Put the thing in the lockbox
 			L.name += " ([being_built.name])"
 			being_built = L //Building the lockbox now, with the thing in it
@@ -318,7 +318,7 @@
 			switch(T.id) //bad, bad formulas
 				if("materials")
 					var/pmat = 0//Calculations to make up for the fact that these parts and tech modify the same thing
-					for(var/obj/item/weapon/stock_parts/micro_laser/Ml in component_parts)
+					for(var/obj/item/stock_parts/micro_laser/Ml in component_parts)
 						pmat += Ml.rating
 					if(pmat >= 1)
 						pmat -= 1//So the equations don't have to be reworked, upgrading a single part from T1 to T2 is == to 1 tech level
@@ -328,7 +328,7 @@
 						output+="Production efficiency increased.<br>"
 				if("programming")
 					var/ptime = 0
-					for(var/obj/item/weapon/stock_parts/manipulator/Ma in component_parts)
+					for(var/obj/item/stock_parts/manipulator/Ma in component_parts)
 						ptime += Ma.rating
 					if(ptime >= 2)
 						ptime -= 2

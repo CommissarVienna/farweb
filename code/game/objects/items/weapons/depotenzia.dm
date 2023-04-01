@@ -1,7 +1,7 @@
 var/list/depotenzia_types = list(
-	/obj/item/weapon/wirecutters,
-	/obj/item/weapon/kitchen/utensil/knife/flaying,
-	/obj/item/weapon/surgery_tool/circular_saw)
+	/obj/item/wirecutters,
+	/obj/item/kitchen/utensil/knife/flaying,
+	/obj/item/surgery_tool/circular_saw)
 
 /obj/item/proc/depotenzia_check()
 	for (var/_type in depotenzia_types)
@@ -29,10 +29,10 @@ var/list/depotenzia_types = list(
 				H.custom_pain("[pick("OH [uppertext(H.god_text())] MY DICK!", "OH [uppertext(H.god_text())] WHY!", "OH [uppertext(H.god_text())] IT HURTS!")]", 100)//Pain.
 				H.apply_damage(rand(30,45), BRUTE, BP_GROIN)
 				playsound(H, 'sound/effects/gore/severed.ogg', 50, 1, -1)
-				var/obj/item/weapon/reagent_containers/food/snacks/organ/internal/penis/P = new /obj/item/weapon/reagent_containers/food/snacks/organ/internal/penis(H.loc)
+				var/obj/item/reagent_containers/food/snacks/organ/internal/penis/P = new /obj/item/reagent_containers/food/snacks/organ/internal/penis(H.loc)
 				P.set_potenzia(H.potenzia)
 				H.mutilate_genitals()
-				H.client.ChromieWinorLoose(H.client, -1)
+				H.client.ChromieWinorLoose(-1)
 			else
 				to_chat(user, "<span class='notice'>You fail to cut off their penis...</span>")
 				return

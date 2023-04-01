@@ -1,6 +1,5 @@
 // Light bult simples
 /obj/machinery/light/small/artemis/basic
-	name = "Uma lampada amarela."
 	icon_state = "bulba1"
 	base_state = "bulba"
 	fitting = "bulb"
@@ -8,7 +7,7 @@
 	brightness_power = 4
 	brightness_color = "#dfebf0"
 	desc = "A small lighting fixture."
-	light_type = /obj/item/weapon/light/bulb
+	light_type = /obj/item/light/bulb
 
 // Nao tem overlay
 
@@ -34,7 +33,6 @@
 // Luz de tubo da OS13
 
 /obj/machinery/light/small/artemis/tube/shinebright
-	name = "Uma lampada de tubo."
 	icon = 'icons/obj/lighting.dmi'
 	base_state = "shinebright"// base description and icon_state
 	icon_state = "shinebright"
@@ -43,7 +41,6 @@
 	brightness_power = 5
 
 /obj/machinery/light/small/artemis/tube/shinebrighter
-	name = "Uma lampada de tubo."
 	icon = 'icons/obj/lighting.dmi'
 	base_state = "shinebrighter"// base description and icon_state
 	icon_state = "shinebrighter"
@@ -52,7 +49,7 @@
 	brightness_power = 5
 
 /obj/machinery/light/small/artemis/tube
-	name = "Uma lampada de tubo."
+	name = "light tube"
 	icon = 'icons/obj/lighting.dmi'
 	base_state = "artemistube"		// base description and icon_state
 	icon_state = "artemistube1"

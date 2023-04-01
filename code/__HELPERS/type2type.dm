@@ -368,3 +368,43 @@ proc/tg_list2text(list/list, glue=",")
 //		if("Orange")	return 'icons/mob/screen1_Orange.dmi'
 //		if("Midnight")	return 'icons/mob/screen1_Midnight.dmi'
 		else			return 'icons/mob/screen2_Midnight.dmi'
+
+
+/proc/stat2text(var/stat)
+	switch(stat)
+		if(STAT_ST)
+			return "ST"
+		if(STAT_DX)
+			return "DX"
+		if(STAT_HT)
+			return "HT"
+		if(STAT_PR)
+			return "PR"
+		if(STAT_IN)
+			return "IN"
+		if(STAT_WP)
+			return "WP"
+		if(STAT_IM)
+			return "IM"
+		if(STAT_SPD)
+			return "SPD"
+
+/proc/text2stat(var/text)
+	switch(text)
+		if("ST")
+			return STAT_ST
+		if("DX")
+			return STAT_DX
+		if("HT")
+			return STAT_HT
+		if("PR")
+			return STAT_PR
+		if("IN")
+			return STAT_IN
+		if("WP")
+			return STAT_WP
+		if("IM")
+			return STAT_IM
+		if("SPD")
+			return STAT_SPD
+

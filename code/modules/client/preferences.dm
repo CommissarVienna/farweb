@@ -1,7 +1,7 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
 
 var/list/preferences_datums = list()
-
+var/list/VicesList = vice_names
 var/global/list/special_roles = list( //keep synced with the defines BE_* in setup.dm --rastaf
 //some autodetection here.
 	"traitor" = IS_MODE_COMPILED("traitor"),             // 0
@@ -20,15 +20,17 @@ var/global/list/special_roles = list( //keep synced with the defines BE_* in set
 )
 
 var/const/MAX_SAVE_SLOTS = 10
-var/list/VicesList = list(vices)
 //used for alternate_option
 #define GET_RANDOM_JOB 0
 #define BE_ASSISTANT 1
 #define RETURN_TO_LOBBY 2
 #define LEGAL_RELIGION  "Gray Church"
 #define ILLEGAL_RELIGION "Thanati"
+#define RIGHT_HAND "Right-Handed"
+#define LEFT_HAND "Left-Handed"
+#define AMBIDEXTROUS "Ambidextrous"
 
-datum/preferences
+/datum/preferences
 	//doohickeys for savefiles
 	var/path
 	var/default_slot = 1				//Holder so it doesn't default to slot 1, rather the last one used
@@ -147,6 +149,9 @@ datum/preferences
 	var/graphicsSetting = 0
 	var/fullscreenSetting = 1
 	var/blurSetting = 0
+	var/font_size = 100
+	var/be_antag = FALSE
+	var/image_rotate = FALSE
 
 /datum/preferences/New(client/C)
 	b_type = pick(4;"O-", 36;"O+", 3;"A-", 28;"A+", 1;"B-", 20;"B+", 1;"AB-", 5;"AB+")
@@ -158,8 +163,8 @@ datum/preferences
 					return
 	gender = pick(MALE, FEMALE)
 	be_special = 1
-	real_name = random_name(gender, dwarven_name = dwarven)
-	vice = pick(VicesList)
+	real_name = random_name(gender)
+	vice = "Smoker"
 	zodiac = "Aranea"
 
 /datum/preferences
@@ -173,7 +178,7 @@ datum/preferences
 		user << browse_rsc(bg1,"bg.png")
 		user << browse_rsc(dice,"dice.png")
 		//var/dat = "<html><head><style type='text/css'>html {overflow: auto;};body {cursor: url('pointer.cur'), auto;overflow:hidden;font-family: Times;background-repeat:repeat-x;}a {text-decoration:none;outline: none;border: none;margin:-1px;}a:focus{outline:none;border: none;}a:hover {Color:#0d0d0d;background:#505055;outline: none;border: none;}a.active { text-decoration:none; Color:#533333;border: none;}a.inactive:hover {Color:#0d0d0d;background:#bb0000;border: none;}a.active:hover {Color:#bb0000;background:#0f0f0f;}a.inactive:hover { text-decoration:none; Color:#0d0d0d; background:#bb0000;border: none;}a img {     border: 0; }TABLE.winto {z-index:-1;position: absolute;top: 12;left:14;background-position: bottom;background-repeat:repeat-x;border: 4px dotted #222222;/*    border-top:4px double #777777; */border-bottom: none;border-top: none;}TR {border: 0px;}</style></head><body background = 'bg2.png' bgColor=#0d0d0d text=#555555 alink=#777777 vlink=#777777 link=#777777>"
-		var/dat = "<META charset='UTF-8'> <Title>Farweb</title> <style type='text/css'> html {overflow: auto;}; body { cursor: url('pointer.cur'), auto; overflow:hidden; font-family: Times; background-repeat:repeat-x; } a {text-decoration:none;outline: none;border: none;margin:-1px;} a:focus{outline:none;border: none;} a:hover {Color:#0d0d0d;background:#505055;outline: none;border: none;} a.active { text-decoration:none; Color:#533333;border: none;} a.inactive:hover {Color:#0d0d0d;background:#bb0000;border: none;} a.active:hover {Color:#bb0000;background:#0f0f0f;} a.inactive:hover { text-decoration:none; Color:#0d0d0d; background:#bb0000;border: none;} a img { border: 0; } TABLE.winto { z-index:-1; position: absolute; top: 12; left:14; background-position: bottom; background-repeat:repeat-x; border: 4px dotted #222222; /* border-top:4px double #777777; */ border-bottom: none; border-top: none; } TR { border: 0px; } </style>"
+		var/dat = "<META charset='UTF-8'> <Title>Nearweb</title> <style type='text/css'> html {overflow: auto;}; body { cursor: url('http://lfwb.ru/Icons/pointer.cur'), auto; overflow:hidden; font-family: Times; background-repeat:repeat-x; } a {text-decoration:none;outline: none;border: none;margin:-1px;} a:focus{outline:none;border: none;} a:hover {Color:#0d0d0d;background:#505055;outline: none;border: none;} a.active { text-decoration:none; Color:#533333;border: none;} a.inactive:hover {Color:#0d0d0d;background:#bb0000;border: none;} a.active:hover {Color:#bb0000;background:#0f0f0f;} a.inactive:hover { text-decoration:none; Color:#0d0d0d; background:#bb0000;border: none;} a img { border: 0; } TABLE.winto { z-index:-1; position: absolute; top: 12; left:14; background-position: bottom; background-repeat:repeat-x; border: 4px dotted #222222; /* border-top:4px double #777777; */ border-bottom: none; border-top: none; } TR { border: 0px; } </style>"
 		var/mob/new_player/N = user
 		dat += "<html><body background = 'bg2.png' bgColor=#0d0d0d text=#555555 alink=#777777 vlink=#777777 link=#777777>"
 		dat += "<p style='position: absolute;top: 10;left:295; font-size:400%'><font face='Times'><b>†</b></font></p>"
@@ -208,7 +213,7 @@ datum/preferences
 		dat += "</td>"
 
 		dat += "<td valign=top rowspan=2>"
-		dat += "<br><center><b></b><br><img src=previewicon.png height=64 width=64 align='right'></a><big>"
+		dat += "<br><center><b></b><br><a href='byond://?_src_=prefs;preference=imgrotate'><img src=[image_rotate ? "previewicon2.png" : "previewicon.png"] height=64 width=64 align='right'></a><big>"
 		dat += "<td width=220>"
 		dat += "<table><tr><td><b>Blood Type:</b> <a href='byond://?src=\ref[user];preference=b_type;task=input'>[b_type]</a><br><b>Skin Color:</b> <a href='?_src_=prefs;preference=s_tone;task=input'>[-s_tone + 35]/255</a><br></td>"
 		dat += "</tr></table>"
@@ -229,21 +234,25 @@ datum/preferences
 		dat += "</tr></table></b></a></td></tr>"
 		dat += "<tr>"
 		dat += "<td>"
-		dat += "<b>Be Fat:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=fatness'><b>[fat ? "Yes" : "No"]</b></a><br>"
+		if(gender != MALE) //have to do this here or it looks strange.
+			dat += "<br>"
+		dat += "<b>Be Antagonist:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=antag'><b>[be_antag ? "Yes" : "No"]</b></a><br>"
+		//if(gender == MALE)
+		//	dat += "<b>Be Fat:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=fatness'><b>[fat ? "Yes" : "No"]</b></a><br>"
 		//REMOVER ESSE DEPOIS
 		dat += "<br>"
 		dat += "<b>Vice:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=vice;task=input'><b>[vice]</b></a><br>"
 		dat += "<b>Sign:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=zodiac;task=input'><b>[zodiac]</b></a><br>"
 		dat += "<b>Faith:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=religion'><b>[religion == LEGAL_RELIGION ? "Gray Church" : "Heresy"]</b></a><br>"
 		dat += "<b>Family:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=family'><b>[family ? "Yes" : "No"]</b></a><br>"
-		dat += "<b>Origins:</b> <a href='?_src_=prefs;preference=province'><b>[MigProvince]</b></a><br>"
-		dat += "<a onfocus='this.blur()' href='?_src_=prefs;preference=dom_hand'><b>[dom_hand ? "Right-handed" : "Left-handed"]</b></a><br>"
+		dat += "<b>Origins:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=province'><b>[MigProvince]</b></a><br>"
+		dat += "<b>Dominant Hand:</b> <a onfocus='this.blur()' href='?_src_=prefs;preference=domhand'><b>[dom_hand == RIGHT_HAND ? "Right-Handed" : "Left-Handed"]</b></a><br>"
 		dat += "</td>"
 		dat += "<td colspan=3>"
 		if(!N.special && !SpecialRolledList.Find(N.ckey))
 			dat += "<a onfocus='this.blur()' href='byond://?src=\ref[user];special=1'>Make Special</A><br>"
 		else
-			dat += "<b>Hero. </b>"
+			dat += "<b>Hero.</b>"
 			dat += "<a onfocus='this.blur()' href='byond://?src=\ref[user];special=1'>(?)</A><br>"
 		dat += "<a onfocus='this.blur()' href=\"byond://?src=\ref[user];preference=save\">Save</a> / "
 		dat += "<a onfocus='this.blur()' href=\"byond://?src=\ref[user];preference=open_load_dialog\">Load</a> / "
@@ -287,7 +296,7 @@ datum/preferences
 		//height 	 - Screen's height. Defaults to 500 to make it look nice.
 
 
-		var/HTML = "<META http-equiv='X-UA-Compatible' content='IE=edge' charset='UTF-8'><Title>Farweb</title><style type='text/css'>body {font-family: Times;cursor: url('pointer.cur'), auto;}a {text-decoration:none;outline: none;border: none;margin:-1px;}a:focus{outline:none;}a:hover {color:#0d0d0d;background:#505055;outline: none;border: none;}a.active { text-decoration:none; color:#533333;}a.inactive:hover {color:#0d0d0d;background:#bb0000}a.active:hover {color:#bb0000;background:#0f0f0f}a.inactive:hover { text-decoration:none; color:#0d0d0d; background:#bb0000}table { width:100%; }td {text-align: center;}TR {border: 0px;}</style><script type='text/javascript'>function updateText(tmpdesc){document.getElementById('INFO').innerHTML = tmpdesc;}</script><body bgcolor=#0d0d0d text=#555555 alink=#777777 vlink=#777777 link=#777777>"
+		var/HTML = "<META http-equiv='X-UA-Compatible' content='IE=edge' charset='UTF-8'><Title>Nearweb</title><style type='text/css'>body {font-family: Times;cursor: url('http://lfwb.ru/Icons/pointer.cur'), auto;}a {text-decoration:none;outline: none;border: none;margin:-1px;}a:focus{outline:none;}a:hover {color:#0d0d0d;background:#505055;outline: none;border: none;}a.active { text-decoration:none; color:#533333;}a.inactive:hover {color:#0d0d0d;background:#bb0000}a.active:hover {color:#bb0000;background:#0f0f0f}a.inactive:hover { text-decoration:none; color:#0d0d0d; background:#bb0000}table { width:100%; }td {text-align: center;}TR {border: 0px;}</style><script type='text/javascript'>function updateText(tmpdesc){document.getElementById('INFO').innerHTML = tmpdesc;}</script><body bgcolor=#0d0d0d text=#555555 alink=#777777 vlink=#777777 link=#777777>"
 		HTML += "<tt><center>"
 		HTML += "<b>Choose your destiny.</b><br>"
 		HTML += "<center><a href='?_src_=prefs;preference=job;task=close'>\[Done\]</a></center><br>" // Easier to press up here.
@@ -314,24 +323,23 @@ datum/preferences
 			var/rank = job.title
 			rank = job.title
 			lastJob = job
-			if((job.sex_lock && job.sex_lock != user.client.prefs.gender && (!trapapoc.Find(ckey(user.client.key)) || job.no_trapoc)) || job.flag == MIGRANT || job.flag == SIEGER || (job.total_positions == 0 && job.spawn_positions == 0))
+			if((job.sex_lock && job.sex_lock != user.client.prefs.gender && (!donation_trap.Find(ckey(user.client.key)) || job.no_trapoc)) || job.flag == MIGRANT || job.flag == SIEGER || (job.total_positions == 0 && job.spawn_positions == 0))
 				. += "<del>[rank]</del></td><td><b> \[UNAVAILABLE]</b></td></tr>"
-				//HTML += "<font color=#454747>[rank]</font></td></tr>"
 				continue
 			if(job.job_whitelisted)
 				if(job.job_whitelisted.Find(PIGPLUS))
-					if(!comradelist.Find(ckey(user.client.key)) && !villainlist.Find(ckey(user.client.key)))
-						if(!pigpluslist.Find(ckey(user.client.key)))
+					if(!access_comrade.Find(ckey(user.client.key)) && !access_villain.Find(ckey(user.client.key)))
+						if(!access_pigplus.Find(ckey(user.client.key)))
 							HTML += "<font color=#454747>[rank]</font></td></tr>"
 							continue
 				else
 					if(job.job_whitelisted.Find(COMRADE))
-						if(!comradelist.Find(ckey(user.client.key)) && !villainlist.Find(ckey(user.client.key)))
+						if(!access_comrade.Find(ckey(user.client.key)) && !access_villain.Find(ckey(user.client.key)))
 							HTML += "<font color=#454747>[rank]</font></td></tr>"
 							continue
 					else
 						if(job.job_whitelisted.Find(VILLAIN))
-							if(!villainlist.Find(ckey(user.client.key)))
+							if(!access_villain.Find(ckey(user.client.key)))
 								HTML += "<font color=#454747>[rank]</font></td></tr>"
 								continue
 			if(job.donation_lock.len >= 1 && !job.donation_lock.Find(ckey(user.client.key)))
@@ -359,24 +367,12 @@ datum/preferences
 
 		HTML += "</center></table>"
 
-/*		switch(alternate_option)
-			if(GET_RANDOM_JOB)
-				HTML += "<center><br><u><a href='?_src_=prefs;preference=job;task=random'><font color=#a0a0a0>Get random job if preferences unavailable</font></a></u></center><br>"
-			if(BE_ASSISTANT)
-				HTML += "<center><br><u><a href='?_src_=prefs;preference=job;task=random'><font color=#a0a0a0>Be unassigned if preference unavailable</font></a></u></center><br>"
-			if(RETURN_TO_LOBBY)
-				HTML += "<center><br><u><a href='?_src_=prefs;preference=job;task=random'><font color=#a0a0a0>Return to lobby if preference unavailable</font></a></u></center><br>"
-*/
 		HTML += "<center><font color=#e8dada><a href='?_src_=prefs;preference=job;task=reset'>\[Reset]</a></center></font>"
 		HTML += "</tt>"
 		HTML += "<i id = 'INFO'></i>"
 
 		user << browse(null, "window=preferences;")
 		user << browse(HTML, "window=mob_occupation;size=[width]x[height];can_close=0; can_resize=0;can_minimize=0;titlebar=1")
-		//var/datum/browser/popup = new(user, "Occupation", "Occupation", width, height)
-		//popup.set_content(HTML)
-		//popup.set_window_options("can_close=0;")
-		//popup.open()
 		return
 
 	proc/SetDisabilities(mob/user)
@@ -485,7 +481,7 @@ datum/preferences
 		HTML +="<a href='?src=\ref[user];preference=flavor_text;task=done'>\[Done\]</a>"
 		HTML += "<tt>"
 		user << browse(null, "window=preferences")
-		user << browse(HTML, "window=flavor_text;size=430x300")
+		user << browse(HTML, "window=flavor_text;size=430x400")
 		return
 
 	proc/SetJob(mob/user, role)
@@ -648,10 +644,6 @@ datum/preferences
 				N.ready = !N.ready
 				N?.client?.GetHighJob()
 				N.AttemptLateSpawn(href_list["SelectedJob"])
-/*			if(ticker)
-				if(ticker.current_state == GAME_STATE_PREGAME)
-					for(var/mob/new_player/PP in player_list)
-						PP.updatelobbypiglet()*/
 
 		if(href_list["late_join"])
 			N.LateChoices()
@@ -670,87 +662,11 @@ datum/preferences
 					N.client.prefs.ShowChoices(N)
 					N.ready = TRUE
 
-		else if(href_list["preference"] == "flavor_text")
-			switch(href_list["task"])
-				if("open")
-					SetFlavorText(user)
-					return
-				if("done")
-					user << browse(null, "window=flavor_text")
-					ShowChoices(user)
-					return
-				if("general")
-					var/msg = sanitize_uni(input(usr,"Give a general description of your character. This will be shown regardless of clothing, and may include OOC notes and preferences.","Flavor Text",html_decode(flavor_texts[href_list["task"]])) as message)
-					if(msg != null)
-						msg = copytext(msg, 1, MAX_MESSAGE_LEN)
-						msg = html_encode(msg)
-					flavor_texts[href_list["task"]] = msg
-				else
-					var/msg = sanitize_uni(input(usr,"Set the flavor text for your [href_list["task"]].","Flavor Text",html_decode(flavor_texts[href_list["task"]])) as message)
-					if(msg != null)
-						msg = copytext(msg, 1, MAX_MESSAGE_LEN)
-						msg = html_encode(msg)
-					flavor_texts[href_list["task"]] = msg
-			SetFlavorText(user)
-			return
-
-		else if(href_list["preference"] == "records")
-			if(text2num(href_list["record"]) >= 1)
-				SetRecords(user)
-				return
-			else
-				user << browse(null, "window=records")
-			if(href_list["task"] == "med_record")
-				var/medmsg = input(usr,"Set your medical notes here.","Medical Records",html_decode(med_record)) as message
-
-				if(medmsg != null)
-					medmsg = copytext(medmsg, 1, MAX_PAPER_MESSAGE_LEN)
-					medmsg = html_encode(medmsg)
-
-					med_record = medmsg
-					SetRecords(user)
-
-			if(href_list["task"] == "sec_record")
-				var/secmsg = input(usr,"Set your security notes here.","Security Records",html_decode(sec_record)) as message
-
-				if(secmsg != null)
-					secmsg = copytext(secmsg, 1, MAX_PAPER_MESSAGE_LEN)
-					secmsg = html_encode(secmsg)
-
-					sec_record = secmsg
-					SetRecords(user)
-			if(href_list["task"] == "gen_record")
-				var/genmsg = input(usr,"Set your employment notes here.","Employment Records",html_decode(gen_record)) as message
-
-				if(genmsg != null)
-					genmsg = copytext(genmsg, 1, MAX_PAPER_MESSAGE_LEN)
-					genmsg = html_encode(genmsg)
-
-					gen_record = genmsg
-					SetRecords(user)
-
-		else if (href_list["preference"] == "antagoptions")
-			if(text2num(href_list["active"]) == 0)
-				SetAntagoptions(user)
-				return
-			if (href_list["antagtask"] == "uplinktype")
-				if (uplinklocation == "PDA")
-					uplinklocation = "Headset"
-				else if(uplinklocation == "Headset")
-					uplinklocation = "None"
-				else
-					uplinklocation = "PDA"
-				SetAntagoptions(user)
-			if (href_list["antagtask"] == "done")
-				user << browse(null, "window=antagoptions")
-				ShowChoices(user)
-			return 1
-
 		switch(href_list["task"])
 			if("random")
 				switch(href_list["preference"])
 					if("name")
-						real_name = random_name(gender, dwarven_name = dwarven)
+						real_name = random_name(gender, species)
 					if("age")
 						age = rand(AGE_MIN, AGE_MAX)
 					if("d_style")
@@ -870,7 +786,8 @@ datum/preferences
 							d_style = new_d_style
 
 					if("vice")
-						var/list/Vices = vices.Copy()
+						var/list/Vices = VicesList.Copy()
+						Vices.Add("Disability (No Right Eye)", "Disability (No Left Eye)", "Low Pain Tolerance")
 						Vices.Add("Random")
 						if(age < 18)
 							Vices.Remove("Sexoholic")
@@ -927,18 +844,6 @@ datum/preferences
 								to_chat(user, "<b>Ruler:</b> <i>St. Barmalew </i>")
 								to_chat(user, "Furious fighters for justice, in innocent times they weave silk of lightweight flirt and pleasant manners.Noctuae like to solve conflicts and give advices. They find calm happiness in arts, aesthetics and peace. Rude people, unfairness and cruelty make them disgusted. Their eternal problem is indecisiveness: they have to weight every little detail before they make their choice, which could bring others to white heat. They hate to hurt people, and will try to hide any unpleasant truth.")
 
-					if("underwear")
-						var/list/underwear_options
-						if(gender == MALE)
-							underwear_options = underwear_m
-						else
-							underwear_options = underwear_f
-
-						var/new_underwear = input(user, "Choose your character's underwear:", "Character Preference")  as null|anything in underwear_options
-						if(new_underwear)
-							underwear = underwear_options.Find(new_underwear)
-						ShowChoices(user)
-
 					if("eyes")
 						var/new_eyes = input(user, "Choose your character's eye colour:", "Character Preference") as color|null
 						if(new_eyes)
@@ -957,26 +862,7 @@ datum/preferences
 						var/new_ooccolor = input(user, "Choose your OOC colour:", "Game Preference") as color|null
 						if(new_ooccolor)
 							ooccolor = new_ooccolor
-
-					if("bag")
-						var/new_backbag = input(user, "Choose your character's style of bag:", "Character Preference")  as null|anything in backbaglist
-						if(new_backbag)
-							backbag = backbaglist.Find(new_backbag)
-
-					if("nt_relation")
-						var/new_relation = input(user, "Choose your relation to NT. Note that this represents what others can find out about your character by researching your background, not what your character actually thinks.", "Character Preference")  as null|anything in list("Loyal", "Supportive", "Neutral", "Skeptical", "Opposed")
-						if(new_relation)
-							nanotrasen_relation = new_relation
-
-					if("disabilities")
-						if(text2num(href_list["disabilities"]) >= -1)
-							if(text2num(href_list["disabilities"]) >= 0)
-								disabilities ^= (1<<text2num(href_list["disabilities"])) //MAGIC
-							SetDisabilities(user)
-							return
-						else
-							user << browse(null, "window=disabil")
-
+/*
 					if("limbs")
 						var/limb_name = input(user, "Which limb do you want to change?") as null|anything in list("Left Leg","Right Leg","Left Arm","Right Arm","Left Foot","Right Foot","Left Hand","Right Hand")
 						if(!limb_name) return
@@ -1052,7 +938,7 @@ datum/preferences
 					if("skin_style")
 						var/skin_style_name = input(user, "Select a new skin style") as null|anything in list("default1", "default2", "default3")
 						if(!skin_style_name) return
-
+*/
 			else
 				switch(href_list["preference"])
 					if("gender")
@@ -1062,12 +948,27 @@ datum/preferences
 						else
 							gender = MALE
 						user << browse(null, "window=latechoices")
-
+					/*
 					if("dwarven")
 						dwarven = !dwarven
 
 					if("fatness")
 						fat = !fat
+					*/
+			
+					if("domhand")
+						if(dom_hand == RIGHT_HAND)
+							dom_hand = LEFT_HAND
+						else
+							dom_hand = RIGHT_HAND
+
+					if("antag")
+						be_antag = !be_antag
+
+					if("imgrotate")
+						image_rotate = !image_rotate
+						ShowChoices(user)
+
 
 					if("religion")
 						if(religion == LEGAL_RELIGION)
@@ -1091,7 +992,6 @@ datum/preferences
 						toggleLobbyScreen = !toggleLobbyScreen
 
 					if("inqui")
-						//var/inquisidor_tipos = input(user, "Escolha o seu tipo de Inquisidor.") as null|anything in list("Velhos Tempos", "| O Fanatico |", "o Conhecedor o", "() Lobo Solitario ()", "- Respeitado -", "Ω \[Beberrao] Ω", "* Perspicaz *", " / Informado \\ ", "@ Espadachim @", "→ Investigador ←", "§ Lider §", "○ Corrupto ○")
 						var/inquisidor_tipos = input(user, "Choose your Inquisitor type.") as null|anything in list("Standard", "Month's Inquisitor", "Holy War Veterans", "Master", "Corrupt", "Fanatic", "King's Favourite")
 						if(inquisidor_tipos)
 							InquisiPref = inquisidor_tipos
@@ -1163,7 +1063,7 @@ datum/preferences
 									Enemies = "Not everyone likes the new order, because it always was better before."
 							if(baron_tipos != "Self-Indulgence (None)")
 								to_chat(user, "\n<div class='firstdivmood'><div class='moodbox'><span class='bname'><p style='font-size:20px'>[Title]</p></span>[toChatBegin]</span>\n<span class='bname'>Enemies:</span>\n [Enemies]</div></div>")
-							user << 'special_toggle.ogg'
+							user << 'sound/lfwbsounds/special_toggle.ogg'
 
 					if("province")
 						//var/inquisidor_tipos = input(user, "Escolha o seu tipo de Inquisidor.") as null|anything in list("Velhos Tempos", "| O Fanatico |", "o Conhecedor o", "() Lobo Solitario ()", "- Respeitado -", "Ω \[Beberrao] Ω", "* Perspicaz *", " / Informado \\ ", "@ Espadachim @", "→ Investigador ←", "§ Lider §", "○ Corrupto ○")
@@ -1273,7 +1173,7 @@ datum/preferences
 
 	proc/copy_to(mob/living/carbon/human/character, safety = 0)
 		if(be_random_name)
-			real_name = random_name(gender, dwarven_name = dwarven)
+			real_name = random_name(gender,species)
 
 		var/firstspace = findtext(real_name, " ")
 		var/name_length = length(real_name)
@@ -1284,8 +1184,11 @@ datum/preferences
 
 		for(var/mob/living/carbon/namecheck in mob_list)
 			if(namecheck.real_name == real_name)
-				real_name = random_name(gender, dwarven_name = dwarven)
+				real_name = random_name(gender,species)
 				break
+		if(global.in_character_filter.len) //If you name yourself hitler you're getting a random name.
+			if(findtext(real_name, config.ic_filter_regex))
+				real_name = random_name(gender,species)
 
 		character.real_name = real_name
 		character.name = character.real_name
@@ -1333,12 +1236,15 @@ datum/preferences
 		character.f_style = f_style
 		character.d_style = d_style
 
-		character.applyVice(vice)
-		character.province = MigProvince
-		character.applyProvince()
+		if(character.age > 21 && prob(85))
+			character.body_hair = TRUE
+		character.dom_hand = dom_hand
+		if(character.job == "Migrant")
+			character.province = MigProvince
+			character.applyProvince()
 		if(vice == "Random")
 			if(prob(60))
-				vice = pick(VicesList)
+				vice = pick(global.vices)
 			else
 				vice = null
 			character.vice = vice
@@ -1347,38 +1253,36 @@ datum/preferences
 		switch(character.zodiac)
 			if("Vulpes")
 				if(prob(25))
-					character.my_stats.dx += 1
+					character.my_stats.change_stat(STAT_DX , 1)
 			if("Gryllus")
 				if(prob(25))
-					character.my_skills.ADD_SKILL(SKILL_PARTY, rand(1,2))
+					character.my_skills.add_skill(SKILL_PARTY, rand(1,2))
 			if("Sisyphus")
 				if(prob(25))
-					//character.jewish = TRUE
 					character.add_perk(/datum/perk/ref/value)
 			if("Aranea")
 				if(prob(25))
-					//character.jewish = TRUE
 					character.add_perk(/datum/perk/sexaddict)
 			if("Cygnus")
 				if(prob(25))
 					character.add_event("nobleblood", /datum/happiness_event/noble_blood)
 			if("Centaurus")
 				if(prob(25))
-					character.my_stats.ht += 1
+					character.my_stats.change_stat(STAT_HT , 1)
 			if("Noctua")
 				if(prob(25))
 					character.add_perk(/datum/perk/likeart)
 			if("Phantom")
 				if(prob(50))
-					character.my_skills.ADD_SKILL(SKILL_PARTY, rand(2,3))
+					character.my_skills.add_skill(SKILL_PARTY, rand(2,3))
 				else
-					character.my_skills.ADD_SKILL(SKILL_SNEAK, rand(2,3))
+					character.my_skills.add_skill(SKILL_SNEAK, rand(2,3))
 		if(character.job == "Heir" || character.job == "Successor" || character.job == "Treasurer")
 			if(lobbyspecie != "Adult")
 				character.set_species("Child")
 				character.species.handle_post_spawn(character)
-				character.my_stats.st -= rand(3,5)
-				character.my_stats.ht -= rand(3,5)
+				character.my_stats.change_stat(STAT_ST , rand(-3,-5))
+				character.my_stats.change_stat(STAT_HT , rand(-3,-5))
 				character.vice = null
 		if(character.job == "Jester")
 			if(lobbyspecie == "Adult")
@@ -1387,15 +1291,8 @@ datum/preferences
 			Inquisitor_Type = InquisiPref
 		if(character.job == "Incarn" && GatekeeperPref)
 			Gatekeeper_Type = GatekeeperPref
-/*		if(character.client.married)
-			for(var/mob/living/carbon/human/H in player_list)
-				if(H.client.married == character.key)
-					if(character.client.married == character.key)
-						var/I = image('icons/mob/mob.dmi', loc = H, icon_state = "love")
-						character.client.images += I
-*/
-		// Destroy/cyborgize organs
 
+		// Destroy/cyborgize organs
 		for(var/name in organ_data)
 			var/datum/organ/external/O = character.organs_by_name[name]
 			var/datum/organ/internal/I = character.internal_organs_by_name[name]
@@ -1421,14 +1318,14 @@ datum/preferences
 		if(backbag > 4 || backbag < 1)
 			backbag = 1 //Same as above
 		character.backbag = backbag
-		if(thirtycm.Find(character.ckey) && character.has_penis())
+		if(donation_30cm.Find(character.ckey) && character.has_penis())
 			character.potenzia = 30
 		if(baliset.Find(character.ckey))
-			character.my_skills.CHANGE_SKILL(SKILL_MUSIC, rand(13,15))
+			character.my_skills.change_skill(SKILL_MUSIC, rand(13,15))
 		if(singer.Find(character.ckey))
 			character.add_perk(/datum/perk/singer)
-			character.verbs += /mob/living/carbon/human/proc/remembersong
-			character.verbs += /mob/living/carbon/human/proc/sing
+			character.add_verb(list(/mob/living/carbon/human/proc/remembersong,
+			/mob/living/carbon/human/proc/sing))
 		//Debugging report to track down a bug, which randomly assigned the plural gender to people.
 		if(character.gender in list(PLURAL, NEUTER))
 			if(isliving(src)) //Ghosts get neuter by default
@@ -1436,12 +1333,13 @@ datum/preferences
 				character.gender = MALE
 
 		if(fat)
-			if(character.species.name != "Child")
+			if(character.species.name != "Child" && character.gender != FEMALE)
 				character.mutations += FAT
+		character.applyVice(vice) //Apply vice last. That way Low Pain Tolerance works.
 
 	proc/open_load_dialog(mob/user)
-		var/dat = "<head><META http-equiv='X-UA-Compatible' content='IE=edge' charset='UTF-8'><Title>Farweb</title><style type='text/css'>"
-		dat += "cursor: url('pointer.cur'), auto;body {font-family: Times;}a {text-decoration:none;outline: none;border: none;margin:-1px;}a:focus{outline:none;}a:hover {color:#0d0d0d;background:#505055;outline: none;border: none;}a.active { text-decoration:none; color:#533333;}a.inactive:hover {color:#0d0d0d;background:#bb0000}a.active:hover {color:#bb0000;background:#0f0f0f}a.inactive:hover { text-decoration:none; color:#0d0d0d; background:#bb0000}</style>"
+		var/dat = "<head><META http-equiv='X-UA-Compatible' content='IE=edge' charset='UTF-8'><Title>Nearweb</title><style type='text/css'>"
+		dat += "cursor: url('http://lfwb.ru/Icons/pointer.cur'), auto;body {font-family: Times;}a {text-decoration:none;outline: none;border: none;margin:-1px;}a:focus{outline:none;}a:hover {color:#0d0d0d;background:#505055;outline: none;border: none;}a.active { text-decoration:none; color:#533333;}a.inactive:hover {color:#0d0d0d;background:#bb0000}a.active:hover {color:#bb0000;background:#0f0f0f}a.inactive:hover { text-decoration:none; color:#0d0d0d; background:#bb0000}</style>"
 		dat += "</head><body background bgColor=#0d0d0d text=#555555 alink=#777777 vlink=#777777 link=#777777>"
 		dat += "<tt><center>"
 
@@ -1466,9 +1364,9 @@ datum/preferences
 	proc/close_load_dialog(mob/user)
 		user << browse(null, "window=saves")
 
-client/var/fullscreen = 0
+/client/var/fullscreen = 0
 
-client/New()
+/client/New()
 	..()
 	FullscreenLoad()
 	LoadGraphics()
@@ -1480,9 +1378,12 @@ client/New()
 	set name = "Set Spouse"
 	set desc="Choose your spouse!"
 	var/list/keys = list()
-	for(var/mob/M in player_list)
-		keys += M.client
-	var/selection = input("Selecione um par!", "setspouse", null, null) as null|anything in sortKey(keys)
+	for(var/mob/new_player/M in player_list)
+		if(M != src.mob)
+			keys += M.client.prefs.real_name
+	if(!keys.len)
+		to_chat(src, "No one is around to be your spouse.")
+	var/selection = input("Choose your spouse!", "setspouse", null, null) as null|anything in keys
 	if(!selection)
 		return
 	if(selection == src.key)
@@ -1535,48 +1436,18 @@ client/New()
 		pending_set_spouse |= D
 		return
 
-var/global/lovedepletion = 0
-
-/client/verb/sendlove()
-	set hidden = 0
-	set category = "OOC"
-	set name = "Love"
-	set desc="Send Love!"
-	var/list/keys = list()
-	if(lovedepletion >= 3)
-		to_chat(src,"<font color='#fc0fc0'><b>FAIL!</b> All love was wasted.</font>")
-		return
-	for(var/mob/M in player_list)
-		keys += M.client
-	var/selection = input("Send love to someone!", "sendlove", null, null) as null|anything in sortKey(keys)
-	if(!selection)
-		return
-	if(findtext(selection, src.key))
-		to_chat(src,"<font color='#fc0fc0'><b>FAIL!</b> You're a selfish cunt.</font>")
-		return
-	if (ticker.current_state == GAME_STATE_PLAYING)
-		return
-	var/mob/M = selection:mob
-	if(master_mode == "holywar")
-		var/action = pick("stabs","cuts","tortures","bashes","shoots")
-		to_chat(world,"<font color='#fa2605'><b>[src.key]</b> [action] <b>[M.client.key]!</b></font>")
-	else
-		to_chat(world,"<font color='#fc0fc0'><b>[src.key]</b> sends love to <b>[M.client.key]!</b></font>")
-	lovedepletion++
-	return
-
-client/verb/ToggleRightClick()
-	set name = "Toggle-RightClick(NO.)"
+/client/verb/ToggleRightClick()
+	set name = "ToggleRightClick"
 	set category = "OOC"
 	show_popup_menus = !show_popup_menus
 
-client/verb/FullscreenLoad()
+/client/verb/FullscreenLoad()
 	set name = ".toggleload"
 	set category = "OOC"
 	if(src.prefs.fullscreenSetting)
 		ToggleFullscreen()
 
-client/verb/ToggleFullscreen()
+/client/verb/ToggleFullscreen()
 	set name = ".togglefullscreen"
 	set category = "OOC"
 	src.prefs.fullscreenSetting = !src.prefs.fullscreenSetting
@@ -1587,7 +1458,7 @@ client/verb/ToggleFullscreen()
 		winset(src, "mainwindow", "is-maximized=false;can-resize=true;titlebar=true;menu=menu")
 	src.prefs.save_preferences()
 
-client/verb/LoadGraphics()
+/client/verb/LoadGraphics()
 	set name = ".loadgraphics"
 	set category = "OOC"
 	if(src.prefs.graphicsSetting)
@@ -1595,7 +1466,7 @@ client/verb/LoadGraphics()
 	else
 		winset(src, "mapwindow.map", "zoom-mode=normal")
 
-client/verb/ToggleGraphics()
+/client/verb/ToggleGraphics()
 	set name = ".togglegraphics"
 	set category = "OOC"
 	src.prefs.graphicsSetting = !src.prefs.graphicsSetting
@@ -1605,12 +1476,18 @@ client/verb/ToggleGraphics()
 		winset(src, "mapwindow.map", "zoom-mode=normal")
 	src.prefs.save_preferences()
 
-client/verb/addEffects()
+/client/verb/addEffects()
 	set name = ".addeffects"
 	set category = "OOC"
 	for(var/obj/I in src?.usingPlanes)
 		if(istype(I, /obj/blur_planemaster)) continue
-		if(istype(I, /obj/lighting_plane)) continue
+		if(istype(I, /obj/lighting_plane))
+			var/filterA = I.get_filter("car")
+			if(filterA)
+				I?.remove_filter("car")
+			else
+				I.add_filter("car", 2, list("type" = "bloom", threshold = "#943a3a", size=2, offset=2))
+			continue
 		var/filter = I.get_filter("cur")
 		if(filter)
 			I?.remove_filter("cur")
@@ -1650,19 +1527,5 @@ client/verb/addEffects()
 	for(var/safety in 1 to 10)
 		var/after_size = winget(src, "mapwindow", "size")
 		map_size = splittext(after_size, "x")
-		//var/got_width = text2num(map_size[1])
-
-		//if (got_width == desired_width)
-			// success
-			//return
-/*
-		else if (isnull(delta))
-			// calculate a probable delta value based on the difference
-			delta = 100 * (desired_width - got_width) / split_width
-		else if ((delta > 0 && got_width > desired_width) || (delta < 0 && got_width < desired_width))
-			// if we overshot, halve the delta and reverse direction
-			delta = -delta/2
-*/
-
 		pct += delta
 		winset(src, "mainwindow.mainvsplit", "splitter=75")

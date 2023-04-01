@@ -11,20 +11,20 @@
 /*
  * Banhammer
  */
-/obj/item/weapon/banhammer/attack(mob/M as mob, mob/user as mob)
+/obj/item/banhammer/attack(mob/M as mob, mob/user as mob)
 	M << "<font color='red'><b> You have been banned FOR NO REISIN by [user]<b></font>"
 	user << "<font color='red'> You have <b>BANNED</b> [M]</font>"
 
 /*
  * Sword
  */
-/obj/item/weapon/melee/energy/sword/IsShield()
+/obj/item/melee/energy/sword/IsShield()
 	return 0
 
-/obj/item/weapon/melee/energy/sword/New()
+/obj/item/melee/energy/sword/New()
 	item_color = pick("red","blue","green","purple")
 
-/obj/item/weapon/melee/energy/sword/attack_self(mob/living/user as mob)
+/obj/item/melee/energy/sword/attack_self(mob/living/user as mob)
 	if ((CLUMSY in user.mutations) && prob(50))
 		user << "\red You accidentally cut yourself with [src]."
 		user.take_organ_damage(5,5)
@@ -35,7 +35,7 @@
 		force_unwielded = 80
 		sharp = 1
 		edge = 0
-		if(istype(src,/obj/item/weapon/melee/energy/sword/pirate))
+		if(istype(src,/obj/item/melee/energy/sword/pirate))
 			icon_state = "cutlass1"
 		else
 			icon_state = "sword1"
@@ -50,7 +50,7 @@
 		force_unwielded = 6
 		sharp = 0
 		edge = 0
-		if(istype(src,/obj/item/weapon/melee/energy/sword/pirate))
+		if(istype(src,/obj/item/melee/energy/sword/pirate))
 			icon_state = "cutlass0"
 		else
 			icon_state = "sword0"
@@ -70,7 +70,7 @@
 /*
  * Classic Baton
  */
-/obj/item/weapon/melee/classic_baton
+/obj/item/melee/classic_baton
 	name = "baton"
 	desc = "A truncheon for beating criminal scum."
 	icon = 'icons/obj/weapons.dmi'
@@ -80,13 +80,13 @@
 	force = 30
 	force_wielded = 35
 	force_unwielded = 30
-	drop_sound = 'wooden_drop.ogg'
+	drop_sound = 'sound/items/wooden_drop.ogg'
 	speciality = SKILL_SWING
-	hitsound = 'classic_baton.ogg'
+	hitsound = 'sound/weapons/classic_baton.ogg'
 	attack_verb = list("smashes", "bludgeons", "clubs")
 	weaponteaching = "CLUB"
 
-/obj/item/weapon/melee/classic_baton/tonfa
+/obj/item/melee/classic_baton/tonfa
 	name = "baton"
 	desc = "A truncheon for beating criminal scum."
 	icon = 'icons/obj/weapons.dmi'
@@ -96,52 +96,14 @@
 	force = 30
 	force_wielded = 35
 	force_unwielded = 30
-	drop_sound = 'wooden_drop.ogg'
+	drop_sound = 'sound/items/wooden_drop.ogg'
 	speciality = SKILL_SWING
 	slot_flags = SLOT_BELT
-	hitsound = 'classic_baton.ogg'
+	hitsound = 'sound/weapons/classic_baton.ogg'
 	attack_verb = list("smashes", "bludgeons", "clubs")
 	weaponteaching = "CLUB"
-/*
-/obj/item/weapon/melee/classic_baton/attack(mob/M as mob, mob/living/user as mob)
-	if ((CLUMSY in user.mutations) && prob(50))
-		user << "\red You club yourself over the head."
-		user.Weaken(3 * force)
-		if(ishuman(user))
-			var/mob/living/carbon/human/H = user
-			H.apply_damage(2*force, BRUTE, "head")
-		else
-			user.take_organ_damage(2*force)
-		return
-/*this is already called in ..()
-	src.add_fingerprint(user)
-	M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been attacked with [src.name] by [user.name] ([user.ckey])</font>")
-	user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to attack [M.name] ([M.ckey])</font>")
 
-	log_attack("<font color='red'>[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
-*/
-	if (user.a_intent == "hurt")
-		if(!..()) return
-		playsound(src.loc, "swing_hit", 50, 1, -1)
-		if (M.stuttering < 8 && (!(HULK in M.mutations))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
-			M.stuttering = 8
-		M.Stun(8)
-		M.Weaken(8)
-		for(var/mob/O in viewers(M))
-			if (O.client)	O.show_message("\red <B>[M] has been beaten with \the [src] by [user]!</B>", 1, "\red You hear someone fall", 2)
-	else
-		playsound(src.loc, 'sound/weapons/Genhit.ogg', 50, 1, -1)
-		M.Stun(5)
-		M.Weaken(5)
-		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been attacked with [src.name] by [user.name] ([user.ckey])</font>")
-		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to attack [M.name] ([M.ckey])</font>")
-		log_attack("[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])")
-		src.add_fingerprint(user)
-
-		for(var/mob/O in viewers(M))
-			if (O.client)	O.show_message("\red <B>[M] has been stunned with \the [src] by [user]!</B>", 1, "\red You hear someone fall", 2)
-*/
-/obj/item/weapon/melee/classic_baton/boneclub
+/obj/item/melee/classic_baton/boneclub
 	name = "bone club"
 	desc = "A bone club."
 	icon = 'icons/obj/weapons.dmi'
@@ -158,7 +120,7 @@
 	hitsound= 'sound/weapons/club.ogg'
 	weapon_speed_delay = 20
 
-/obj/item/weapon/melee/classic_baton/woodenclub
+/obj/item/melee/classic_baton/woodenclub
 	name = "wooden club"
 	desc = "A wooden makeshift club."
 	icon = 'icons/obj/weapons.dmi'
@@ -167,7 +129,7 @@
 	flags = FPRINT | TABLEPASS
 	blunt = TRUE
 	slot_flags = SLOT_BELT
-	drop_sound = 'wooden_drop.ogg'
+	drop_sound = 'sound/items/wooden_drop.ogg'
 	force = 25
 	force_wielded = 30
 	force_unwielded = 25
@@ -176,7 +138,7 @@
 	hitsound= 'sound/weapons/club.ogg'
 	weapon_speed_delay = 20
 
-/obj/item/weapon/melee/classic_baton/club
+/obj/item/melee/classic_baton/club
 	name = "club"
 	desc = "Bash over some heads."
 	icon = 'icons/obj/weapons.dmi'
@@ -193,10 +155,9 @@
 	hitsound = "hitsound"
 	hitsound= 'sound/weapons/club.ogg'
 	weapon_speed_delay = 20
-	drawsound = 'mace_draw.ogg'
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	drawsound = 'sound/weapons/mace_draw.ogg'
 
-/obj/item/weapon/melee/classic_baton/smallclub
+/obj/item/melee/classic_baton/smallclub
 	name = "small club"
 	desc = "Bash over some heads."
 	icon = 'icons/obj/weapons.dmi'
@@ -211,9 +172,8 @@
 	item_worth = 9
 	hitsound= 'sound/weapons/club.ogg'
 	weapon_speed_delay = 12
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
 
-/obj/item/weapon/melee/classic_baton/mace
+/obj/item/melee/classic_baton/mace
 	name = "\improper Mace"
 	desc = "Bash over some heads."
 	icon = 'icons/obj/weapons.dmi'
@@ -229,27 +189,23 @@
 	hitsound= 'sound/weapons/club.ogg'
 	weapon_speed_delay = 16
 	weight = 3
-	drawsound = 'mace_draw.ogg'
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	drawsound = 'sound/weapons/mace_draw.ogg'
 
-
-/obj/item/weapon/melee/classic_baton/club/chain
+/obj/item/melee/classic_baton/club/chain
 	name = "chain"
 	icon_state = "chain"
 	item_state = "chain"
 	force = 16
 	force_wielded = 20
 	force_unwielded = 16
-	drop_sound = 'chainarmor_drop.ogg'
-	drawsound = 'chain_misc.ogg'
+	drop_sound = 'sound/effects/chainarmor_drop.ogg'
+	drawsound = 'sound/effects/chain_misc.ogg'
 	parry_chance = -5
 	item_worth = 5
 	hitsound = "hitsound"
 	weapon_speed_delay = 20
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
 
-
-/obj/item/weapon/melee/classic_baton/sewer_hatch
+/obj/item/melee/classic_baton/sewer_hatch
 	name = "sewer hatch"
 	desc = ""
 	icon = 'icons/obj/miscobjs.dmi'
@@ -267,9 +223,9 @@
 	hitsound = "hitsound"
 	hitsound= 'sound/weapons/club.ogg'
 	weapon_speed_delay = 25
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	smelted_return = /obj/item/ore/refined/lw/ironlw
 
-/obj/item/weapon/melee/classic_baton/slab
+/obj/item/melee/classic_baton/slab
 	name = "slab"
 	desc = "A blunt, stone sword. This weapon's clearly impractical... right?"
 	icon = 'icons/obj/weapons.dmi'
@@ -288,7 +244,7 @@
 	weapon_speed_delay = 25
 	drop_sound = 'sound/effects/stonestone.ogg'
 
-/obj/item/weapon/melee/classic_baton/club/bronze
+/obj/item/melee/classic_baton/club/bronze
 	name = "bronze mace"
 	desc = "Bash over some heads."
 	icon = 'icons/obj/weapons.dmi'
@@ -303,9 +259,9 @@
 	item_worth = 8
 	hitsound = "hitsound"
 	weapon_speed_delay = 20
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/copperlw
+	smelted_return = /obj/item/ore/refined/lw/copperlw
 
-/obj/item/weapon/melee/classic_baton/club/knuckleduster
+/obj/item/melee/classic_baton/club/knuckleduster
 	name = "knuckle duster"
 	desc = "Bash over some heads."
 	icon = 'icons/obj/weapons.dmi'
@@ -322,12 +278,13 @@
 	speciality = SKILL_UNARM
 	weapon_speed_delay = 8
 	drawsound = null
+	smelted_return = /obj/item/ore/refined/lw/silverlw
 
-/obj/item/weapon/melee/classic_baton/club/knuckleduster/wield(mob/user)
+/obj/item/melee/classic_baton/club/knuckleduster/wield(mob/user)
 	to_chat(user, "How would I wield a knuckle duster!?")
 	return
 
-/obj/item/weapon/melee/classic_baton/crossofravenheart
+/obj/item/melee/classic_baton/crossofravenheart
 	name = "Cross of Firethorn"
 	desc = "Firethorn's holy cross. A relic of great value and religious power."
 	icon = 'icons/obj/weapons.dmi'
@@ -343,8 +300,9 @@
 	item_worth = 1200
 	hitsound= 'sound/weapons/club.ogg'
 	weapon_speed_delay = 20
+	smelted_return = /obj/item/ore/refined/lw/silverlw
 
-/obj/item/weapon/melee/classic_baton/staff
+/obj/item/melee/classic_baton/staff
 	name = "steel staff"
 	desc = "A steel quarterstaff commonly used by wandering monks"
 	icon = 'icons/obj/weapons.dmi'
@@ -360,14 +318,15 @@
 	item_worth = 20
 	hitsound = "hitsound"
 	speciality = SKILL_STAFF
+	smelted_return = /obj/item/ore/refined/lw/steellw
 
-/obj/item/weapon/melee/classic_baton/klevetz
+/obj/item/melee/classic_baton/klevetz
 	name = "klevetz"
 	desc = "Bash over some heads."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "klevec"
 	item_state = "klevec"
-	hitsound= 'klevec.ogg'
+	hitsound= 'sound/weapons/klevec.ogg'
 	flags = FPRINT | TABLEPASS
 	slot_flags = SLOT_BELT
 	force = 25
@@ -376,10 +335,10 @@
 	parry_chance = 2
 	item_worth = 20
 	weapon_speed_delay = 16
-	drawsound = 'mace_draw.ogg'
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	drawsound = 'sound/weapons/mace_draw.ogg'
+	smelted_return = /obj/item/ore/refined/lw/steellw
 
-/obj/item/weapon/melee/classic_baton/blackjack
+/obj/item/melee/classic_baton/blackjack
 	name = "blackjack"
 	desc = "Bash over some heads."
 	icon = 'icons/obj/weapons.dmi'
@@ -396,7 +355,7 @@
 	weapon_speed_delay = 12
 
 //Telescopic baton
-/obj/item/weapon/melee/telebaton
+/obj/item/melee/telebaton
 	name = "telescopic staff"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "t_staff0"
@@ -411,15 +370,15 @@
 	var/on = 0
 	weapon_speed_delay = 16
 
-/obj/item/weapon/melee/golfclub
+/obj/item/melee/golfclub
 	name = "9 Iron"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "golf_club"
 	item_state = "golf_club"
 	flags = FPRINT | TABLEPASS
-	force = 30
-	force_wielded = 35
-	force_unwielded = 30
+	force = 35
+	force_wielded = 50
+	force_unwielded = 35
 	speciality = SKILL_SWING
 	slot_flags = SLOT_BELT
 	item_worth = 20
@@ -429,7 +388,7 @@
 	weapon_speed_delay = 10
 
 
-/obj/item/weapon/melee/telebaton/attack_self(mob/user as mob)
+/obj/item/melee/telebaton/attack_self(mob/user as mob)
 	on = !on
 	if(on)
 		user.visible_message("<b>[user]</b> deploys the Telescopic Staff!")
@@ -471,7 +430,7 @@
 
 	return
 
-/obj/item/weapon/melee/telebaton/attack(mob/target as mob, mob/living/user as mob)
+/obj/item/melee/telebaton/attack(mob/target as mob, mob/living/user as mob)
 	if(on)
 		if ((CLUMSY in user.mutations) && prob(50))
 			user << "\red You club yourself over the head."
@@ -495,25 +454,25 @@
  */
 //Most of the other special functions are handled in their own files.
 
-/obj/item/weapon/melee/energy/sword/green
+/obj/item/melee/energy/sword/green
 	New()
 		item_color = "green"
 
-/obj/item/weapon/melee/energy/sword/red
+/obj/item/melee/energy/sword/red
 	New()
 		item_color = "red"
 
-/obj/item/weapon/melee/energy/blade/New()
+/obj/item/melee/energy/blade/New()
 	spark_system = new /datum/effect/effect/system/spark_spread()
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 	return
 
-/obj/item/weapon/melee/energy/blade/dropped()
+/obj/item/melee/energy/blade/dropped()
 	qdel(src)
 	return
 
-/obj/item/weapon/melee/energy/blade/proc/throw_sword()
+/obj/item/melee/energy/blade/proc/throw_sword()
 	qdel(src)
 	return
 
@@ -521,7 +480,7 @@
  * Energy Axe
  */
 
-/obj/item/weapon/melee/energy/axe/attack_self(mob/user as mob)
+/obj/item/melee/energy/axe/attack_self(mob/user as mob)
 	src.active = !( src.active )
 	if (src.active)
 		user << "\blue The axe is now energised."

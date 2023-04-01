@@ -9,7 +9,7 @@
 
 //NOTES: doesn't work with armor yet
 
-/obj/item/weapon //subclass of weapons that is currently the only one that uses the alternate combat system
+/obj/item //subclass of weapons that is currently the only one that uses the alternate combat system
 
 	name = "training weapon"
 	desc = "A weapon for training the advanced fighting technicues"
@@ -24,7 +24,7 @@
 
 //chances - 5 is low, 10 is medium, 15 is good
 
-/obj/item/weapon/axe //hard-hitting, but doesn't have much in terms of disabling people (except by killing)
+/obj/item/axe //hard-hitting, but doesn't have much in terms of disabling people (except by killing)
 	name = "training axe"
 	icon_state = "hatchet"
 	/*combat stats*/
@@ -36,7 +36,7 @@
 	chance_knockout = 5
 	chance_disarm = 0
 
-/obj/item/weapon/sword //not bad attack, good at parrying and disarming
+/obj/item/sword //not bad attack, good at parrying and disarming
 	name = "training sword"
 	icon_state = "claymore"
 	/*combat stats*/
@@ -49,7 +49,7 @@
 	chance_knockout = 0
 	chance_disarm = 20
 
-/obj/item/weapon/staff //not bad attack either, good at tripping and parrying
+/obj/item/staff //not bad attack either, good at tripping and parrying
 	name = "training staff"
 	icon_state = "training_staff"
 	/*combat stats*/
@@ -61,7 +61,7 @@
 	chance_knockout = 0
 	chance_disarm = 10
 
-/obj/item/weapon/mace //worst attack, but has a good chance of stun, knockout or weaken
+/obj/item/mace //worst attack, but has a good chance of stun, knockout or weaken
 	name = "training mace"
 	icon_state = "training_mace"
 	/*combat stats*/
@@ -73,7 +73,7 @@
 	chance_knockout = 10
 	chance_disarm = 0
 
-/obj/item/weapon/attack(target as mob, mob/user as mob)
+/obj/item/attack(target as mob, mob/user as mob)
 
 	if((!istype(target, /mob/living/carbon)) || (!istype(user, /mob/living/carbon)))
 		..()
@@ -84,7 +84,7 @@
 	for(var/mob/O in viewers(target))
 		O << "\red \b [A.name] attacks [T.name] in the [target_area] with [src.name]!"
 	if(T.stat < 2 && T.zone_sel.selecting == target_area) //parrying occurs here
-		if(istype(T.r_hand,/obj/item/weapon))
+		if(istype(T.r_hand,/obj/item))
 			if(prob(T.r_hand:chance_parry))
 				for(var/mob/O in viewers(target))
 					O << "\red \b [T.name] deftly parries the attack with [T.r_hand.name]!"
@@ -92,7 +92,7 @@
 						O << "\red The [T.r_hand.name] flies out of [T.name]'s hands!"
 						T.drop_r_hand()
 						return
-		if(istype(T.l_hand,/obj/item/weapon))
+		if(istype(T.l_hand,/obj/item))
 			if(prob(T.l_hand:chance_parry))
 				for(var/mob/O in viewers(target))
 					O << "\red \b [T.name] deftly parries the attack with [T.l_hand.name]!"
@@ -145,7 +145,7 @@
 			O << "\red \b [T.name] has been knocked down!"
 */
 /*
-/obj/item/weapon/training/proc/attack_location(var/initloc = "chest") //proc to randomise actual hit loc based on where you're aiming at
+/obj/item/training/proc/attack_location(var/initloc = "chest") //proc to randomise actual hit loc based on where you're aiming at
     var/resultloc = "chest" //also forgot hands/feet. bleh
     var/percentage = rand(1,100)
     switch(initloc)

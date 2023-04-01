@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/projectile/newRevolver/duelista/harat
+/obj/item/gun/projectile/newRevolver/duelista/harat
 	name = "Harat-83"
 	desc = "An expensive and fancy revolver."
 	icon = 'icons/obj/gunnew.dmi'

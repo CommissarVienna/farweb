@@ -14,7 +14,7 @@
 		qdel(src)
 
 
-/obj/item/weapon/storage/box/bodybags
+/obj/item/storage/box/bodybags
 	name = "body bags"
 	desc = "This box contains body bags."
 	icon_state = "bodybags"
@@ -42,7 +42,7 @@
 
 
 	attackby(W as obj, mob/user as mob)
-		if (istype(W, /obj/item/weapon/pen))
+		if (istype(W, /obj/item/pen))
 			var/t = input(user, "What would you like the label to be?", text("[]", src.name), null)  as text
 			if (user.get_active_hand() != W)
 				return
@@ -57,7 +57,7 @@
 				src.name = "body bag"
 		//..() //Doesn't need to run the parent. Since when can fucking bodybags be welded shut? -Agouri
 			return
-		else if(istype(W, /obj/item/weapon/wirecutters))
+		else if(istype(W, /obj/item/wirecutters))
 			user << "You cut the tag off the bodybag"
 			src.name = "body bag"
 			src.overlays.Cut()
@@ -130,7 +130,7 @@
 
 /obj/item/sleepingbag
 	name = "sleeping bag"
-	icon = 'personal.dmi'
+	icon = 'icons/obj/personal.dmi'
 	desc = "A folded, reusable bag."
 	icon_state = "sleeping_bag"
 	item_state = "sleeping_bag"
@@ -144,7 +144,7 @@
 
 /obj/structure/stool/bed/sleepingbag
 	name = "sleeping bag"
-	icon = 'personal.dmi'
+	icon = 'icons/obj/personal.dmi'
 	desc = "For prime comfort during tough moments."
 	icon_state = "sleeping_bag0"
 	var/item_path = /obj/item/sleepingbag
@@ -162,7 +162,7 @@
 
 /obj/structure/stool/bed/sleepingbag/buckle_mob(mob/living/carbon/human/M as mob, mob/user as mob)
 	if(M.shoes)
-		to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)] can't use \the [src] with shoes on!</span>")
+		to_chat(user, "<span class='combatbold'>[pick(fnord)] can't use \the [src] with shoes on!</span>")
 		return
 	..()
 	return

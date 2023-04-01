@@ -544,9 +544,9 @@ As such, it's hard-coded for now. No reason for it not to be, really.
 	equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/space_ninja(src), slot_head)
 	equip_to_slot_or_del(new /obj/item/clothing/mask/gas/voice/space_ninja(src), slot_wear_mask)
 	equip_to_slot_or_del(new /obj/item/device/flashlight(src), slot_belt)
-	equip_to_slot_or_del(new /obj/item/weapon/plastique(src), slot_r_store)
-	equip_to_slot_or_del(new /obj/item/weapon/plastique(src), slot_l_store)
-	equip_to_slot_or_del(new /obj/item/weapon/tank/oxygen(src), slot_s_store)
+	equip_to_slot_or_del(new /obj/item/plastique(src), slot_r_store)
+	equip_to_slot_or_del(new /obj/item/plastique(src), slot_l_store)
+	equip_to_slot_or_del(new /obj/item/tank/oxygen(src), slot_s_store)
 	return 1
 
 //=======//HELPER PROCS//=======//

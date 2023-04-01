@@ -4,6 +4,7 @@
 	ammo_type = /obj/item/ammo_casing/a357/Newduelista
 	cylinders = 1
 
+
 /obj/item/ammo_casing/a357/Newduelista
 	desc = "A .357 bullet casing."
 	caliber = ".357"

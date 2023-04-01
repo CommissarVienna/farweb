@@ -27,7 +27,7 @@
 				if(ishuman(target) || ismonkey(target))
 					var/mob/living/carbon/C = target
 					if(C.has_brain()) // Their brain is already taken out
-						var/obj/item/weapon/reagent_containers/food/snacks/organ/brain/B = new(C.loc)
+						var/obj/item/reagent_containers/food/snacks/organ/brain/B = new(C.loc)
 						B.transfer_identity(C)
 				target.gib()
 			if("disintegrate")

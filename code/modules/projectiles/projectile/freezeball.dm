@@ -1,4 +1,4 @@
-obj/item/weapon/gun/energy/freezegun
+obj/item/gun/energy/freezegun
 	name = "Freezer gun"
 	desc = "Special gun to freeze some badasses"
 	icon = 'gun.dmi'
@@ -7,7 +7,7 @@ obj/item/weapon/gun/energy/freezegun
 	fire_sound = 'pulse3.ogg'
 	flags =  FPRINT | TABLEPASS | CONDUCT | USEDELAY
 	charge_cost = 500
-	projectile_type = "/obj/item/projectile/freezeball"
+	projectile_type = /obj/item/projectile/freezeball
 	origin_tech = null
 	var/charge_tick = 0
 
@@ -215,8 +215,8 @@ obj/item/weapon/gun/energy/freezegun
 			src.ice = 200
 	return
 
-/obj/structure/freezedmob/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/weldingtool) && W:welding)
+/obj/structure/freezedmob/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/weldingtool) && W:welding)
 		usr << text("\blue You melted some ice on [] with [].", src.name, W.name)
 		for(var/mob/O in oviewers())
 			if ((O.client && !( O.blinded )))
@@ -355,7 +355,7 @@ proc/freezemob(mob/M as mob in world)
 /obj/machinery/computer/freezer
 	name = "Freezer Control Computer"
 	desc = "Used to access the freezer pad."
-	circuit = "/obj/item/weapon/circuitboard/atmos_alert"
+	circuit = "/obj/item/circuitboard/atmos_alert"
 	icon_state = "alert:0"
 	var/obj/machinery/freezer/freezer_platform/slave = null
 

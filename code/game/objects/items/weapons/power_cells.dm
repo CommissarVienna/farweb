@@ -1,4 +1,4 @@
-/obj/item/weapon/cell
+/obj/item/cell
 	name = "power cell"
 	desc = "A rechargable electrochemical power cell."
 	icon = 'icons/obj/power.dmi'
@@ -24,9 +24,9 @@
 		viewers(user) << "\red <b>[user] is licking the electrodes of the [src.name]! It looks like \he's trying to commit suicide.</b>"
 		return (FIRELOSS)
 
-/obj/item/weapon/cell/web
+/obj/item/cell/web
 	name = "battery cell"
-	icon = 'LW2.dmi'
+	icon = 'icons/obj/LW2.dmi'
 	icon_state = "bbattery"
 	item_state = "lfwbcell"
 	w_class = 4.0
@@ -35,7 +35,7 @@
 	item_worth = 5
 	slot_flags = SLOT_BACK
 
-/obj/item/weapon/cell/crap
+/obj/item/cell/crap
 	name = "Battery Cell"
 	desc = "" //TOTALLY TRADEMARK INFRINGEMENT
 	icon_state = "cartridge100"
@@ -59,13 +59,13 @@
 		else
 			icon_state = "cartridge0"
 
-/obj/item/weapon/cell/crap/leet
+/obj/item/cell/crap/leet
 	name = " rechargable battery"
 	desc = "Baterias da antiguidade, uma raridade hoje em dia." //TOTALLY TRADEMARK INFRINGEMENT
 	origin_tech = "powerstorage=1"
 	maxcharge = 1000 // 10 shots
 
-/obj/item/weapon/cell/crap/leet/sparq
+/obj/item/cell/crap/leet/sparq
 	name = "\improper sparq beam recharger"
 	icon_state = "sparq100"
 	origin_tech = "powerstorage=1"
@@ -74,7 +74,7 @@
 	updateicon()
 		return
 
-/obj/item/weapon/cell/crap/leet/noctis
+/obj/item/cell/crap/leet/noctis
 	name = "\improper noctis recharger"
 	icon_state = "noctis"
 	origin_tech = "powerstorage=1"
@@ -84,38 +84,38 @@
 		return
 
 
-/obj/item/weapon/cell/crap/plasmacutter
+/obj/item/cell/crap/plasmacutter
 	maxcharge = 16 // shoot cost 2, yeah
 
-/obj/item/weapon/cell/crap/adv_plasmacutter
+/obj/item/cell/crap/adv_plasmacutter
 	maxcharge = 30 // same here
 
-/obj/item/weapon/cell/crap/empty/New()
+/obj/item/cell/crap/empty/New()
 	..()
 	charge = 0
 
-/obj/item/weapon/cell/secborg
+/obj/item/cell/secborg
 	name = "security borg rechargable D battery"
 	origin_tech = "powerstorage=0"
 	maxcharge = 600	//600 max charge / 100 charge per shot = six shots
 	g_amt = 40
 
-/obj/item/weapon/cell/secborg/empty/New()
+/obj/item/cell/secborg/empty/New()
 	..()
 	charge = 0
 
-/obj/item/weapon/cell/high
+/obj/item/cell/high
 	name = "high-capacity power cell"
 	origin_tech = "powerstorage=2"
 	icon_state = "hcell"
 	maxcharge = 10000
 	g_amt = 60
 
-/obj/item/weapon/cell/high/empty/New()
+/obj/item/cell/high/empty/New()
 	..()
 	charge = 0
 
-/obj/item/weapon/cell/super
+/obj/item/cell/super
 	name = "super-capacity power cell"
 	origin_tech = "powerstorage=5"
 	icon_state = "scell"
@@ -123,11 +123,11 @@
 	g_amt = 70
 	construction_cost = list("metal"=750,"glass"=100)
 
-/obj/item/weapon/cell/super/empty/New()
+/obj/item/cell/super/empty/New()
 	..()
 	charge = 0
 
-/obj/item/weapon/cell/hyper
+/obj/item/cell/hyper
 	name = "hyper-capacity power cell"
 	origin_tech = "powerstorage=6"
 	icon_state = "hpcell"
@@ -135,11 +135,11 @@
 	g_amt = 80
 	construction_cost = list("metal"=500,"glass"=150,"gold"=200,"silver"=200)
 
-/obj/item/weapon/cell/hyper/empty/New()
+/obj/item/cell/hyper/empty/New()
 	..()
 	charge = 0
 
-/obj/item/weapon/cell/infinite
+/obj/item/cell/infinite
 	name = "infinite-capacity power cell!"
 	icon_state = "icell"
 	origin_tech =  null
@@ -148,7 +148,7 @@
 	use()
 		return 1
 
-/obj/item/weapon/cell/potato
+/obj/item/cell/potato
 	name = "potato battery"
 	desc = "A rechargable starch based power cell."
 	origin_tech = "powerstorage=1"

@@ -18,8 +18,7 @@
 	melee_damage_lower = 10
 	melee_damage_upper = 10
 	attacktext = "punches"
-	a_intent = "harm"
-	var/corpse = /obj/effect/landmark/mobcorpse/syndicatesoldier
+	a_intent = "hurt"
 	var/weapon1
 	var/weapon2
 	min_oxy = 5
@@ -37,8 +36,6 @@
 
 /mob/living/simple_animal/hostile/syndicate/Die()
 	..()
-	if(corpse)
-		new corpse (src.loc)
 	if(weapon1)
 		new weapon1 (src.loc)
 	if(weapon2)
@@ -53,7 +50,7 @@
 	melee_damage_upper = 25
 	icon_state = "syndicatemelee"
 	icon_living = "syndicatemelee"
-	weapon1 = /obj/item/weapon/melee/energy/sword/red
+	weapon1 = /obj/item/melee/energy/sword/red
 	attacktext = "slashes"
 	status_flags = 0
 
@@ -94,7 +91,6 @@
 	icon_state = "syndicatemeleespace"
 	icon_living = "syndicatemeleespace"
 	name = "Syndicate Commando"
-	corpse = /obj/effect/landmark/mobcorpse/syndicatecommando
 	speed = 0
 
 /mob/living/simple_animal/hostile/syndicate/melee/space/Process_Spacemove(var/check_drift = 0)
@@ -122,7 +118,6 @@
 	min_n2 = 0
 	max_n2 = 0
 	minbodytemp = 0
-	corpse = /obj/effect/landmark/mobcorpse/syndicatecommando
 	speed = 0
 
 /mob/living/simple_animal/hostile/syndicate/ranged/space/Process_Spacemove(var/check_drift = 0)
@@ -155,9 +150,9 @@
 	minbodytemp = 0
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
+	attackby(obj/item/W as obj, mob/user as mob)
 		..()
-		if(istype(W,/obj/item/weapon/crowbar/red))
+		if(istype(W,/obj/item/crowbar/red))
 			health -= 8
 		s.set_up(3, 1, src)
 		s.start()

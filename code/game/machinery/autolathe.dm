@@ -2,38 +2,38 @@
 
 var/global/list/autolathe_recipes = list( \
 		/* screwdriver removed*/ \
-		new /obj/item/weapon/reagent_containers/glass/bucket(), \
-		new /obj/item/weapon/crowbar(), \
+		new /obj/item/reagent_containers/glass/bucket(), \
+		new /obj/item/crowbar(), \
 		new /obj/item/device/flashlight(), \
-		new /obj/item/weapon/extinguisher(), \
+		new /obj/item/extinguisher(), \
 		new /obj/item/device/multitool(), \
 		new /obj/item/device/t_scanner(), \
-		new /obj/item/weapon/weldingtool(), \
-		new /obj/item/weapon/screwdriver(), \
-		new /obj/item/weapon/wirecutters(), \
-		new /obj/item/weapon/wrench(), \
+		new /obj/item/weldingtool(), \
+		new /obj/item/screwdriver(), \
+		new /obj/item/wirecutters(), \
+		new /obj/item/wrench(), \
 		new /obj/item/clothing/head/welding(), \
-		new /obj/item/weapon/stock_parts/console_screen(), \
-		new /obj/item/weapon/airlock_electronics(), \
-		new /obj/item/weapon/airalarm_electronics(), \
-		new /obj/item/weapon/firealarm_electronics(), \
-		new /obj/item/weapon/module/power_control(), \
+		new /obj/item/stock_parts/console_screen(), \
+		new /obj/item/airlock_electronics(), \
+		new /obj/item/airalarm_electronics(), \
+		new /obj/item/firealarm_electronics(), \
+		new /obj/item/module/power_control(), \
 		new /obj/item/stack/sheet/metal(), \
 		new /obj/item/stack/sheet/glass(), \
 		new /obj/item/stack/sheet/rglass(), \
 		new /obj/item/stack/rods(), \
-		new /obj/item/weapon/rcd_ammo(), \
-		new /obj/item/weapon/kitchenknife(), \
-		new /obj/item/weapon/surgery_tool/scalpel(), \
-		new /obj/item/weapon/surgery_tool/circular_saw(), \
-		new /obj/item/weapon/surgery_tool/surgicaldrill(),\
-		new /obj/item/weapon/surgery_tool/retractor(),\
-		new /obj/item/weapon/surgery_tool/cautery(),\
-		new /obj/item/weapon/surgery_tool/hemostat(),\
-		new /obj/item/weapon/reagent_containers/glass/beaker(), \
-		new /obj/item/weapon/reagent_containers/glass/beaker/large(), \
-		new /obj/item/weapon/reagent_containers/glass/beaker/vial(), \
-		new /obj/item/weapon/reagent_containers/syringe(), \
+		new /obj/item/rcd_ammo(), \
+		new /obj/item/kitchenknife(), \
+		new /obj/item/surgery_tool/scalpel(), \
+		new /obj/item/surgery_tool/circular_saw(), \
+		new /obj/item/surgery_tool/surgicaldrill(),\
+		new /obj/item/surgery_tool/retractor(),\
+		new /obj/item/surgery_tool/cautery(),\
+		new /obj/item/surgery_tool/hemostat(),\
+		new /obj/item/reagent_containers/glass/beaker(), \
+		new /obj/item/reagent_containers/glass/beaker/large(), \
+		new /obj/item/reagent_containers/glass/beaker/vial(), \
+		new /obj/item/reagent_containers/syringe(), \
 		new /obj/item/ammo_casing/shotgun/blank(), \
 		new /obj/item/ammo_casing/shotgun/beanbag(), \
 		new /obj/item/ammo_casing/shotgun/improvised(), \
@@ -46,21 +46,21 @@ var/global/list/autolathe_recipes = list( \
 		new /obj/item/device/assembly/timer(), \
 		new /obj/item/device/assembly/voice(), \
 		new /obj/item/device/assembly/prox_sensor(), \
-		new /obj/item/weapon/light/tube(), \
-		new /obj/item/weapon/light/bulb(), \
-		new /obj/item/weapon/camera_assembly(), \
+		new /obj/item/light/tube(), \
+		new /obj/item/light/bulb(), \
+		new /obj/item/camera_assembly(), \
 	)
 
 var/global/list/autolathe_recipes_hidden = list( \
-		new /obj/item/weapon/flamethrower/full(), \
-		new /obj/item/weapon/rcd(), \
+		new /obj/item/flamethrower/full(), \
+		new /obj/item/rcd(), \
 		new /obj/item/device/radio/electropack(), \
-		new /obj/item/weapon/weldingtool/largetank(), \
-		new /obj/item/weapon/handcuffs(), \
+		new /obj/item/weldingtool/largetank(), \
+		new /obj/item/handcuffs(), \
 		new /obj/item/ammo_magazine/box/a357(), \
 		new /obj/item/ammo_casing/shotgun(), \
 		new /obj/item/ammo_casing/shotgun/dart(), \
-		/* new /obj/item/weapon/shield/riot(), */ \
+		/* new /obj/item/shield/riot(), */ \
 	)
 
 /obj/machinery/autolathe
@@ -159,7 +159,7 @@ var/global/list/autolathe_recipes_hidden = list( \
 			return
 
 		if (panel_open)
-			if(istype(O, /obj/item/weapon/crowbar))
+			if(istype(O, /obj/item/crowbar))
 				if(m_amount >= 3750)
 					var/obj/item/stack/sheet/metal/G = new /obj/item/stack/sheet/metal(src.loc)
 					G.amount = round(m_amount / 3750)
@@ -182,8 +182,8 @@ var/global/list/autolathe_recipes_hidden = list( \
 			user << "\red This object does not contain significant amounts of metal or glass, or cannot be accepted by the autolathe due to size or hazardous materials."
 			return 1
 
-	/*	if (istype(O, /obj/item/weapon/grab) && src.hacked)
-			var/obj/item/weapon/grab/G = O
+	/*	if (istype(O, /obj/item/grab) && src.hacked)
+			var/obj/item/grab/G = O
 			if (prob(25) && G.affecting)
 				G.affecting.gib()
 				m_amount += 50000
@@ -291,23 +291,23 @@ var/global/list/autolathe_recipes_hidden = list( \
 	..()
 	var/tot_rating = 0
 	prod_coeff = 0
-	for(var/obj/item/weapon/stock_parts/matter_bin/MB in component_parts)
+	for(var/obj/item/stock_parts/matter_bin/MB in component_parts)
 		tot_rating += MB.rating
 	tot_rating *= 25000
 	max_m_amount = tot_rating * 2
 	max_g_amount = tot_rating
-	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
+	for(var/obj/item/stock_parts/manipulator/M in component_parts)
 		prod_coeff += M.rating
 
 /obj/machinery/autolathe/New()
 	..()
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/autolathe(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-	component_parts += new /obj/item/weapon/stock_parts/console_screen(src)
+	component_parts += new /obj/item/circuitboard/autolathe(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src)
+	component_parts += new /obj/item/stock_parts/console_screen(src)
 	RefreshParts()
 
 	current_recipes = autolathe_recipes

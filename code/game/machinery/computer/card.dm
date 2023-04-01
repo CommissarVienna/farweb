@@ -9,9 +9,9 @@ var/time_last_changed_position = 0
 	desc = "You can use this to change ID's."
 	icon_state = "id"
 	req_one_access = list(access_change_ids)
-	circuit = /obj/item/weapon/circuitboard/card
-	var/obj/item/weapon/card/id/scan = null
-	var/obj/item/weapon/card/id/modify = null
+	circuit = /obj/item/circuitboard/card
+	var/obj/item/card/id/scan = null
+	var/obj/item/card/id/modify = null
 	var/authenticated = 0.0
 	var/mode = 0.0
 	var/printing = null
@@ -48,8 +48,8 @@ var/time_last_changed_position = 0
 	var/list/opened_positions = list();
 
 /obj/machinery/computer/card/attackby(O as obj, user as mob, params)//TODO:SANITY
-	if(istype(O, /obj/item/weapon/card/id))
-		var/obj/item/weapon/card/id/idcard = O
+	if(istype(O, /obj/item/card/id))
+		var/obj/item/card/id/idcard = O
 		if(check_access(idcard))
 			if(!scan)
 				usr.drop_item()
@@ -314,7 +314,7 @@ var/time_last_changed_position = 0
 				head_subordinates = null
 			else
 				var/obj/item/I = usr.get_active_hand()
-				if (istype(I, /obj/item/weapon/card/id))
+				if (istype(I, /obj/item/card/id))
 					usr.drop_item()
 					I.loc = src
 					modify = I
@@ -327,7 +327,7 @@ var/time_last_changed_position = 0
 				scan = null
 			else
 				var/obj/item/I = usr.get_active_hand()
-				if (istype(I, /obj/item/weapon/card/id))
+				if (istype(I, /obj/item/card/id))
 					usr.drop_item()
 					I.loc = src
 					scan = I
@@ -454,7 +454,7 @@ var/time_last_changed_position = 0
 			if (!( printing ))
 				printing = 1
 				sleep(50)
-				var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( loc )
+				var/obj/item/paper/P = new /obj/item/paper( loc )
 				var/t1 = "<B>Crew Manifest:</B><BR>"
 				for(var/datum/data/record/t in sortRecord(data_core.general))
 					t1 += t.fields["name"] + " - " + t.fields["rank"] + "<br>"
@@ -467,12 +467,13 @@ var/time_last_changed_position = 0
 	return
 
 /obj/machinery/computer/card/proc/get_subordinates(var/rank)
+	/*
 	for(var/datum/job/job in job_master.occupations)
 		if(rank in job.department_head)
 			head_subordinates += job.title
-
+	*/
 /obj/machinery/computer/card/centcom
 	name = "\improper Centcom identification console"
-	circuit = /obj/item/weapon/circuitboard/card/centcom
+	circuit = /obj/item/circuitboard/card/centcom
 	req_access = list(access_cent_captain)
 

@@ -9,13 +9,13 @@
 	var/honey_time = 6000 //10 min
 	var/mob_targeted
 	var/mob/living/simple_animal/bee/child_bee
-	var/obj/item/weapon/storage/touchable/storage_inside
+	var/obj/item/storage/touchable/storage_inside
 
 /obj/structure/bee_hive/New()
 	..()
-	storage_inside = new /obj/item/weapon/storage/touchable(src)
+	storage_inside = new /obj/item/storage/touchable(src)
 	last_time = world.time
-	new /obj/item/weapon/reagent_containers/food/snacks/honeycomb(src.storage_inside)
+	new /obj/item/reagent_containers/food/snacks/honeycomb(src.storage_inside)
 	processing_objects.Add(src)
 
 /obj/structure/bee_hive/Destroy()
@@ -26,7 +26,7 @@
 /obj/structure/bee_hive/process()
 	if(storage_inside.contents && without_honey)
 		for(var/HC in storage_inside.contents)
-			if(istype(HC, /obj/item/weapon/reagent_containers/food/snacks/honeycomb))
+			if(istype(HC, /obj/item/reagent_containers/food/snacks/honeycomb))
 				without_honey = FALSE
 				break
 
@@ -35,7 +35,7 @@
 
 	if(!without_honey)
 		if((last_time + honey_time < world.time) && (storage_inside.contents.len < storage_inside.storage_slots))
-			new /obj/item/weapon/reagent_containers/food/snacks/honeycomb(src.storage_inside)
+			new /obj/item/reagent_containers/food/snacks/honeycomb(src.storage_inside)
 			last_time = world.time
 
 		if(!mob_targeted)
@@ -49,13 +49,13 @@
 	update_icon()
 
 /obj/structure/bee_hive/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if(istype(O, /obj/item/weapon/flame))
-		var/obj/item/weapon/flame/F = O
+	if(istype(O, /obj/item/flame))
+		var/obj/item/flame/F = O
 		if(F.lit)
 			processing_objects.Remove(src)
 			burned = TRUE
 			without_honey = TRUE
-			for(var/obj/item/weapon/reagent_containers/food/snacks/honeycomb/H in storage_inside.contents)
+			for(var/obj/item/reagent_containers/food/snacks/honeycomb/H in storage_inside.contents)
 				qdel(H)
 				new /obj/item/wax(src.storage_inside)
 			update_icon()
@@ -84,7 +84,7 @@
 	icon_state = "wax"
 	icon = 'icons/obj/lw_bees.dmi'
 
-/obj/item/weapon/reagent_containers/food/snacks/honeycomb
+/obj/item/reagent_containers/food/snacks/honeycomb
 	name = "honeycomb"
 	icon_state = "honeycomb"
 	icon = 'icons/obj/food.dmi'

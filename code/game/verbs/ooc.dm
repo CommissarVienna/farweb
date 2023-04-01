@@ -1,7 +1,7 @@
 
 var/global/normal_ooc_colour = "#666699"
 /obj/pigforrandy
-	icon = 'chat_for_randy.dmi'
+	icon = 'icons/chat_for_randy.dmi'
 	icon_state = "pigforrandy"
 
 /client/verb/ooc(msg as text)
@@ -10,7 +10,7 @@ var/global/normal_ooc_colour = "#666699"
 
 	if(!mob)	return
 	if(IsGuestKey(key))
-		src << "Guests may not use OOC."
+		//src << "Guests may not use OOC."
 		return
 
 	msg = sanitize(msg)
@@ -19,16 +19,14 @@ var/global/normal_ooc_colour = "#666699"
 
 	if(!holder)
 		if(silenceofpigs)
-			if(comradelist.Find(src.ckey) || villainlist.Find(src.ckey))
-				src << "worked"
-			else
+			if(!access_comrade.Find(src.ckey) && !access_villain.Find(src.ckey))
 				to_chat(src, "<span class='hitbold'>Silence, pig!</span>")
 				return
 		if(!dooc_allowed && (mob.stat == DEAD))
-			usr << "\red OOC for dead mobs has been turned off."
+			to_chat(src,"<span class='highlighttext'>OOC for dead mobs has been turned off.</span>")
 			return
 		if(prefs.muted & MUTE_OOC)
-			src << "\red You cannot use OOC (muted)."
+			to_chat(src,"<span class='highlighttext'>You cannot use OOC (muted).</span>")
 			return
 		if(handle_spam_prevention(msg,MUTE_OOC))
 			return
@@ -39,7 +37,7 @@ var/global/normal_ooc_colour = "#666699"
 			message_admins("[key_name_admin(src)] has attempted to advertise in OOC: [msg]")
 			return
 		if(findtext(msg, "OOC:"))
-			to_chat(src, "<span class='highlighttext'><B>Pare de ser carente.</B></span>")
+			to_chat(src, "<span class='highlighttext'><B>\"OOC:\" is not required.</B></span>")
 			src << 'sound/sound_ahelp_br.ogg'
 			log_admin("[key_name(src)] has attempted to be carente in OOC: [msg]")
 			message_admins("[key_name_admin(src)] has attempted to be carente in OOC: [msg]")
@@ -49,109 +47,133 @@ var/global/normal_ooc_colour = "#666699"
 
 	var/display_colour = normal_ooc_colour
 	if(!holder)
-		if(ckey(src.key) in customooccolorlist)
+		if(ckey(src.key) in donation_mycolor)
 			display_colour = src.prefs.ooccolor
 		else
 			display_colour = normal_ooc_colour
 	else
-		if(ckey(src.key) in customooccolorlist)
+		if(ckey(src.key) in donation_mycolor)
 			display_colour = src.prefs.ooccolor
 		else
 			display_colour = normal_ooc_colour
-/*	else if(holder)
-		display_colour = src.prefs.ooccolor
-	else if(src.ckey in ckey(guardianlist))
-		display_colour = "#4b02f5"*/
-/*	if(holder && !holder.fakekey)
-		display_colour = "#666699"	//light blue
-		if(holder.rights & R_MOD && !(holder.rights & R_ADMIN))
-			display_colour = "#184880"	//dark blue
-		if(holder.rights & R_DEBUG && !(holder.rights & R_ADMIN))
-			display_colour = "#1b521f"	//dark green
-		else if(holder.rights & R_ADMIN)
-			if(config.allow_admin_ooccolor)
-				display_colour = src.prefs.ooccolor
-			else
-				display_colour = "#b80000"	//orange
-		else if(src.key in villainlist)
-			display_colour = "#b00912"
-		else if(src.key in comradelist)
-			display_colour = "#000a2b"
-*/
 	msg = emoji_parse(msg)
+
+	if(findtext(lowertext(msg), config.ooc_filter_regex))
+		src << 'sound/vam_ban.ogg'
+		to_chat(src, "That was pretty cringe!")
+		log_admin("[key] just tried to say OOC cringe")
+		message_admins("[key] just tried to OOC say cringe")
+		//if(!holder)
+		//	bans.Add(key)
+		//	game_remove_whitelist(reason = "Automatic ban: ([key] : [msg])")
+		//	qdel(src)
+		return
 
 	if(ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_FINISHED || ticker.current_state == GAME_STATE_SETTING_UP)
 		for(var/client/C in clients)
 			if(C.prefs.toggles & CHAT_OOC)
-				var/display_name = src.key
+				var/display_name = "[src.key]"
 				if(holder)
 					if(holder.fakekey)
 						if(C.holder)
 							display_name = "[holder.fakekey]/([src.key])"
 						else
 							display_name = holder.fakekey
-				//to_chat(C, "<span class='ooc'>OOC: [display_name]: [msg]</span>")
-				if(guardianlist.Find(ckey(src.key)))
-					to_chat(C, "<span class='oocnew'><font color='[display_colour]'>⚔️<b>OOC: [display_name]: [msg]</b></font></span>")
-				else
-					to_chat(C, "<span class='oocnew'><font color='[display_colour]'><b>OOC: [display_name]: [msg]</b></font></span>")
+				if(C.holder)//Admins can see the actual ckeys.
+					if(guardianlist.Find(ckey(src.key))).
+						to_chat(C, "<span class='oocnew'><font color='[display_colour]'>⚔️<b>OOC: [display_name]: [msg]</b></font></span>")
+					else
+						to_chat(C, "<span class='oocnew'><font color='[display_colour]'><b>OOC: [display_name]: [msg]</b></font></span>")
 
 	if(ticker.current_state == GAME_STATE_PLAYING)
 		for(var/mob/new_player/C in player_list)
 			if(C.client.prefs.toggles & CHAT_OOC)
-				var/display_name = src.key
-				if(guardianlist.Find(ckey(src.key)))
-					to_chat(C, "<span class='oocnew'><font color='[display_colour]'>⚔️<b>LOBBY: [display_name]: [msg]</b></font></span>")
-				else
-					to_chat(C, "<span class='oocnew'><font color='[display_colour]'><b>LOBBY: [display_name]: [msg]</b></font></span>")
-/*
-			if(!C.prefs.nameglow)
-				if(display_name == "ThuxTK")
-					to_chat(C, "<span class='thuxooc'>[icon2html(a, C)]<b>OOC: [display_name]: [msg]</b></span>")
-				else
-					if(display_name == "Aedaris" || display_name == "Comicao1")
-						to_chat(C, "<span class='glowooc'><font color='[display_colour]'>ᛋᛋ <b>OOC: [display_name]: [msg]</b></font></span>")
-					else
-						if(display_name == "Nopm2")
-							to_chat(C, "<span class='glowooc'><font color='[display_colour]'>👺👹<b>OOC: [display_name]: [msg]</b></font></span>")
-						else
-							if(display_name == "John_egbert3" || display_name == "Torne saien")
-								to_chat(C, "<span class='glowooc'><font color='[display_colour]'>ඞ<b>OOC: [display_name]: [msg]</b></font></span>")
-							else
-								to_chat(C, "<span class='glowooc'><font color='[display_colour]'><b>OOC: [display_name]: [msg]</b></font></span>")
-			else
-				if(display_name == "ThuxTK")
-					to_chat(C, "<span class='thuxooc'>[icon2html(a, C)]<b>OOC: [display_name]: [msg]</b></span>")
-				else
-					if(display_name == "Aedaris" || display_name == "Comicao1")
-						to_chat(C, "<span class='glowooc'><font color='[display_colour]'>ᛋᛋ <b>OOC: [display_name]: [msg]</b></font></span>")
-					else
-						if(display_name == "Nopm2")
-							to_chat(C, "<span class='glowooc'><font color='[display_colour]'>👺👹<b>OOC: [display_name]: [msg]</b></font></span>")
-						else
-							if(display_name == "John_egbert3" || display_name == "Torne saien")
-								to_chat(C, "<span class='glowooc'><font color='[display_colour]'>ඞ<b>OOC: [display_name]: [msg]</b></font></span>")
-							else
-								to_chat(C, "<span class='glowooc'><font color='[display_colour]'><b>OOC: [display_name]: [msg]</b></font></span>")
-*/
-									/*
-			if(holder)
-				if(!holder.fakekey || C.holder)
-					if(holder.rights & R_ADMIN)
-						C << "<font color=[config.allow_admin_ooccolor ? src.prefs.ooccolor :"#b82e00" ]><b><span class='prefix'>OOC:</span> <EM>[key][holder.fakekey ? "/([holder.fakekey])" : ""]:</EM> <span class='message'>[msg]</span></b></font>"
-					else if(holder.rights & R_MOD)
-						C << "<font color=#184880><b><span class='prefix'>OOC:</span> <EM>[src.key][holder.fakekey ? "/([holder.fakekey])" : ""]:</EM> <span class='message'>[msg]</span></b></font>"
-					else
-						C << "<font color='[normal_ooc_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[src.key]:</EM> <span class='message'>[msg]</span></span></font>"
-
-				else
-					C << "<font color='[normal_ooc_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[holder.fakekey ? holder.fakekey : src.key]:</EM> <span class='message'>[msg]</span></span></font>"
-			else
-				C << "<font color='[normal_ooc_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[src.key]:</EM> <span class='message'>[msg]</span></span></font>"
-			*/
+				var/display_name = "[src.key]"
+				to_chat(C, "<span class='oocnew'><font color='[display_colour]'><b>LOBBY: [display_name]: [msg]</b></font></span>")
 
 /client/proc/set_ooc(newColor as color)
 	set name = "Set Player OOC Colour"
 	set desc = "Set to yellow for eye burning goodness."
 	set category = "Fun"
 	normal_ooc_colour = newColor
+
+/client/verb/fix_chat()
+	set name = "FixChat"
+	set category = "OOC"
+	if (!chatOutput || !istype(chatOutput))
+		var/action = alert(src, "Invalid Chat Output data found!\nRecreate data?", "Wot?", "Recreate Chat Output data", "Cancel")
+		if (action != "Recreate Chat Output data")
+			return
+		chatOutput = new /datum/chatOutput(src)
+		chatOutput.start()
+		action = alert(src, "Goon chat reloading, wait a bit and tell me if it's fixed", "", "Fixed", "Nope")
+		if (action == "Fixed")
+			log_game("GOONCHAT: [key_name(src)] Had to fix their goonchat by re-creating the chatOutput datum")
+		else
+			chatOutput.load()
+			action = alert(src, "How about now? (give it a moment (it may also try to load twice))", "", "Yes", "No")
+			if (action == "Yes")
+				log_game("GOONCHAT: [key_name(src)] Had to fix their goonchat by re-creating the chatOutput datum and forcing a load()")
+			else
+				action = alert(src, "Welp, I'm all out of ideas. Try closing byond and reconnecting.\nWe could also disable fancy chat and re-enable oldchat", "", "Thanks anyways", "Switch to old chat")
+				if (action == "Switch to old chat")
+					winset(src, "output", "is-visible=true;is-disabled=false")
+					winset(src, "browseroutput", "is-visible=false")
+				log_game("GOONCHAT: [key_name(src)] Failed to fix their goonchat window after recreating the chatOutput and forcing a load()")
+
+	else if (chatOutput.loaded)
+		var/action = alert(src, "ChatOutput seems to be loaded\nDo you want me to force a reload, wiping the chat log or just refresh the chat window because it broke/went away?", "Hmmm", "Force Reload", "Refresh", "Cancel")
+		switch (action)
+			if ("Force Reload")
+				chatOutput.loaded = FALSE
+				chatOutput.start() //this is likely to fail since it asks , but we should try it anyways so we know.
+				action = alert(src, "Goon chat reloading, wait a bit and tell me if it's fixed", "", "Fixed", "Nope")
+				if (action == "Fixed")
+					log_game("GOONCHAT: [key_name(src)] Had to fix their goonchat by forcing a start()")
+				else
+					chatOutput.load()
+					action = alert(src, "How about now? (give it a moment (it may also try to load twice))", "", "Yes", "No")
+					if (action == "Yes")
+						log_game("GOONCHAT: [key_name(src)] Had to fix their goonchat by forcing a load()")
+					else
+						action = alert(src, "Welp, I'm all out of ideas. Try closing byond and reconnecting.\nWe could also disable fancy chat and re-enable oldchat", "", "Thanks anyways", "Switch to old chat")
+						if (action == "Switch to old chat")
+							winset(src, "output", "is-visible=true;is-disabled=false")
+							winset(src, "browseroutput", "is-visible=false")
+						log_game("GOONCHAT: [key_name(src)] Failed to fix their goonchat window forcing a start() and forcing a load()")
+
+			if ("Refresh")
+				chatOutput.showChat()
+				action = alert(src, "Goon chat refreshing, wait a bit and tell me if it's fixed", "", "Fixed", "Nope, force a reload")
+				if (action == "Fixed")
+					log_game("GOONCHAT: [key_name(src)] Had to fix their goonchat by forcing a show()")
+				else
+					chatOutput.loaded = FALSE
+					chatOutput.load()
+					action = alert(src, "How about now? (give it a moment)", "", "Yes", "No")
+					if (action == "Yes")
+						log_game("GOONCHAT: [key_name(src)] Had to fix their goonchat by forcing a load()")
+					else
+						action = alert(src, "Welp, I'm all out of ideas. Try closing byond and reconnecting.\nWe could also disable fancy chat and re-enable oldchat", "", "Thanks anyways", "Switch to old chat")
+						if (action == "Switch to old chat")
+							winset(src, "output", "is-visible=true;is-disabled=false")
+							winset(src, "browseroutput", "is-visible=false")
+						log_game("GOONCHAT: [key_name(src)] Failed to fix their goonchat window forcing a show() and forcing a load()")
+		return
+
+	else
+		chatOutput.start()
+		var/action = alert(src, "Manually loading Chat, wait a bit and tell me if it's fixed", "", "Fixed", "Nope")
+		if (action == "Fixed")
+			log_game("GOONCHAT: [key_name(src)] Had to fix their goonchat by manually calling start()")
+		else
+			chatOutput.load()
+			alert(src, "How about now? (give it a moment (it may also try to load twice))", "", "Yes", "No")
+			if (action == "Yes")
+				log_game("GOONCHAT: [key_name(src)] Had to fix their goonchat by manually calling start() and forcing a load()")
+			else
+				action = alert(src, "Welp, I'm all out of ideas. Try closing byond and reconnecting.\nWe could also disable fancy chat and re-enable oldchat", "", "Thanks anyways", "Switch to old chat")
+				if (action == "Switch to old chat")
+					winset(src, "output", list2params(list("on-show" = "", "is-disabled" = "false", "is-visible" = "true")))
+					winset(src, "browseroutput", "is-disabled=true;is-visible=false")
+				log_game("GOONCHAT: [key_name(src)] Failed to fix their goonchat window after manually calling start() and forcing a load()")

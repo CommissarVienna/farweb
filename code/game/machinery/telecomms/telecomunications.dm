@@ -266,7 +266,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	idle_power_usage = 30
 	machinetype = 1
 	heatgen = 0
-	circuitboard = "/obj/item/weapon/circuitboard/telecomms/receiver"
+	circuitboard = "/obj/item/circuitboard/telecomms/receiver"
 
 /obj/machinery/telecomms/receiver/receive_signal(datum/signal/signal)
 
@@ -323,7 +323,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	idle_power_usage = 80
 	machinetype = 7
 	heatgen = 0
-	circuitboard = "/obj/item/weapon/circuitboard/telecomms/hub"
+	circuitboard = "/obj/item/circuitboard/telecomms/hub"
 	long_range_link = 1
 	netspeed = 40
 
@@ -358,7 +358,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	idle_power_usage = 30
 	machinetype = 8
 	heatgen = 0
-	circuitboard = "/obj/item/weapon/circuitboard/telecomms/relay"
+	circuitboard = "/obj/item/circuitboard/telecomms/relay"
 	netspeed = 5
 	long_range_link = 1
 	var/broadcasting = 1
@@ -410,7 +410,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	idle_power_usage = 50
 	machinetype = 2
 	heatgen = 0
-	circuitboard = "/obj/item/weapon/circuitboard/telecomms/bus"
+	circuitboard = "/obj/item/circuitboard/telecomms/bus"
 	netspeed = 40
 	var/change_frequency = 0
 
@@ -464,7 +464,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	machinetype = 3
 	heatgen = 0
 	delay = 5
-	circuitboard = "/obj/item/weapon/circuitboard/telecomms/processor"
+	circuitboard = "/obj/item/circuitboard/telecomms/processor"
 	var/process_mode = 1 // 1 = Uncompress Signals, 0 = Compress Signals
 
 	receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
@@ -502,7 +502,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	idle_power_usage = 15
 	machinetype = 4
 	heatgen = 0
-	circuitboard = "/obj/item/weapon/circuitboard/telecomms/server"
+	circuitboard = "/obj/item/circuitboard/telecomms/server"
 	var/list/log_entries = list()
 	var/list/stored_names = list()
 	var/list/TrafficActions = list()

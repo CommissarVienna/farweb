@@ -3,7 +3,7 @@
 	var/statDependent = TRUE
 	var/ignoreArmor = FALSE
 
-/obj/item/weapon/melee/energy/sword
+/obj/item/melee/energy/sword
 	statDependent = FALSE
 
 /mob/living/carbon/human/proc/attacked_by(var/obj/item/I, var/mob/living/carbon/human/attacker, var/def_zone)
@@ -28,7 +28,7 @@
 	var/miss_chance_mod = null //chance de errar
 	var/specialty_mod = specialty_check(attacker, I)
 
-	switch(attacker.my_skills.GET_SKILL(SKILL_MELEE))
+	switch(attacker.my_skills.get_skill(SKILL_MELEE))
 		if(1)
 			miss_chance_mod = 20
 		if(2)
@@ -77,7 +77,7 @@
 
 	if(attempt_dodge(victim, attacker) && victim.c_intent == "dodge" && victim.canmove && !victim.lying && victim.stat == 0)
 		playsound(loc, I.swing_sound, 100, 1, -1)
-		visible_message("<span class='hitbold'>[attacker]</span> <span class='hit'>tries to [I.attack_verb.len ? pick(I.attack_verb) : "attack"]</span> <span class='hitbold'>[src]'s</span> <span class='hit'>[target_zone] with his [capitalize(I.name)], but [src] dodges the attack!</span>")
+		visible_message("<span class='hitbold'>[attacker]</span> <span class='hit'>tries to [I.attack_verb.len ? pick(I.attack_verb) : "attack"]</span> <span class='hitbold'>[src]'s</span> <span class='hit'>[affecting.display_name] with his [capitalize(I.name)], but [src] dodges the attack!</span>")
 		victim.do_dodge()
 		return
 
@@ -141,7 +141,7 @@
 				victim.Paralyse(rand(5, 8))
 		affecting.droplimb()
 
-	if(istype(I, /obj/item/weapon/whip)) //le nojeira coding
+	if(istype(I, /obj/item/whip)) //le nojeira coding
 		apply_damage(1.5, BRUTE, affecting, armor, sharp=weaponsharp, edge=weaponedge, used_weapon=I)
 		victim.viceneed = 0
 		var/turf/T = get_step(victim.loc, victim.dir)
@@ -346,7 +346,7 @@
 	if(Iforce > 10 || Iforce >= 5 && prob(33))
 		forcesay("-")	//forcesay checks stat already
 	if(src.gender == MALE && attacker.gender == FEMALE || src.gender == FEMALE && attacker.gender == MALE)
-		if(src.vice == "Masochist")
+		if(src.has_vice("Masochist"))
 			src.viceneed = 0
 	if(attacker.my_stats.st >= my_stats.ht+4 && !lying && !I.sharp && !I.edge)
 		var/turf/target = get_turf(src.loc)
@@ -376,24 +376,6 @@
 			if(prob(2))
 				affecting.embed(I)
 
-		if(victim?.isVampire && I.silver)
-			if(armor == ARMOR_SOFTEN)
-				return
-			else
-				victim.Weaken(4)
-				victim.apply_damage(damage*1.5, BRUTE, affecting)
-				flash_pain()
-				victim.rotate_plane(1)
-				if(prob(40))
-					victim.vessel.remove_reagent("blood",25)
-				if(prob(50))
-					victim.emote("SCREECHES in pain!")
-					playsound(victim.loc, pick('sound/effects/vamphit1.ogg', 'sound/effects/vamphit2.ogg', 'sound/effects/vamphit3.ogg'), 75, 0, -1)
-					if(!victim.ExposedFang)
-						playsound(victim.loc, ('sound/effects/fangs1.ogg'), 50, 0, -1)
-						victim.visible_message("<span class='combatbold'>[victim]</span> <span class='combat'>exposes fangs!</span>")
-						victim.ExposedFang = TRUE
-						victim.update_body()
 	return 1
 
 /mob/living/carbon/human/proc/shouldIStun(var/force = 0)
@@ -414,13 +396,13 @@
 	return
 
 /mob/living/carbon/human/proc/specialty_check(var/mob/living/carbon/human/attacker, var/obj/item/I)
-	if(istype(I, /obj/item/weapon))
-		var/obj/item/weapon/W = I
+	if(istype(I, /obj/item))
+		var/obj/item/W = I
 		var/specialty_mod = null
 		switch(W.weaponteaching)
 			if("SWORD")
-				if(attacker.my_skills.GET_SKILL(SKILL_SWORD))
-					switch(attacker.my_skills.GET_SKILL(SKILL_SWORD))
+				if(attacker.my_skills.get_skill(SKILL_SWORD))
+					switch(attacker.my_skills.get_skill(SKILL_SWORD))
 						if(1)
 							specialty_mod = -10
 						if(2)
@@ -432,8 +414,8 @@
 						if(5)
 							specialty_mod = -50
 			if("POLEARM")
-				if(attacker.my_skills.GET_SKILL(SKILL_STAFF))
-					switch(attacker.my_skills.GET_SKILL(SKILL_STAFF))
+				if(attacker.my_skills.get_skill(SKILL_STAFF))
+					switch(attacker.my_skills.get_skill(SKILL_STAFF))
 						if(1)
 							specialty_mod = -10
 						if(2)
@@ -445,8 +427,8 @@
 						if(5)
 							specialty_mod = -50
 			if("AXE")
-				if(attacker.my_skills.GET_SKILL(SKILL_SWING))
-					switch(attacker.my_skills.GET_SKILL(SKILL_SWING))
+				if(attacker.my_skills.get_skill(SKILL_SWING))
+					switch(attacker.my_skills.get_skill(SKILL_SWING))
 						if(1)
 							specialty_mod = -10
 						if(2)
@@ -458,8 +440,8 @@
 						if(5)
 							specialty_mod = -50
 			if("CLUB")
-				if(attacker.my_skills.GET_SKILL(SKILL_SWING))
-					switch(attacker.my_skills.GET_SKILL(SKILL_SWING))
+				if(attacker.my_skills.get_skill(SKILL_SWING))
+					switch(attacker.my_skills.get_skill(SKILL_SWING))
 						if(1)
 							specialty_mod = -10
 						if(2)
@@ -471,8 +453,8 @@
 						if(5)
 							specialty_mod = -50
 			if("SPEAR")
-				if(attacker.my_skills.GET_SKILL(SKILL_STAFF))
-					switch(attacker.my_skills.GET_SKILL(SKILL_STAFF))
+				if(attacker.my_skills.get_skill(SKILL_STAFF))
+					switch(attacker.my_skills.get_skill(SKILL_STAFF))
 						if(1)
 							specialty_mod = -10
 						if(2)
@@ -484,8 +466,8 @@
 						if(5)
 							specialty_mod = -50
 			if("KNIFE")
-				if(attacker.my_skills.GET_SKILL(SKILL_KNIFE))
-					switch(attacker.my_skills.GET_SKILL(SKILL_KNIFE))
+				if(attacker.my_skills.get_skill(SKILL_KNIFE))
+					switch(attacker.my_skills.get_skill(SKILL_KNIFE))
 						if(1)
 							specialty_mod = -10
 						if(2)

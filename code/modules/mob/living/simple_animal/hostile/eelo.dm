@@ -20,7 +20,7 @@
 	attack_sound = 'sound/effects/strygh_attack_01.ogg'
 	faction = "creature"
 	speed = 7
-	a_intent = "harm"
+	a_intent = "hurt"
 	stance = HOSTILE_STANCE_ATTACK
 
 
@@ -61,7 +61,7 @@
 		else
 			user << "\blue this [src] is dead, medical items won't bring it back to life."
 	if(meat_type && (stat == DEAD))	//if the animal has a meat, and if it is dead.
-		if(istype(O, /obj/item/weapon/kitchenknife) || istype(O, /obj/item/weapon/butch) || istype(O, /obj/item/weapon/kitchen/utensil/knife))
+		if(istype(O, /obj/item/kitchenknife) || istype(O, /obj/item/butch) || istype(O, /obj/item/kitchen/utensil/knife))
 			new meat_type (get_turf(src))
 			new meat_type (get_turf(src))
 			new meat_type (get_turf(src))

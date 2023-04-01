@@ -1,4 +1,4 @@
-/datum/organ/external/foot/l_foot
+/datum/organ/external/extrem/foot/l_foot
 	name = "l_foot"
 	display_name = "left foot"
 	display_namebr = "pé esquerdo"

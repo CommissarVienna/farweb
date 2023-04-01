@@ -4,8 +4,8 @@
 	stage = 1
 	spread = "Sexual Intercourse"
 	spread_type = SPECIAL
-	cure = "Rest & Spaceacillin"
-	cure_id = "spaceacillin"
+	cure = "Rest & Kalocin"
+	cure_id = "kalocin"
 	agent = "acquired immunodeficiency syndrome"
 	affected_species = list("Human", "Monkey")
 	permeability_mod = 0.5

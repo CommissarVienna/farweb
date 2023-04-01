@@ -8,8 +8,8 @@
 	var/open = 1
 
 /obj/structure/pit/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/weapon/shovel))
-		var/obj/item/weapon/shovel/S = W
+	if(istype(W, /obj/item/shovel))
+		var/obj/item/shovel/S = W
 		if(S.contents.len) //has dirt
 			if(src.open)
 				user.visible_message("[user] starts filling the pit.")
@@ -25,15 +25,15 @@
 			if(do_after(user, 10))
 				playsound(src, 'sound/effects/dig_shovel.ogg', 50, 1)
 				open()
-				var/obj/item/weapon/ore/dirt/D = new(user.loc)
+				var/obj/item/ore/dirt/D = new(user.loc)
 				S.contents += D
 				D.loc = S
 				W.update_icon()
 				src.update_icon()
 				return
 
-	if(istype(W, /obj/item/weapon/kitchen/utensil/knife/dagger/wood_stake))
-		var/obj/item/weapon/kitchen/utensil/knife/dagger/wood_stake/stake = W
+	if(istype(W, /obj/item/kitchen/utensil/knife/dagger/wood_stake))
+		var/obj/item/kitchen/utensil/knife/dagger/wood_stake/stake = W
 		if(open)
 			user.drop_from_inventory(stake)
 			src.contents += stake
@@ -52,9 +52,9 @@
 			plank.use(1)
 			new/obj/structure/gravemarker(src.loc)
 
-	if(istype(W,/obj/item/weapon/pickaxe) && open)
+	if(istype(W,/obj/item/pickaxe) && open)
 		to_chat(user, "<span class='combatbold'>You hit [src]!</span>")
-		playsound(user.loc, pick('npc_human_pickaxe_01.ogg','npc_human_pickaxe_02.ogg','npc_human_pickaxe_03.ogg','npc_human_pickaxe_05.ogg'), 25, 1, -1)
+		playsound(user.loc, pick('sound/effects/npc_human_pickaxe_01.ogg','sound/effects/npc_human_pickaxe_02.ogg','sound/effects/npc_human_pickaxe_03.ogg','sound/effects/npc_human_pickaxe_05.ogg'), 25, 1, -1)
 		if(src.z <= 1)
 			to_chat(user, "<span class='bname'>TOO HARD!!!</span>")
 			return
@@ -78,20 +78,20 @@
 	icon_state = "hole3"
 	New()
 		..()
-		contents += new/obj/item/weapon/kitchen/utensil/knife/dagger/wood_stake
-		contents += new/obj/item/weapon/kitchen/utensil/knife/dagger/wood_stake
-		contents += new/obj/item/weapon/kitchen/utensil/knife/dagger/wood_stake
+		contents += new/obj/item/kitchen/utensil/knife/dagger/wood_stake
+		contents += new/obj/item/kitchen/utensil/knife/dagger/wood_stake
+		contents += new/obj/item/kitchen/utensil/knife/dagger/wood_stake
 		update_icon()
 
 /obj/structure/pit/attack_hand(mob/user as mob)
 	if(src.contents.len)
 		var/has_stakes = 0
 		var/list/toPick = list()
-		for(var/obj/item/weapon/kitchen/utensil/knife/dagger/wood_stake/W in src)
+		for(var/obj/item/kitchen/utensil/knife/dagger/wood_stake/W in src)
 			has_stakes = 1
 			toPick.Add(W)
 		if(has_stakes)
-			var/obj/item/weapon/kitchen/utensil/knife/dagger/wood_stake/stake = pick(toPick)
+			var/obj/item/kitchen/utensil/knife/dagger/wood_stake/stake = pick(toPick)
 			contents -= stake
 			stake.loc = src.loc
 			user.put_in_active_hand(stake)
@@ -100,7 +100,7 @@
 /obj/structure/pit/Crossed(mob/living/carbon/human/M as mob|obj)
 	if(isliving(M) && src.contents.len && !M.throwing && src.open)
 		var/has_stakes = 0
-		for(var/obj/item/weapon/kitchen/utensil/knife/dagger/wood_stake/W in src)
+		for(var/obj/item/kitchen/utensil/knife/dagger/wood_stake/W in src)
 			has_stakes += 1
 		if(has_stakes)
 			M.emote("agonydeath")
@@ -114,9 +114,9 @@
 
 /obj/structure/pit/update_icon()
 	icon_state = "pit[open]"
-	if(locate(/obj/item/weapon/kitchen/utensil/knife/dagger/wood_stake/) in src)
+	if(locate(/obj/item/kitchen/utensil/knife/dagger/wood_stake/) in src)
 		var/amount = 0
-		for(var/obj/item/weapon/kitchen/utensil/knife/dagger/wood_stake/W in contents)
+		for(var/obj/item/kitchen/utensil/knife/dagger/wood_stake/W in contents)
 			amount++
 		icon_state = "hole[min(3, amount)]"
 
@@ -240,17 +240,17 @@
 	message = "[born] - [died]."
 
 /obj/structure/gravemarker/attackby(obj/item/W, mob/user)
-	if(istype(W,/obj/item/weapon/hatchet))
+	if(istype(W,/obj/item/hatchet))
 		visible_message("<span class = 'warning'>\The [user] starts hacking away at \the [src] with \the [W].</span>")
 		if(!do_after(user, 30))
 			visible_message("<span class = 'warning'>\The [user] hacks \the [src] apart.</span>")
 			new /obj/item/stack/sheet/wood(src)
 			qdel(src)
-	if(istype(W,/obj/item/weapon/pen))
+	if(istype(W,/obj/item/pen))
 		var/msg = sanitize(input(user, "What should it say?", "Grave marker", message) as text|null)
 		if(msg)
 			message = msg
-	if(istype(W,/obj/item/weapon/chisel))
+	if(istype(W,/obj/item/chisel))
 		var/msg = sanitize(input(user, "What should it say?", "Grave marker", message) as text|null)
 		if(msg)
 			message = msg

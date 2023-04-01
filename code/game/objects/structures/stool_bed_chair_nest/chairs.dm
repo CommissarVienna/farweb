@@ -15,7 +15,7 @@
 		handle_rotation()
 	return
 
-/obj/structure/stool/bed/chair/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/stool/bed/chair/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 	if(istype(W, /obj/item/assembly/shock_kit))
 		var/obj/item/assembly/shock_kit/SK = W
@@ -41,8 +41,10 @@
 /obj/structure/stool/bed/chair/proc/handle_rotation()	//making this into a seperate proc so office chairs can call it on Move()
 	if(src.dir == NORTH)
 		src.layer = FLY_LAYER
+		src.plane = 15
 	else
 		src.layer = OBJ_LAYER
+		src.plane = 0
 	if(buckled_mob)
 		buckled_mob.dir = dir
 
@@ -83,8 +85,8 @@
 	name = "wooden chair"
 	desc = "Old is never too old to not be in fashion."
 
-/obj/structure/stool/bed/chair/wood/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/wrench))
+/obj/structure/stool/bed/chair/wood/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/wrench))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		new /obj/item/stack/sheet/wood(src.loc)
 		qdel(src)
@@ -169,7 +171,7 @@
 
 /obj/structure/stool/bed/chair/comfy/judge/buckle_mob(mob/M as mob, mob/user as mob)
 	if (!ticker)
-		user << "You can't buckle anyone in before the game starts."
+		to_chat(user, "You can't buckle anyone in before the game starts.")
 	if (fallen)
 		return
 	if ( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.restrained() || user.lying || user.stat || M.buckled || istype(user, /mob/living/silicon/pai) )
@@ -260,6 +262,9 @@
 	icon_state = "cave_wooden_chair"
 	falls = 1
 
+/obj/structure/stool/bed/chair/comfy/woodencave/RightClick(mob/living/M as mob)
+	rotate()
+
 /obj/structure/stool/bed/chair/comfy/capchair
 	icon = 'icons/lifeplat/cFale.dmi'
 	icon_state = "capchair"
@@ -288,6 +293,9 @@
 
 /obj/structure/stool/bed/chair/comfy/capchairmulti/center/north
 	dir = NORTH
+
+/obj/structure/stool/bed/chair/comfy/churchair
+	name = "wooden bench"
 
 /obj/structure/stool/bed/chair/comfy/churchair/right
 	icon = 'icons/lifeplat/bfavor.dmi'
@@ -369,8 +377,8 @@
 	icon_state = "schair"
 	anchored = 1
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/weapon/wrench))
+	attackby(obj/item/W as obj, mob/user as mob)
+		if (istype(W, /obj/item/wrench))
 			if (src.anchored)
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 				user << "\blue You begin to unfasten \the [src] from the floor..."
@@ -513,4 +521,4 @@
 
 /obj/structure/stool/bed/chair/wheelchair/Move()
 	..()
-	playsound(src.loc, 'rollermove.ogg', 50, 1)
+	playsound(src.loc, 'sound/misc/rollermove.ogg', 50, 1)

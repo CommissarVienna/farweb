@@ -317,7 +317,7 @@
 				ore_leather+= O:amount
 				qdel(O)
 				continue
-			if (istype(O,/obj/item/weapon/ore/slag))
+			if (istype(O,/obj/item/ore/slag))
 				qdel(O)
 				continue
 			O.loc = src.output.loc

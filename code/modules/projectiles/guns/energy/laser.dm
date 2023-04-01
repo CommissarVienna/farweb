@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/energy/laser
+/obj/item/gun/energy/laser
 	name = "laser gun"
 	desc = "a basic weapon designed kill with concentrated energy bolts"
 	icon_state = "laser"
@@ -7,4 +7,4 @@
 	w_class = 3.0
 	m_amt = 2000
 	origin_tech = "combat=3;magnets=2"
-	projectile_type = "/obj/item/projectile/energy/laser"
+	projectile_type = /obj/item/projectile/energy/laser

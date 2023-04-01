@@ -1,14 +1,14 @@
-obj/item/weapon/organ/ear
-	icon = 'human_severed.dmi'
+/obj/item/organ/ear
+	icon = 'icons/mob/human_races/human_severed.dmi'
 
-obj/item/weapon/organ/ear/right
+/obj/item/organ/ear/right
 	name = "A right ear"
-	icon = 'human_severed.dmi'
+	icon = 'icons/mob/human_races/human_severed.dmi'
 
-obj/item/weapon/organ/ear/left
+/obj/item/organ/ear/left
 	name = "A left ear"
-	icon = 'human_severed.dmi'
+	icon = 'icons/mob/human_races/human_severed.dmi'
 
-obj/item/weapon/organ/nose
+/obj/item/organ/nose
 	name = "nose"
-	icon = 'human_severed.dmi'
+	icon = 'icons/mob/human_races/human_severed.dmi'

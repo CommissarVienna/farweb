@@ -17,7 +17,7 @@ var/bomb_set
 	var/code = ""
 	var/yes_code = 0.0
 	var/safety = 1.0
-	var/obj/item/weapon/disk/nuclear/auth = null
+	var/obj/item/disk/nuclear/auth = null
 	var/list/wires = list()
 	var/light_wire
 	var/safety_wire
@@ -80,9 +80,9 @@ var/bomb_set
 				src.attack_hand(M)
 	return
 
-/obj/machinery/nuclearbomb/attackby(obj/item/weapon/O as obj, mob/user as mob)
+/obj/machinery/nuclearbomb/attackby(obj/item/O as obj, mob/user as mob)
 
-	if (istype(O, /obj/item/weapon/screwdriver))
+	if (istype(O, /obj/item/screwdriver))
 		src.add_fingerprint(user)
 		if (src.auth)
 			if (src.opened == 0)
@@ -104,26 +104,26 @@ var/bomb_set
 			flick("nuclearbombc", src)
 
 		return
-	if (istype(O, /obj/item/weapon/wirecutters) || istype(O, /obj/item/device/multitool))
+	if (istype(O, /obj/item/wirecutters) || istype(O, /obj/item/device/multitool))
 		if (src.opened == 1)
 			nukehack_win(user)
 		return
 
 	if (src.extended)
-		if (istype(O, /obj/item/weapon/disk/nuclear))
+		if (istype(O, /obj/item/disk/nuclear))
 			usr.drop_item()
 			O.loc = src
 			src.auth = O
-			playsound(src.loc, 'nuke_activator2.ogg', 60, 0, -1)
+			playsound(src.loc, 'sound/nuke/nuke_activator2.ogg', 60, 0, -1)
 			src.add_fingerprint(user)
 			return
 
 	if (src.anchored)
 		switch(removal_stage)
 			if(0)
-				if(istype(O,/obj/item/weapon/weldingtool))
+				if(istype(O,/obj/item/weldingtool))
 
-					var/obj/item/weapon/weldingtool/WT = O
+					var/obj/item/weldingtool/WT = O
 					if(!WT.isOn()) return
 					if (WT.get_fuel() < 5) // uses up 5 fuel.
 						user << "\red You need more fuel to complete this task."
@@ -138,7 +138,7 @@ var/bomb_set
 				return
 
 			if(1)
-				if(istype(O,/obj/item/weapon/crowbar))
+				if(istype(O,/obj/item/crowbar))
 					user.visible_message("[user] starts forcing open the bolt covers on [src].", "You start forcing open the anchoring bolt covers with [O]...")
 
 					if(do_after(user,15))
@@ -148,9 +148,9 @@ var/bomb_set
 				return
 
 			if(2)
-				if(istype(O,/obj/item/weapon/weldingtool))
+				if(istype(O,/obj/item/weldingtool))
 
-					var/obj/item/weapon/weldingtool/WT = O
+					var/obj/item/weldingtool/WT = O
 					if(!WT.isOn()) return
 					if (WT.get_fuel() < 5) // uses up 5 fuel.
 						user << "\red You need more fuel to complete this task."
@@ -165,7 +165,7 @@ var/bomb_set
 				return
 
 			if(3)
-				if(istype(O,/obj/item/weapon/wrench))
+				if(istype(O,/obj/item/wrench))
 
 					user.visible_message("[user] begins unwrenching the anchoring bolts on [src].", "You begin unwrenching the anchoring bolts...")
 
@@ -176,7 +176,7 @@ var/bomb_set
 				return
 
 			if(4)
-				if(istype(O,/obj/item/weapon/crowbar))
+				if(istype(O,/obj/item/crowbar))
 
 					user.visible_message("[user] begins lifting [src] off of the anchors.", "You begin lifting the device off the anchors...")
 
@@ -295,7 +295,7 @@ obj/machinery/nuclearbomb/proc/nukehack_win(mob/user as mob)
 							else
 								visible_message("\blue The [src] emits a quiet whirling noise!")
 			if(href_list["act"] == "wire")
-				if (!istype(usr.get_active_hand(), /obj/item/weapon/wirecutters))
+				if (!istype(usr.get_active_hand(), /obj/item/wirecutters))
 					usr << "You need wirecutters!"
 				else
 					wires[temp_wire] = !wires[temp_wire]
@@ -318,7 +318,7 @@ obj/machinery/nuclearbomb/proc/nukehack_win(mob/user as mob)
 				src.auth = null
 			else
 				var/obj/item/I = usr.get_active_hand()
-				if (istype(I, /obj/item/weapon/disk/nuclear))
+				if (istype(I, /obj/item/disk/nuclear))
 					usr.drop_item()
 					I.loc = src
 					src.auth = I
@@ -376,7 +376,7 @@ obj/machinery/nuclearbomb/proc/nukehack_win(mob/user as mob)
 					src.anchored = !( src.anchored )
 					if(src.anchored)
 						visible_message("\red With a steely snap, bolts slide out of [src] and anchor it to the flooring.")
-						playsound(src.loc, 'nuke_activator.ogg', 60, 0, -1)
+						playsound(src.loc, 'sound/nuke/nuke_activator.ogg', 60, 0, -1)
 					else
 						visible_message("\red The anchoring bolts slide back into the depths of [src].")
 
@@ -411,10 +411,10 @@ obj/machinery/nuclearbomb/proc/nukehack_win(mob/user as mob)
 	src.safety = 1
 	if(!src.lighthack)
 		src.icon_state = "nuke2"
-	playsound(src.loc, 'nuke_active.ogg', 60, 0, -1)
+	playsound(src.loc, 'sound/nuke/nuke_active.ogg', 60, 0, -1)
 	if (ticker && ticker.mode)
 		ticker.mode.explosion_in_progress = 1
-		playsound(src,'nukee.ogg',100,0,5)
+		playsound(src,'sound/effects/nukee.ogg',100,0,5)
 	sleep(5)
 
 	enter_allowed = 0
@@ -448,8 +448,8 @@ obj/machinery/nuclearbomb/proc/nukehack_win(mob/user as mob)
 				return
 	return
 
-/obj/item/weapon/disk/nuclear/Destroy()
-	var/obj/item/weapon/disk/nuclear/N = new /obj/item/weapon/disk/nuclear()
+/obj/item/disk/nuclear/Destroy()
+	var/obj/item/disk/nuclear/N = new /obj/item/disk/nuclear()
 	N.z = 3
 	N.y = 107
 	N.x = 69

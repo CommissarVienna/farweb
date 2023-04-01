@@ -4,7 +4,7 @@
 	anchored = 1
 	density = 1
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
+	attackby(obj/item/W as obj, mob/user as mob)
 		return attack_hand(user)
 
 	attack_hand(mob/user as mob)
@@ -53,7 +53,7 @@
 	update_icon()
 
 /obj/structure/lfwindow/stonewindow
-	icon = 'stone_walls.dmi'
+	icon = 'icons/turf/stone_walls.dmi'
 	icon_state = "fort3"
 	icon_open = "fort3"
 	icon_closed = "fortclosed"
@@ -63,7 +63,7 @@
 
 /obj/structure/lfwindow/stoneopen
 	name = "stone window"
-	icon = 'stone_walls.dmi'
+	icon = 'icons/turf/stone_walls.dmi'
 	icon_state = "fort1"
 	icon_open = "fort1"
 	icon_closed = "fortclosed"
@@ -88,7 +88,7 @@
 
 
 /obj/structure/door_protect
-	name = "proteção da porta"
+	name = "door protector"
 	icon_state = "door_open"
 	mouse_opacity = 0
 	layer = MOB_LAYER+0.1
@@ -103,13 +103,13 @@
 	return ..()
 
 /obj/effect/mark
-		var/mark = ""
-		icon = 'icons/misc/mark.dmi'
-		icon_state = "blank"
-		anchored = 1
-		layer = 99
-		mouse_opacity = 0
-		unacidable = 1//Just to be sure.
+	var/mark = ""
+	icon = 'icons/misc/mark.dmi'
+	icon_state = "blank"
+	anchored = 1
+	layer = 99
+	mouse_opacity = 0
+	unacidable = 1//Just to be sure.
 
 /obj/effect/beam
 	name = "beam"
@@ -365,7 +365,7 @@ We can't just insert in HTML into the nanoUI so we need the raw data to play wit
 
 /obj/item/mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
-/obj/item/weapon/beach_ball
+/obj/item/beach_ball
 	icon = 'icons/misc/beach.dmi'
 	icon_state = "ball"
 	name = "beach ball"

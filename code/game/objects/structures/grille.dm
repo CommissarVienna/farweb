@@ -24,8 +24,8 @@
 	plane = 15
 
 /obj/structure/grille/reinforced/bars
-	name = "barras de metal"
-	desc = "Um monte de pedaços de ferro presos ao chão."
+	name = "metal bars"
+	desc = "A bunch of iron rods stuck to the floor."
 	icon_state = "bars"
 	icon_destroyed = "barsbroken"
 	throwpass = 1

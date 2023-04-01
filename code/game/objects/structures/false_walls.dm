@@ -82,7 +82,7 @@
 	else
 		icon_state = "[mineral]fwall_open"
 
-/obj/structure/falsewall/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/falsewall/attackby(obj/item/W as obj, mob/user as mob)
 	if(opening)
 		user << "\red You must wait until the door has stopped moving."
 		return
@@ -92,7 +92,7 @@
 		if(T.density)
 			user << "\red The wall is blocked!"
 			return
-		if(istype(W, /obj/item/weapon/screwdriver))
+		if(istype(W, /obj/item/screwdriver))
 			user.visible_message("[user] tightens some bolts on the wall.", "You tighten the bolts on the wall.")
 			if(!mineral || mineral == "metal")
 				T.ChangeTurf(/turf/simulated/wall)
@@ -100,8 +100,8 @@
 				T.ChangeTurf(text2path("/turf/simulated/wall/mineral/[mineral]"))
 			qdel(src)
 
-		if( istype(W, /obj/item/weapon/weldingtool) )
-			var/obj/item/weapon/weldingtool/WT = W
+		if( istype(W, /obj/item/weldingtool) )
+			var/obj/item/weldingtool/WT = W
 			if( WT:welding )
 				if(!mineral)
 					T.ChangeTurf(/turf/simulated/wall)
@@ -115,7 +115,7 @@
 		user << "\blue You can't reach, close it first!"
 
 	//DRILLING
-	if (istype(W, /obj/item/weapon/pickaxe/diamonddrill))
+	if (istype(W, /obj/item/pickaxe/diamonddrill))
 		var/turf/T = get_turf(src)
 		if(!mineral)
 			T.ChangeTurf(/turf/simulated/wall)
@@ -125,7 +125,7 @@
 		T.attackby(W,user)
 		qdel(src)
 
-	else if( istype(W, /obj/item/weapon/melee/energy/blade) )
+	else if( istype(W, /obj/item/melee/energy/blade) )
 		var/turf/T = get_turf(src)
 		if(!mineral)
 			T.ChangeTurf(/turf/simulated/wall)
@@ -212,19 +212,19 @@
 
 
 
-/obj/structure/falserwall/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/falserwall/attackby(obj/item/W as obj, mob/user as mob)
 	if(opening)
 		user << "\red You must wait until the door has stopped moving."
 		return
 
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/screwdriver))
 		var/turf/T = get_turf(src)
 		user.visible_message("[user] tightens some bolts on the r wall.", "You tighten the bolts on the wall.")
 		T.ChangeTurf(/turf/simulated/wall) //Intentionally makes a regular wall instead of an r-wall (no cheap r-walls for you).
 		qdel(src)
 
-	if( istype(W, /obj/item/weapon/weldingtool) )
-		var/obj/item/weapon/weldingtool/WT = W
+	if( istype(W, /obj/item/weldingtool) )
+		var/obj/item/weldingtool/WT = W
 		if( WT.remove_fuel(0,user) )
 			var/turf/T = get_turf(src)
 			T.ChangeTurf(/turf/simulated/wall)
@@ -233,14 +233,14 @@
 			qdel(src)
 
 	//DRILLING
-	else if (istype(W, /obj/item/weapon/pickaxe/diamonddrill))
+	else if (istype(W, /obj/item/pickaxe/diamonddrill))
 		var/turf/T = get_turf(src)
 		T.ChangeTurf(/turf/simulated/wall)
 		T = get_turf(src)
 		T.attackby(W,user)
 		qdel(src)
 
-	else if( istype(W, /obj/item/weapon/melee/energy/blade) )
+	else if( istype(W, /obj/item/melee/energy/blade) )
 		var/turf/T = get_turf(src)
 		T.ChangeTurf(/turf/simulated/wall)
 		T = get_turf(src)
@@ -260,7 +260,7 @@
 	var/active = null
 	var/last_event = 0
 
-/obj/structure/falsewall/uranium/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/falsewall/uranium/attackby(obj/item/W as obj, mob/user as mob)
 	radiate()
 	..()
 

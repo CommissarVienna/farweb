@@ -88,14 +88,17 @@
 	overlays += overlay
 
 /obj/machinery/information_terminal/MiddleClick(mob/living/carbon/human/user as mob)
+	user.setClickCooldown(DEFAULT_SLOW_COOLDOWN)
+	if(get_dist(src,user)>1)
+		return
 	if(screenbroken && whois)
 		to_chat(user, "I CANT I MUST KILL [whois]!")
 		return
 	if(!user.wear_id)
-		to_chat(usr, "I don't have a ring, I can't use the terminal!")
+		to_chat(user, "I don't have a ring, I can't use the terminal!")
 		return
 	if(screenbroken)
-		to_chat(usr, "It's broken, I can't use the terminal.")
+		to_chat(user, "It's broken, I can't use the terminal.")
 		return
 	if(user.religion == "Thanati")
 		playsound(src.loc, 'sound/effects/zzzt.ogg', 100, 1, -5)
@@ -120,7 +123,13 @@
 		to_chat(usr, "I don't know how to fix this.")
 
 /obj/machinery/information_terminal/attack_hand(mob/living/carbon/human/user as mob)
-	var/obj/item/weapon/card/id/idcard = user.wear_id
+	if(!user.wear_id)
+		to_chat(usr, "I don't have a ring, I can't use the terminal!")
+		return
+	var/obj/item/card/id/idcard = user.wear_id
+	if(!idcard.money_account)
+		to_chat(user, "<span class='malfunction'>My ring is malfunction!</span>")
+		return
 	var/id_money = idcard.money_account.get_money()
 	if(screenbroken)
 		var/symb1 = ionnum()
@@ -129,9 +138,6 @@
 			to_chat(usr, "<B>[symb1] [symb2]</B>")
 		else
 			to_chat(usr, "<B>[symb1] KILL [KILLSOMEONE] [symb2]</B>")
-		return
-	if(!user.wear_id)
-		to_chat(usr, "I don't have a ring, I can't use the terminal!")
 		return
 	if(hacked)
 		playsound(src.loc, pick('sound/effects/public1.ogg','sound/effects/public2.ogg','sound/effects/public3.ogg'), 100, 0, -5)
@@ -143,7 +149,7 @@
 		switch(src.product)
 			if("Karek R90")
 				var/price = 320
-				var/product_path = /obj/item/weapon/gun/projectile/automatic/mini_uzi
+				var/product_path = /obj/item/gun/projectile/automatic/mini_uzi
 				if(id_money >= price && price <= treasury)
 					to_chat(usr, "You bought the [product]")
 					if(idcard.money_account != treasuryworth)
@@ -157,7 +163,7 @@
 					to_chat(usr, "<span class='passive'>It's too early for buying.,It will be available in [round((6000-world.time)/600)] minutes.</span>")
 					return 0
 				var/price = 950
-				var/product_path = /obj/item/weapon/flame/candle/tnt/bundle
+				var/product_path = /obj/item/flame/candle/tnt/bundle
 				if(id_money >= price && price <= treasury)
 					to_chat(usr, "You bought the [product]")
 					if(idcard.money_account != treasuryworth)
@@ -171,7 +177,7 @@
 					to_chat(usr, "<span class='passive'>It's too early for buying.,It will be available in [round((6000-world.time)/600)] minutes.</span>")
 					return 0
 				var/price = 95
-				var/product_path = /obj/item/weapon/flame/candle/tnt/stick
+				var/product_path = /obj/item/flame/candle/tnt/stick
 				if(id_money >= price && price <= treasury)
 					to_chat(usr, "You bought the [product]")
 					if(idcard.money_account != treasuryworth)
@@ -193,7 +199,7 @@
 					to_chat(usr, "I can't afford it, [product] costs [price] obols!")
 			if("Dagger")
 				var/price = 15
-				var/product_path = /obj/item/weapon/kitchen/utensil/knife/dagger
+				var/product_path = /obj/item/kitchen/utensil/knife/dagger
 				if(id_money >= price && price <= treasury)
 					to_chat(usr, "You bought the [product]")
 					if(idcard.money_account != treasuryworth)
@@ -204,7 +210,7 @@
 					to_chat(usr, "I can't afford it, [product] costs [price] obols!")
 			if("C-4")
 				var/price = 200
-				var/product_path = /obj/item/weapon/plastique/thanati
+				var/product_path = /obj/item/plastique/thanati
 				if(id_money >= price && price <= treasury)
 					to_chat(usr, "You bought the [product]")
 					if(idcard.money_account != treasuryworth)
@@ -215,7 +221,7 @@
 					to_chat(usr, "I can't afford it, [product] costs [price] obols!")
 			if("Grenade")
 				var/price = 80
-				var/product_path = /obj/item/weapon/grenade/syndieminibomb/frag
+				var/product_path = /obj/item/grenade/syndieminibomb/frag
 				if(id_money >= price && price <= treasury)
 					to_chat(usr, "You bought the [product]")
 					if(idcard.money_account != treasuryworth)
@@ -226,7 +232,7 @@
 					to_chat(usr, "I can't afford it, [product] costs [price] obols!")
 			if("Double-Barrel Shotgun")
 				var/price = 150
-				var/product_path = /obj/item/weapon/gun/projectile/newRevolver/duelista/doublebarrel/sawnOff
+				var/product_path = /obj/item/gun/projectile/newRevolver/duelista/doublebarrel/sawnOff
 				if(id_money >= price && price <= treasury)
 					to_chat(usr, "You bought the [product]")
 					if(idcard.money_account != treasuryworth)
@@ -267,7 +273,13 @@
 		to_chat(usr, msg)
 
 /obj/machinery/information_terminal/RightClick(mob/living/carbon/human/user as mob)
-	var/obj/item/weapon/card/id/idcard = user.wear_id
+	if(!user.wear_id)
+		to_chat(user, "<span class='danger'>I don't have a ring!</span>")
+		return
+	var/obj/item/card/id/idcard = user.wear_id
+	if(!idcard.money_account)
+		to_chat(user, "<span class='malfunction'>My ring is malfunction!</span>")
+		return
 	var/id_money = idcard.money_account.get_money()
 	if(screenbroken)
 		var/symb1 = ionnum()
@@ -333,12 +345,13 @@
 		var/withdrawtext = "How much you want to withdraw | There is [liquify] [TRUEOBOLCHOICE] obols on the ring."
 		if(user.check_perk(/datum/perk/illiterate))
 			withdrawtext = Illiterate(withdrawtext,100)
-		var/withdraw = input(withdrawtext,"Information terminal", liquify)
+		var/withdraw = input(withdrawtext,"Information terminal", liquify) as num
 		var/dist = get_dist(src,usr)
 		if(!withdraw)
 			return
 		if(dist > 1)
 			return
+		withdraw = abs(withdraw) //No negative numbers.
 		liquify = idcard.money_account.get_money() //prevent cheating
 		if(withdraw > liquify)
 			to_chat(usr, "I don't have enough obols to withdraw that amount!")
@@ -347,8 +360,6 @@
 			to_chat(usr, "The treasury doesn't have enough obols!")
 			return
 		if(withdraw < 1 || (withdraw % 1))
-			to_chat(usr, "negro nem tente")
-			usr << 'olha-o-macaco.ogg'
 			return
 		if(withdraw <= liquify)
 			if(TRUEOBOLCHOICE == "silver")
@@ -382,11 +393,11 @@
 		to_chat(usr, "I have no obols on this ring.")
 
 /obj/machinery/information_terminal/attackby(obj/item/I as obj, mob/living/carbon/human/user as mob)
-	var/obj/item/weapon/card/id/idcard = user.wear_id
+	var/obj/item/card/id/idcard = user.wear_id
 	if(!idcard)
 		return
-	if(istype(I,/obj/item/weapon/spacecash))
-		var/obj/item/weapon/spacecash/C = I
+	if(istype(I,/obj/item/spacecash))
+		var/obj/item/spacecash/C = I
 		if(idcard.money_account != treasuryworth)
 			idcard.money_account.add_money(C:singularvalue)
 		treasuryworth.add_money(C:singularvalue)
@@ -397,10 +408,10 @@
 		if(C.worth < C.singularvalue)
 			qdel(C)
 		playsound(src.loc, 'sound/effects/moeda.ogg', 100, 1, -5)
-	if(istype(I,/obj/item/weapon/fakecash))
+	if(istype(I,/obj/item/fakecash))
 		to_chat(user, "Attempt to insert fake obols into \the [src]! Your image has been captured and the Tiamats have been alerted.")
-	if(istype(I, /obj/item/weapon/organ/head))
-		var/obj/item/weapon/organ/head/H = I
+	if(istype(I, /obj/item/organ/head))
+		var/obj/item/organ/head/H = I
 		if(H.brainmob.job == "Pusher" && src.screenbroken)
 			for(var/obj/machinery/information_terminal/IM in vending_list)
 				IM.despusherize()

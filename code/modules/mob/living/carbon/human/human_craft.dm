@@ -16,7 +16,7 @@ var/global/list/allRecipes = list("Cult", "Old Ways", "Gray Church", "Furniture"
 				qdel(CR)
 				continue
 		if(CR.skillRequired)
-			var/skill_level = src.my_skills.GET_SKILL(CR.skillRequired)
+			var/skill_level = src.my_skills.get_skill(CR.skillRequired)
 			if(skill_level < CR.skill_value)
 				qdel(CR)
 				continue
@@ -86,7 +86,7 @@ var/global/list/allRecipes = list("Cult", "Old Ways", "Gray Church", "Furniture"
 	var/datum/craft_recipe/CR = pick_craft_recipe(replacetext(hrefParsed, "=1", ""))
 	if(CR)
 		if(get_active_hand() || get_inactive_hand() || handcuffed)
-			to_chat(src, "<span class='combatbold'>[pick(nao_consigoen)] I need free hands.</span>")
+			to_chat(src, "<span class='combatbold'>[pick(fnord)] I need free hands.</span>")
 			return
 		var/resources
 		var/list/removeLater = list()
@@ -129,7 +129,7 @@ var/global/list/allRecipes = list("Cult", "Old Ways", "Gray Church", "Furniture"
 		if(CR.place_on_wall)
 			var/turf/is_wall = get_step(loc, usr.dir)
 			if(!istype(is_wall, /turf/simulated/wall))
-				to_chat(usr, "<span class='combat'>[pick(nao_consigoen)] I need to face a wall!</span>")
+				to_chat(usr, "<span class='combat'>[pick(fnord)] I need to face a wall!</span>")
 				return
 			newLoc = locate(x,y,z)
 		else
@@ -142,7 +142,7 @@ var/global/list/allRecipes = list("Cult", "Old Ways", "Gray Church", "Furniture"
 		if(CR.nostructure)
 			for(var/atom/A in newLoc.contents)
 				if((!isobj(A) || A.density || ismob(A)))
-					to_chat(src, "<span class='combatbold'>[pick(nao_consigoen)] Something in the way!</span>")
+					to_chat(src, "<span class='combatbold'>[pick(fnord)] Something in the way!</span>")
 					return
 		if(CR.between_walls)
 			var/turf/T1
@@ -157,14 +157,14 @@ var/global/list/allRecipes = list("Cult", "Old Ways", "Gray Church", "Furniture"
 			if(!T1 || !T2)
 				return
 			if(!istype(T1, /turf/simulated/wall) || !istype(T2, /turf/simulated/wall))
-				to_chat(usr, "<span class='combat'>[pick(nao_consigoen)] [CR.name] need to be between 2 walls!</span>")
+				to_chat(usr, "<span class='combat'>[pick(fnord)] [CR.name] need to be between 2 walls!</span>")
 				return
 		if(check_event("failed"))
 			GURPS_mod -= 5
 		var/list/rolled = roll3d6(src, SR, GURPS_mod)
 		switch(rolled[GP_RESULT])
-			if(GP_FAILED)
-				to_chat(src, "<span class='combatbold'>[pick(nao_consigoen)] I failed...</span>")
+			if(GP_FAIL)
+				to_chat(src, "<span class='combatbold'>[pick(fnord)] I failed...</span>")
 				src.add_event("failed", /datum/happiness_event/misc/ivefailed)
 				return
 			if(GP_CRITFAIL)

@@ -1,16 +1,16 @@
-/obj/item/weapon/gun/energy/teleport_gun
+/obj/item/gun/energy/teleport_gun
 	name = "teleport gun"
 	desc = "A hacked together combination of a taser and a handheld teleportation unit."
 	icon_state = "taser_h"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	fire_sound = 'sound/weapons/Taser.ogg'
 	charge_cost = 250
-	projectile_type = "/obj/item/projectile/energy/teleshot"
+	projectile_type = /obj/item/projectile/energy/teleshot
 	origin_tech = "combat=3;magnets=3;bluespace=3"
 
 	var/obj/item/teletarget = null
 
-/obj/item/weapon/gun/energy/teleport_gun/attack_self(mob/user as mob)
+/obj/item/gun/energy/teleport_gun/attack_self(mob/user as mob)
 	var/list/L = list()
 	for(var/obj/machinery/teleport/hub/R in world)
 		var/obj/machinery/computer/teleporter/com = locate(/obj/machinery/computer/teleporter, locate(R.x - 2, R.y, R.z))
@@ -29,9 +29,9 @@
 	src.add_fingerprint(user)
 	return
 
-/obj/item/weapon/gun/energy/teleport_gun/attackby(var/obj/item/A as obj, mob/user as mob)
-	if(istype(A, /obj/item/weapon/bluespace_crystal))
-		var/obj/item/weapon/bluespace_crystal/C = A
+/obj/item/gun/energy/teleport_gun/attackby(var/obj/item/A as obj, mob/user as mob)
+	if(istype(A, /obj/item/bluespace_crystal))
+		var/obj/item/bluespace_crystal/C = A
 		power_supply.charge += charge_cost*(C.blink_range/4)
 		power_supply.maxcharge += charge_cost*(C.blink_range/4)
 		user << "<span class='notice'>You add [C] to [src]'s crystal array.</span>"
@@ -48,8 +48,8 @@
 	var/failchance = 5
 	var/obj/item/target = null
 
-	if(istype(shot_from, /obj/item/weapon/gun/energy/teleport_gun))
-		var/obj/item/weapon/gun/energy/teleport_gun/T = shot_from
+	if(istype(shot_from, /obj/item/gun/energy/teleport_gun))
+		var/obj/item/gun/energy/teleport_gun/T = shot_from
 		target = T.teletarget
 		failchance = 100 - T.reliability
 

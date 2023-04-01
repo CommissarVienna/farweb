@@ -151,13 +151,13 @@
 	anchored = 1
 	var/available_chemicals = list("ephedrine" = "Ephedrine", "stoxin" = "Soporific", "paracetamol" = "Paracetamol", "charcoal" = "Charcoal", "salbutamol" = "Salbutamol")
 	var/amounts = list(5, 10)
-	var/obj/item/weapon/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/glass/beaker = null
 	var/d_filtering = 0
 
 
 /obj/machinery/sleeper/New()
 	..()
-	beaker = new /obj/item/weapon/reagent_containers/glass/beaker/large()
+	beaker = new /obj/item/reagent_containers/glass/beaker/large()
 	return
 
 
@@ -186,8 +186,8 @@
 		qdel(src)
 	return
 
-/obj/machinery/sleeper/attackby(var/obj/item/weapon/G as obj, var/mob/user as mob)
-	if(istype(G, /obj/item/weapon/reagent_containers/glass))
+/obj/machinery/sleeper/attackby(var/obj/item/G as obj, var/mob/user as mob)
+	if(istype(G, /obj/item/reagent_containers/glass))
 		if(!beaker)
 			beaker = G
 			user.drop_item()
@@ -199,7 +199,7 @@
 			user << "\red The sleeper has a beaker already."
 			return
 
-	else if(istype(G, /obj/item/weapon/grab))
+	else if(istype(G, /obj/item/grab))
 		if(!ismob(G:affecting))
 			return
 

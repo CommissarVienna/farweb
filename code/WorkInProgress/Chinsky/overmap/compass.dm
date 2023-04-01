@@ -1,4 +1,4 @@
-/obj/item/weapon/pinpointer/compass
+/obj/item/pinpointer/compass
 	name = "space compass"
 	desc = "A rather helpful device, can save your ass from being lost. It shows the direction of the nearest large vessel."
 	var/set_shipname = "NSV Luna"

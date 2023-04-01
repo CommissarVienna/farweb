@@ -1,4 +1,4 @@
-/obj/item/weapon/lipstick
+/obj/item/lipstick
 	gender = PLURAL
 	name = "red lipstick"
 	desc = "A generic brand of lipstick."
@@ -11,28 +11,28 @@
 	var/open = 0
 
 
-/obj/item/weapon/lipstick/purple
+/obj/item/lipstick/purple
 	name = "purple lipstick"
 	colour = "purple"
 
-/obj/item/weapon/lipstick/jade
+/obj/item/lipstick/jade
 	name = "jade lipstick"
 	colour = "jade"
 
-/obj/item/weapon/lipstick/black
+/obj/item/lipstick/black
 	name = "black lipstick"
 	colour = "black"
 
 
-/obj/item/weapon/lipstick/random
+/obj/item/lipstick/random
 	name = "lipstick"
 
-/obj/item/weapon/lipstick/random/New()
+/obj/item/lipstick/random/New()
 	colour = pick("red","purple","jade","black")
 	name = "[colour] lipstick"
 
 
-/obj/item/weapon/lipstick/attack_self(mob/user as mob)
+/obj/item/lipstick/attack_self(mob/user as mob)
 	user << "<span class='notice'>You twist \the [src] [open ? "closed" : "open"].</span>"
 	open = !open
 	if(open)
@@ -42,7 +42,7 @@
 		icon_state = initial(icon_state)
 		item_state = "lipstick"
 
-/obj/item/weapon/lipstick/attack(mob/M as mob, mob/user as mob)
+/obj/item/lipstick/attack(mob/M as mob, mob/user as mob)
 	if(!open)	return
 
 	if(!istype(M, /mob))	return
@@ -69,7 +69,7 @@
 		user << "<span class='notice'>Where are the lips on that?</span>"
 
 //you can wipe off lipstick with paper!
-/obj/item/weapon/paper/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/paper/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(user.zone_sel.selecting == "mouth")
 		if(!istype(M, /mob))	return
 
@@ -93,7 +93,7 @@
 
 
 
-/obj/item/weapon/razor
+/obj/item/razor
 	name = "electric razor"
 	desc = "The latest and greatest power razor born from the science of shaving."
 	icon = 'icons/obj/items.dmi'
@@ -102,7 +102,7 @@
 	w_class = 1
 
 
-/obj/item/weapon/razor/proc/shave(mob/living/carbon/human/H, location = "mouth")
+/obj/item/razor/proc/shave(mob/living/carbon/human/H, location = "mouth")
 	if(location == "mouth")
 		H.f_style = "Shaved"
 	else
@@ -112,7 +112,7 @@
 	playsound(loc, 'sound/items/Welder2.ogg', 20, 1)
 
 
-/obj/item/weapon/razor/attack(mob/M, mob/user)
+/obj/item/razor/attack(mob/M, mob/user)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 

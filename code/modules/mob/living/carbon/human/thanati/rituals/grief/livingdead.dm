@@ -7,7 +7,7 @@ var/global/livingDead = 0
         return
     for(var/mob/living/carbon/human/H in world)
         if(H.species.name == "Zombie")
-            H.my_stats.st = 20 + rand(2, 5)
+            H.my_stats.set_stat(STAT_ST , 20 + rand(2, 5))
     to_chat(usr, "Screamers are coming...")
     livingDead = 1
 

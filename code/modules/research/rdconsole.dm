@@ -33,10 +33,10 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 /obj/machinery/computer/rdconsole
 	name = "R&D Console"
 	icon_state = "rdcomp"
-	circuit = /obj/item/weapon/circuitboard/rdconsole
+	circuit = /obj/item/circuitboard/rdconsole
 	var/datum/research/files							//Stores all the collected research data.
-	var/obj/item/weapon/disk/tech_disk/t_disk = null	//Stores the technology disk.
-	var/obj/item/weapon/disk/design_disk/d_disk = null	//Stores the design disk.
+	var/obj/item/disk/tech_disk/t_disk = null	//Stores the technology disk.
+	var/obj/item/disk/design_disk/d_disk = null	//Stores the design disk.
 
 	var/obj/machinery/r_n_d/destructive_analyzer/linked_destroy = null	//Linked Destructive Analyzer
 	var/obj/machinery/r_n_d/protolathe/linked_lathe = null				//Linked Protolathe
@@ -210,7 +210,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 					spawn(32*i/coeff)
 						if(g2g)
 							var/obj/new_item = new P(src)
-							if( new_item.type == /obj/item/weapon/storage/backpack/holding )
+							if( new_item.type == /obj/item/storage/backpack/holding )
 								new_item.investigate_log("built by [key]","singulo")
 							new_item.reliability = R
 							new_item.m_amt /= coeff
@@ -218,7 +218,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 							if(linked_lathe.hacked)
 								R = max((reliability / 2), 0)
 							if(O)
-								var/obj/item/weapon/storage/lockbox/L = new/obj/item/weapon/storage/lockbox(linked_lathe.loc)
+								var/obj/item/storage/lockbox/L = new/obj/item/storage/lockbox(linked_lathe.loc)
 								new_item.loc = L
 								L.name += " ([new_item.name])"
 							else
@@ -228,23 +228,23 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 							screen = 3.1
 							updateUsrDialog()
 
-/obj/machinery/computer/rdconsole/attackby(var/obj/item/weapon/D as obj, var/mob/user as mob)
+/obj/machinery/computer/rdconsole/attackby(var/obj/item/D as obj, var/mob/user as mob)
 
 	//Loading a disk into it.
-	if(istype(D, /obj/item/weapon/disk))
+	if(istype(D, /obj/item/disk))
 		if(t_disk || d_disk)
 			user << "A disk is already loaded into the machine."
 			return
 
-		if(istype(D, /obj/item/weapon/disk/tech_disk)) t_disk = D
-		else if (istype(D, /obj/item/weapon/disk/design_disk)) d_disk = D
+		if(istype(D, /obj/item/disk/tech_disk)) t_disk = D
+		else if (istype(D, /obj/item/disk/design_disk)) d_disk = D
 		else
 			user << "<span class='warning'>Machine cannot accept disks in that format.</span>"
 			return
 		user.drop_item()
 		D.loc = src
 		user << "<span class='info'>You add the disk to the machine!</span>"
-	else if(istype(D, /obj/item/weapon/card/emag) && !emagged)
+	else if(istype(D, /obj/item/card/emag) && !emagged)
 		playsound(src.loc, 'sound/effects/sparks4.ogg', 75, 1)
 		emagged = 1
 		user << "<span class='info'>You you disable the security protocols</span>"

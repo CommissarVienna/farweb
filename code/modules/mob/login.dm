@@ -1,6 +1,9 @@
 //handles setting lastKnownIP and computer_id for use by the ban systems as well as checking for multikeying
 /mob/proc/update_Login_details()
+	winset(src, null, "mainwindow.title='[vessel_name]'")
 	//Multikey checks and logging
+	if(!client)
+		return
 	lastKnownIP	= client.address
 	computer_id	= client.computer_id
 	log_access("Login: [key_name(src)] from [lastKnownIP ? lastKnownIP : "localhost"]-[computer_id] || BYOND v[client.byond_version]")
@@ -24,32 +27,12 @@
 						log_access("Notice: [key_name(src)] has the same [matches] as [key_name(M)] (no longer logged in).")
 
 /mob/Login()
-#ifdef FARWEB_LIVE
-	if(client.info.bcrypt_hash == "" || client.info.bcrypt_hash == null || !client.info.bcrypt_hash)
-		var/passcheck = input(src, "You don't have a password set. Type in a proper password. Wacky passwords such as '123' will cause you to lose access to the game, use your brain cells.")
-		var/passcheck2 = input(src, "Confirm the password.")
-		if(passcheck != passcheck2)
-			alert(src, "The passwords don't match. Due to a BYOND limitation, you will have to reconnect in order to try again.", "Farweb")
-			del(client)
-			return
-		else
-			client.info.SetPassword(passcheck)
-			alert(src, "Your password has been set, and it will be asked of you the next time you reconnect. If you forget it, contact one of the Patriarchs.", "Farweb")
-			client.authenticated = TRUE
-	else
-		if(client.authenticated == FALSE)
-			var/passcheck = input(src, "Type in your password.")
-			if(client.info.VerifyHash(passcheck) == FALSE)
-				alert(src, "The password you typed is incorrect. You will be disconnected, reconnect to try again.", "Farweb")
-				del(client)
-				return
-			else
-				client.authenticated = TRUE
+#ifdef NEARWEB_LIVE
+	client.authenticated = TRUE // very hacky solution to nuking the password system but it'll work for now
 	if(client.authenticated == TRUE)
 		client.chatOutput.start()
 #endif
 	player_list |= src
-	winset(src, null, "mainwindow.title='[vessel_name()]'")
 	update_Login_details()
 	world.update_status()
 
@@ -80,7 +63,7 @@
 		if(H.species && H.species.abilities)
 			client.verbs |= H.species.abilities
 	src.add_filter_effects()
-	updatePig()
+	updateStatPanel()
 	hud_used?.add_inventory_overlay()
 	winset(src, "name", "text='[real_name]'")
 	//bug blur effect, para ativar por completo tira os comentario do Turfs.dm

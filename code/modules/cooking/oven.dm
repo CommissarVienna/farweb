@@ -57,8 +57,8 @@
 /obj/machinery/microwave/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	if(user.stat || user.restrained()) return
 
-	if(istype(O, /obj/item/weapon/flame))
-		var/obj/item/weapon/flame/I = O
+	if(istype(O, /obj/item/flame))
+		var/obj/item/flame/I = O
 		if(I.lit && !lit)
 			lit = 1
 			update_icon()
@@ -88,8 +88,8 @@
 			user.visible_message("<span class='passive'><span class='passivebold'>[user]</span> has placed \the <span class='passivebold'>[O]</span> in \the <span class='passivebold'>[src]</span>.</span>")
 			return
 
-	else if(istype(O,/obj/item/weapon/grab))
-		var/obj/item/weapon/grab/G = O
+	else if(istype(O,/obj/item/grab))
+		var/obj/item/grab/G = O
 		return
 	else
 		to_chat(user,"<span class='combat'><span class='combatbold'>[pick(nao_consigoen)]</span> What could I possibly cook with the  \the <span class='combatbold'>[O]</span>?</span>")
@@ -100,7 +100,7 @@
 
 obj/structure/oven/proc/create_recipe()
 	var/datum/recipe/recipe = select_recipe(available_recipes,src)
-	var/obj/item/weapon/reagent_containers/food/to_cook = null
+	var/obj/item/reagent_containers/food/to_cook = null
 	if(recipe)
 		to_cook = recipe.make_food(src)
 		if(to_cook)

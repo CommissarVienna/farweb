@@ -2,6 +2,7 @@
 	name = "trap door"
 	desc = "WATCHA WATCHA WATCHA OOOOOOOOOO!!"
 	icon = 'icons/life/autodoor.dmi'
+	plane = 0
 
 /obj/machinery/door/airlock/orbital/gates/magma/trap_door/RightClick()
 	return 0
@@ -33,7 +34,7 @@
 			var/damage = 10
 			H.apply_damage(rand(0,damage), BRUTE, "groin")
 			if(H.special == "notafraid")
-				H << "you land soflty."
+				to_chat(H, "You land soflty.")
 			else
 				H.apply_damage(damage/2 + rand(-5,12), BRUTE, "l_leg")
 				H.apply_damage(damage/2 + rand(-5,12), BRUTE, "r_leg")
@@ -62,7 +63,7 @@
 		icon_state = "door_closed"
 
 /obj/machinery/door/airlock/orbital/gates/magma/trap_door/Crossed(mob/living/carbon/human/M as mob|obj)
-	if(!fechado)
+	if(!fechado && icon_state == "door_open")
 		for(M in src.loc)
 			if(istype(M.loc, /turf/simulated/floor/open))
 				var/turf/simulated/floor/open/O = M.loc

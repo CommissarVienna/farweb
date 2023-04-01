@@ -49,11 +49,11 @@
 
 
 /mob/living/bullet_act(var/obj/item/projectile/P, var/def_zone)
-	var/obj/item/weapon/cloaking_device/C = locate((/obj/item/weapon/cloaking_device) in src)
+	var/obj/item/cloaking_device/C = locate((/obj/item/cloaking_device) in src)
 	if(C && C.active)
 		C.attack_self(src)//Should shut it off
 		update_icons()
-		src << "\blue Your [C.name] was disrupted!"
+		to_chat(src, "Your [C.name] was disrupted!")
 		Stun(2)
 
 	flash_weak_pain()
@@ -86,8 +86,8 @@
 	if(istype(AM,/obj/))
 		var/obj/O = AM
 		var/dtype = BRUTE
-		if(istype(O,/obj/item/weapon))
-			var/obj/item/weapon/W = O
+		if(istype(O,/obj/item))
+			var/obj/item/W = O
 			dtype = W.damtype
 		var/throw_damage = O.throwforce*(speed/5)
 
@@ -119,7 +119,7 @@
 
 		// Begin BS12 momentum-transfer code.
 		if(O.throw_source && speed >= 15)
-			var/obj/item/weapon/W = O
+			var/obj/item/W = O
 			var/momentum = speed/2
 			var/dir = get_dir(O.throw_source, src)
 

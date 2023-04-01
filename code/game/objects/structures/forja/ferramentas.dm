@@ -1,4 +1,4 @@
-/obj/item/weapon/sledgehammer
+/obj/item/sledgehammer
 	name = "sledgehammer"
 	icon_state = "sledgehammer"
 	item_state = "sledge"
@@ -10,10 +10,10 @@
 	parry_chance = -10
 	weight = 34
 	hitsound= 'sound/weapons/club.ogg'
-	wielded_icon = "sledge-wielded"
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	wielded_icon = TRUE
+	smelted_return = /obj/item/ore/refined/lw/ironlw
 
-/obj/item/weapon/carverhammer
+/obj/item/carverhammer
 	name = "carver hammer"
 	icon_state = "carverhammer"
 	item_state = "hammer"
@@ -26,7 +26,7 @@
 	slot_flags = SLOT_BELT
 	weight = 3
 
-/obj/item/weapon/chisel
+/obj/item/chisel
 	name = "chisel"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "chisel"
@@ -38,7 +38,7 @@
 	parry_chance = 1
 	weight = 1
 
-/obj/item/weapon/alicate
+/obj/item/alicate
 	name = "tongs"
 	desc = "Steel pliers used by blacksmiths to be able to hold hot metals."
 	icon_state = "tongs"
@@ -48,10 +48,10 @@
 	force = 5
 	weight = 1
 
-/obj/item/weapon/alicate/update_icon()
-	if(contents.len && istype(contents, subtypesof(/obj/item/weapon/ore/refined/lw)))
-		var/obj/item/weapon/ore/refined/lw/lw = safepick(contents)
-		if(lw.temperatura)
+/obj/item/alicate/update_icon()
+	if(contents.len && istype(contents, subtypesof(/obj/item/ore/refined/lw)))
+		var/obj/item/ore/refined/lw/lw = safepick(contents)
+		if(lw.temperature)
 			icon_state = "tongs_ingot1"
 		else
 			icon_state = "tongs_ingot0"

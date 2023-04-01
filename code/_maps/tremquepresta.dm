@@ -16,7 +16,7 @@ var/list/inquisitrainparts = list()
     forced_ambience = list('sound/lfwbambimusic/atrementous-city.ogg', 'sound/lfwbambimusic/curvedblade.ogg', 'sound/lfwbambimusic/dustareallherbeauties.ogg', 'sound/fwambi/ravenheart7.ogg', 'sound/fwambi/happy_temple.ogg', 'sound/fwambi/many_torches.ogg')
 
 /turf/simulated/train/rail
-    icon = 'train.dmi'
+    icon = 'icons/turf/train.dmi'
     icon_state = "1,3"
 
 /obj/structure/grille/reinforced/bars/notreact

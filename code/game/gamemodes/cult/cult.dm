@@ -11,10 +11,10 @@
 /proc/is_convertable_to_cult(datum/mind/mind)
 	if(!istype(mind))	return 0
 	if(istype(mind.current, /mob/living/carbon/human) && (mind.assigned_role in list("Captain", "Chaplain")))	return 0
-	for(var/obj/item/weapon/implant/loyalty/L in mind.current)
+	for(var/obj/item/implant/loyalty/L in mind.current)
 		if(L && (L.imp_in == mind.current))//Checks to see if the person contains an implant, then checks that the implant is actually inside of them
 			return 0
-	for(var/obj/item/weapon/implant/mentor/M in mind.current)
+	for(var/obj/item/implant/mentor/M in mind.current)
 		if(M && (M.imp_in == mind.current))//Checks to see if the person contains an implant, then checks that the implant is actually inside of them
 			return 0
 	return 1
@@ -66,20 +66,20 @@
 	if(config.protect_roles_from_antagonist)
 		restricted_jobs += protected_jobs
 
-	var/list/cultists_possible = get_players_for_role(BE_CULTIST)
-	for(var/datum/mind/player in cultists_possible)
-		for(var/job in restricted_jobs)//Removing heads and such from the list
-			if(player.assigned_role == job)
-				cultists_possible -= player
+//	var/list/cultists_possible = get_players_for_role(BE_CULTIST)
+//	for(var/datum/mind/player in cultists_possible)
+	//	for(var/job in restricted_jobs)//Removing heads and such from the list
+//			if(player.assigned_role == job)
+//				cultists_possible -= player
 
-	for(var/cultists_number = 1 to max_cultists_to_start)
-		if(!cultists_possible.len)
-			break
-		var/datum/mind/cultist = pick(cultists_possible)
-		cultists_possible -= cultist
-		cult += cultist
+	//for(var/cultists_number = 1 to max_cultists_to_start)
+	//	if(!cultists_possible.len)
+//			break
+//		var/datum/mind/cultist = pick(cultists_possible)
+	//	cultists_possible -= cultist
+//		cult += cultist
 
-	return (cult.len>0)
+	return (0)
 
 
 /datum/game_mode/cult/post_setup()
@@ -137,7 +137,7 @@
 			mob.mutations.Remove(CLUMSY)
 
 
-	var/obj/item/weapon/paper/talisman/supply/T = new(mob)
+	var/obj/item/paper/talisman/supply/T = new(mob)
 	var/list/slots = list (
 		"backpack" = slot_in_backpack,
 		"left pocket" = slot_l_store,

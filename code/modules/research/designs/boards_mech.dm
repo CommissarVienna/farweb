@@ -11,7 +11,7 @@
 	req_tech = list("programming" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/ripley/main
+	build_path = /obj/item/circuitboard/mecha/ripley/main
 
 /datum/design/ripley_peri
 	name = "Circuit Design (APLU \"Ripley\" Peripherals Control module)"
@@ -20,7 +20,7 @@
 	req_tech = list("programming" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/ripley/peripherals
+	build_path = /obj/item/circuitboard/mecha/ripley/peripherals
 
 
 // Odysseus
@@ -31,7 +31,7 @@
 	req_tech = list("programming" = 3,"biotech" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/odysseus/main
+	build_path = /obj/item/circuitboard/mecha/odysseus/main
 
 /datum/design/odysseus_peri
 	name = "Circuit Design (\"Odysseus\" Peripherals Control module)"
@@ -40,7 +40,7 @@
 	req_tech = list("programming" = 3,"biotech" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/odysseus/peripherals
+	build_path = /obj/item/circuitboard/mecha/odysseus/peripherals
 
 
 // Gygax
@@ -51,7 +51,7 @@
 	req_tech = list("programming" = 4)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/gygax/main
+	build_path = /obj/item/circuitboard/mecha/gygax/main
 
 /datum/design/gygax_peri
 	name = "Circuit Design (\"Gygax\" Peripherals Control module)"
@@ -60,7 +60,7 @@
 	req_tech = list("programming" = 4)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/gygax/peripherals
+	build_path = /obj/item/circuitboard/mecha/gygax/peripherals
 
 /datum/design/gygax_targ
 	name = "Circuit Design (\"Gygax\" Weapons & Targeting Control module)"
@@ -69,7 +69,7 @@
 	req_tech = list("programming" = 4, "combat" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/gygax/targeting
+	build_path = /obj/item/circuitboard/mecha/gygax/targeting
 
 
 // Durand
@@ -80,7 +80,7 @@
 	req_tech = list("programming" = 4)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/durand/main
+	build_path = /obj/item/circuitboard/mecha/durand/main
 
 /datum/design/durand_peri
 	name = "Circuit Design (\"Durand\" Peripherals Control module)"
@@ -89,7 +89,7 @@
 	req_tech = list("programming" = 4)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/durand/peripherals
+	build_path = /obj/item/circuitboard/mecha/durand/peripherals
 
 /datum/design/durand_targ
 	name = "Circuit Design (\"Durand\" Weapons & Targeting Control module)"
@@ -98,7 +98,7 @@
 	req_tech = list("programming" = 4, "combat" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/durand/targeting
+	build_path = /obj/item/circuitboard/mecha/durand/targeting
 
 
 // H.O.N.K.
@@ -109,7 +109,7 @@
 	req_tech = list("programming" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/honker/main
+	build_path = /obj/item/circuitboard/mecha/honker/main
 
 /datum/design/honker_peri
 	name = "Circuit Design (\"H.O.N.K\" Peripherals Control module)"
@@ -118,7 +118,7 @@
 	req_tech = list("programming" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/honker/peripherals
+	build_path = /obj/item/circuitboard/mecha/honker/peripherals
 
 /datum/design/honker_targ
 	name = "Circuit Design (\"H.O.N.K\" Weapons & Targeting Control module)"
@@ -127,7 +127,7 @@
 	req_tech = list("programming" = 3)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/honker/targeting
+	build_path = /obj/item/circuitboard/mecha/honker/targeting
 
 
 // Space Pod
@@ -138,4 +138,4 @@
 	req_tech = list("programming" = 4)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/mecha/pod
+	build_path = /obj/item/circuitboard/mecha/pod

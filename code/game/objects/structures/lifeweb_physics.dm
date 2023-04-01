@@ -12,11 +12,11 @@
 	var/donation_storage = TRUE //can pull donations/items out.
 	var/display_hiding = FALSE //can be hidden behind. Used for examine.
 
-/obj/structure/lifeweb/examine()
+/obj/structure/lifeweb/examine(mob/user)
 	..()
 	if(display_hiding)
 		for(var/mob/living/carbon/human/H in src.loc)
-			to_chat(usr, "<span class='combatbold'>Someone is hiding here!</span>")
+			to_chat(user, "<span class='combatbold'>Someone is hiding here!</span>")
 			break
 
 /obj/structure/lifeweb/tallshroom_barrier

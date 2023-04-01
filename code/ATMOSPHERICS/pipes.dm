@@ -497,7 +497,7 @@ obj/machinery/atmospherics/pipe
 
 			return null
 
-		attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
+		attackby(var/obj/item/W as obj, var/mob/user as mob)
 			if (istype(W, /obj/item/device/analyzer) && get_dist(user, src) <= 1)
 				for (var/mob/O in viewers(user, null))
 					O << "\red [user] has used the analyzer on \icon[icon]"
@@ -1122,7 +1122,7 @@ obj/machinery/atmospherics/pipe
 			icon_state = "cap-f"
 
 
-obj/machinery/atmospherics/pipe/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
+obj/machinery/atmospherics/pipe/attackby(var/obj/item/W as obj, var/mob/user as mob)
 	if (istype(src, /obj/machinery/atmospherics/pipe/tank))
 		return ..()
 	if (istype(src, /obj/machinery/atmospherics/pipe/vent))
@@ -1131,7 +1131,7 @@ obj/machinery/atmospherics/pipe/attackby(var/obj/item/weapon/W as obj, var/mob/u
 	if(istype(W,/obj/item/device/pipe_painter))
 		return 1
 
-	if (!istype(W, /obj/item/weapon/wrench))
+	if (!istype(W, /obj/item/wrench))
 		return ..()
 	var/turf/T = src.loc
 	if (level==1 && isturf(T) && T.intact)

@@ -1,13 +1,24 @@
-/mob/living/verb/succumb()
+/mob/living/proc/succumb()
+	set category = "dead"
+	set name = "Die"
+	set desc = "Die"
 	set hidden = 1
 	if ((src.health < 0 && src.health > -95.0))
-		src.adjustOxyLoss(src.health + 200)
-		src.health = 100 - src.getOxyLoss() - src.getToxLoss() - src.getFireLoss() - src.getBruteLoss()
-		to_chat(src, "<span class='passive'>You have given up life and succumbed to death.</span>")
+		src.death()
 
 /mob/living/Destroy()
 	living_mob_list -= src
 	..()
+
+//Does a special attack if combat mode is on, and they have an item.
+/mob/living/RightClick(var/mob/living/user)
+	if(user.Adjacent(src))
+		var/obj/item/I = user.get_active_hand()
+		if(!I)
+			return
+		if(!user.combat_mode)
+			return
+		I.attack(src, user, user.zone_sel.selecting, TRUE)
 
 /mob/living/proc/updatehealth()
 	if(status_flags & GODMODE)
@@ -181,41 +192,41 @@
 
 
 //Recursive function to find everything a mob is holding.
-/mob/living/get_contents(var/obj/item/weapon/storage/Storage = null)
+/mob/living/get_contents(var/obj/item/storage/Storage = null)
 	var/list/L = list()
 
 	if(Storage) //If it called itself
 		L += Storage.return_inv()
 
 		//Leave this commented out, it will cause storage items to exponentially add duplicate to the list
-		//for(var/obj/item/weapon/storage/S in Storage.return_inv()) //Check for storage items
+		//for(var/obj/item/storage/S in Storage.return_inv()) //Check for storage items
 		//	L += get_contents(S)
 
-		for(var/obj/item/weapon/gift/G in Storage.return_inv()) //Check for gift-wrapped items
+		for(var/obj/item/gift/G in Storage.return_inv()) //Check for gift-wrapped items
 			L += G.gift
-			if(istype(G.gift, /obj/item/weapon/storage))
+			if(istype(G.gift, /obj/item/storage))
 				L += get_contents(G.gift)
 
 		for(var/obj/item/smallDelivery/D in Storage.return_inv()) //Check for package wrapped items
 			L += D.wrapped
-			if(istype(D.wrapped, /obj/item/weapon/storage)) //this should never happen
+			if(istype(D.wrapped, /obj/item/storage)) //this should never happen
 				L += get_contents(D.wrapped)
 		return L
 
 	else
 
 		L += src.contents
-		for(var/obj/item/weapon/storage/S in src.contents)	//Check for storage items
+		for(var/obj/item/storage/S in src.contents)	//Check for storage items
 			L += get_contents(S)
 
-		for(var/obj/item/weapon/gift/G in src.contents) //Check for gift-wrapped items
+		for(var/obj/item/gift/G in src.contents) //Check for gift-wrapped items
 			L += G.gift
-			if(istype(G.gift, /obj/item/weapon/storage))
+			if(istype(G.gift, /obj/item/storage))
 				L += get_contents(G.gift)
 
 		for(var/obj/item/smallDelivery/D in src.contents) //Check for package wrapped items
 			L += D.wrapped
-			if(istype(D.wrapped, /obj/item/weapon/storage)) //this should never happen
+			if(istype(D.wrapped, /obj/item/storage)) //this should never happen
 				L += get_contents(D.wrapped)
 		return L
 
@@ -398,7 +409,7 @@
 	if (buckled && istype(buckled, /obj/structure/stool/bed/chair/wheelchair))
 		buckled.dir = src.dir
 		buckled.forceMove(src.loc)
-		playsound(buckled.loc, 'rollermove.ogg', 75, 1)
+		playsound(buckled.loc, 'sound/misc/rollermove.ogg', 75, 1)
 
 	if (restrained())
 		stop_pulling()
@@ -436,30 +447,35 @@
 				if (isliving(pulling))
 					var/mob/living/M = pulling
 					var/ok = 1
-					if (locate(/obj/item/weapon/grab, M.grabbed_by))
+					if (locate(/obj/item/grab, M.grabbed_by))
 						if (prob(75))
-							var/obj/item/weapon/grab/G = pick(M.grabbed_by)
-							if (istype(G, /obj/item/weapon/grab))
+							var/obj/item/grab/G = pick(M.grabbed_by)
+							if (istype(G, /obj/item/grab))
 								for(var/mob/O in viewers(M, null))
 									O.show_message(text("<span class='hitbold'>[]</span> <span class='hit'>has been pulled from</span> <span class='hitbold'>[]'s</span> <span class='hit'>grip by</span> <span class='hitbold'>[]</span><span class='hit>!</span>'", G.affecting, G.assailant, src), 1)
 								//G = null
 								qdel(G)
 						else
 							ok = 0
-						if (locate(/obj/item/weapon/grab, M.grabbed_by.len))
+						if (locate(/obj/item/grab, M.grabbed_by.len))
 							ok = 0
 					if (ok)
 						var/atom/movable/t = M.pulling
 						M.stop_pulling()
 
 						//this is the gay blood on floor shit -- Added back -- Skie
-						if (M.lying && (prob(M.getBruteLoss() * 3)))
+						if (M.lying && (prob(M.getBruteLoss() / 2)))
 							var/blood_exists = 0
 							var/trail_type = M.getTrail()
 							for(var/obj/effect/decal/cleanable/trail_holder/C in M.loc) //checks for blood splatter already on the floor
 								blood_exists = 1
-							if (istype(M.loc, /turf/simulated) && trail_type != null)
-								var/newdir = get_dir(T, M.loc)
+							if(ishuman(M))//Ok so they're a human, so they have blood and shit.
+								var/mob/living/carbon/human/H = M
+								var/blood_volume = round(H.vessel.get_reagent_amount("blood"))//Getting their blood.
+								if(blood_volume > 50)//Do they have blood?
+									H.vessel.remove_reagent("blood", rand(1,5))//If so take some away.
+							if(istype(M.loc, /turf/simulated) && trail_type != null)//Ok we've taken the blood away then we can leave a trail.
+								var/newdir = get_dir(T, M.loc)//All this trail shit.
 								if(newdir != M.dir)
 									newdir = newdir | M.dir
 									if(newdir == 3) //N + S
@@ -470,10 +486,10 @@
 									newdir = turn(get_dir(T, M.loc), 180)
 								if(!blood_exists)
 									new /obj/effect/decal/cleanable/trail_holder(M.loc)
-								for(var/obj/effect/decal/cleanable/trail_holder/H in M.loc)
-									if((!(newdir in H.existing_dirs) || trail_type == "trails_1" || trail_type == "trails_2") && H.existing_dirs.len <= 16) //maximum amount of overlays is 16 (all light & heavy directions filled)
-										H.existing_dirs += newdir
-										H.overlays.Add(image('icons/effects/blood.dmi',trail_type,dir = newdir))
+								for(var/obj/effect/decal/cleanable/trail_holder/X in M.loc)
+									if((!(newdir in X.existing_dirs) && X.existing_dirs.len <= 16)) //maximum amount of overlays is 16 (all light & heavy directions filled)
+										X.existing_dirs += newdir
+										X.overlays.Add(image('icons/effects/blood.dmi', trail_type,dir = newdir))
 						step(pulling, get_dir(pulling.loc, T))
 						M.start_pulling(t)
 				else
@@ -511,7 +527,7 @@
 		if(ishuman(src))
 			stamina_loss = 100
 			var/mob/living/carbon/human/H = src
-			var/list/ROLL = roll3d6(src, H.my_stats.ht,null,TRUE,TRUE)
+			var/list/ROLL = roll3d6(src, H.my_stats.get_stat(STAT_HT),null,TRUE,TRUE)
 			switch(ROLL[GP_RESULT])
 				if(GP_CRITFAIL)
 					var/datum/organ/internal/heart/HE = locate() in H.internal_organs
@@ -526,7 +542,14 @@
 					playsound(src.loc, pick('sound/voice/tired.ogg'), 90, 0, -1)
 				else
 					playsound(src.loc, pick('sound/voice/femtired1.ogg','sound/voice/femtired2.ogg','sound/voice/femtired3.ogg','sound/voice/femtired4.ogg'), 90, 0, -1)
-
+	if(ishuman(src))
+		var/mob/living/carbon/human/H = src
+		if(H.clinged_turf)
+			to_chat(H, "<span class='combatbold'>Your arms give out and you let go of \the [H.clinged_turf]!</span>")
+			H.clinged_turf = null
+			if(istype(H.loc, /turf/simulated/floor/open))
+				var/turf/simulated/floor/open/T = H.loc
+				T.Entered(H)
 
 /mob/living/verb/resist()
 	set name = "Resist"
@@ -545,37 +568,6 @@
 		qdel(H)
 		return
 
-	//Resisting control by an alien mind.
-	if(istype(src.loc,/mob/living/simple_animal/borer))
-		var/mob/living/simple_animal/borer/B = src.loc
-		var/mob/living/captive_brain/H = src
-
-		H << "\red <B>You begin doggedly resisting the parasite's control (this will take approximately sixty seconds).</B>"
-		B.host << "\red <B>You feel the captive mind of [src] begin to resist your control.</B>"
-
-		spawn(rand(350,450)+B.host.brainloss)
-
-			if(!B || !B.controlling)
-				return
-
-			B.host.adjustBrainLoss(rand(5,10))
-			H << "\red <B>With an immense exertion of will, you regain control of your body!</B>"
-			B.host << "\red <B>You feel control of the host brain ripped from your grasp, and retract your probosci before the wild neural impulses can damage you.</b>"
-			B.controlling = 0
-
-			B.ckey = B.host.ckey
-			B.host.ckey = H.ckey
-
-			H.ckey = null
-			H.name = "host brain"
-			H.real_name = "host brain"
-
-			verbs -= /mob/living/carbon/proc/release_control
-			verbs -= /mob/living/carbon/proc/punish_host
-			verbs -= /mob/living/carbon/proc/spawn_larvae
-
-			return
-
 	//resisting grabs (as if it helps anyone...)
 	if ((!( L.stat ) && L.canmove && !( L.restrained() )))
 		var/resisting = 0
@@ -583,7 +575,7 @@
 			L.requests.Remove(O)
 			qdel(O)
 			resisting++*/
-		for(var/obj/item/weapon/grab/G in usr.grabbed_by)
+		for(var/obj/item/grab/G in usr.grabbed_by)
 			resisting++
 			if (G.state >= 2)
 				if(!ishuman(G.affecting) && !ishuman(G.assailant))
@@ -592,14 +584,14 @@
 				var/mob/living/carbon/human/H = G.assailant
 				var/mob/living/carbon/human/HH = G.affecting
 
-				if(H.my_stats.st - HH.my_stats.st >= 3)
+				if(H.my_stats.get_stat(STAT_ST) - HH.my_stats.get_stat(STAT_ST) >= 3)
 					to_chat(HH, "You can't!")
 					return
 
-				var/diff = (H.my_stats.st + H.my_skills.GET_SKILL(SKILL_MELEE)) - (HH.my_stats.st + HH.my_skills.GET_SKILL(SKILL_MELEE))
+				var/diff = (H.my_stats.get_stat(STAT_ST) + H.my_skills.get_skill(SKILL_MELEE)) - (HH.my_stats.get_stat(STAT_ST) + HH.my_skills.get_skill(SKILL_MELEE))
 
 				var/modifier = 6
-				if(HH.meanwhile_combat_intent == "defend")
+				if(HH.meanwhile_combat_intent == I_DEFEND)
 					modifier += 15
 
 				if(HH.combat_mode)
@@ -723,7 +715,7 @@
 				ExtinguishMob()
 			return
 
-		if(CM.handcuffed && !(CM.stat || CM.stunned || CM.weakened || CM.buckled || CM.paralysis || CM.sleeping || (CM.status_flags & FAKEDEATH)) && (CM.last_special <= world.time))
+		if(CM.handcuffed && !(CM.stat || CM.stunned || CM.weakened || istype(CM.buckled,/obj/structure/stool/bed/chair/comfy/torture) || CM.paralysis || CM.sleeping || (CM.status_flags & FAKEDEATH)) && (CM.last_special <= world.time))
 			CM.next_move = world.time + 100
 			CM.last_special = world.time + 100
 
@@ -738,7 +730,7 @@
 					can_break_cuffs = TRUE
 				if(istype(H.species, /datum/species/human/alien))
 					can_break_cuffs = TRUE
-				if(H.my_stats.st >= 20)
+				if(H.my_stats.get_stat(STAT_ST) >= 20)
 					can_break_cuffs = TRUE
 
 			if(can_break_cuffs) //Don't want to do a lot of logic gating here.
@@ -756,8 +748,8 @@
 						CM.handcuffed = null
 						CM.update_inv_handcuffed()
 			else
-				var/obj/item/weapon/handcuffs/HC = CM.handcuffed
-				var/breakouttime = rand(400,800) //A default in case you are somehow handcuffed with something that isn't an obj/item/weapon/handcuffs type
+				var/obj/item/handcuffs/HC = CM.handcuffed
+				var/breakouttime = rand(400,800) //A default in case you are somehow handcuffed with something that isn't an obj/item/handcuffs type
 				//var/displaytime = 2 //Minutes to display in the "this will take X minutes."
 				if(istype(HC)) //If you are handcuffed with actual handcuffs... Well what do I know, maybe someone will want to handcuff you with toilet paper in the future...
 					breakouttime = HC.breakouttime
@@ -812,8 +804,8 @@
 						CM.legcuffed = null
 						CM.update_inv_legcuffed()
 			else
-				var/obj/item/weapon/legcuffs/HC = CM.legcuffed
-				var/breakouttime = 1200 //A default in case you are somehow legcuffed with something that isn't an obj/item/weapon/legcuffs type
+				var/obj/item/legcuffs/HC = CM.legcuffed
+				var/breakouttime = 1200 //A default in case you are somehow legcuffed with something that isn't an obj/item/legcuffs type
 				//var/displaytime = 2 //Minutes to display in the "this will take X minutes."
 				if(istype(HC)) //If you are legcuffed with actual legcuffs... Well what do I know, maybe someone will want to legcuff you with toilet paper in the future...
 					breakouttime = HC.breakouttime
@@ -920,7 +912,7 @@
 
 	if(!ignore_items)
 		for(var/obj/item/carried_item in contents)//If the monkey got on objects.
-			if( !istype(carried_item, /obj/item/weapon/implant) && !istype(carried_item, /obj/item/clothing/mask/facehugger) )//If it's not an implant or a facehugger
+			if( !istype(carried_item, /obj/item/implant) && !istype(carried_item, /obj/item/clothing/mask/facehugger) )//If it's not an implant or a facehugger
 				src << "\red You can't be carrying items or have items equipped when vent crawling!"
 				return
 

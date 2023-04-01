@@ -108,7 +108,7 @@
 			if(prob(20))
 				user << "[pick("The cobweb softly touches your face", "You feel something touching your face", "You fell the disguisting touch of the cobweb", "Some of the cobweb remains on your face")]..."
 
-/obj/item/weapon/reagent_containers/food/snacks/Destroy()
+/obj/item/reagent_containers/food/snacks/Destroy()
 	if(contents)
 		for(var/atom/movable/something in contents)
 			something.dropInto(loc)
@@ -131,6 +131,8 @@
 		processing_objects.Add(src)
 		spawn(2400)
 			processing_objects.Remove(src)
+			new /obj/effect/decal/cleanable/vomit/old(get_turf(src))
+			qdel(src)
 
 	Destroy()
 		for(var/datum/disease/D in viruses)
@@ -150,7 +152,7 @@
 	desc = "You try not to look at the chunks, and fail."
 	New()
 		..()
-		icon_state += "-old"
+		icon_state += "_dry"
 
 /obj/effect/decal/cleanable/tomato_smudge
 	name = "tomato smudge"

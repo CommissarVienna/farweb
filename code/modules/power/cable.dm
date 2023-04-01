@@ -1,6 +1,6 @@
 // attach a wire to a power machine - leads from the turf you are standing on
 
-/obj/machinery/power/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/power/attackby(obj/item/W, mob/user)
 
 	if(istype(W, /obj/item/stack/cable_coil))
 
@@ -112,7 +112,7 @@
 	if(T.intact)
 		return
 
-	if(istype(W, /obj/item/weapon/wirecutters))
+	if(istype(W, /obj/item/wirecutters))
 
 ///// Z-Level Stuff
 		if(src.d1 == 12 || src.d2 == 12)
@@ -270,7 +270,7 @@
 		if(src.amount <= 14)
 			usr << "<span class='warning'>You need at least 15 lengths to make restraints!</span>"
 			return
-		var/obj/item/weapon/handcuffs/cable/B = new /obj/item/weapon/handcuffs/cable(usr.loc)
+		var/obj/item/handcuffs/cable/B = new /obj/item/handcuffs/cable(usr.loc)
 		B.color = item_color
 		usr << "<span class='notice'>You wind some cable together to make some restraints.</span>"
 		src.use(15)
@@ -278,9 +278,9 @@
 		usr << "<span class='notice'>\blue You cannot do that.</span>"
 	..()
 
-/obj/item/stack/cable_coil/attackby(obj/item/weapon/W, mob/user)
+/obj/item/stack/cable_coil/attackby(obj/item/W, mob/user)
 	..()
-	if( istype(W, /obj/item/weapon/wirecutters) && src.amount > 1)
+	if( istype(W, /obj/item/wirecutters) && src.amount > 1)
 		src.amount--
 		new/obj/item/stack/cable_coil(user.loc, 1,item_color)
 		user << "<span class='notice'>You cut a piece off the cable coil.</span>"

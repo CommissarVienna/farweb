@@ -1,12 +1,12 @@
 var/keyCounter = 0
-/obj/item/weapon/keycard
+/obj/item/keycard
 	name = "Keycard Room X"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "keycard1"
 	w_class = 2
 	var/key = ""
 
-/obj/item/weapon/keycard/New()
+/obj/item/keycard/New()
 	..()
 	keyCounter++
 	key = "[keyCounter]"
@@ -14,7 +14,7 @@ var/keyCounter = 0
 	desc = "A keycard to open inn's rooms. This one has a tag #[key]"
 	icon_state = "keycard[rand(1,2)]"
 
-/obj/item/weapon/keycard/afterattack(atom/A, mob/user as mob, proximity) //i could've just done a for() i'm a retard holy fck
+/obj/item/keycard/afterattack(atom/A, mob/user as mob, proximity) //i could've just done a for() i'm a retard holy fck
 	if(!proximity) return
 	if(istype(A, /obj/machinery/door/airlock/brothel/innkeep))
 		var/obj/machinery/door/airlock/brothel/innkeep/AA = A

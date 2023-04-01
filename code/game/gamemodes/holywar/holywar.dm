@@ -11,7 +11,7 @@
 
 /datum/game_mode/holywar/announce()
 	to_chat(world, "<h2>Holy War!</h2>")
-	world << 'siege_declared.ogg'
+	world << 'sound/AI/siege_declared.ogg'
 
 /datum/game_mode/holywar/pre_setup()
 	return 1

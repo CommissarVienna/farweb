@@ -17,7 +17,7 @@
 	var/mob/living/carbon/human/H = M
 	if(get_dist(src,M) <= 1)
 		if(M.wear_mask && M.wear_mask.flags & MASKCOVERSMOUTH)
-			to_chat(M, "<span class='combat'>[pick(nao_consigoen)] my mask is in the way!</span>")
+			to_chat(M, "<span class='combat'>[pick(fnord)] my mask is in the way!</span>")
 			return
 		var/datum/reagents/reagents = new/datum/reagents(2)
 		reagents.add_reagent("water", 2)
@@ -27,48 +27,48 @@
 		reagents.trans_to(H, 2)
 		visible_message("<span class='bname'>⠀[H]</span> drinks from \the [src]!</span>")
 		H.bladder += rand(1,3) //For peeing
-		H.hidratacao += 5
+		H.hydration += 5
 		playsound(M.loc, 'sound/items/drink.ogg', rand(10, 50), 1)
 		return
 
-/turf/simulated/floor/exoplanet/water/shallow/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/turf/simulated/floor/exoplanet/water/shallow/attackby(obj/item/W as obj, mob/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	if(istype(W, /obj/item/clothing/mask/sleeve))
 		var/obj/item/clothing/mask/sleeve/S = W
 		S.soaked = 10
 		to_chat(user, "<span class='passive'>You soak \the [S] in \the [src]</span>")
-	if(istype(W, /obj/item/weapon/alicate))
-		var/obj/item/weapon/alicate/A = W
-		var/obj/item/weapon/ore/refined/lw/lw = safepick(A.contents)
+	if(istype(W, /obj/item/alicate))
+		var/obj/item/alicate/A = W
+		var/obj/item/ore/refined/lw/lw = safepick(A.contents)
 		if(A.contents.len && lw.itemToBecome && lw.percentageToBecome >= MAX_SMITHING)
-			var/obj/item/weapon/WE = new lw.itemToBecome(user.loc)
+			var/obj/item/WE = new lw.itemToBecome(user.loc)
 			WE.quality = lw.qualidadeBarra
 			WE.New()
 			A.contents.Cut()
 			A.update_icon()
 			var/sound_to_go = pick('sound/effects/quench_barrel1.ogg', 'sound/effects/quench_barrel2.ogg')
 			playsound(src.loc, sound_to_go, 50, 0)
-	if (istype(W, /obj/item/weapon/reagent_containers))
-		var/obj/item/weapon/reagent_containers/RG = W
+	if (istype(W, /obj/item/reagent_containers))
+		var/obj/item/reagent_containers/RG = W
 		RG.reagents.add_reagent("water", min(RG.volume - RG.reagents.total_volume, RG.amount_per_transfer_from_this))
 		if(!safewater)
 			RG.reagents.add_reagent("????", min(RG.volume - RG.reagents.total_volume, RG.amount_per_transfer_from_this))
 		user.visible_message("\blue [user] fills \the [RG] using \the [src].","\blue You fill \the [RG] using \the [src].")
 		return
-	if(istype(W, /obj/item/weapon/fishing_rod) && ishuman(user))
-		var/obj/item/weapon/fishing_rod/F = W
+	if(istype(W, /obj/item/fishing_rod) && ishuman(user))
+		var/obj/item/fishing_rod/F = W
 		var/mob/living/carbon/human/H = user
 		if(F.worms)
 			to_chat(user, "<span class='passive'>You begin fishing.</span>")
 			if(do_after(user, rand(60,120)))
-				if(skillcheck(H.my_skills.GET_SKILL(SKILL_FISH), 50))
+				if(skillcheck(H.my_skills.get_skill(SKILL_FISH), 50))
 					if(prob(75))
 						to_chat(user, "<span class='passivebold'>Got it!</span>")
 						var/hookedfish
 						if(prob(5))
-							hookedfish = pick(/obj/item/weapon/claymore/copper, /obj/item/weapon/spacecash/silver/c15, /obj/item/weapon/grenade/syndieminibomb/frag, /obj/item/weapon/horn/horn2, /obj/item/weapon/gun/projectile/automatic/pistol/ml23)
+							hookedfish = pick(/obj/item/claymore/copper, /obj/item/spacecash/silver/c15, /obj/item/grenade/syndieminibomb/frag, /obj/item/horn/horn2, /obj/item/gun/projectile/automatic/pistol/ml23)
 						else
-							hookedfish = pick(/obj/item/sea/deadfish, /obj/item/sea/seastar, /obj/item/weapon/reagent_containers/food/snacks/fish/fish1, /obj/item/weapon/reagent_containers/food/snacks/fish/fish2, /obj/item/weapon/reagent_containers/food/snacks/fish/fish3, /obj/item/weapon/reagent_containers/food/snacks/fish/fish4, /obj/item/weapon/reagent_containers/food/snacks/fish/fish5)
+							hookedfish = pick(/obj/item/sea/deadfish, /obj/item/sea/seastar, /obj/item/reagent_containers/food/snacks/fish/fish1, /obj/item/reagent_containers/food/snacks/fish/fish2, /obj/item/reagent_containers/food/snacks/fish/fish3, /obj/item/reagent_containers/food/snacks/fish/fish4, /obj/item/reagent_containers/food/snacks/fish/fish5)
 						new hookedfish(user.loc)
 						F.worms = FALSE
 						F.update_icon()
@@ -101,8 +101,8 @@
 	if(istype(AM, /obj/effect/effect/light))	return
 	if(!istype(AM, /mob/living/carbon/human))
 		var/obj/A = AM
-		if(istype(AM, /obj/item/weapon/flame/torch))
-			var/obj/item/weapon/flame/torch/F = AM
+		if(istype(AM, /obj/item/flame/torch))
+			var/obj/item/flame/torch/F = AM
 			if(!F.throwing && F.lit)
 				F.turn_off()
 			spawn(rand(3,6))
@@ -116,19 +116,19 @@
 	var/mob/living/carbon/human/M = AM
 	M.adjustStaminaLoss(rand(0,2))
 	M.overlays += /obj/effect/water/waterlay
-	var/obj/item/weapon/flame/torch/F
+	var/obj/item/flame/torch/F
 	M.bodytemperature = 200
 	if(ishuman(M))
 		if(M?.special == "sailor")
 			M.rotate_plane()
 	for(F in M.contents)
 		F.turn_off()
-	var/DXTOTAL = M.my_stats.dx * 2
-	if(prob(70-DXTOTAL) && !skillcheck(M.my_skills.GET_SKILL(SKILL_SWIM), 40, 0, M))
-		M.visible_message("<span class='bname'>[M.name]</span> floundes in water!")
+	var/DXTOTAL = M.my_stats.get_stat(STAT_DX) * 2
+	if(prob(70-DXTOTAL) && !skillcheck(M.my_skills.get_skill(SKILL_SWIM), 40, 0, M))
+		M.visible_message("<span class='bname'>[M.name]</span> flounders in water!")
 		M.adjustStaminaLoss(rand(1,2))
 		playsound(M.loc, 'sound/effects/fst_water_jump_down_01.ogg', 80, 1, -1)
-	var/totalroll = (M.my_skills.GET_SKILL(SKILL_SWIM)+M.my_stats.dx) / 2
+	var/totalroll = (M.my_skills.get_skill(SKILL_SWIM)+M.my_stats.get_stat(STAT_DX)) / 2
 	spawn(rand(2,totalroll))
 		if(M.x == src.x && M.y == src.y && M.z == src.z)
 			M.Move(get_step(M,src.directionz))
@@ -248,19 +248,19 @@
 		playsound(L, "footsteps_water", 50, 1)
 	if(ishuman(AM))
 		var/mob/living/carbon/human/M = AM
-		for(var/obj/item/weapon/shield/generator/G in M.contents)
+		for(var/obj/item/shield/generator/G in M.contents)
 			if(G.active)
 				G.failure(M)
 
 	if(!istype(AM, /mob/living))
-		if(istype(AM, /obj/item/weapon/flame/torch))
-			var/obj/item/weapon/flame/torch/F = AM
+		if(istype(AM, /obj/item/flame/torch))
+			var/obj/item/flame/torch/F = AM
 			if(!F.throwing && F.lit)
 				F.turn_off()
 
 		return
 	var/mob/living/carbon/human/M = AM
-	var/obj/item/weapon/flame/torch/F
+	var/obj/item/flame/torch/F
 	M.bodytemperature = 200
 	for(F in M.contents)
 		if(F.lit)

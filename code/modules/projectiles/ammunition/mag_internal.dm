@@ -82,7 +82,7 @@
 	ammo_type = /obj/item/ammo_casing/c38/e
 	caliber = ".38"
 	cylinders = 7
-	max_ammo = 0
+	max_ammo = 7
 
 /obj/item/ammo_magazine/internal/cylinder/rev44
 	name = "taurus revolver cylinder"

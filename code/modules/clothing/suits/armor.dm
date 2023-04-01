@@ -1,6 +1,6 @@
 
 /obj/item/clothing/suit/armor
-	allowed = list(/obj/item/weapon/gun/energy,/obj/item/weapon/reagent_containers/spray/pepper,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs)
+	allowed = list(/obj/item/gun/energy,/obj/item/reagent_containers/spray/pepper,/obj/item/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	flags = FPRINT | TABLEPASS
 	armor = list(melee = 35, bullet = 20, laser = 50, energy = 10, bomb = 25, bio = 0, rad = 0)
@@ -64,7 +64,7 @@
 
 /obj/item/clothing/suit/armor/vest/iron_breastplate
 	name = "iron breastplate"
-	icon_state = "ironbplate"
+	icon_state = "blate"
 	slowdown = 0
 	armor = list(melee = 40, bullet = 0, laser = 0, energy = 0, bomb = 5, bio = 0, rad = 0)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|GROIN
@@ -75,7 +75,7 @@
 
 /obj/item/clothing/suit/armor/vest/gold_breastplate
 	name = "gold breastplate"
-	icon_state = "golden_breastplate"
+	icon_state = "garmor"
 	slowdown = 0
 	armor = list(melee = 25, bullet = 0, laser = 0, energy = 0, bomb = 5, bio = 0, rad = 0)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|GROIN
@@ -83,11 +83,11 @@
 	fatmaywear = 1
 	armor_type = ARMOR_METAL
 	weight = 28
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/goldlw
+	smelted_return = /obj/item/ore/refined/lw/goldlw
 
 /obj/item/clothing/suit/armor/vest/iron_cuirass
 	name = "iron cuirass"
-	icon_state = "ironcuirass"
+	icon_state = "armor"
 	slowdown = 0
 	armor = list(melee = 40, bullet = 0, laser = 0, energy = 0, bomb = 5, bio = 0, rad = 0)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|GROIN
@@ -95,7 +95,7 @@
 	item_worth = 27
 	armor_type = ARMOR_METAL
 	weight = 35
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	smelted_return = /obj/item/ore/refined/lw/ironlw
 
 /obj/item/clothing/suit/armor/vest/leja
 	name = "leja"
@@ -113,7 +113,7 @@
 	name = "iron plate armor"
 	icon_state = "ironplate"
 	slowdown = 0
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
@@ -123,7 +123,7 @@
 	item_worth = 27
 	armor_type = ARMOR_METAL
 	weight = 55
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	smelted_return = /obj/item/ore/refined/lw/ironlw
 
 
 /obj/item/clothing/suit/armor/vest/iron_plate/countess
@@ -146,7 +146,7 @@
 	name = "adamantium plate armor"
 	icon_state = "aplate"
 	slowdown = 0
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS
@@ -155,14 +155,14 @@
 	item_worth = 249
 	armor_type = ARMOR_METAL
 	weight = 1
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/adamantinelw
+	smelted_return = /obj/item/ore/refined/lw/adamantinelw
 
 /obj/item/clothing/suit/armor/vest/iron_plate/crusader
 	name = "crusader armor"
 	desc = "Plate armor worn by Crusaders"
-	icon_state = "knight"
+	icon_state = "ironplate"
 	slowdown = 0
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|HANDS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|HANDS|LEGS_TOGETHER
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|THROAT|HANDS
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|THROAT|HANDS
@@ -171,13 +171,14 @@
 	item_worth = 63
 	armor_type = ARMOR_METAL
 	weight = 55
+	//hide_uniform_sleeves = TRUE
 
 /obj/item/clothing/suit/armor/vest/iron_plate/vandenberg
 	name = "chevalier armor"
 	desc = ""
 	icon_state = "zealot"
 	slowdown = 0
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|THROAT|HANDS
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|THROAT|HANDS
@@ -205,16 +206,18 @@
 	icon_state = "ravcoat"
 	item_state = "ravcoat"
 	blood_overlay_type = "armor"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS|LEGS_TOGETHER
 	flags = FPRINT | TABLEPASS | ONESIZEFITSALL
 	armor = list(melee = 10, bullet = 0, laser = 0, energy = 10, bomb = 5, bio = 0, rad = 0)
 	item_worth = 15
 	weight = 2
 	armor_type = ARMOR_LEATHER
+	RightLeft = TRUE
 
 /obj/item/clothing/suit/storage/vest/flakjacket
 	name = "flak jacket"
 	desc = "A jacket that excels in protecting the wearer against high-velocity solid projectiles."
-	icon_state = "flakjacket"
+	icon_state = "opvest"
 	item_state = "opvest"
 	blood_overlay_type = "armor"
 	flags = FPRINT | TABLEPASS | ONESIZEFITSALL
@@ -239,11 +242,11 @@
 	max_heat_protection_temperature = ARMOR_MAX_HEAT_PROTECTION_TEMPERATURE
 
 /obj/item/clothing/suit/armor/vest/security
-	name = "tiamat armor"
+	name = "Tiamat armor"
 	desc = "An armored coat of armor worn by members of the Tiamathi Guard."
 	icon_state = "secarmor"
 	item_state = "cerbarmor"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
@@ -253,6 +256,7 @@
 	weight = 45
 	armor_type = ARMOR_METAL
 	var/name_tag = TRUE
+
 /obj/item/clothing/suit/armor/vest/security/New()
 	..()
 	if(!name_tag)
@@ -260,6 +264,7 @@
 	if(ishuman(src.loc))
 		var/mob/living/carbon/human/H = src.loc
 		name = "[name] ([H.real_name])"
+
 /obj/item/clothing/suit/armor/vest/security/villain
 	icon_state = "secarmor_villain"
 	item_state = "cerbarmor"
@@ -289,6 +294,7 @@
 	item_state = "squire_a"
 	weight = 20
 	name_tag = FALSE
+
 /obj/item/clothing/suit/armor/vest/security/cerberusold
 	name = "cerberus armor"
 	icon_state = "cerberusold"
@@ -315,7 +321,7 @@
 	hood_state = "thanatiblack_hood"
 	storage_slots = 1
 	flags = FPRINT | TABLEPASS
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|GROIN
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|GROIN|LEGS_TOGETHER
 	allowed = list(/obj/item/clothing/mask/silvermask)
 	armor = list(melee = 40, bullet = 35, laser = 0, energy = 10, bomb = 40, bio = 0, rad = 0)
 	armor_type = ARMOR_LEATHER
@@ -329,12 +335,12 @@
 /obj/item/clothing/suit/storage/thanati/thanati
 	name = "thanati robes"
 	desc = ""
-	icon_state = "thanati"
-	item_state = "thanati"
+	icon_state = "fanatic"
+	item_state = "fanatic"
 	hood_state = "thanati_hood"
 	storage_slots = 1
 	flags = FPRINT | TABLEPASS
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|GROIN
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|GROIN|LEGS_TOGETHER
 	allowed = list(/obj/item/clothing/mask/silvermask)
 	New()
 		..()
@@ -343,9 +349,9 @@
 /obj/item/clothing/suit/storage/thanati/thanatilateparty
 	name = "thanati robes"
 	desc = ""
-	icon_state = "thanati"
-	item_state = "thanati"
-	hood_state = "thanati_hood"
+	icon_state = "fanatic"
+	item_state = "fanatic"
+	hood_state = "fanatic"
 	storage_slots = 1
 	flags = FPRINT | TABLEPASS
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|GROIN
@@ -381,11 +387,11 @@
 	name_tag = FALSE
 
 /obj/item/clothing/suit/armor/vest/security/censor
-	name = "Marduk armor"
-	desc = "Plate armor with a tabard representing Firethorn's colors."
-	icon_state = "censor"
+	name = "sophisticated armor"
+	desc = "Plate armor with a tabard representing Ravenheart's coat of arms."
+	icon_state = "blade"
 	item_state = "armor"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
@@ -400,8 +406,8 @@
 	name = "sophisticated armor"
 	desc = "Plate armor with a tabard representing Firethorn's colors"
 	icon_state = "marduk"
-	item_state = "armor"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
+	item_state = "marduk"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
@@ -412,12 +418,12 @@
 	armor_type = ARMOR_METAL
 	name_tag = FALSE
 
-/obj/item/clothing/suit/armor/vest/security/censor
-	name = "sophisticated armor"
-	desc = "Plate armor with a tabard representing Firethorn's colors"
-	icon_state = "censor"
-	item_state = "armor"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
+/obj/item/clothing/suit/armor/vest/security/mardukwow
+	name = "ornate armor"
+	desc = "A set of ornate plate armor, the signature wargear of Firethorn`s Champion."
+	icon_state = "WoW"
+	item_state = "WoW"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
@@ -523,7 +529,7 @@
 
 /obj/item/clothing/suit/armor/vest/security/incarn
 	name = "incarn robes"
-	icon_state = "incarn"
+	icon_state = "gatekeeper"
 	armor = list(melee = 20, bullet = 0, laser = 0, energy = 10, bomb = 10, bio = 0, rad = 0)
 	armor_type = ARMOR_LEATHER
 	name_tag = FALSE
@@ -548,6 +554,7 @@
 	item_state = "armor"
 	armor = list(melee = 15, bullet = 0, laser = 0, energy = 10, bomb = 15, bio = 0, rad = 0)
 	armor_type = ARMOR_LEATHER
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS|LEGS_TOGETHER
 
 /obj/item/clothing/suit/armor/vest/comissar
 	name = "secret notorious's garment"
@@ -564,22 +571,22 @@
 	item_state = "sunshine"
 	armor = list(melee = 15, bullet = 0, laser = 0, energy = 10, bomb = 15, bio = 0, rad = 0)
 	armor_type = ARMOR_LEATHER
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
 
 /obj/item/clothing/suit/armor/vest/general_inquisitor
 	name = "inquisitor's garment"
 	desc = "A garment wore by general inquisitors."
-	icon_state = "churchcoat"
+	icon_state = "inq"
 	item_state = "armor"
 	armor = list(melee = 15, bullet = 0, laser = 0, energy = 10, bomb = 15, bio = 0, rad = 0)
 	armor_type = ARMOR_LEATHER
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
 
 /obj/item/clothing/suit/armor/vest/general_inquisitor/alt1
 	icon_state = "churchcoatALT"
 
 /obj/item/clothing/suit/armor/vest/general_inquisitor/alt2
-	icon_state = "churchcoatALT2"
+	icon_state = "blade"
 
 /obj/item/clothing/suit/armor/vest/old_inquisitor
 	name = "inquisitor's garment"
@@ -588,13 +595,13 @@
 	item_state = "armor"
 	armor = list(melee = 15, bullet = 0, laser = 0, energy = 10, bomb = 15, bio = 0, rad = 0)
 	armor_type = ARMOR_LEATHER
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
 	armor_type = ARMOR_METAL
 
 /obj/item/clothing/suit/armor/leather
 	name = "Leather Armor"
 	desc = "A handcrafted leather armor, usually wore by bandits and mercenaries."
-	icon_state = "leather"
+	icon_state = "merc"
 	item_state = "armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|GROIN
 	slowdown = 0
@@ -661,7 +668,7 @@
 	permeability_coefficient = 0.01
 	flags = FPRINT | TABLEPASS
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
-	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/tank/emergency_oxygen)
+	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/tank/emergency_oxygen)
 	slowdown = 1
 	armor = list(melee = 80, bullet = 60, laser = 50,energy = 25, bomb = 50, bio = 0, rad = 0)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
@@ -738,7 +745,7 @@
 	item_state = "centcom"
 	w_class = 4//bulky item
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
-	allowed = list(/obj/item/weapon/gun/energy,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/tank/emergency_oxygen)
+	allowed = list(/obj/item/gun/energy,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/tank/emergency_oxygen)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
@@ -753,7 +760,7 @@
 	gas_transfer_coefficient = 0.90
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	slowdown = 3
-	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/tank/emergency_oxygen)
+	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/tank/emergency_oxygen)
 	armor = list(melee = 200, bullet = 200, laser = 200,energy = 200, bomb = 200, bio = 200, rad = 200)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
@@ -796,7 +803,7 @@
 	item_state = "kvest"
 	armor = list(melee = 50, bullet = 20, laser = 50, energy = 10, bomb = 25, bio = 0, rad = 0)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-	allowed = list(/obj/item/weapon/gun,/obj/item/weapon/reagent_containers/spray/pepper,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs)
+	allowed = list(/obj/item/gun,/obj/item/reagent_containers/spray/pepper,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs)
 	var/icon_badge
 	var/icon_nobadge
 	verb/toggle()
@@ -817,49 +824,6 @@
 			return
 		update_icon()
 
-/obj/item/clothing/suit/storage/vest/officer
-	name = "officer armor vest"
-	desc = "A simple kevlar plate carrier belonging to Nanotrasen. This one has a security holobadge clipped to the chest."
-	icon_state = "officervest_nobadge"
-	item_state = "officervest_nobadge"
-	icon_badge = "officervest_badge"
-	icon_nobadge = "officervest_nobadge"
-
-/obj/item/clothing/suit/storage/vest/warden
-	name = "warden armor vest"
-	desc = "A simple kevlar plate carrier belonging to Nanotrasen. This one has a silver badge clipped to the chest."
-	icon_state = "wardenvest_nobadge"
-	item_state = "wardenvest_nobadge"
-	icon_badge = "wardenvest_badge"
-	icon_nobadge = "wardenvest_nobadge"
-	armor = list(melee = 50, bullet = 30, laser = 50, energy = 10, bomb = 25, bio = 0, rad = 0)
-
-/obj/item/clothing/suit/storage/vest/hos
-	name = "commander armor vest"
-	desc = "A simple kevlar plate carrier belonging to Nanotrasen. This one has a gold badge clipped to the chest."
-	icon_state = "hosvest_nobadge"
-	item_state = "hosvest_nobadge"
-	icon_badge = "hosvest_badge"
-	icon_nobadge = "hosvest_nobadge"
-	armor = list(melee = 60, bullet = 45, laser = 50, energy = 10, bomb = 25, bio = 0, rad = 0)
-
-/obj/item/clothing/suit/storage/vest/pcrc
-	name = "PCRC armor vest"
-	desc = "A simple kevlar plate carrier belonging to Proxima Centauri Risk Control. This one has a PCRC crest clipped to the chest."
-	icon_state = "pcrcvest_nobadge"
-	item_state = "pcrcvest_nobadge"
-	icon_badge = "pcrcvest_badge"
-	icon_nobadge = "pcrcvest_nobadge"
-
-/obj/item/clothing/suit/storage/vest/detective
-	name = "detective armor vest"
-	desc = "A simple kevlar plate carrier in a vintage brown, it has a badge clipped to the chest that reads, 'Private investigator'."
-	icon_state = "detectivevest_nobadge"
-	item_state = "detectivevest_nobadge"
-	icon_badge = "detectivevest_badge"
-	icon_nobadge = "detectivevest_nobadge"
-	armor = list(melee = 50, bullet = 20, laser = 50, energy = 10, bomb = 25, bio = 0, rad = 0)
-
 /obj/item/clothing/suit/storage/vest/heavy
 	name = "heavy armor vest"
 	desc = "A heavy kevlar plate carrier with webbing attached."
@@ -868,43 +832,3 @@
 	armor = list(melee = 50, bullet = 40, laser = 50, energy = 25, bomb = 30, bio = 0, rad = 0)
 	slowdown = 1
 	storage_slots = 4
-
-/obj/item/clothing/suit/storage/vest/heavy/officer
-	name = "officer heavy armor vest"
-	desc = "A heavy kevlar plate carrier belonging to Nanotrasen with webbing attached. This one has a security holobadge clipped to the chest."
-	icon_state = "officerwebvest_nobadge"
-	item_state = "officerwebvest_nobadge"
-	icon_badge = "officerwebvest_badge"
-	icon_nobadge = "officerwebvest_nobadge"
-
-/obj/item/clothing/suit/storage/vest/heavy/warden
-	name = "warden heavy armor vest"
-	desc = "A heavy kevlar plate carrier belonging to Nanotrasen with webbing attached. This one has a silver badge clipped to the chest."
-	icon_state = "wardenwebvest_nobadge"
-	item_state = "wardenwebvest_nobadge"
-	icon_badge = "wardenwebvest_badge"
-	icon_nobadge = "wardenwebvest_nobadge"
-
-/obj/item/clothing/suit/storage/vest/heavy/hos
-	name = "commander heavy armor vest"
-	desc = "A heavy kevlar plate carrier belonging to Nanotrasen with webbing attached. This one has a gold badge clipped to the chest."
-	icon_state = "hoswebvest_nobadge"
-	item_state = "hoswebvest_nobadge"
-	icon_badge = "hoswebvest_badge"
-	icon_nobadge = "hoswebvest_nobadge"
-
-/obj/item/clothing/suit/storage/vest/heavy/pcrc
-	name = "PCRC heavy armor vest"
-	desc = "A heavy kevlar plate carrier belonging to Proxima Centauri Risk Control with webbing attached. This one has a PCRC crest clipped to the chest."
-	icon_state = "pcrcwebvest_nobadge"
-	item_state = "pcrcwebvest_nobadge"
-	icon_badge = "pcrcwebvest_badge"
-	icon_nobadge = "pcrcwebvest_nobadge"
-
-/obj/item/clothing/suit/storage/vest/heavy/merc
-	name = "heavy armor vest"
-	desc = "A high-quality heavy kevlar plate carrier in a fetching tan. The vest is surprisingly flexible, and possibly made of an advanced material."
-	icon_state = "mercwebvest"
-	item_state = "mercwebvest"
-	armor = list(melee = 65, bullet = 60, laser = 65, energy = 45, bomb = 50, bio = 0, rad = 0)
-	slowdown = 0

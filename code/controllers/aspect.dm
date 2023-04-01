@@ -55,13 +55,13 @@ var/list/allClothing = list()
 	name = "Baby Marduk"
 	id = "kidcensor"
 
-	event_message = "Abusing DOB during his childhood has prevented a boy's body from growing. To compensate it, he trained a lot, and eventually he became our marduk."
+	event_message = "Abusing DOB during his childhood has prevented a boy's body from growing. To compensate it, he trained a lot, and eventually he became our Champion."
 
 /datum/round_event/helpless
 	name = "Helpless Fortress"
 	id = "helpless"
 
-	event_message = "Noone in the fortress knows how to fight."
+	event_message = "No one in the fortress knows how to fight."
 
 /datum/round_event/helpchildren
 	name = "Helpless Fortress?"
@@ -99,10 +99,21 @@ var/list/allClothing = list()
 
 	event_message = "For some weird reason, all women in the fortress are now male! Must be some sort of curse!"
 
+/datum/round_event/female
+	name = "Only Female"
+	id = "femme"
+
+	event_message = "For some weird reason, all men in the fortress are now women! Must be some sort of curse!"
+
+/datum/round_event/sexswap
+	name = "Sex Swap"
+	id = "sexswap"
+
+	event_message = "For some weird reason, all men in the fortress are now women and vice versa! Must be some sort of curse!"
+
 /datum/round_event/pathologic
 	name = "Pathologic"
 	id = "pathologic"
-	roundstartdisplay = 0
 	event_message = "A plague is infecting the fortress, the Haruspex is the salvation!"
 
 /datum/round_event/freedom
@@ -146,7 +157,7 @@ var/list/allClothing = list()
 	name = "Private Security"
 	id = "privatesecurity"
 
-	event_message = "The Bookkeeper was forced to hire goons to protect himself."
+	event_message = "The Merchant was forced to hire goons to protect himself."
 
 /datum/round_event/bankrupt
 	name = "Bankrupt"
@@ -223,7 +234,6 @@ var/list/allClothing = list()
 /datum/round_event/fangtasia
 	name = "Masquerade"
 	id = "fangtasia"
-	roundstartdisplay = 0
 	event_message = "Nobody respects the Masquerade nowanights. The Fortress is infested with bloodsuckers."
 
 /datum/round_event/buryyourdead
@@ -272,7 +282,7 @@ var/list/allClothing = list()
 	name = "Cheap Merchandise"
 	id = "cheapmerchandise"
 
-	event_message = "The Bookkeeper has been trading with some weird ginks. All packs are cheaper this night."
+	event_message = "The Merchant has been trading with some weird ginks. All packs are cheaper this night."
 
 /datum/round_event/armedbums
 	name = "Armed Bums"
@@ -308,7 +318,7 @@ var/list/allClothing = list()
 	name = "The Bee's Knees"
 	id = "beekeeper"
 
-	event_message = "Bookkeeper was overthrown by the new merchant. Greetings, Beekeeper!"
+	event_message = "Merchant was overthrown by the new merchant. Greetings, Beekeeper!"
 
 /datum/round_event/childgarrison
 	name = "Youth Camp"
@@ -325,13 +335,11 @@ var/list/allClothing = list()
 /datum/round_event/losttribs
 	name = "Lost Squad"
 	id = "lostsquad"
-	roundstartdisplay = 1
 	event_message = "The first wave of migrants is replaced by a lost Tribunal squad."
 
 /datum/round_event/washingmachine
 	name = "Comically Large Washing Machine"
 	id = "washing"
-	roundstartdisplay = 1
 	event_message = "Oh no! The fortress washing machine broke down!"
 
 /datum/round_event/reallover
@@ -340,17 +348,23 @@ var/list/allClothing = list()
 	roundstartdisplay = 0
 	event_message = "There is a great lover!"
 
+/datum/round_event/crusade
+	name = "The Final Crusade"
+	id = "crusade"
+
+	event_message = "Men from all around Evergreen mass at Firethorn in preperation for a Crusade!"
+
 /datum/round_event/goldenfortress/apply_event()
 	treasuryworth.add_money(50000)
 
 /datum/round_event/wargirl/apply_event()
 	for(var/mob/living/carbon/human/H in player_list)
 		if(H.job == "Successor")
-			H.my_stats.st += 2
-			H.my_stats.ht += 3
-			H.my_stats.dx += 3
-			H.my_skills.ADD_SKILL(SKILL_MELEE, 17)
-			H.my_skills.ADD_SKILL(SKILL_RANGE, 9)
+			H.my_stats.change_stat(STAT_ST , 2)
+			H.my_stats.change_stat(STAT_HT , 3)
+			H.my_stats.change_stat(STAT_DX , 3)
+			H.my_skills.add_skill(SKILL_MELEE, 17)
+			H.my_skills.add_skill(SKILL_RANGE, 9)
 			H.equip_to_slot_or_del(new /obj/item/sheath/sabre(H), slot_belt)
 
 /datum/round_event/cheapmerchandise/apply_event()
@@ -360,32 +374,32 @@ var/list/allClothing = list()
 
 /datum/round_event/armedbums/apply_event()
 	var/static/possible_weapons = list(
-		/obj/item/weapon/gun/projectile/shotgun,
-		/obj/item/weapon/gun/projectile/shotgun/princess,
-		/obj/item/weapon/gun/projectile/newRevolver/duelista,
-		/obj/item/weapon/gun/projectile/newRevolver/duelista/neoclassic,
-		/obj/item/weapon/gun/projectile/automatic/pistol,
-		/obj/item/weapon/gun/projectile/automatic/pistol/ml23,
-		/obj/item/weapon/gun/projectile/automatic/carbine,
-		/obj/item/weapon/claymore/golden,
-		/obj/item/weapon/claymore/silver,
-		/obj/item/weapon/claymore/copper,
-		/obj/item/weapon/claymore,
-		/obj/item/weapon/claymore/spear,
-		/obj/item/weapon/claymore/scimitar,
-		/obj/item/weapon/claymore/gladius,
-		/obj/item/weapon/claymore/bastard,
-		/obj/item/weapon/claymore/bastard/silver,
-		/obj/item/weapon/kitchen/utensil/knife/dagger/silver,
-		/obj/item/weapon/kitchen/utensil/knife/dagger/copper,
-		/obj/item/weapon/kitchen/utensil/knife/dagger,
-		/obj/item/weapon/melee/telebaton,
-		/obj/item/weapon/melee/classic_baton/tonfa,
-		/obj/item/weapon/melee/classic_baton/mace,
-		/obj/item/weapon/melee/classic_baton/blackjack,
-		/obj/item/weapon/melee/classic_baton/smallclub,
-		/obj/item/weapon/melee/classic_baton/club,
-		/obj/item/weapon/melee/classic_baton/boneclub,
+		/obj/item/gun/projectile/shotgun,
+		/obj/item/gun/projectile/shotgun/princess,
+		/obj/item/gun/projectile/newRevolver/duelista,
+		/obj/item/gun/projectile/newRevolver/duelista/neoclassic,
+		/obj/item/gun/projectile/automatic/pistol,
+		/obj/item/gun/projectile/automatic/pistol/ml23,
+		/obj/item/gun/projectile/automatic/carbine,
+		/obj/item/claymore/golden,
+		/obj/item/claymore/silver,
+		/obj/item/claymore/copper,
+		/obj/item/claymore,
+		/obj/item/claymore/spear,
+		/obj/item/claymore/scimitar,
+		/obj/item/claymore/gladius,
+		/obj/item/claymore/bastard,
+		/obj/item/claymore/bastard/silver,
+		/obj/item/kitchen/utensil/knife/dagger/silver,
+		/obj/item/kitchen/utensil/knife/dagger/copper,
+		/obj/item/kitchen/utensil/knife/dagger,
+		/obj/item/melee/telebaton,
+		/obj/item/melee/classic_baton/tonfa,
+		/obj/item/melee/classic_baton/mace,
+		/obj/item/melee/classic_baton/blackjack,
+		/obj/item/melee/classic_baton/smallclub,
+		/obj/item/melee/classic_baton/club,
+		/obj/item/melee/classic_baton/boneclub,
 	)
 	for(var/mob/living/carbon/human/H in mob_list)
 		if(H.job == "Bum" || istype(H, /mob/living/carbon/human/bumbot))
@@ -409,7 +423,7 @@ var/list/allClothing = list()
 				H.voicetype = "noble"
 				H.add_event("nobleblood", /datum/happiness_event/noble_blood)
 				H.equip_to_slot_or_del(new /obj/item/clothing/suit/succdress/child(H), slot_wear_suit)
-				H.equip_to_slot_or_del(new /obj/item/weapon/card/id/successor(H), slot_wear_id)
+				H.equip_to_slot_or_del(new /obj/item/card/id/successor(H), slot_wear_id)
 				return
 			H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/captain(H), slot_wrist_r)
 			H.voicetype = "noble"
@@ -417,7 +431,7 @@ var/list/allClothing = list()
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/boots(H), slot_shoes)
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/succdress(H), slot_wear_suit)
 			H.add_event("nobleblood", /datum/happiness_event/noble_blood)
-			H.equip_to_slot_or_del(new /obj/item/weapon/card/id/successor(H), slot_wear_id)
+			H.equip_to_slot_or_del(new /obj/item/card/id/successor(H), slot_wear_id)
 
 /*/datum/round_event/name/apply_event()
 	var/firstName = pick("Bruno","Vinicius","Yuri","Almeida","Copetti","Gabriel","Felipe","João","Pedro","Bartolomeu","Everaldo")
@@ -439,14 +453,14 @@ var/list/allClothing = list()
 /datum/round_event/gifted/apply_event()
 	for(var/mob/living/carbon/human/H in player_list)
 		if(H.outsider == 0 && H.my_stats)
-			H.my_stats.it = rand(3,4)
+			H.my_stats.change_stat(STAT_IN , 3)
 
 /datum/round_event/privatesecurity/apply_event()
 	for(var/mob/living/carbon/human/H in player_list)
-		if(H.job == "Grayhound")
-			H.my_stats.st += 3
-			H.my_skills.ADD_SKILL(SKILL_MELEE, 2)
-			H.my_skills.ADD_SKILL(SKILL_RANGE, 4)
+		if(H.job == "Docker")
+			H.my_stats.change_stat(STAT_ST , 3)
+			H.my_skills.add_skill(SKILL_MELEE, 2)
+			H.my_skills.add_skill(SKILL_RANGE, 4)
 			if(H.w_uniform)
 				qdel(H.w_uniform)
 			if(H.wear_suit)
@@ -454,7 +468,7 @@ var/list/allClothing = list()
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/common/outlaw(H), slot_w_uniform)
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/vest/flakjacket(H), slot_wear_suit)
 			H.equip_to_slot_or_del(new /obj/item/clothing/mask/balaclava(H), slot_wear_mask)
-			H.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/carbine(H), slot_back)
+			H.equip_to_slot_or_del(new /obj/item/gun/projectile/automatic/carbine(H), slot_back)
 /*
 /datum/round_event/informant/apply_event()
 	for(var/mob/living/carbon/human/H in world)
@@ -465,7 +479,7 @@ var/list/allClothing = list()
 			world << sound('sound/AI/urgent_message.ogg')
 			to_chat(world, "<br>")
 			for(var/obj/machinery/charon/C in world)
-				var/obj/item/weapon/paper/lord/NG = new (C.loc)
+				var/obj/item/paper/lord/NG = new (C.loc)
 				NG.info = "<h2>O Lorde [H.real_name] veio para Firethorn e espera que seja bem recebido pelo forte!</h2>"
 */
 /datum/round_event/shattereddreams/apply_event()
@@ -480,19 +494,34 @@ var/list/allClothing = list()
 	for(var/mob/living/carbon/human/H in mob_list)
 		if(H.outsider == 0)
 			if(H.job == "Esculap")
-				H.combat_music = 'haruspex-combat.ogg'
-				H.my_skills.ADD_SKILL(SKILL_MELEE, rand(3,5))
-				H.my_skills.ADD_SKILL(SKILL_RANGE, 3)
-				H.my_stats.st += 2
-				H.my_stats.dx += 3
-				H.my_stats.ht += 3
+				H.combat_music = 'sound/music/haruspex-combat.ogg'
+				H.my_skills.add_skill(SKILL_MELEE, rand(3,5))
+				H.my_skills.add_skill(SKILL_RANGE, 3)
+				H.my_stats.change_stat(STAT_ST , 2)
+				H.my_stats.change_stat(STAT_DX , 3)
+				H.my_stats.change_stat(STAT_HT , 3)
 			else
-				H << sound(pick('pathologic.ogg','haruspex.ogg'), repeat = 0, wait = 0, volume = H?.client?.prefs?.ambi_volume, channel = 12)
+				H << sound(pick('sound/music/pathologic.ogg','sound/music/haruspex.ogg'), repeat = 0, wait = 0, volume = H?.client?.prefs?.ambi_volume, channel = 12)
 				if(prob(75))
 					H.contract_disease(new /datum/disease/fluspanish,1,0)
 
 /datum/round_event/man/apply_event()
 	for(var/mob/living/carbon/human/H in mob_list)
+		if(H.outsider == 0 && !H.has_penis())
+			H.gender = "male"
+			H.update_body()
+
+/datum/round_event/female/apply_event()
+	for(var/mob/living/carbon/human/H in mob_list)
+		if(H.outsider == 0 && H.has_penis())
+			H.gender = "female"
+			H.update_body()
+
+/datum/round_event/sexswap/apply_event()
+	for(var/mob/living/carbon/human/H in mob_list)
+		if(H.outsider == 0 && H.has_penis())
+			H.gender = "female"
+			H.update_body()
 		if(H.outsider == 0 && !H.has_penis())
 			H.gender = "male"
 			H.update_body()
@@ -520,47 +549,47 @@ var/list/allClothing = list()
 			if(H.job == "Marduk")
 				var/syndicate_commando_leader_rank = "Lt."
 				H.real_name = "[syndicate_commando_leader_rank] [H.real_name]"
-				H.my_skills.ADD_SKILL(SKILL_RANGE, 3)
-				H.equip_to_slot_or_del(new /obj/item/weapon/melee/energy/sword(H), slot_l_hand)
+				H.my_skills.add_skill(SKILL_RANGE, 3)
+				H.equip_to_slot_or_del(new /obj/item/melee/energy/sword(H), slot_l_hand)
 				H.equip_to_slot_or_del(new /obj/item/clothing/under/ordinatorLT(H), slot_w_uniform)
 			if(H.job == "Tiamat")
 				var/syndicate_commando_rank = pick("Pvt.", "Pfc.", "LCpl.", "Cpl.", "Sgt.")
 				H.real_name = "[syndicate_commando_rank] [H.real_name]"
-				H.my_skills.ADD_SKILL(SKILL_RANGE, 1)
+				H.my_skills.add_skill(SKILL_RANGE, 1)
 				H.equip_to_slot_or_del(new /obj/item/clothing/under/ordinator(H), slot_w_uniform)
 			H.assignment = "Ordinator"
 			if(H.wear_id)
-				var/obj/item/weapon/card/id/R = H.wear_id
+				var/obj/item/card/id/R = H.wear_id
 				R.registered_name = H.real_name
 				R.rank = H.job
 				R.assignment = H.assignment
 				R.name = "[R.registered_name]'s Ring"
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/vest/flakjacket(H), slot_wear_suit)
 			H.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/lw/ordinator(H), slot_head)
-			H.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/grinder(H), slot_back)
+			H.equip_to_slot_or_del(new /obj/item/gun/projectile/automatic/grinder(H), slot_back)
 			H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/infantry(H), slot_shoes)
-			H.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/taser/leet/sparq(H), slot_belt)
-			H.equip_to_slot_or_del(new /obj/item/weapon/shield/generator/wrist(H), slot_wrist_l)
+			H.equip_to_slot_or_del(new /obj/item/gun/energy/taser/leet/sparq(H), slot_belt)
+			H.equip_to_slot_or_del(new /obj/item/shield/generator/wrist(H), slot_wrist_l)
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/external/grinder(H), slot_r_store)
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/external/grinder(H), slot_l_store)
 			H.equip_to_slot_or_del(new /obj/item/ammo_magazine/external/grinder(H), slot_s_store)
 
 /datum/round_event/size_matters/apply_event()
 	for(var/mob/living/carbon/human/H in mob_list)
-		H.my_stats.st = H.potenzia
+		H.my_stats.set_stat(STAT_ST , H.potenzia)
 
 /datum/round_event/deadlyforce/apply_event()
 	for(var/mob/living/carbon/human/H in mob_list)
 		if(H.job == "Tiamat" || H.job == "Marduk")
 			if(H.belt)
 				qdel(H.belt)
-			H.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/taser/leet/laser(H), slot_belt)
+			H.equip_to_slot_or_del(new /obj/item/gun/energy/taser/leet/laser(H), slot_belt)
 
 /datum/round_event/child/apply_event()
 	for(var/mob/living/carbon/human/H in mob_list)
 		if(H.age < 18 && H.outsider == 0)
-			H.my_stats.st += rand(4, 5)
-			H.my_stats.it = 3
+			H.my_stats.change_stat(STAT_ST , 4)
+			H.my_stats.change_stat(STAT_IN , 3)
 /*
 /datum/round_event/black/apply_event()
 	for(var/mob/living/carbon/human/H in world)
@@ -579,26 +608,26 @@ var/list/allClothing = list()
 	for(var/mob/living/carbon/human/H in mob_list)
 		spawn(1)
 			if(!H.outsider)
-				H.my_stats.st -= 4
-				H.my_stats.ht -= 4
+				H.my_stats.change_stat(STAT_ST , -4)
+				H.my_stats.change_stat(STAT_HT , -4)
 
 
 /datum/round_event/helpless/apply_event()
 	for(var/mob/living/carbon/human/H in mob_list)
 		spawn(1)
 			if(!H.outsider)
-				H.my_skills.CHANGE_SKILL(SKILL_MELEE, 1)
-				H.my_skills.CHANGE_SKILL(SKILL_RANGE, 1)
+				H.my_skills.change_skill(SKILL_MELEE, 1)
+				H.my_skills.change_skill(SKILL_RANGE, 1)
 
 /datum/round_event/helpchildren/apply_event()
 	for(var/mob/living/carbon/human/H in mob_list)
 		spawn(1)
 			if(!H.outsider || !H.age < 18)
-				H.my_skills.CHANGE_SKILL(SKILL_MELEE, 1)
-				H.my_skills.CHANGE_SKILL(SKILL_RANGE, 1)
+				H.my_skills.change_skill(SKILL_MELEE, 1)
+				H.my_skills.change_skill(SKILL_RANGE, 1)
 			if(H.age < 18)
-				H.my_skills.ADD_SKILL(SKILL_MELEE, 3,6)
-				H.my_skills.ADD_SKILL(SKILL_RANGE, 3,6)
+				H.my_skills.add_skill(SKILL_MELEE, 3,6)
+				H.my_skills.add_skill(SKILL_RANGE, 3,6)
 
 /datum/round_event/kidcensor/apply_event()
 	for(var/mob/living/carbon/human/H in mob_list)
@@ -620,17 +649,18 @@ var/list/allClothing = list()
 			if(H.wear_suit)
 				qdel(H.wear_suit)
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/squire(H), slot_wear_suit)
-			H.my_skills.job_stats("Squire")
-			H.my_stats.job_stats("Squire")
+			var/datum/job/squire/S = new /datum/job/squire
+			H.my_stats.job_stats(S)
+			qdel(S)
 
 /datum/round_event/bumdanger/apply_event()
 	for(var/mob/living/carbon/human/H in mob_list)
 		if(H.job == "Bum" || istype(H, /mob/living/carbon/human/bumbot))
-			H.my_stats.st += 8
-			H.my_stats.dx += 8
-			H.my_stats.ht += 8
-			H.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(13,16))
-			H.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(13,16))
+			H.my_stats.change_stat(STAT_ST , 8)
+			H.my_stats.change_stat(STAT_DX , 8)
+			H.my_stats.change_stat(STAT_HT , 8)
+			H.my_skills.change_skill(SKILL_RANGE, rand(13,16))
+			H.my_skills.change_skill(SKILL_MELEE, rand(13,16))
 
 /datum/round_event/united/apply_event()
 	var/finalvice = pick(vices)
@@ -655,18 +685,18 @@ var/list/allClothing = list()
 
 /datum/round_event/beekeeper/apply_event()
 	for(var/mob/living/carbon/human/H in mob_list)
-		if(H.job == "Bookkeeper")
+		if(H.job == "Merchant")
 			H.add_perk(/datum/perk/bee_queen)
 			H.assignment = "Beekeeper"
 			if(H.wear_id)
-				var/obj/item/weapon/card/id/R = H.wear_id
+				var/obj/item/card/id/R = H.wear_id
 				R.registered_name = H.real_name
 				R.rank = H.job
 				R.assignment = H.assignment
 				R.name = "[R.registered_name]'s Ring"
 			H.equip_to_slot_or_del(new /obj/item/clothing/mask/bee(H), slot_wear_mask)
 			continue
-		if(H.job == "Grayhound")
+		if(H.job == "Docker")
 			if(H.wear_suit)
 				qdel(H.wear_suit)
 			if(H.head)
@@ -684,11 +714,11 @@ var/list/allClothing = list()
 		if(H.job == "Baron")
 			if(H.r_hand)
 				qdel(H.r_hand)
-			H.equip_to_slot_or_del(new /obj/item/weapon/staffoflaw/zeus(H), slot_r_hand)
+			H.equip_to_slot_or_del(new /obj/item/staffoflaw/zeus(H), slot_r_hand)
 
 /datum/round_event/washingmachine/apply_event()
 	for(var/obj/item/clothing/C in allClothing)
-		var/mob/living/carbon/human/wearsMe = null            
+		var/mob/living/carbon/human/wearsMe = null
 		if(istype(C.loc, /mob/living/carbon/human))
 			wearsMe = C.loc
 		var/area/A = get_area(C)
@@ -704,7 +734,7 @@ var/list/allClothing = list()
 			continue
 		if(istype(C, /obj/item/clothing/head/caphat))
 			continue
-		else            
+		else
 			qdel(C)
 	spawn(5 SECONDS)
 		for(var/mob/living/carbon/human/bumbot/B in mob_list)

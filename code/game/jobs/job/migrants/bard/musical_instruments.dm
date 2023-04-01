@@ -1,6 +1,6 @@
 #define sequential_id(key) uniqueness_repository.Generate(/datum/uniqueness_generator/id_sequential, key)
 
-/obj/item/weapon/musical_instrument
+/obj/item/musical_instrument
 	desc = ""
 	icon = 'icons/obj/musician.dmi'
 	var/datum/sound_token/sound_token
@@ -12,11 +12,11 @@
 	var/sound_id
 	var/difficulty = 0
 
-/obj/item/weapon/musical_instrument/New()
+/obj/item/musical_instrument/New()
 	..()
 	sound_id = "[type]_[sequential_id(type)]"
 
-/obj/item/weapon/musical_instrument/attack_self(mob/user)
+/obj/item/musical_instrument/attack_self(mob/user)
 
 	if(playing)
 		StopPlaying()
@@ -42,7 +42,7 @@
 				H.visible_message("<span class='passive'>\the [H] begins to play \the [src].</span>")
 				StartPlaying(H, music_list[music_name], 1)
 
-			if(GP_FAILED, GP_CRITFAIL)
+			if(GP_FAIL, GP_CRITFAIL)
 				H.visible_message("<span class='combat'>\the [H] begins to play \the [src] poorly.</span>")
 				if(roll_result[GP_RESULT] == GP_CRITFAIL)
 					H.add_event("failed", /datum/happiness_event/misc/ivefailed)
@@ -52,7 +52,7 @@
 
 
 
-/obj/item/weapon/musical_instrument/process()
+/obj/item/musical_instrument/process()
 
 	if(!ishuman(src.loc))
 		StopPlaying()
@@ -79,7 +79,7 @@
 
 
 
-/obj/item/weapon/musical_instrument/proc/StopPlaying()
+/obj/item/musical_instrument/proc/StopPlaying()
 	playing = FALSE
 	music_quality = initial(music_quality)
 	player = null
@@ -87,7 +87,7 @@
 	update_icon()
 	qdel(sound_token)
 
-/obj/item/weapon/musical_instrument/proc/StartPlaying(var/mob/living/carbon/human/H, var/music, var/quality = 1)
+/obj/item/musical_instrument/proc/StartPlaying(var/mob/living/carbon/human/H, var/music, var/quality = 1)
 	StopPlaying()
 	if(!music) return
 	if(!ishuman(H)) return
@@ -99,7 +99,7 @@
 	processing_objects.Add(src)
 	update_icon()
 
-/obj/item/weapon/musical_instrument/baliset
+/obj/item/musical_instrument/baliset
 	name = "baliset"
 	attack_verb = list("smashed")
 	hitsound = 'sound/weapons/bali_hit.ogg'
@@ -114,7 +114,7 @@
 	music_list = list("1" = 'sound/music/instruments/bard1.ogg', "2" = 'sound/music/instruments/bard2.ogg', "3" = 'sound/music/instruments/bard3.ogg', \
 	"4" = 'sound/music/instruments/bard4.ogg', "5" = 'sound/music/instruments/bard5.ogg')
 
-/obj/item/weapon/musical_instrument/baliset/balalaika
+/obj/item/musical_instrument/baliset/balalaika
 	name = "balalaika"
 	icon_state = "balalaika"
 	item_state = "balalaika"
@@ -122,14 +122,14 @@
 	difficulty = 2
 	item_worth = 5000
 
-/obj/item/weapon/musical_instrument/baliset/guitar
+/obj/item/musical_instrument/baliset/guitar
 	name = "guitar"
 	icon_state = "guitar"
 	music_fail = 'sound/music/instruments/g5.ogg'
 	music_list = list("1" = 'sound/music/instruments/g1.ogg', "2" = 'sound/music/instruments/g2.ogg', "3" = 'sound/music/instruments/g3.ogg', \
 	"4" = 'sound/music/instruments/g4.ogg', "5" = 'sound/music/instruments/g6.ogg', "6" = 'sound/music/instruments/g7.ogg')
 
-/obj/item/weapon/musical_instrument/bayan
+/obj/item/musical_instrument/bayan
 	name = "accordion"
 	attack_verb = list("smashed")
 	icon_state = "bayan"

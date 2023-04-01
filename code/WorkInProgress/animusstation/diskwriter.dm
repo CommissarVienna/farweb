@@ -1,4 +1,4 @@
-/obj/item/weapon/disk/music
+/obj/item/disk/music
 	icon = 'icons/obj/personal.dmi'
 	icon_state = "cassete"
 	item_state = "card-id"
@@ -14,7 +14,7 @@
 	var/sound/b_side
 	var/bloqueado = 0
 
-/obj/item/weapon/disk/music/attack_self(mob/user)
+/obj/item/disk/music/attack_self(mob/user)
 	. = ..()
 	if(current_side == 1)
 		sound_inside = b_side
@@ -25,19 +25,19 @@
 		current_side = 1
 		to_chat(user, "<span class='notice'>You flip the cassette over to the a-side.")
 
-/obj/item/weapon/disk/music/tape1/New()
+/obj/item/disk/music/tape1/New()
 	..()
 	name = "\"Firethorn\'s Greatest Hits Vol.1\" magn-o-tape"
 	a_side = 'sound/music/csrio.ogg'
 	sound_inside = a_side
 
-/obj/item/weapon/disk/music/tape2/New()
+/obj/item/disk/music/tape2/New()
 	..()
 	name = "\"Firethorn\'s Greatest Hits Vol.2\" magn-o-tape"
 	a_side = 'sound/music/soufoda.ogg'
 	sound_inside = a_side
 
-/obj/item/weapon/disk/music/tape3/New()
+/obj/item/disk/music/tape3/New()
 	..()
 	name = "\"Firethorn\'s Greatest Hits Vol.3\" magn-o-tape"
 	a_side = 'sound/music/rapdasarmas.ogg'
@@ -56,14 +56,14 @@
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "writer_off"
 	var/coin = 0
-	//var/obj/item/weapon/disk/music/disk
+	//var/obj/item/disk/music/disk
 	var/mob/retard //current user
 	var/retard_name
 	var/writing = 0
 	anchored = 1
 
 /obj/machinery/party/musicwriter/attackby(obj/O, mob/user)
-	if(istype(O, /obj/item/weapon/spacecash/c10))
+	if(istype(O, /obj/item/spacecash/c10))
 		user.drop_item()
 		qdel(O)
 		coin++
@@ -94,7 +94,7 @@
 				var/sound/S = input("Your music file") as sound|null
 				if(S)
 					var/datum/turntable_soundtrack/T = new()
-					var/obj/item/weapon/disk/music/disk = new()
+					var/obj/item/disk/music/disk = new()
 					T.path = S
 					T.f_name = copytext(N, 1, 2)
 					T.name = copytext(N, 2)

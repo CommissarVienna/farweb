@@ -12,7 +12,7 @@
 
 /datum/game_mode/traitcerb/announce()
 	spawn(400)
-		to_chat(world, "<span class='baronboldoutlined'>Um dos tiamatii é O TRAIDOR.</span> <span class='baron'>Rumores sobre isso perturbam a Fortaleza há semanas, mas a identidade do vilão ainda é desconhecida.</span>")
+		to_chat(world, "<span class='baronboldoutlined'>One of the Tiamatii is a traitor!</span> <span class='baron'>Rumors about the turncoat have tormented the fortress for weeks, but the villain`s identity has yet to be uncovered.</span>")
 
 /datum/game_mode/traitcerb/can_start()
 	for(var/mob/new_player/player in player_list)
@@ -23,8 +23,8 @@
 
 /datum/game_mode/proc/greet_cerb(var/datum/mind/traitorcerb)
 	//ticker.mode.learn_basic_spells(current)
-	to_chat(traitorcerb.current, "<span class='baronboldoutlined'>Você é um Tiamat traidor. </span><span class='baron'>Seu salário é patético, suas tarefas são suicidas, e os Thanati lhe ofereceram o dinheiro suficiente para comprar uma dúzia de fortalezas.</span>")
-	to_chat(traitorcerb.current, "<span class='baronboldoutlined'>OBJETIVO: </span><span class='baron'>Assasinar o Barão e conseguir sobreviver com o seu anel.</span>")
+	to_chat(traitorcerb.current, "<span class='baronboldoutlined'>You are the Turncoat Tiamat </span><span class='baron'>Your pay is pathetic, your tasks are suicidal, and the Thanati offered you enough wealth to buy a dozen fortresses.</span>")
+	to_chat(traitorcerb.current, "<span class='baronboldoutlined'>OBJECTIVE: </span><span class='baron'>Assassinate the Baron and survive with your ring.</span>")
 
 /datum/game_mode/proc/finalize_cerb(var/datum/mind/traitorcerb)
 	traitorcerb.special_role = "traitcerb"
@@ -36,7 +36,7 @@
 	var/max_traitcerb = 1
 
 	for(var/datum/mind/player in possible_traitcerb)
-		if(player.assigned_role != "Cerberus")
+		if(player.assigned_role != "Tiamat")
 			possible_traitcerb -= player
 	for(var/j = 0, j < max_traitcerb, j++)
 		if (!possible_traitcerb.len)
@@ -59,7 +59,7 @@
 
 /datum/game_mode/dreamer/declare_completion()
 	to_chat(world, "\n<span class='ricagames'>[vessel_name()] (Story #1)</span>")
-	to_chat(world, "\n<span class='dreamershitbutitsbigasfuckanditsboldtoo'>			     O Traidor</span>\n\n\n")
+	to_chat(world, "\n<span class='dreamershitbutitsbigasfuckanditsboldtoo'>			     The Traitor</span>\n\n\n")
 	var/amountswon = 0
 	var/mob/living/carbon/human/cerberustraedo = null
 	for(var/mob/living/carbon/human/H in world)
@@ -69,17 +69,17 @@
 			cerberustraedo = H
 			var/list/all_items = H.get_contents()
 			for(var/obj/item/I in all_items)
-				if(istype(I, /obj/item/weapon/card/id/lord))
+				if(istype(I, /obj/item/card/id/lord))
 					amountswon++
 
 	if(amountswon >= 0)
-		to_chat(world, "<span class='dreamershitfuckcomicao1'>Estrelando: [capitalize(pick(cerberustraedo.ckey))]</span>")
-		cerberustraedo.client.ChromieWinorLoose(cerberustraedo.client, -5)
+		to_chat(world, "<span class='dreamershitfuckcomicao1'>Starring: [capitalize(pick(cerberustraedo.ckey))]</span>")
+		cerberustraedo.client.ChromieWinorLoose(-5)
 
 	if(amountswon >= 2)
 		to_chat(world, "<span class='dreamershitfuckcomicao1'>Estrelando: [capitalize(pick(cerberustraedo.ckey))]</span>")
-		to_chat(world, "<span class='dreamershitbutitsactuallypassivebutitactuallyisbigandbold'>O Tiamat Traidor foi bem sucedido!</span>")
+		to_chat(world, "<span class='dreamershitbutitsactuallypassivebutitactuallyisbigandbold'>The Traitor Tiamat succeeded!</span>")
 		traitcerb.farwebcompletionantagonist = 1
 
 	if(traitcerb.farwebcompletionantagonist)
-		cerberustraedo.client.ChromieWinorLoose(cerberustraedo.client, 6)
+		cerberustraedo.client.ChromieWinorLoose(6)

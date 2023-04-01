@@ -6,6 +6,6 @@
 	wrist_use = TRUE
 	item_state = "watch"
 
-/obj/item/watch/examine()
+/obj/item/watch/examine(mob/user)
 	..()
-	to_chat(usr, "It's time to go.")
+	to_chat(user, "It's time to go.")

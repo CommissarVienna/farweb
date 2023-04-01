@@ -858,7 +858,7 @@ client
 				organ_slot = sanitize(copytext(organ_slot,1,MAX_MESSAGE_LEN))
 			else
 				if(I.removed_type)
-					var/obj/item/weapon/reagent_containers/food/snacks/organ/O = new I.removed_type()
+					var/obj/item/reagent_containers/food/snacks/organ/O = new I.removed_type()
 					if(I.escritura)
 						I.escritura = O.escritura
 					organ_slot = O.organ_tag

@@ -6,7 +6,7 @@
 	density = 1
 
 /obj/grain
-	name = "Farweb"
+	name = "Nearweb"
 	icon = 'icons/misc/fullscreen.dmi'
 	icon_state = "grain"
 	layer = TURF_LAYER+5

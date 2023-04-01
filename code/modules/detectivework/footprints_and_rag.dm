@@ -13,7 +13,7 @@
 /obj/item/clothing/shoes/
 	var/track_blood = 0
 
-/obj/item/weapon/reagent_containers/glass/rag
+/obj/item/reagent_containers/glass/rag
 	name = "damp rag"
 	desc = "For cleaning up messes, you suppose."
 	w_class = 1
@@ -24,10 +24,10 @@
 	volume = 5
 	can_be_placed_into = null
 
-/obj/item/weapon/reagent_containers/glass/rag/attack_self(mob/user as mob)
+/obj/item/reagent_containers/glass/rag/attack_self(mob/user as mob)
 	return
 
-/obj/item/weapon/reagent_containers/glass/rag/attack(atom/target as obj|turf|area, mob/user as mob , flag)
+/obj/item/reagent_containers/glass/rag/attack(atom/target as obj|turf|area, mob/user as mob , flag)
 	if(ismob(target) && target.reagents && reagents.total_volume)
 		user.visible_message("\red \The [target] has been smothered with \the [src] by \the [user]!", "\red You smother \the [target] with \the [src]!", "You hear some struggling and muffled cries of surprise")
 		src.reagents.reaction(target, TOUCH)
@@ -36,7 +36,7 @@
 	else
 		..()
 
-/obj/item/weapon/reagent_containers/glass/rag/afterattack(atom/A as obj|turf|area, mob/user as mob, proximity)
+/obj/item/reagent_containers/glass/rag/afterattack(atom/A as obj|turf|area, mob/user as mob, proximity)
 	if(!proximity) return
 	if(istype(A) && src in user)
 		user.visible_message("[user] starts to wipe down [A] with [src]!")
@@ -45,7 +45,7 @@
 			A.clean_blood()
 	return
 
-/obj/item/weapon/reagent_containers/glass/rag/examine()
+/obj/item/reagent_containers/glass/rag/examine()
 	if (!usr)
 		return
 	usr << "That's \a [src]."

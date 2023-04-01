@@ -280,8 +280,8 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		var/search_pda = 1
 
 		for(var/A in searching)
-			if( search_id && istype(A,/obj/item/weapon/card/id) )
-				var/obj/item/weapon/card/id/ID = A
+			if( search_id && istype(A,/obj/item/card/id) )
+				var/obj/item/card/id/ID = A
 				if(ID.registered_name == oldname)
 					ID.registered_name = newname
 					ID.name = "[newname]'s ID Card ([ID.assignment])"
@@ -703,25 +703,37 @@ proc/anim(turf/location as turf,target as mob|obj,a_icon,a_icon_state as text,fl
 
 	else return get_step(ref, base_dir)
 
-/proc/do_mob(var/mob/user , var/mob/target, var/time = 30) //This is quite an ugly solution but i refuse to use the old request system.
+/proc/do_mob(var/mob/user , var/mob/target, delay as num) //This is quite an ugly solution but i refuse to use the old request system.
 	if(!user || !target) return 0
 	var/user_loc = user.loc
 	var/target_loc = target.loc
 	var/holding = user.get_active_hand()
+	var/delayfraction = round(delay/10)
 	var/datum/progressbar/progbar
-	progbar = new(user, time, target)
-	var/starttime = world.time
-	sleep(time)
-	progbar.update(world.time - starttime)
-	if(!user || !target) return 0
-	if ( user.loc == user_loc && target.loc == target_loc && user.get_active_hand() == holding && !( user.stat ) && ( !user.stunned && !user.weakened && !user.paralysis && !user.lying ) )
-		qdel(progbar)
-		return 1
-	else
-		qdel(progbar)
-		return 0
+	progbar = new(user, delay)
+	user.doing_after = TRUE
+	for (var/i = 1 to 16)
+		sleep(delayfraction/1.6)
+		progbar.update(i)
 
-/proc/do_after(var/mob/user as mob, delay as num, var/numticks = 5, var/needhand = 1)
+		if(!user || !target)
+			qdel(progbar)
+			user.doing_after = FALSE
+			return 0
+		if(user.stat || user.weakened || user.stunned)
+			qdel(progbar)
+			user.doing_after = FALSE
+			return 0
+		if (user.loc != user_loc || target.loc != target_loc || user.get_active_hand() != holding)
+			qdel(progbar)
+			user.doing_after = FALSE
+			return 0
+
+	user.doing_after = FALSE
+	qdel(progbar)
+	return 1
+
+/proc/do_after(var/mob/user as mob, delay as num, var/numticks = 10, var/needhand = 1)
 	if(!user || isnull(user) || user.doing_after)
 		return 0
 	if(numticks == 0)
@@ -732,11 +744,10 @@ proc/anim(turf/location as turf,target as mob|obj,a_icon,a_icon_state as text,fl
 	var/turf/T = get_turf(user)
 	var/holding = user.get_active_hand()
 	var/datum/progressbar/progbar
-	var/starttime = world.time
 	progbar = new(user, delay)
-	for(var/i = 0, i<numticks, i++)
-		sleep(delayfraction)
-		progbar.update(world.time - starttime)
+	for (var/i = 1 to 16)
+		sleep(delayfraction/1.6)
+		progbar.update(i)
 
 
 		if(!user || user.stat || user.weakened || user.stunned || !(user.loc == T))
@@ -1199,12 +1210,12 @@ proc/get_mob_with_client_list()
 //Quick type checks for some tools
 var/global/list/common_tools = list(
 /obj/item/stack/cable_coil,
-/obj/item/weapon/wrench,
-/obj/item/weapon/weldingtool,
-/obj/item/weapon/screwdriver,
-/obj/item/weapon/wirecutters,
+/obj/item/wrench,
+/obj/item/weldingtool,
+/obj/item/screwdriver,
+/obj/item/wirecutters,
 /obj/item/device/multitool,
-/obj/item/weapon/crowbar)
+/obj/item/crowbar)
 
 /proc/istool(O)
 	if(O && is_type_in_list(O, common_tools))
@@ -1212,12 +1223,12 @@ var/global/list/common_tools = list(
 	return 0
 
 /proc/iswrench(O)
-	if(istype(O, /obj/item/weapon/wrench))
+	if(istype(O, /obj/item/wrench))
 		return 1
 	return 0
 
 /proc/iswelder(O)
-	if(istype(O, /obj/item/weapon/weldingtool))
+	if(istype(O, /obj/item/weldingtool))
 		return 1
 	return 0
 
@@ -1227,12 +1238,12 @@ var/global/list/common_tools = list(
 	return 0
 
 /proc/iswirecutter(O)
-	if(istype(O, /obj/item/weapon/wirecutters))
+	if(istype(O, /obj/item/wirecutters))
 		return 1
 	return 0
 
 /proc/isscrewdriver(O)
-	if(istype(O, /obj/item/weapon/screwdriver))
+	if(istype(O, /obj/item/screwdriver))
 		return 1
 	return 0
 
@@ -1242,7 +1253,7 @@ var/global/list/common_tools = list(
 	return 0
 
 /proc/iscrowbar(O)
-	if(istype(O, /obj/item/weapon/crowbar))
+	if(istype(O, /obj/item/crowbar))
 		return 1
 	return 0
 
@@ -1256,12 +1267,12 @@ proc/is_hot(obj/item/W as obj)
 
 /proc/is_surgery_tool(obj/item/W as obj)
 	return (	\
-	istype(W, /obj/item/weapon/surgery_tool/scalpel)			||	\
-	istype(W, /obj/item/weapon/surgery_tool/hemostat)		||	\
-	istype(W, /obj/item/weapon/surgery_tool/retractor)		||	\
-	istype(W, /obj/item/weapon/surgery_tool/cautery)			||	\
-	istype(W, /obj/item/weapon/surgery_tool/bonegel)			||	\
-	istype(W, /obj/item/weapon/surgery_tool/bonesetter)
+	istype(W, /obj/item/surgery_tool/scalpel)			||	\
+	istype(W, /obj/item/surgery_tool/hemostat)		||	\
+	istype(W, /obj/item/surgery_tool/retractor)		||	\
+	istype(W, /obj/item/surgery_tool/cautery)			||	\
+	istype(W, /obj/item/surgery_tool/bonegel)			||	\
+	istype(W, /obj/item/surgery_tool/bonesetter)
 	)
 
 //check if mob is lying down on something we can operate him on.
@@ -1297,7 +1308,7 @@ var/list/WALLITEMS = list(
 	"/obj/machinery/status_display", "/obj/machinery/requests_console", "/obj/machinery/light_switch", "/obj/effect/sign",
 	"/obj/machinery/newscaster", "/obj/machinery/firealarm", "/obj/structure/noticeboard", "/obj/machinery/door_control",
 	"/obj/machinery/computer/security/telescreen", "/obj/machinery/embedded_controller/radio/simple_vent_controller",
-	"/obj/item/weapon/storage/secure/safe", "/obj/machinery/door_timer", "/obj/machinery/flasher", "/obj/machinery/keycard_auth",
+	"/obj/item/storage/secure/safe", "/obj/machinery/door_timer", "/obj/machinery/flasher", "/obj/machinery/keycard_auth",
 	"/obj/structure/mirror", "/obj/structure/closet/fireaxecabinet", "/obj/machinery/computer/security/telescreen/entertainment"
 	)
 /proc/gotwallitem(loc, dir)

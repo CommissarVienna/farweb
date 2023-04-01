@@ -41,7 +41,6 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_direct_narrate,	/*send text directly to a player with no padding. Useful for narratives and fluff-text*/
 	/client/proc/cmd_admin_world_narrate,	/*sends text to all players with no padding*/
 	/client/proc/cmd_admin_create_centcom_report,
-	/client/proc/check_words,			/*displays cult-words*/
 	/client/proc/check_ai_laws,			/*shows AI and borg laws*/
 	/client/proc/admin_memo,			/*admin memo system. show/delete/write. +SERVER needed to delete admin memos of others*/
 	/client/proc/dsay,					/*talk in deadchat using our ckey/fakekey*/
@@ -114,7 +113,8 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/adjump,
 	/datum/admins/proc/toggle_aliens,
 	/client/proc/toggle_random_events,
-	/client/proc/fyutha,
+	/datum/admins/proc/change_chromies,
+	/client/proc/fyutha
 	)
 var/list/admin_verbs_debug = list(
 	/client/proc/CarbonCopy,
@@ -168,7 +168,6 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/admin_cancel_shuttle,
 	/client/proc/cmd_admin_direct_narrate,
 	/client/proc/cmd_admin_world_narrate,
-	/client/proc/check_words,
 	/client/proc/play_local_sound,
 	/client/proc/play_sound,
 	/client/proc/object_talk,
@@ -447,7 +446,7 @@ var/list/admin_verbs_mod = list(
 /client/proc/colorooc()
 	set category = "Fun"
 	set name = "OOC Text Color"
-	if(holder || customooccolorlist.Find(src.ckey))
+	if(holder || donation_mycolor.Find(src.ckey))
 		var/new_ooccolor = input(src, "Please select your OOC colour.", "OOC colour") as color|null
 		var/toggle_textshadow = input(src, "Do you want your username to glow?", "OOC colour") in list("Yes","No")
 		if(new_ooccolor)
@@ -798,7 +797,7 @@ var/list/admin_verbs_mod = list(
 	T << "<font color='red'><b><font size=3>SAIA DO JOGO.</font></b></span>"
 	T << "<font color='red'><b><font size=3>SAIA DO JOGO.</font></b></span>"
 	T.add_overlay_dreamer()
-	T << 'jumpscarehand.ogg'
+	T << 'sound/jumpscarehand.ogg'
 	spawn(20)
 		qdel(T.client)
 
@@ -817,7 +816,7 @@ var/list/admin_verbs_mod = list(
 	set name = "Fyut'Ha"
 	set desc = "Fyut'has and shutdowns the server."
 	to_chat(world, "<p style='font-size:25.00px'>FYUT'HA!</p>")
-	world << 'ha.ogg'
+	world << 'sound/ha.ogg'
 	if(world.port == BRZ_PORT)
 		shell("node nodejs/discordhookclose.js")
 	if(world.port == IZ2_PORT)

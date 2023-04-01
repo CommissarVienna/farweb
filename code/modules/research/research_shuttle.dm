@@ -65,7 +65,7 @@ proc/move_research_shuttle()
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "shuttle"
 	req_access = list(access_research)
-	circuit = "/obj/item/weapon/circuitboard/research_shuttle"
+	circuit = "/obj/item/circuitboard/research_shuttle"
 	var/hacked = 0
 	var/location = 0 //0 = station, 1 = research base
 
@@ -92,10 +92,10 @@ proc/move_research_shuttle()
 		else
 			usr << "\blue Shuttle is already moving."
 
-/obj/machinery/computer/research_shuttle/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/computer/research_shuttle/attackby(obj/item/W as obj, mob/user as mob)
 
-	if (istype(W, /obj/item/weapon/card/emag))
-		var/obj/item/weapon/card/emag/E = W
+	if (istype(W, /obj/item/card/emag))
+		var/obj/item/card/emag/E = W
 		if(E.uses)
 			E.uses--
 		else
@@ -104,11 +104,11 @@ proc/move_research_shuttle()
 		hacked = 1
 		usr << "You fried the consoles ID checking system. It's now available to everyone!"
 
-	else if(istype(W, /obj/item/weapon/screwdriver))
+	else if(istype(W, /obj/item/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
 			var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
-			var/obj/item/weapon/circuitboard/research_shuttle/M = new /obj/item/weapon/circuitboard/research_shuttle( A )
+			var/obj/item/circuitboard/research_shuttle/M = new /obj/item/circuitboard/research_shuttle( A )
 			for (var/obj/C in src)
 				C.loc = src.loc
 			A.circuit = M
@@ -116,7 +116,7 @@ proc/move_research_shuttle()
 
 			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
-				new /obj/item/weapon/shard( src.loc )
+				new /obj/item/shard( src.loc )
 				A.state = 3
 				A.icon_state = "3"
 			else

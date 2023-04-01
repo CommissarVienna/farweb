@@ -46,6 +46,8 @@
 
 	if(reflectneed >= 750)
 		text += "<a href='#' id='ReflectExperience'>Reflect your Experience!<br></a>"
+	if(is_dreamer(src) || src.verbs.Find(/mob/living/carbon/human/proc/dreamerArchetypes))
+		text += "<a href='#' id='dreamerArchetypes'>Dreamer Archetypes<br></a>"
 	if(src?.mind?.succubus)
 		text += "<a href='#' id='teleportSlaves'>Teleport Slaves<br></a><a href='#' id='punishSlave'>Punish Slave<br></a> <a href='#' id='killSlave'>Kill Slave<br></a>"
 	if(src.verbs.Find(/mob/living/carbon/human/proc/plantEgg))
@@ -67,7 +69,7 @@
 			text += "<a href='#' id='tellTheTruth'>Tell the Truth<br></a>"
 		if("Migrant")
 			if(!migclass)
-				if(ckey in outlaw)
+				if(ckey in donation_outlaw)
 					text += "<a href='#' id='ChoosemigrantClass'>Choose Migrant Class!<br></a><a href='#' id='ToggleOutlaw'>Toggle Outlaw!<br></a>"
 				else
 					text += "<a href='#' id='ChoosemigrantClass'>Choose Migrant Class!<br></a>"
@@ -226,8 +228,10 @@
 
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
-		newHTML += "<span style='white-space: nowrap' class='segment1 ST'>ST: <span id='st'>[H.my_stats.st]</span>$HT: <span id='ht'>[H.my_stats.ht]</span>$IN: <span id='int'>[H.my_stats.it]</span>$DX: <span id='dx'>[H.my_stats.dx]</span></span><span style='word-break:keep-all;white-space: nowrap; position:absolute; margin-right: 35%;' class='segment2 ST MINOR'>CR: <span id='cr'>[client.info?.chromosomes]</span>$PR: <span id='pr'>[H.my_stats.pr]</span>$IM: <span id='im'>[H.my_stats.im]</span>$WP: <span id='wp'>[H.my_stats.wp]</span></span>$$$$$$$$$"
+		newHTML += "<span style='white-space: nowrap' class='segment1 ST'>ST: <span id='st'>[H.my_stats.st]</span>$HT: <span id='ht'>[H.my_stats.ht]</span>$IN: <span id='int'>[H.my_stats.it]</span>$DX: <span id='dx'>[H.my_stats.dx]</span></span><span style='word-break:keep-all;white-space: nowrap; position:absolute; margin-right: 35%;' class='segment2 ST MINOR'>CR: <span id='cr'>[client.chromie_holder.chromie_number]</span>$PR: <span id='pr'>[H.my_stats.pr]</span>$IM: <span id='im'>[H.my_stats.im]</span>$WP: <span id='wp'>[H.my_stats.wp]</span></span>$$$$$$$$$"
 		newHTML += "<span class='smallstat'>[H.updateSmalltext()]</span>"
+	else//Show chromies regardless. I want to see how many I have asshole.
+		newHTML += "<span style='white-space: nowrap' class='segment1 ST'>Chromosomes: <span id='cr'>[client?.chromie_holder?.chromie_number]</span>"
 
 	return newHTML
 
@@ -261,7 +265,7 @@
 		var/lobby = ""
 		if(ticker.current_state == GAME_STATE_PREGAME)
 			lobby += "Time to Start: <span id='timestart'>[ticker.pregame_timeleft]</span>$"
-			lobby += "Chromosomes: [client.info?.chromosomes]$"
+			lobby += "Chromosomes: [client.chromie_holder.chromie_number]$"
 		if(ticker.current_state == GAME_STATE_PLAYING)
 			if(ticker.mode.config_tag == "siege")
 				var/datum/game_mode/siege/S = ticker.mode
@@ -271,7 +275,7 @@
 			else
 				lobby += "Next Migrant Wave: [ticker.migwave_timeleft]s$"
 				lobby += "Migrants: [ticker.migrants_inwave.len]/[ticker.migrant_req]$"
-			lobby += "Chromosomes: [client.info?.chromosomes]$"
+			lobby += "Chromosomes: [client.chromie_holder.chromie_number]$"
 			for(var/client/C in ticker.migrants_inwave)
 				var/religioncheck = ""
 				var/gendercheck = "M"
@@ -296,10 +300,10 @@
 	var/list/verbs = list()
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
-		verbs += list(list("RememberTheTerrain", "Remember the Terrain"))
+		//verbs += list(list("RememberTheTerrain", "Remember the Terrain")) //This verb does nothing. TODO: make this verb do... something...
 
 		if(is_dreamer(H))
-			verbs += list(list("Wonders", "Wonders"))
+			verbs += list(list("Wonders", "Wonders"), list("dreamerArchetypes", "Dreamer Archetypes"))
 		if(H.reflectneed >= 750)
 			verbs += list(list("ReflectExperience", "Reflect your Experience!"))
 		if(H?.mind?.succubus)
@@ -325,7 +329,7 @@
 		if(H.job == "Migrant" || H.old_job == "Migrant")
 			if(!H.migclass)
 				verbs += list(list("ChoosemigrantClass", "Choose Migrant Class!"))
-				if(ckey in outlaw)
+				if(ckey in donation_outlaw)
 					verbs += list(list("ToggleOutlaw", "Toggle Outlaw!"))
 
 		if(H.job == "Count" || H.old_job == "Count")
@@ -364,7 +368,7 @@
 	src << browse('code/porco/html/pig.html', "window=outputwindow.browser; size=411x330;")
 
 /mob/proc/defaultButton()
-	client.changebuttoncontent("#options", "<span class='segment1'>" + generateVerbList(list(list("OOC", "OOC"), list("Adminhelp", "Admin Help"), list(".togglegraphics", "Graphics Settings"), list(".addeffects", "(EXPERIMENTAL) Add Effects"), list(".togglefullscreen", "Toggle Fullscreen"), list("LobbyMusic", "Toggle Lobby Music"), list("Midis", "Toggle Midis"), list("AmbiVolume", "Ambience Volume (0-255)"), list("MusicVolume", "Music Volume (0, 255)"))) + "</span>")
+	client.changebuttoncontent("#options", "<span class='segment1'>" + generateVerbList(list(list("OOC", "OOC"), list("Adminhelp", "Admin Help"), list(".togglegraphics", "Graphics Settings"), list(".addeffects", "(EXPERIMENTAL) Add Effects"), list(".togglefullscreen", "Toggle Fullscreen"), list("LobbyMusic", "Toggle Lobby Music"), list("Midis", "Toggle Midis"), list("FixChat", "Fix chat"), list("AmbiVolume", "Ambience Volume (0-255)"), list("MusicVolume", "Music Volume (0, 255)"))) + "</span>")
 	if(istype(src, /mob/new_player) && ticker.current_state == GAME_STATE_PREGAME)
 		client.changebuttoncontent("#chrome", "<span class='segment1'>" + generateVerbList(list(list("MigracaodeTodos", "(100) Allmigration"), list("LimparCromossomos", "(100) Wipe Chromosomes"), list("ForceAspect", "(10) Force Aspect"), list("EscondercargoCustom", "(10) Hide Custom Job"), list("Escondercargo", "(2) Hide Job"), list("ReRolarSpecial", "(2) Reroll Special"), list("silencePigs", "(2) Silence Pigs"), list("Trapokalipsis", "(15) Trapokalipsis"))) + "</span>")
 	else if(istype(src, /mob/living/carbon/human) && ticker.current_state == GAME_STATE_PLAYING)
@@ -415,7 +419,7 @@
 		client << output(list2params(list("#int", "[H.my_stats.it]")), "outputwindow.browser:change")
 		client << output(list2params(list("#dx", "[H.my_stats.dx]")), "outputwindow.browser:change")
 
-	client << output(list2params(list("#cr", "[client.info?.chromosomes]")), "outputwindow.browser:change")
+	client << output(list2params(list("#cr", "[client.chromie_holder.chromie_number]")), "outputwindow.browser:change")
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
 		client << output(list2params(list("#pr", "[H.my_stats.pr]")), "outputwindow.browser:change")
@@ -445,54 +449,3 @@
 	heartporcao()
 	updatePig()
 	startPig()
-
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣧⠀⠀⠀⠀⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⣧⠀⠀⠀⢰⡿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡟⡆⠀⠀⣿⡇⢻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠀⣿⠀⢰⣿⡇⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡄⢸⠀⢸⣿⡇⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⡇⢸⡄⠸⣿⡇⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⢸⡅⠀⣿⢠⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿⣥⣾⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⡿⡿⣿⣿⡿⡅⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠉⠀⠉⡙⢔⠛⣟⢋⠦⢵⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣄⠀⠀⠁⣿⣯⡥⠃⠀⢳⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡇⠀⠀⠀⠐⠠⠊⢀⠀⢸⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⡿⠀⠀⠀⠀⠀⠈⠁⠀⠀⠘⣿⣄⠀⠀⠀⠀⠀
-//⠀⠀⠀⣠⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣷⡀⠀⠀⠀
-//⠀⠀⣾⣿⣿⣿⣿⣿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿⣧⠀⠀
-//⠀⡜⣭⠤⢍⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⢛⢭⣗⠀
-//⠀⠁⠈⠀⠀⣀⠝⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠠⠀⠀⠰⡅
-//⠀⢀⠀⠀⡀⠡⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠔⠠⡕⠀
-//⠀⠀⣿⣷⣶⠒⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⠀⠀⠀⠀
-//⠀⠀⠘⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⠀⠀⠀⠀⠀
-// ⠀⠀⠈⢿⣿⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠊⠉⢆⠀⠀⠀⠀
-//⠤⠀⠀⢤⣤⣽⣿⣿⣦⣀⢀⡠⢤⡤⠄⠀⠒⠀⠁⠀⠀⠀⢘⠔⠀⠀⠀⠀
-//⠀⡐⠈⠁⠈⠛⣛⠿⠟⠑⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-//⠀⠀⠉⠑⠒⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-
-// ░░░░░▒░░▄██▄░▒░░░░░░
-// ░░░▄██████████▄▒▒░░░
-// ░▒▄████████████▓▓▒░░
-// ▓███▓▓█████▀▀████▒░░
-// ▄███████▀▀▒░░░░▀█▒░░
-// ████████▄░░░░░░░▀▄░░
-// ▀██████▀░░▄▀▀▄░░▄█▒░
-// ░█████▀░░░░▄▄░░▒▄▀░░
-// ░█▒▒██░░░░▀▄█░░▒▄█░░
-// ░█░▓▒█▄░░░░░░░░░▒▓░░
-// ░▀▄░░▀▀░▒░░░░░▄▄░▒░░
-// ░░█▒▒▒▒▒▒▒▒▒░░░░▒░░░
-// ░░░▓▒▒▒▒▒░▒▒▄██▀░░░░
-// ░░░░▓▒▒▒░▒▒░▓▀▀▒░░░░
-// ░░░░░▓▓▒▒░▒░░▓▓░░░░░
-// ░░░░░░░▒▒▒▒▒▒▒░░░░░░
-
-//`7MMF'   `7MF' db      `7MMF'    MMP""MM""YMM   .g8""8q. `7MMM.     ,MMF'      db      `7MM"""Mq.      `7MN.   `7MF' .g8""8q.         .g8"""bgd `7MMF'   `7MF'    `7MN.   `7MF' .g8""8q. `7MM"""Mq.`7MMM.     ,MMF'
-//  `MA     ,V  ;MM:       MM      P'   MM   `7 .dP'    `YM. MMMb    dPMM       ;MM:       MM   `MM.       MMN.    M .dP'    `YM.     .dP'     `M   MM       M        MMN.    M .dP'    `YM. MM   `MM. MMMb    dPMM
-//   VM:   ,V  ,V^MM.      MM           MM      dM'      `MM M YM   ,M MM      ,V^MM.      MM   ,M9        M YMb   M dM'      `MM     dM'       `   MM       M        M YMb   M dM'      `MM MM   ,M9  M YM   ,M MM
-//    MM.  M' ,M  `MM      MM           MM      MM        MM M  Mb  M' MM     ,M  `MM      MMmmdM9         M  `MN. M MM        MM     MM            MM       M        M  `MN. M MM        MM MMmmdM9   M  Mb  M' MM
-//    `MM A'  AbmmmqMA     MM           MM      MM.      ,MP M  YM.P'  MM     AbmmmqMA     MM  YM.         M   `MM.M MM.      ,MP     MM.           MM       M        M   `MM.M MM.      ,MP MM        M  YM.P'  MM
-//     :MM;  A'     VML    MM           MM      `Mb.    ,dP' M  `YM'   MM    A'     VML    MM   `Mb.       M     YMM `Mb.    ,dP'     `Mb.     ,'   YM.     ,M        M     YMM `Mb.    ,dP' MM        M  `YM'   MM
-//      VF .AMA.   .AMMA..JMML.       .JMML.      `"bmmd"' .JML. `'  .JMML..AMA.   .AMMA..JMML. .JMM.    .JML.    YM   `"bmmd"'         `"bmmmd'     `bmmmmd"'      .JML.    YM   `"bmmd"' .JMML.    .JML. `'  .JMML.⠀⠀⠀⠀⠀

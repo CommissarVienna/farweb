@@ -1,4 +1,4 @@
-/obj/item/weapon/wirerod
+/obj/item/wirerod
 	name = "wired rod"
 	desc = "A rod with some wire wrapped around the top. It'd be easy to attach something to the top bit."
 	icon_state = "wiredrod"
@@ -10,10 +10,10 @@
 	m_amt = 1875
 	attack_verb = list("hit", "bludgeoned", "whacked", "bonked")
 
-/obj/item/weapon/wirerod/attackby(var/obj/item/I, mob/user as mob)
+/obj/item/wirerod/attackby(var/obj/item/I, mob/user as mob)
 	..()
-	if(istype(I, /obj/item/weapon/shard))
-		var/obj/item/weapon/twohanded/spear/S = new /obj/item/weapon/twohanded/spear
+	if(istype(I, /obj/item/shard))
+		var/obj/item/twohanded/spear/S = new /obj/item/twohanded/spear
 
 		user.before_take_item(I)
 		user.before_take_item(src)
@@ -23,8 +23,8 @@
 		qdel(I)
 		qdel(src)
 
-	else if(istype(I, /obj/item/weapon/wirecutters))
-		var/obj/item/weapon/melee/baton/cattleprod/P = new /obj/item/weapon/melee/baton/cattleprod
+	else if(istype(I, /obj/item/wirecutters))
+		var/obj/item/melee/baton/cattleprod/P = new /obj/item/melee/baton/cattleprod
 
 		user.before_take_item(I)
 		user.before_take_item(src)
@@ -34,11 +34,11 @@
 		qdel(I)
 		qdel(src)
 
-/obj/item/weapon/handcuffs/cable/attackby(var/obj/item/I, mob/user as mob)
+/obj/item/handcuffs/cable/attackby(var/obj/item/I, mob/user as mob)
 	..()
 	if(istype(I, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = I
-		var/obj/item/weapon/wirerod/W = new /obj/item/weapon/wirerod
+		var/obj/item/wirerod/W = new /obj/item/wirerod
 		R.use(1)
 
 		user.before_take_item(src)

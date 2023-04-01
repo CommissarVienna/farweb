@@ -1,5 +1,13 @@
-var/showlads
-/client/var/relevancy_color = "#454343"
+var/showlads = FALSE
+
+
+/client
+	var/anonymous_number = 0
+	var/relevancy_color = "#454343"
+
+/client/New()
+	..()
+	anonymous_number = rand(100,600)
 
 var/list/datum/showlads_holder/showlads_list = list()
 /datum/showlads_holder //for when people's bodies get destroyed.
@@ -15,6 +23,8 @@ var/list/datum/showlads_holder/showlads_list = list()
 /client/verb/who()
 	set name = "Who"
 	set category = "OOC"
+	if(!holder)
+		return
 	var/dat = "<META http-equiv='X-UA-Compatible' content='IE=edge' charset='UTF-8'><META charset='UTF-8'><Title>WHO+</title><style type='text/css'>html {overflow: auto;};body {font-family: Times;cursor: url('pointer.cur'), auto;}.D3{background-color: #000;color: #fff;padding: 3px;}.D2{background-color: #eee;}img {padding-bottom:0px;}table, th, td {   border: 1px solid #bbb;}table{border-collapse: collapse;}</style>"
 	var/n = 0
 	var/mills = world.time // 1/10 of a second, not real milliseconds but whatever
@@ -34,11 +44,11 @@ var/list/datum/showlads_holder/showlads_list = list()
 	for(var/client/C in clients)
 		if(guardianlist.Find(ckey(C.key)))
 			C.relevancy_color = "#0a041f"
-		else if(comradelist.Find(ckey(C.key)))
+		else if(access_comrade.Find(ckey(C.key)))
 			C.relevancy_color = "#107710"
-		else if(villainlist.Find(ckey(C.key)))
+		else if(access_villain.Find(ckey(C.key)))
 			C.relevancy_color = "#107710"
-		else if(pigpluslist.Find(ckey(C.key)))
+		else if(access_pigplus.Find(ckey(C.key)))
 			C.relevancy_color = "#bbbbbb"
 		else
 			C.relevancy_color = "#bbbbbb"
@@ -56,8 +66,8 @@ var/list/datum/showlads_holder/showlads_list = list()
 				else
 					dat += "<td>\t<font color='[C.relevancy_color]'><img src='https://www.countryflags.io/[countrycoderson]/shiny/32.png' width='20' height='20'><b>[C.key]</b></font></td>"
 			else
-				if(!comradelist.Find(ckey(C.key)) && !villainlist.Find(ckey(C.key)))
-					if(pigpluslist.Find(ckey(C.key)))
+				if(!access_comrade.Find(ckey(C.key)) && !access_villain.Find(ckey(C.key)))
+					if(access_pigplus.Find(ckey(C.key)))
 						if(!C.prefs.toggle_nat)
 							dat += "<td><b>\t<font color='[C.relevancy_color]'><img src='https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/lg/57/sleuth-or-spy_1f575.png' width='20' height='20'>[C.key]</font></b></td>"
 						else
@@ -85,111 +95,12 @@ var/list/datum/showlads_holder/showlads_list = list()
 	dat += "<BR><b>Round Duration: [round(hours)]h [round(mins)]m</b>"
 	src << browse(dat, "window=whoscreen;size=850x520;can_close=1")
 
-/*
-/client/verb/who()
-	set name = "Who"
-	set category = "OOC"
-	var/dat = "<html><head><style>table, th, td {  border: 1px solid black; border-collapse: collapse;} th, td {padding: 15px;}</style></head><body><center>"
-	var/n = 0
-	var/mills = world.time // 1/10 of a second, not real milliseconds but whatever
-	//var/secs = ((mills % 36000) % 600) / 10 //Not really needed, but I'll leave it here for refrence.. or something
-	var/mins = (mills % 36000) / 600
-	var/hours = mills / 36000
-	for(var/client/C in clients)
-		n++
-	dat += "Viciados ativos: [n]<br>"
-	dat += "Round Duration: [round(hours)]h [round(mins)]m<br>"
-	dat += "<table style='width:90%'>"
-	dat += "<tr>"
-	dat += "<th>Ckey</th>"
-	dat += "<th>BYOND</th>"
-	dat += "<th>CHR</th>"
-	dat += "</tr>"
-	for(var/client/C in clients)
-		if(comradelist.Find(ckey(C.key)))
-			C.relevancy_color = "#2a2b4f"
-		else if(villainlist.Find(ckey(C.key)))
-			C.relevancy_color = "#5c0202"
-		else
-			C.relevancy_color = "#454343"
-		dat += "<tr>"
-		dat += "<td><b>\t<font color='[C.relevancy_color]'>[C.key]</font></b></td>"
-		dat += "<td><b>\t[C.byond_version]/[C.byond_build]</b></td>"
-		dat += "<td><b>\t[C.prefs.chromossomes]</b></td>"
-		dat += "</tr>"
-	dat += "</table>"
-	dat += "</center>"
-	src << browse(dat, "window=whoscreen;size=450x500;can_close=1")
-*/
-
-proc/sendShowlads()
-	var/botList
-	botList += "\n STORY [story_id]\n"
-	if(master_mode == "holywar" || master_mode == "minimig")
-		botList += "POST CHRISTIANS"
-
-		for(var/mob/living/carbon/human/C in mob_list)
-			if(C.old_key)
-				botList += "\n &#8226; [C.real_name] ([C.old_job]) : [C.old_key]\n"
-
-		for(var/datum/showlads_holder/S in showlads_list)
-			if(S.job && S.name && S.key)
-				botList += "\n &#8226; [S.name] ([S.job]) : [S.key]\n"
-
-		botList += "\n THANATI"
-		for(var/mob/living/carbon/human/C in mob_list)
-			if(C.old_key && C.religion == "Thanati")
-				botList += "\n &#8226; [C.real_name] ([C.old_job]) : [C.old_key]"
-		for(var/datum/showlads_holder/S in showlads_list)
-			if(S.job && S.name && S.key && S.thanati)
-				botList += "\n &#8226; [S.name] ([S.job]) : [S.key]"
-		if(world.port == IZ1_PORT)
-			world.Export("http://nopm.xyz:1234/showlads?content=[botList]?port=1234")
-		return 1
-
-	else
-		botList += "FIRETHORN VICTIMS"
-
-		for(var/mob/living/carbon/human/C in mob_list)
-			if(C.old_key)
-				botList += "\n &#8226; [C.real_name] ([C.old_job]) : [C.old_key]\n"
-		for(var/datum/showlads_holder/S in showlads_list)
-			if(S.job && S.name && S.key)
-				botList += "\n &#8226; [S.name] ([S.job]) : [S.key]\n"
-
-		botList += "\n THANATI"
-		for(var/mob/living/carbon/human/C in mob_list)
-			if(C.old_key && C.religion == "Thanati")
-				botList += "\n &#8226; [C.real_name] ([C.old_job]) : [C.old_key]\n"
-
-		for(var/datum/showlads_holder/S in showlads_list)
-			if(S.job && S.name && S.key && S.thanati)
-				botList += "\n &#8226; [S.name] ([S.job]) : [S.key]\n"
-		
-		if(world.port == IZ1_PORT)
-			world.Export("http://nopm.xyz:1234/showlads?content=[botList]?port=1234")
-		return 1
-	return
-	botList += "FIRETHORN VICTIMS"
-	for(var/mob/living/C in world)
-		if(C.old_key)
-			botList += "\n &#8226; [C.real_name] ([C.old_job]) : [C.old_key]\n"
-
-		botList += "\n THANATI"
-	for(var/mob/living/carbon/human/H in mob_list)
-		if(H.old_key && H.religion == "Thanati")
-			botList += "\n &#8226; [H.real_name] ([H.old_job]) : [H.old_key]"
-	
-	if(world.port == IZ1_PORT)
-		world.Export("http://nopm.xyz:1234/showlads?content=[botList]?port=1234")
-	return 1
-
 /client/verb/showlads()
 	set name = "Show Lads"
 	set category = "OOC"
 	var/dat = "<html><head><style>table, th, td {  border: 1px solid black; border-collapse: collapse;} th, td {padding: 15px;}</style></head><body>"
 
-	if(!showlads && !holder)
+	if(!showlads)
 		return
 	if(master_mode == "holywar" || master_mode == "minimig")
 		dat += "<center><h2>POST CHRISTIANS</h2></center>"

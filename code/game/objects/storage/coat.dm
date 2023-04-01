@@ -19,11 +19,11 @@
 
 	L += src.contents
 
-	for(var/obj/item/weapon/storage/S in src)
+	for(var/obj/item/storage/S in src)
 		L += S.return_inv()
-	for(var/obj/item/weapon/gift/G in src)
+	for(var/obj/item/gift/G in src)
 		L += G.gift
-		if (istype(G.gift, /obj/item/weapon/storage))
+		if (istype(G.gift, /obj/item/storage))
 			L += G.gift:return_inv()
 	return L
 
@@ -97,8 +97,8 @@
 	return
 
 //This proc is called when you want to place an item into the storage item.
-/obj/item/clothing/suit/storage/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/weapon/evidencebag) && src.loc != user)
+/obj/item/clothing/suit/storage/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/evidencebag) && src.loc != user)
 		return
 
 	..()
@@ -140,8 +140,8 @@
 		user << "\red \The [src] is full, make some space."
 		return
 
-	if(W.w_class >= src.w_class && (istype(W, /obj/item/weapon/storage)))
-		if(!istype(src, /obj/item/weapon/storage/backpack/holding))	//bohs should be able to hold backpacks again. The override for putting a boh in a boh is in backpack.dm.
+	if(W.w_class >= src.w_class && (istype(W, /obj/item/storage)))
+		if(!istype(src, /obj/item/storage/backpack/holding))	//bohs should be able to hold backpacks again. The override for putting a boh in a boh is in backpack.dm.
 			user << "\red \The [src] cannot hold \the [W] as it's a storage item of the same size."
 			return //To prevent the stacking of the same sized items.
 
@@ -156,7 +156,7 @@
 	show_to(user)
 
 
-/obj/item/weapon/storage/dropped(mob/user as mob)
+/obj/item/storage/dropped(mob/user as mob)
 	return
 
 /obj/item/clothing/suit/storage/MouseDrop(atom/over_object)

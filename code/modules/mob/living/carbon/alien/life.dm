@@ -13,7 +13,7 @@
 		evolve_time = max(0, evolve_time-2)
 		if(evolve_time == 0)
 			var/mob/living/carbon/human/new_xeno = new(src.loc)
-			new_xeno.vice = pick(VicesList)
+			new_xeno.vice = pick(global.vices)
 			if(src.client)
 				src.mind.transfer_to(new_xeno)
 			new_xeno.gender = MALE
@@ -23,7 +23,7 @@
 			new_xeno.voice_name = "Alien"
 			new_xeno.h_style = random_hair_style(gender = new_xeno.gender, species = "Human")
 			new_xeno.f_style = random_facial_hair_style(gender = new_xeno.gender, species = "Human")
-			new_xeno.updatePig()
+			new_xeno.updateStatPanel()
 			new_xeno.update_icons()
 			new_xeno.FuncArea()
 			var/area/A = get_area(new_xeno)
@@ -31,7 +31,7 @@
 			new_xeno.create_kg()
 			new_xeno.set_species("Alien")
 			new_xeno.add_perk(/datum/perk/illiterate)
-			playsound(src.loc, pick('alien_turn.ogg','alien_turn2.ogg', 'alien_turn3.ogg'), 60, 1)
+			playsound(src.loc, pick('sound/webbers/alien_turn.ogg','sound/webbers/alien_turn2.ogg', 'sound/webbers/alien_turn3.ogg'), 60, 1)
 			qdel(src)
 
 	blinded = null

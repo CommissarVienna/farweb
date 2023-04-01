@@ -93,8 +93,12 @@ var/aspects_max = 3
 	Stat()
 		..()
 		//statpanel("Lobby")
+		if(client?.statpanel_loaded != TRUE)
+			return
+		if(client.current_button == "note")
+			client.newtext(noteUpdate())
 		updateTimeToStart()
-		updatePig()
+
 		if(ticker)
 			if(ticker.current_state == GAME_STATE_PLAYING)
 				src << browse(null, "window=playerlist")
@@ -107,12 +111,20 @@ var/aspects_max = 3
 			//dat += "<TABLE><TR><TD class='rank'></TD>"
 			for(var/mob/new_player/player in player_list)
 				if(client)
-					if(player.ready && player.client.work_chosen)
-						client << output(list2params(list("[player.client.work_chosen]", "[player.client.key]")), "playerlist.browser:addPlayerCell")
+					if(!client.holder)
+						if(player.ready && player.client.work_chosen)
+							client << output(list2params(list("[player.client.work_chosen]", "Anonymous#[player.client.anonymous_number]")), "playerlist.browser:addPlayerCell")
+						else
+							client << output(list2params(list("HIDDEN", "Anonymous#[player.client.anonymous_number]")), "playerlist.browser:addPlayerCell")
+						client << output(list2params(list()), "playerlist.browser:renderPlayerList")
+						player.updateTimeToStart()
 					else
-						client << output(list2params(list("HIDDEN", "[player.client.key]")), "playerlist.browser:addPlayerCell")
-					client << output(list2params(list()), "playerlist.browser:renderPlayerList")
-					player.updateTimeToStart()
+						if(player.ready && player.client.work_chosen)
+							client << output(list2params(list("[player.client.work_chosen]", "[player.client.key] (Anonymous#[player.client.anonymous_number])")), "playerlist.browser:addPlayerCell")
+						else
+							client << output(list2params(list("HIDDEN", "[player.client.key] Anonymous#[player.client.anonymous_number]")), "playerlist.browser:addPlayerCell")
+						client << output(list2params(list()), "playerlist.browser:renderPlayerList")
+						player.updateTimeToStart()
 					/*
 					if(client && !ready)
 						dat += "<TABLE><TR><TD>[player.key]</TD></TR></TABLE>"
@@ -152,9 +164,9 @@ var/aspects_max = 3
 			if(ticker.current_state == GAME_STATE_PLAYING)
 				src << browse(null, "window=playerlist")
 				return
-			var/dat = "<head><style type='text/css'> @font-face {font-family: Gothic;src: url(gothic.ttf);} @font-face {font-family: Book;src: url(book.ttf);} @font-face {font-family: Hando;src: url(hando.ttf);} @font-face {font-family: Eris;src: url(eris.otf);} @font-face {font-family: Brandon;src: url(brandon.otf);} @font-face {font-family: VRN;src: url(vrn.otf);} @font-face {font-family: NEOM;src: url(neom.otf);} @font-face {font-family: PTSANS;src: url(PTSANS.ttf);} @font-face {font-family: Type;src: url(type.ttf);} @font-face {font-family: Enlightment;src: url(enlightment.ttf);} @font-face {font-family: Arabic;src: url(arabic.ttf);} @font-face {font-family: Digital;src: url(digital.ttf);} @font-face {font-family: Cond;src: url(cond2.ttf);} @font-face {font-family: Semi;src: url(semi.ttf);} @font-face {font-family: Droser;src: url(Droser.ttf);} .goth {font-family: Gothic, Verdana, sans-serif;} .book {font-family: Book, serif;} .hando {font-family: Hando, Verdana, sans-serif;} .typewriter {font-family: Type, Verdana, sans-serif;} .arabic {font-family: Arabic, serif; font-size:180%;} .droser {font-family: Droser, Verdana, sans-serif;} </style><style type='text/css'> @charset 'utf-8'; body {font-family: PTSANS;cursor: url('pointer.cur'), auto;} a {text-decoration:none;outline: none;border: none;margin:-1px;} a:focus{outline:none;} a:hover {color:#0d0d0d;background:#505055;outline: none;border: none;} a.active { text-decoration:none; color:#533333;} a.inactive:hover {color:#0d0d0d;background:#bb0000} a.active:hover {color:#bb0000;background:#0f0f0f} a.inactive:hover { text-decoration:none; color:#0d0d0d; background:#bb0000}</style></head><body background bgColor=#0d0d0d text=#533333 alink=#777777 vlink=#777777 link=#777777>"
+			var/dat = "<head><style type='text/css'> @font-face {font-family: Gothic;src: url(gothic.ttf);} @font-face {font-family: Book;src: url(book.ttf);} @font-face {font-family: Hando;src: url(hando.ttf);} @font-face {font-family: Eris;src: url(eris.otf);} @font-face {font-family: Brandon;src: url(brandon.otf);} @font-face {font-family: VRN;src: url(vrn.otf);} @font-face {font-family: NEOM;src: url(neom.otf);} @font-face {font-family: PTSANS;src: url(PTSANS.ttf);} @font-face {font-family: Type;src: url(type.ttf);} @font-face {font-family: Enlightment;src: url(enlightment.ttf);} @font-face {font-family: Arabic;src: url(arabic.ttf);} @font-face {font-family: Digital;src: url(digital.ttf);} @font-face {font-family: Cond;src: url(cond2.ttf);} @font-face {font-family: Semi;src: url(semi.ttf);} @font-face {font-family: Droser;src: url(Droser.ttf);} .goth {font-family: Gothic, Verdana, sans-serif;} .book {font-family: Book, serif;} .hando {font-family: Hando, Verdana, sans-serif;} .typewriter {font-family: Type, Verdana, sans-serif;} .arabic {font-family: Arabic, serif; font-size:180%;} .droser {font-family: Droser, Verdana, sans-serif;} </style><style type='text/css'> @charset 'utf-8'; body {font-family: PTSANS;cursor: url('http://lfwb.ru/Icons/pointer.cur'), auto;} a {text-decoration:none;outline: none;border: none;margin:-1px;} a:focus{outline:none;} a:hover {color:#0d0d0d;background:#505055;outline: none;border: none;} a.active { text-decoration:none; color:#533333;} a.inactive:hover {color:#0d0d0d;background:#bb0000} a.active:hover {color:#bb0000;background:#0f0f0f} a.inactive:hover { text-decoration:none; color:#0d0d0d; background:#bb0000}</style></head><body background bgColor=#0d0d0d text=#533333 alink=#777777 vlink=#777777 link=#777777>"
 			dat += "<style type='text/css'> body {font-family: 'Cond'; margin: 0; color:#888;padding: 10px;font-size:75%;overflow:hidden; background-image: url('bg2.png'); background-repeat: no-repeat; background-size: cover; } table{width:100%;background: #322;} table,tr,td{ border:none;border-collapse: collapse;padding:3px;} .horriblestate	{color: #ff00c0; text-shadow:0px 0px 5px #ff00c0; font-size: 110%;}.rank{color:#bbb;width:30%;text-align:right;padding-right:10px;} tr:nth-child(even){background: #422;} </style>"
-			dat += "<TITLE>Farweb Lobby</TITLE>"
+			dat += "<TITLE>Nearweb Lobby</TITLE>"
 			/*
 			if((ticker.current_state == GAME_STATE_PREGAME) && going)
 				dat += "<CENTER>Time to Start: [ticker.pregame_timeleft]</CENTER>"
@@ -196,7 +208,8 @@ var/aspects_max = 3
 				to_chat(src, "<span class='specialhbold'>⠀Your character is now <i>special</i>!</span>")
 				to_chat(src, "<span class='specialbold'>Limitations:</span> <span class='special'>[specialdatum.limitationsen]</span>")
 				to_chat(src, "<span class='specialbold'>Description:</span> <span class='special'>[specialdatum.descriptionen]</span>")
-				to_chat(src, "<span class='specialbold'>Reward:</span> <span class='special'>[specialdatum.rewarden]</span>")
+				if(specialdatum.rewarden)
+					to_chat(src, "<span class='specialbold'>Reward:</span> <span class='special'>[specialdatum.rewarden]</span>")
 
 			if(!special && !SpecialRolledList.Find(src.ckey))
 				special = 1
@@ -211,7 +224,8 @@ var/aspects_max = 3
 				to_chat(src, "<span class='specialhbold'>⠀Your character is now <i>special</i>!</span>")
 				to_chat(src, "<span class='specialbold'>Limitations:</span> <span class='special'>[specialdatum.limitationsen]</span>")
 				to_chat(src, "<span class='specialbold'>Description:</span> <span class='special'>[specialdatum.descriptionen]</span>")
-				to_chat(src, "<span class='specialbold'>Reward:</span> <span class='special'>[specialdatum.rewarden]</span>")
+				if(specialdatum.rewarden)
+					to_chat(src, "<span class='specialbold'>Reward:</span> <span class='special'>[specialdatum.rewarden]</span>")
 
 		if(href_list["refresh"])
 			src << browse(null, "window=playersetup") //closes the player setup window
@@ -333,7 +347,7 @@ var/aspects_max = 3
 		matchmaker.do_matchmaking()
 
 		if(character.mind.assigned_role != "Cyborg")
-			data_core.manifest_inject(character)
+			//data_core?.manifest_inject(character) //Data_core does not appear to be intialized.
 			ticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
 			AnnounceArrival(character, rank)
 
@@ -360,11 +374,11 @@ var/aspects_max = 3
 
 		if(ticker?.mode.config_tag == "siege")
 			var/datum/game_mode/siege/S = ticker.mode
-			if(!S.hascount && (client.prefs.gender == MALE || trapapoc.Find(src.client.ckey)))
+			if(!S.hascount && (client.prefs.gender == MALE || donation_trap.Find(src.client.ckey)))
 				mig_job = "Count"
 			else if(!S.hascounthand)
 				mig_job = "Count Hand"
-			else if(!S.hascountheir && (client.prefs.gender == MALE || trapapoc.Find(src.client.ckey)))
+			else if(!S.hascountheir && (client.prefs.gender == MALE || donation_trap.Find(src.client.ckey)))
 				mig_job = "Count Heir"
 			else
 				mig_job = "Sieger"
@@ -388,12 +402,17 @@ var/aspects_max = 3
 		return character
 
 	proc/AnnounceArrival(var/mob/living/carbon/human/character, var/rank)
-		if (ticker.current_state == GAME_STATE_PLAYING)
+		if(ticker.current_state == GAME_STATE_PLAYING)
 			var/obj/item/device/radio/intercom/a = new /obj/item/device/radio/intercom(null)// BS12 EDIT Arrivals Announcement Computer, rather than the AI.
 			if(rank == "Bum" || rank == "Migrant")
 				return
 			else
-				a.autosay("[character.real_name],[rank ? " [rank]," : " visitor," ] has arrived at Firethorn.", "Firethorn CTTU")
+				var/gender_prefix
+				if(character.gender == MALE)
+					gender_prefix = "M"
+				else
+					gender_prefix = "F"
+				a.autosay("[character.real_name] ([rank ? " [rank];" : " visitor;"] [gender_prefix]/[character.age]) will arrive soon.", "Firethorn CTTU")
 				world << 'sound/effects/arrival.ogg'
 				qdel(a)
 
@@ -403,33 +422,29 @@ var/aspects_max = 3
 		var/mins = (mills % 36000) / 600
 		var/hours = mills / 36000
 
-		var/dat = "<html><Title>Farweb</title><style type='text/css'>body {font-family: Times;cursor: url('pointer.cur'), auto;}a {text-decoration:none;outline: none;border: none;margin:-1px;}a:focus{outline:none;}a:hover {color:#0d0d0d;background:#505055;border: none;outline: none;border: none;}a.active { text-decoration:none; color:#533333;border: none;}a.inactive:hover {color:#0d0d0d;background:#bb0000;border: none;}a.active:hover {color:#bb0000;background:#0f0f0f;border: none;}a.inactive:hover { text-decoration:none; color:#0d0d0d; background:#bb0000}</style><body background bgColor=#0d0d0d text=#555555 alink=#777777 vlink=#777777 link=#777777>"
+		var/dat = "<html><Title>Nearweb</title><style type='text/css'>body {font-family: Times;cursor: url('http://lfwb.ru/Icons/pointer.cur'), auto;}a {text-decoration:none;outline: none;border: none;margin:-1px;}a:focus{outline:none;}a:hover {color:#0d0d0d;background:#505055;border: none;outline: none;border: none;}a.active { text-decoration:none; color:#533333;border: none;}a.inactive:hover {color:#0d0d0d;background:#bb0000;border: none;}a.active:hover {color:#bb0000;background:#0f0f0f;border: none;}a.inactive:hover { text-decoration:none; color:#0d0d0d; background:#bb0000}</style><body background bgColor=#0d0d0d text=#555555 alink=#777777 vlink=#777777 link=#777777>"
 		dat += "Game Duration: [round(hours)]h [round(mins)]m<br>"
 		dat += "Choose your fate:<br>"
-		var/list/allowedFatesList = list("Migrant","Bum","Servant","Nun","Maid")
-		if(mercenary_donor.Find(src.client.ckey))
+		var/list/allowedFatesList = list("Migrant","Bum","Servant","Nun","Maid","Urchin","Tribunal Veteran","Madam","Soiler","Misero","Merchant","Docker","Bishop","Practicus","Amuser","Pusher","Apprentice","Butler","Sitzfrau","Sniffer","Consyte","Scuff","Mortus","Guest")
+		if(donation_mercenary.Find(src.client.ckey))
 			allowedFatesList.Add("Mercenary")
-		if(urchin_donor.Find(src.client.ckey))
-			allowedFatesList.Add("Urchin")
-		if(tribunal_vet.Find(src.client.ckey))
-			allowedFatesList.Add("Tribunal Veteran")
 		for(var/datum/job/job in job_master.occupations)
 			if(job && IsJobAvailable(job.title))
-				if(!trapapoc.Find(ckey(src.client.key)) || job.no_trapoc)
+				if(!donation_trap.Find(ckey(src.client.key)) || job.no_trapoc)
 					if(job.sex_lock && job.sex_lock != src.client.prefs.gender)
 						continue
 				if(job.job_whitelisted)
 					if(job.job_whitelisted.Find(PIGPLUS))
-						if(!comradelist.Find(ckey(src.client.key)) && !villainlist.Find(ckey(src.client.key)))
-							if(!pigpluslist.Find(ckey(src.client.key)))
+						if(!access_comrade.Find(ckey(src.client.key)) && !access_villain.Find(ckey(src.client.key)))
+							if(!access_pigplus.Find(ckey(src.client.key)))
 								continue
 					else
 						if(job.job_whitelisted.Find(COMRADE))
-							if(!comradelist.Find(ckey(src.client.key)) && !villainlist.Find(ckey(src.client.key)))
+							if(!access_comrade.Find(ckey(src.client.key)) && !access_villain.Find(ckey(src.client.key)))
 								continue
 						else
 							if(job.job_whitelisted.Find(VILLAIN))
-								if(!villainlist.Find(ckey(src.client.key)))
+								if(!access_villain.Find(ckey(src.client.key)))
 									continue
 				if(job.latejoin_locked)
 					continue
@@ -456,7 +471,7 @@ var/aspects_max = 3
 		if(ticker.mode.config_tag != "miniwar")
 			return
 		var/datum/game_mode/miniwar/M = ticker.mode
-		var/dat = "<html><Title>Farweb</title><style type='text/css'>body {font-family: Times;cursor: url('pointer.cur'), auto;}a {text-decoration:none;outline: none;border: none;margin:-1px;}a:focus{outline:none;}a:hover {color:#0d0d0d;background:#505055;border: none;outline: none;border: none;}a.active { text-decoration:none; color:#533333;border: none;}a.inactive:hover {color:#0d0d0d;background:#bb0000;border: none;}a.active:hover {color:#bb0000;background:#0f0f0f;border: none;}a.inactive:hover { text-decoration:none; color:#0d0d0d; background:#bb0000}</style><body background bgColor=#0d0d0d text=#555555 alink=#777777 vlink=#777777 link=#777777>"
+		var/dat = "<html><Title>Nearweb</title><style type='text/css'>body {font-family: Times;cursor: url('http://lfwb.ru/Icons/pointer.cur'), auto;}a {text-decoration:none;outline: none;border: none;margin:-1px;}a:focus{outline:none;}a:hover {color:#0d0d0d;background:#505055;border: none;outline: none;border: none;}a.active { text-decoration:none; color:#533333;border: none;}a.inactive:hover {color:#0d0d0d;background:#bb0000;border: none;}a.active:hover {color:#bb0000;background:#0f0f0f;border: none;}a.inactive:hover { text-decoration:none; color:#0d0d0d; background:#bb0000}</style><body background bgColor=#0d0d0d text=#555555 alink=#777777 vlink=#777777 link=#777777>"
 		dat += "Game Duration: [round(hours)]h [round(mins)]m<br>"
 		dat += "Choose your team:<br>"
 		var/list/War_Teams = list("Northner", "Southner")
@@ -523,11 +538,11 @@ var/aspects_max = 3
 		if(client?.prefs.togglesize)
 			new_character.potenzia = 30
 		if(baliset.Find(client?.ckey))
-			new_character.my_skills.CHANGE_SKILL(SKILL_MUSIC, rand(13,15))
+			new_character.my_skills.change_skill(SKILL_MUSIC, rand(13,15))
 		if(singer.Find(client?.ckey))
 			new_character.add_perk(/datum/perk/singer)
-			new_character.verbs += /mob/living/carbon/human/proc/remembersong
-			new_character.verbs += /mob/living/carbon/human/proc/sing
+			new_character.add_verb(list(/mob/living/carbon/human/proc/remembersong,
+			/mob/living/carbon/human/proc/sing))
 		if(bee_queen.Find(client?.ckey))
 			new_character.add_perk(/datum/perk/bee_queen)
 		if(client?.prefs.togglefuta)

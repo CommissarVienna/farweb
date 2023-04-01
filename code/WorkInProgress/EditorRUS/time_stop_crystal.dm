@@ -33,7 +33,7 @@
 						victim:process()
 						qdel(src)
 
-/obj/item/weapon/time_space_crystal
+/obj/item/time_space_crystal
 	name = "Bluespace crystal with holes and cracks"
 	desc = {"
 This crystal is a bluespace crystal with anomalous properties. It will \"stop\" time for whatever it bumped into upon hit.
@@ -45,12 +45,12 @@ These things have been banned for distortion of space-time continuum and therefo
 	icon_state = "bluespace_crystal"
 	origin_tech = "bluespace=7;materials=5;syndicate=2"
 
-/obj/item/weapon/time_space_crystal/New()
+/obj/item/time_space_crystal/New()
 	..()
 	pixel_x = rand(-15, 15)
 	pixel_y = rand(-15, 15)
 
-/obj/item/weapon/time_space_crystal/afterattack(atom/victim)
+/obj/item/time_space_crystal/afterattack(atom/victim)
 	viewers(5, src) << "\red [src] is crushed against [victim] by [usr]"
 	new /datum/stopped_time(victim)
 	victim << "\red \bold You feel yourself weird"
@@ -58,14 +58,14 @@ These things have been banned for distortion of space-time continuum and therefo
 	qdel(src)
 
 
-/obj/item/weapon/time_space_crystal/throw_impact(atom/victim)
+/obj/item/time_space_crystal/throw_impact(atom/victim)
 	viewers(5, src) << "\red [src.name] hits the [victim] and shatters!"
 	new /datum/stopped_time(victim)
 	victim << "\red \bold  You feel yourself weird"
 	..()
 	qdel(src)
 
-/obj/item/weapon/time_space_crystal/attack_self(mob/user)
+/obj/item/time_space_crystal/attack_self(mob/user)
 	user << "\blue You crush the [src]"
 	viewers(2, src) << "\red [user] crushed the [src]"
 	new /datum/stopped_time(user)

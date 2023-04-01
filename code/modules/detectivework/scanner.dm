@@ -12,9 +12,9 @@
 	flags = FPRINT | TABLEPASS | CONDUCT | NOBLUDGEON
 	slot_flags = SLOT_BELT
 
-	attackby(obj/item/weapon/f_card/W as obj, mob/user as mob)
+	attackby(obj/item/f_card/W as obj, mob/user as mob)
 		..()
-		if (istype(W, /obj/item/weapon/f_card))
+		if (istype(W, /obj/item/f_card))
 			if (W.fingerprints)
 				return
 			if (src.amount == 20)
@@ -45,7 +45,7 @@
 				user << text("\blue Fingerprints scanned on [M]. Need more cards to print.")
 			else
 				src.amount--
-				var/obj/item/weapon/f_card/F = new /obj/item/weapon/f_card( user.loc )
+				var/obj/item/f_card/F = new /obj/item/f_card( user.loc )
 				F.amount = 1
 				F.add_fingerprint(M)
 				F.icon_state = "fingerprint1"
@@ -71,7 +71,7 @@
 		if(istype(A,/obj/machinery/computer/forensic_scanning)) //breaks shit.
 			return
 
-		if(istype(A,/obj/item/weapon/f_card))
+		if(istype(A,/obj/item/f_card))
 			user << "The scanner displays on the screen: \"ERROR 43: Object on Excluded Object List.\""
 			flick("forensic0",src)
 			return
@@ -79,7 +79,7 @@
 		add_fingerprint(user)
 
 		//Special case for blood splatters, runes and gibs.
-		if (istype(A, /obj/effect/decal/cleanable/blood) || istype(A, /obj/effect/rune) || istype(A, /obj/effect/decal/cleanable/blood/gibs))
+		if (istype(A, /obj/effect/decal/cleanable/blood) || istype(A, /obj/effect/decal/cleanable/blood/gibs))
 			if(!isnull(A.blood_DNA))
 				for(var/blood in A.blood_DNA)
 					user << "\blue Blood type: [A.blood_DNA[blood]]\nDNA: [blood]"

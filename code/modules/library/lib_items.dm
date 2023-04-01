@@ -62,13 +62,14 @@ obj/structure/bookcase/adult
 		return
 	name = "[category] Bookcase"
 	for(var/obj/item/I in loc)
-		if(istype(I, /obj/item/weapon/book))
+		if(istype(I, /obj/item/book))
 			I.loc = src
 
 	establish_db_connection()
 	if(!dbcon.IsConnected())
-		world.log << "ERROR: Unable to connect to database."
-		to_chat(world, "ERRO!")
+		return
+		//world.log << "ERROR: Unable to connect to database."
+		//to_chat(world, "ERRO!")
 	else
 		var/DBQuery/query = dbcon.NewQuery("SELECT * FROM erro_library WHERE sqlcategory='[category]'")
 		query.Execute()
@@ -77,7 +78,7 @@ obj/structure/bookcase/adult
 			var/title = query.item[1]
 			var/author = query.item[2]
 			var/content = query.item[3]
-			var/obj/item/weapon/book/B = new(src)
+			var/obj/item/book/B = new(src)
 			B.name = "Book: [title]"
 			B.title = title
 			B.author = author
@@ -89,11 +90,11 @@ obj/structure/bookcase/adult
 
 
 /obj/structure/bookcase/attackby(obj/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/book))
+	if(istype(O, /obj/item/book))
 		user.drop_item()
 		O.loc = src
 		update_icon()
-	else if(istype(O, /obj/item/weapon/pen))
+	else if(istype(O, /obj/item/pen))
 		var/newname = stripped_input(usr, "What would you like to title this bookshelf?")
 		if(!newname)
 			return
@@ -104,7 +105,7 @@ obj/structure/bookcase/adult
 
 /obj/structure/bookcase/attack_hand(var/mob/user as mob)
 	if(contents.len)
-		var/obj/item/weapon/book/choice = input("Which book would you like to remove from the shelf?") in contents as obj|null
+		var/obj/item/book/choice = input("Which book would you like to remove from the shelf?") in contents as obj|null
 		if(choice)
 			if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
 				return
@@ -118,19 +119,19 @@ obj/structure/bookcase/adult
 /obj/structure/bookcase/ex_act(severity)
 	switch(severity)
 		if(1.0)
-			for(var/obj/item/weapon/book/b in contents)
+			for(var/obj/item/book/b in contents)
 				qdel(b)
 			qdel(src)
 			return
 		if(2.0)
-			for(var/obj/item/weapon/book/b in contents)
+			for(var/obj/item/book/b in contents)
 				if (prob(50)) b.loc = (get_turf(src))
 				else del(b)
 			qdel(src)
 			return
 		if(3.0)
 			if (prob(50))
-				for(var/obj/item/weapon/book/b in contents)
+				for(var/obj/item/book/b in contents)
 					b.loc = (get_turf(src))
 				qdel(src)
 			return
@@ -149,7 +150,7 @@ obj/structure/bookcase/adult
 
 	New()
 		..()
-		new /obj/item/weapon/book/manual/medical_cloning(src)
+		new /obj/item/book/manual/medical_cloning(src)
 		update_icon()
 
 
@@ -158,13 +159,13 @@ obj/structure/bookcase/adult
 
 	New()
 		..()
-		new /obj/item/weapon/book/manual/engineering_construction(src)
-		new /obj/item/weapon/book/manual/engineering_particle_accelerator(src)
-		new /obj/item/weapon/book/manual/engineering_hacking(src)
-		new /obj/item/weapon/book/manual/engineering_guide(src)
-		new /obj/item/weapon/book/manual/atmospipes(src)
-		new /obj/item/weapon/book/manual/engineering_singularity_safety(src)
-		new /obj/item/weapon/book/manual/evaguide(src)
+		new /obj/item/book/manual/engineering_construction(src)
+		new /obj/item/book/manual/engineering_particle_accelerator(src)
+		new /obj/item/book/manual/engineering_hacking(src)
+		new /obj/item/book/manual/engineering_guide(src)
+		new /obj/item/book/manual/atmospipes(src)
+		new /obj/item/book/manual/engineering_singularity_safety(src)
+		new /obj/item/book/manual/evaguide(src)
 		update_icon()
 
 /obj/structure/bookcase/manuals/research_and_development
@@ -172,14 +173,14 @@ obj/structure/bookcase/adult
 
 	New()
 		..()
-		new /obj/item/weapon/book/manual/research_and_development(src)
+		new /obj/item/book/manual/research_and_development(src)
 		update_icon()
 
 
 /*
  * Book
  */
-/obj/item/weapon/book
+/obj/item/book
 	name = "book"
 	icon = 'icons/obj/library.dmi'
 	icon_state ="book"
@@ -196,15 +197,15 @@ obj/structure/bookcase/adult
 	var/carved = 0	 // Has the book been hollowed out for use as a secret storage item?
 	var/obj/item/store	//What's in the book?
 
-/obj/item/weapon/book/New()
+/obj/item/book/New()
 	..()
 	icon_state = "[icon_state][rand(1,15)]"
 
-/obj/item/weapon/book/dreamer
+/obj/item/book/dreamer
 	icon_state = "diary"
 
-/obj/item/weapon/book/dreamer/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/pen))
+/obj/item/book/dreamer/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/pen))
 		var/content = sanitize(input(usr, "*-Adicionar Nota-*") as message|null)
 		if(!content)
 			usr << "The content is invalid."
@@ -216,7 +217,7 @@ obj/structure/bookcase/adult
 			if(content == "[H.mind.antag_datums.sum_total]")
 				H.mind.antag_datums.wake_up(H)
 
-/obj/item/weapon/book/attack_self(var/mob/user as mob)
+/obj/item/book/attack_self(var/mob/user as mob)
 	if(carved)
 		if(store)
 			user << "<span class='notice'>[store] falls out of [title]!</span>"
@@ -233,7 +234,7 @@ obj/structure/bookcase/adult
 	else
 		user << "This book is completely blank!"
 
-/obj/item/weapon/book/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/book/attackby(obj/item/W as obj, mob/user as mob)
 	if(carved)
 		if(!store)
 			if(W.w_class < 3)
@@ -248,7 +249,7 @@ obj/structure/bookcase/adult
 		else
 			user << "<span class='notice'>There's already something in [title]!</span>"
 			return
-	if(istype(W, /obj/item/weapon/pen))
+	if(istype(W, /obj/item/pen))
 		if(unique)
 			user << "These pages don't seem to take the ink well. Looks like you can't modify it."
 			return
@@ -278,8 +279,8 @@ obj/structure/bookcase/adult
 					src.author = newauthor
 			else
 				return
-	else if(istype(W, /obj/item/weapon/barcodescanner))
-		var/obj/item/weapon/barcodescanner/scanner = W
+	else if(istype(W, /obj/item/barcodescanner))
+		var/obj/item/barcodescanner/scanner = W
 		if(!scanner.computer)
 			user << "[W]'s screen flashes: 'No associated computer found!'"
 		else
@@ -301,13 +302,13 @@ obj/structure/bookcase/adult
 					user << "[W]'s screen flashes: 'Book stored in buffer. No active check-out record found for current title.'"
 				if(3)
 					scanner.book = src
-					for(var/obj/item/weapon/book in scanner.computer.inventory)
+					for(var/obj/item/book in scanner.computer.inventory)
 						if(book == src)
 							user << "[W]'s screen flashes: 'Book stored in buffer. Title already present in inventory, aborting to avoid duplicate entry.'"
 							return
 					scanner.computer.inventory.Add(src)
 					user << "[W]'s screen flashes: 'Book stored in buffer. Title added to general inventory.'"
-	else if(istype(W, /obj/item/weapon/kitchenknife) || istype(W, /obj/item/weapon/wirecutters))
+	else if(istype(W, /obj/item/kitchenknife) || istype(W, /obj/item/wirecutters))
 		if(carved)	return
 		user << "<span class='notice'>You begin to carve out [title].</span>"
 		if(do_after(user, 30))
@@ -321,7 +322,7 @@ obj/structure/bookcase/adult
 /*
  * Barcode Scanner
  */
-/obj/item/weapon/barcodescanner
+/obj/item/barcodescanner
 	name = "barcode scanner"
 	icon = 'icons/obj/library.dmi'
 	icon_state ="scanner"
@@ -330,7 +331,7 @@ obj/structure/bookcase/adult
 	w_class = 1.0
 	flags = FPRINT | TABLEPASS
 	var/obj/machinery/librarycomp/computer // Associated computer - Modes 1 to 3 use this
-	var/obj/item/weapon/book/book	 //  Currently scanned book
+	var/obj/item/book/book	 //  Currently scanned book
 	var/mode = 0 					// 0 - Scan only, 1 - Scan and Set Buffer, 2 - Scan and Attempt to Check In, 3 - Scan and Attempt to Add to Inventory
 
 	attack_self(mob/user as mob)

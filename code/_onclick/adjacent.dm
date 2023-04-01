@@ -29,6 +29,8 @@
 	var/turf/T0 = get_turf(neighbor)
 	if(T0 == src)
 		return 1
+	if(!T0 || T0.z != z)
+		return 0
 	if(get_dist(src,T0) > 1)
 		return 0
 
@@ -75,7 +77,7 @@
 // This is necessary for storage items not on your person.
 /obj/item/Adjacent(var/atom/neighbor, var/recurse = 1)
 	if(neighbor == loc) return 1
-	if(istype(loc,/obj/item/weapon/storage/touchable)) return 1
+	if(istype(loc,/obj/item/storage/touchable)) return 1
 	if(istype(loc,/obj/item))
 		if(recurse > 0)
 			return loc.Adjacent(neighbor,recurse - 1)

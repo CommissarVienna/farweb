@@ -90,11 +90,11 @@
 
 //Step one - dehairing.
 
-/obj/item/stack/sheet/animalhide/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(	istype(W, /obj/item/weapon/kitchenknife) || \
-		istype(W, /obj/item/weapon/kitchen/utensil/knife) || \
-		istype(W, /obj/item/weapon/twohanded/fireaxe) || \
-		istype(W, /obj/item/weapon/hatchet) )
+/obj/item/stack/sheet/animalhide/attackby(obj/item/W as obj, mob/user as mob)
+	if(	istype(W, /obj/item/kitchenknife) || \
+		istype(W, /obj/item/kitchen/utensil/knife) || \
+		istype(W, /obj/item/twohanded/fireaxe) || \
+		istype(W, /obj/item/hatchet) )
 
 		//visible message on mobs is defined as visible_message(var/message, var/self_message, var/blind_message)
 		usr.visible_message("\blue \the [usr] starts cutting hair off \the [src]", "\blue You start cutting the hair off \the [src]", "You hear the sound of a knife rubbing against flesh")

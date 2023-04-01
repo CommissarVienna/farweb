@@ -25,7 +25,7 @@
 	return
 
 /obj/structure/sign/attackby(obj/item/tool as obj, mob/user as mob)	//deconstruction
-	if(istype(tool, /obj/item/weapon/screwdriver) && !istype(src, /obj/structure/sign/double))
+	if(istype(tool, /obj/item/screwdriver) && !istype(src, /obj/structure/sign/double))
 		user << "You unfasten the sign with your [tool]."
 		var/obj/item/sign/S = new(src.loc)
 		S.name = name
@@ -45,7 +45,7 @@
 	var/sign_state = ""
 
 /obj/item/sign/attackby(obj/item/tool as obj, mob/user as mob)	//construction
-	if(istype(tool, /obj/item/weapon/screwdriver) && isturf(user.loc))
+	if(istype(tool, /obj/item/screwdriver) && isturf(user.loc))
 		var/direction = input("In which direction?", "Select direction.") in list("North", "East", "South", "West", "Cancel")
 		if(direction == "Cancel") return
 		var/obj/structure/sign/S = new(user.loc)
@@ -382,7 +382,7 @@
 	icon_state = "firethorn"
 
 /obj/structure/stand
-	name = "bookcase"
+	name = "Firethorn Banner"
 	icon = 'icons/obj/decalsbig.dmi'
 	icon_state = "stand"
 	anchored = 0
@@ -392,7 +392,7 @@
 /obj/structure/sign/signnew/web/flag_raven/attack_hand(mob/user as mob)
 	var/mob/living/carbon/human/M = user
 	if(M.siegesoldier)
-		user << "<span class='notice'>Take this shit down!</span>"
+		to_chat(user, "<span class='notice'>Take this shit down!</span>")
 		if(do_after(user, 30))
 			src.icon_state = "flag_count"
 			name = "Count Flag"
@@ -410,7 +410,7 @@
 
 /obj/structure/sign/signnew/web/quiet_world
 	name = "Quiet World"
-	icon = 'raventhrone.dmi'
+	icon = 'icons/obj/raventhrone.dmi'
 	icon_state = "qw1"
 
 /obj/structure/sign/signnew/web/quiet_world/_2
@@ -584,7 +584,7 @@
 
 /obj/structure/sign/signnew/web/poster/thoushall
 	name = "Thou shall not kill"
-	icon = 'big.dmi'
+	icon = 'icons/obj/big.dmi'
 	icon_state = "thou"
 
 /obj/structure/sign/signnew/web/poster/comatic
@@ -597,6 +597,7 @@
 /obj/structure/sign/signnew/web/poster/calendary
 	name = "Calendary"
 	icon_state = "kalendar1"
+	desc = "Ah, today is: today."
 	New()
 		..()
 		src.icon_state = pick("kalendar1","kalendar2")
@@ -634,7 +635,7 @@
 
 /obj/structure/sign/signnew/web/wide/signs/firethorn
 	name = "firethorn"
-	icon_state = "firethorn"
+	icon_state = "firethorn" 
 
 /obj/structure/sign/signnew/web/wide/signs/firethorn2
 	name = "firethorn"
@@ -685,7 +686,7 @@
 
 /obj/structure/sign/signnew/web/church/sunofeternalnight
 	name = "sun of eternal night"
-	icon = 'sun_of_eternal_night.dmi'
+	icon = 'icons/obj/sun_of_eternal_night.dmi'
 	icon_state = "sun"
 	layer = 2.1
 	plane = 0
@@ -695,7 +696,7 @@
 ////////////////////
 
 /obj/structure/sign/signnew/soulbreaker
-	icon = 'sb_decor.dmi'
+	icon = 'icons/sb_decor.dmi'
 	name = "The Hive"
 
 

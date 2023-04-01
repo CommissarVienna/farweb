@@ -3,7 +3,7 @@
 /obj/machinery/computer/engines
 	name = "engines control console"
 	icon_state = "engineeringcameras"
-	circuit = "/obj/item/weapon/circuitboard/propulsion_control"
+	circuit = "/obj/item/circuitboard/propulsion_control"
 	var/state = "status"
 	var/list/engines = list()
 	var/obj/effect/map/ship/linked

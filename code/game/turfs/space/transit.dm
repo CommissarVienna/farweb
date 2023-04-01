@@ -9,7 +9,7 @@
 	..()
 	if(istype(AM, /mob/living))
 		var/mob/living/M = AM
-		M << sound('A_Real_Hero.ogg', repeat = 1, wait = 0, volume = 100, channel = 2)
+		M << sound('sound/music/A_Real_Hero.ogg', repeat = 1, wait = 0, volume = 100, channel = 2)
 		M.overlay_fullscreen("spacehero", /obj/screen/fullscreen/spacehero, 1)
 	else
 		return

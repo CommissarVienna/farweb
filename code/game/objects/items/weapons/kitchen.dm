@@ -10,13 +10,13 @@
  *		Trays
  */
 
-/obj/item/weapon/kitchen
+/obj/item/kitchen
 	icon = 'icons/obj/kitchen.dmi'
 
 /*
  * Utensils
  */
-/obj/item/weapon/kitchen/utensil
+/obj/item/kitchen/utensil
 	force = 8.0
 	w_class = 1.0
 	throwforce = 5.0
@@ -24,10 +24,10 @@
 	throw_range = 5
 	flags = FPRINT | TABLEPASS | CONDUCT
 	origin_tech = "materials=1"
-	attack_verb = list("attacked", "poked")
+	attack_verb = list("slashed")
 	weaponteaching = "KNIFE"
 
-/obj/item/weapon/kitchen/utensil/New()
+/obj/item/kitchen/utensil/New()
 	if (prob(60))
 		src.pixel_y = rand(0, 4)
 	return
@@ -35,31 +35,31 @@
 /*
  * Spoons
  */
-/obj/item/weapon/kitchen/utensil/spoon
+/obj/item/kitchen/utensil/spoon
 	name = "spoon"
 	desc = "SPOON!"
 	icon_state = "spoon"
 	item_state = "spoon"
 	item_worth = 5
-	attack_verb = list("attacked", "poked")
+	attack_verb = list("poked")
 
-/obj/item/weapon/kitchen/utensil/pspoon
+/obj/item/kitchen/utensil/pspoon
 	name = "plastic spoon"
 	desc = "Super dull action!"
 	icon_state = "pspoon"
-	attack_verb = list("attacked", "poked")
+	attack_verb = list("poked")
 
 /*
  * Forks
  */
-/obj/item/weapon/kitchen/utensil/fork
+/obj/item/kitchen/utensil/fork
 	name = "fork"
 	desc = "Pointy."
 	icon_state = "fork"
 	item_state = "fork"
 	item_worth = 5
 
-/obj/item/weapon/kitchen/utensil/fork/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/kitchen/utensil/fork/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(!istype(M))
 		return ..()
 
@@ -91,12 +91,12 @@
 			M = user
 		return eyestab(M,user)
 
-/obj/item/weapon/kitchen/utensil/pfork
+/obj/item/kitchen/utensil/pfork
 	name = "plastic fork"
 	desc = "Yay, no washing up to do."
 	icon_state = "pfork"
 
-/obj/item/weapon/kitchen/utensil/pfork/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/kitchen/utensil/pfork/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(!istype(M))
 		return ..()
 
@@ -131,9 +131,9 @@
 /*
  * Knives
  */
-/obj/item/weapon/kitchen/utensil/knife
+/obj/item/kitchen/utensil/knife
 	name = "knife"
-	desc = "Can cut through any food."
+	desc = "Can cut through any food, and some people too."
 	icon_state = "knife"
 	item_state = "knife"
 	blood_suffix = "b"
@@ -142,23 +142,17 @@
 	sharp = 1
 	throw_speed = 4
 	throw_range = 8
-	force_wielded = 18.0
-	force_unwielded = 13.0
+	force_wielded = 18
+	force_unwielded = 13
 	edge = 0
-	drop_sound = 'knife_drop.ogg'
-	drawsound = 'knife_equip.ogg'
+	drop_sound = 'sound/weapons/knife_drop.ogg'
+	drawsound = 'sound/weapons/knife_equip.ogg'
 	item_worth = 5
 	hitsound= "slash"
 	speciality = SKILL_KNIFE
 	var/atk_mode = SLASH
 
-	suicide_act(mob/user)
-		viewers(user) << pick("\red <b>[user] is slitting \his wrists with the [src.name]! It looks like \he's trying to commit suicide.</b>", \
-							"\red <b>[user] is slitting \his throat with the [src.name]! It looks like \he's trying to commit suicide.</b>", \
-							"\red <b>[user] is slitting \his stomach open with the [src.name]! It looks like \he's trying to commit seppuku.</b>")
-		return (BRUTELOSS)
-
-/obj/item/weapon/kitchen/utensil/knife/switchblade
+/obj/item/kitchen/utensil/knife/switchblade
 	blooded_icon = FALSE
 	blood_suffix = "b"
 	name = "switch blade"
@@ -166,25 +160,25 @@
 	icon_state = "switchblade0"
 	item_state = "knifer0"
 	drawsound = null
-	edge = 1
-	sharp = 0
+	edge = 0
+	sharp = 1
 	var/open = FALSE
 
-/obj/item/weapon/kitchen/utensil/knife/switchblade/attack_self(mob/user)
+/obj/item/kitchen/utensil/knife/switchblade/attack_self(mob/user)
 	if(open == FALSE)
 		open = TRUE
 		icon_state = "switchblade1"
-		item_state = "knifer1"
+		item_state = "dagger"
 		hitsound= "stab"
-		edge = 1
+		edge = 0
 		force = 14
-		sharp = 0
+		sharp = 1
 		playsound(src.loc, 'sound/webbers/switchblade.ogg', 50, 1)
 		return
 	if(open == TRUE)
 		open = FALSE
 		icon_state = "switchblade0"
-		item_state = "knifer0"
+		item_state = null
 		hitsound = null
 		edge = 0
 		sharp = 0
@@ -192,7 +186,7 @@
 		playsound(src.loc, 'sound/webbers/switchblade.ogg', 50, 1)
 		return
 
-/obj/item/weapon/kitchen/utensil/knife/attack_self(mob/user)
+/obj/item/kitchen/utensil/knife/attack_self(mob/user)
 	..()
 	if(atk_mode == SLASH)
 		atk_mode = STAB
@@ -213,12 +207,12 @@
 		return
 
 
-/obj/item/weapon/kitchen/utensil/knife/flaying
+/obj/item/kitchen/utensil/knife/flaying
 	name = "flaying knife"
 	desc = "used to flay skin."
 	icon_state = "skinning"
 
-/obj/item/weapon/kitchen/utensil/knife/flaying/attack(mob/living/carbon/human/H as mob, mob/user as mob)
+/obj/item/kitchen/utensil/knife/flaying/attack(mob/living/carbon/human/H as mob, mob/user as mob)
 	if (depotenzia(H, user))
 		return
 
@@ -241,13 +235,13 @@
 				if(H.stat == DEAD)
 					return
 				if(H.buckled && istype(H.buckled, /obj/structure/stool/bed/chair/comfy/torture))
-					H.client.ChromieWinorLoose(H.client, -1)
+					H.client.ChromieWinorLoose(-1)
 
 
 
 /obj/item/var/silver = FALSE
 
-/obj/item/weapon/kitchen/utensil/knife/combat
+/obj/item/kitchen/utensil/knife/combat
 	name = "hunter knife"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "combat"
@@ -264,7 +258,25 @@
 	sheathiconknife = "combat_sh2"
 	equip_sound = "sheath"
 
-/obj/item/weapon/kitchen/utensil/knife/cutelo
+/obj/item/weapon/kitchen/utensil/knife/theknife
+	name = "The Knife"
+	icon = 'icons/obj/weapons.dmi'
+	icon_state = "combat"
+	item_state = "the_knife"
+	desc = "A very sharp looking knife..."
+	force = 24
+	throwforce = 12
+	sharp = 1
+	edge = 1
+	drawsound = "unsheath"
+	drop_sound = 'sound/effects/drop_sword.ogg'
+	penetrating = TRUE
+	item_worth = 140
+	hitsound= "blade"
+	sheathiconknife = "combat_sh2"
+	equip_sound = "sheath"
+
+/obj/item/kitchen/utensil/knife/cutelo
 	name = "cutelo"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "cleaver"
@@ -279,10 +291,10 @@
 	item_worth = 5
 	hitsound= "slash"
 
-/obj/item/weapon/kitchen/utensil/knife/cutelo/attack_self(mob/user)
+/obj/item/kitchen/utensil/knife/cutelo/attack_self(mob/user)
 	return
 
-/obj/item/weapon/kitchen/utensil/knife/combatrue
+/obj/item/kitchen/utensil/knife/combatrue
 	name = "combat knife"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "combat"
@@ -297,7 +309,7 @@
 	penetrating = TRUE
 	equip_sound = "sheath"
 
-/obj/item/weapon/kitchen/utensil/knife/dagger
+/obj/item/kitchen/utensil/knife/dagger
 	name = "iron dagger"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "dagger"
@@ -307,89 +319,89 @@
 	sharp = 1
 	edge = 0
 	penetrating = TRUE
-	drop_sound = 'knife_drop.ogg'
-	drawsound = 'dagger_draw.ogg'
+	drop_sound = 'sound/weapons/knife_drop.ogg'
+	drawsound = 'sound/weapons/dagger_draw.ogg'
 	item_worth = 7
 	hitsound= "stab"
 	sheathicondagger = "dagger_sheath1"
 	equip_sound = "sheath"
 
-/obj/item/weapon/kitchen/utensil/knife/dagger/silver
+/obj/item/kitchen/utensil/knife/dagger/silver
 	name = "silver dagger"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "silverdagger"
 	item_state = "dagger"
 	force = 15
 	throwforce = 16
-	drop_sound = 'knife_drop.ogg'
-	drawsound = 'dagger_draw.ogg'
+	drop_sound = 'sound/weapons/knife_drop.ogg'
+	drawsound = 'sound/weapons/dagger_draw.ogg'
 	item_worth = 14
 	hitsound= "blade"
 
-/obj/item/weapon/kitchen/utensil/knife/dagger/copper
+/obj/item/kitchen/utensil/knife/dagger/copper
 	name = "copper dagger"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "copperdagger"
 	item_state = "dagger"
 	force = 10
 	throwforce = 15
-	drop_sound = 'knife_drop.ogg'
-	drawsound = 'dagger_draw.ogg'
+	drop_sound = 'sound/weapons/knife_drop.ogg'
+	drawsound = 'sound/weapons/dagger_draw.ogg'
 	item_worth = 5
 	hitsound= "stab"
 
-/obj/item/weapon/kitchen/utensil/knife/dagger/wood_stake
+/obj/item/kitchen/utensil/knife/dagger/wood_stake
 	name = "wooden stake"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "wstake"
 	item_state = "wstake"
 	force = 15
 	throwforce = 10
-	drop_sound = 'wooden_drop.ogg'
+	drop_sound = 'sound/items/wooden_drop.ogg'
 	hitsound= "stab"
 	sharp = 0
 	edge = 1
 
-/obj/item/weapon/kitchen/utensil/knife/dagger/adamantium
+/obj/item/kitchen/utensil/knife/dagger/adamantium
 	name = "adamantium dagger"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "adagger"
 	item_state = "dagger"
 	force = 35
 	throwforce = 36
-	drop_sound = 'knife_drop.ogg'
-	drawsound = 'dagger_draw.ogg'
+	drop_sound = 'sound/weapons/knife_drop.ogg'
+	drawsound = 'sound/weapons/dagger_draw.ogg'
 	item_worth = 224
 	hitsound= "blade"
 
-/obj/item/weapon/kitchen/utensil/knife/dagger/adamantium/throwing
+/obj/item/kitchen/utensil/knife/dagger/adamantium/throwing
 	name = "adamantium dagger"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "athrowing"
 	item_state = "dagger"
 	force = 35
 	throwforce = 45
-	drop_sound = 'knife_drop.ogg'
-	drawsound = 'dagger_draw.ogg'
+	drop_sound = 'sound/weapons/knife_drop.ogg'
+	drawsound = 'sound/weapons/dagger_draw.ogg'
 	item_worth = 224
 	hitsound= "blade"
 
-/obj/item/weapon/kitchen/utensil/knife/dagger/silver
+/obj/item/kitchen/utensil/knife/dagger/silver
 	name = "silver dagger"
 	icon_state = "silverdagger"
 	silver = TRUE
 
-/obj/item/weapon/kitchen/utensil/pknife
+/obj/item/kitchen/utensil/pknife
 	name = "plastic knife"
 	desc = "The bluntest of blades."
 	icon_state = "pknife"
 	force = 13.0
 	throwforce = 10.0
-	drop_sound = 'knife_drop.ogg'
-	drawsound = 'knife_equip.ogg'
+	drop_sound = 'sound/weapons/knife_drop.ogg'
+	drawsound = 'sound/weapons/knife_equip.ogg'
 	speciality = SKILL_KNIFE
 
-/obj/item/weapon/kitchen/utensil/pknife/attack(target as mob, mob/living/user as mob)
+/obj/item/kitchen/utensil/pknife/attack(target as mob, mob/living/user as mob)
 	if ((CLUMSY in user.mutations) && prob(50))
 		user << "\red You somehow managed to cut yourself with the [src]."
 		user.take_organ_damage(20)
@@ -400,7 +412,7 @@
 /*
  * Kitchen knives
  */
-/obj/item/weapon/kitchenknife
+/obj/item/kitchenknife
 	name = "kitchen knife"
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "knife"
@@ -416,8 +428,8 @@
 	m_amt = 12000
 	origin_tech = "materials=1"
 	attack_verb = list("slashed", "sliced", "torn", "ripped", "diced", "cut")
-	drop_sound = 'knife_drop.ogg'
-	drawsound = 'knife_equip.ogg'
+	drop_sound = 'sound/weapons/knife_drop.ogg'
+	drawsound = 'sound/weapons/knife_equip.ogg'
 	item_worth = 5
 	hitsound= "blade"
 
@@ -427,13 +439,13 @@
 							"\red <b>[user] is slitting \his stomach open with the [src.name]! It looks like \he's trying to commit seppuku.</b>")
 		return (BRUTELOSS)
 
-/obj/item/weapon/kitchenknife/ritual
+/obj/item/kitchenknife/ritual
 	name = "ritual knife"
 	desc = "The unearthly energies that once powered this blade are now dormant."
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "render"
 
-/obj/item/weapon/kitchenknife/tanning
+/obj/item/kitchenknife/tanning
 	name = "tanning knife"
 	desc = "An old tanning knife."
 	icon = 'icons/obj/wizard.dmi'
@@ -442,7 +454,7 @@
 /*
  * Bucher's cleaver
  */
-/obj/item/weapon/butch
+/obj/item/butch
 	name = "butcher's cleaver"
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "butch"
@@ -459,7 +471,7 @@
 	sharp = 1
 	edge = 1
 
-/obj/item/weapon/butch/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/butch/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	playsound(loc, 'sound/weapons/bladeslice.ogg', 50, 1, -1)
 	return ..()
 
@@ -467,7 +479,7 @@
  * Rolling Pins
  */
 
-/obj/item/weapon/kitchen/rollingpin
+/obj/item/kitchen/rollingpin
 	name = "rolling pin"
 	desc = "Used to knock out the Bartender."
 	icon_state = "rolling_pin"
@@ -478,7 +490,7 @@
 	w_class = 3.0
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked") //I think the rollingpin attackby will end up ignoring this anyway.
 
-/*/obj/item/weapon/kitchen/rollingpin/attack(mob/living/M as mob, mob/living/user as mob)
+/*/obj/item/kitchen/rollingpin/attack(mob/living/M as mob, mob/living/user as mob)
 	if ((CLUMSY in user.mutations) && prob(50))
 		user << "\red The [src] slips out of your hand and hits your head."
 		user.take_organ_damage(10)
@@ -514,7 +526,7 @@
 /*
  * Trays - Agouri
  */
-/obj/item/weapon/tray
+/obj/item/tray
 	name = "tray"
 	icon = 'icons/obj/food.dmi'
 	icon_state = "tray"
@@ -547,7 +559,7 @@
 					   // w_class = 2 -- takes up 3
 					   // w_class = 3 -- takes up 5
 
-/obj/item/weapon/tray/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/tray/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	..()
 	// Drop all the things. All of them.
 	overlays.Cut()
@@ -663,10 +675,10 @@
 				return
 			return
 
-/obj/item/weapon/tray/var/cooldown = 0	//shield bash cooldown. based on world.time
+/obj/item/tray/var/cooldown = 0	//shield bash cooldown. based on world.time
 
-/obj/item/weapon/tray/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/kitchen/rollingpin))
+/obj/item/tray/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/kitchen/rollingpin))
 		if(cooldown < world.time - 25)
 			user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 			playsound(user.loc, 'sound/effects/shieldbash.ogg', 50, 1)
@@ -681,7 +693,7 @@
 =																			=
 ===============~~~~~================================~~~~~====================
 */
-/obj/item/weapon/tray/proc/calc_carry()
+/obj/item/tray/proc/calc_carry()
 	// calculate the weight of the items on the tray
 	var/val = 0 // value to return
 
@@ -695,7 +707,7 @@
 
 	return val
 
-/obj/item/weapon/tray/pickup(mob/user)
+/obj/item/tray/pickup(mob/user)
 
 	if(!isturf(loc))
 		return
@@ -716,7 +728,7 @@
 			carrying.Add(I)
 			overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer)
 
-/obj/item/weapon/tray/dropped(mob/user)
+/obj/item/tray/dropped(mob/user)
 
 	var/mob/living/M
 	for(M in src.loc) //to handle hand switching
@@ -750,8 +762,8 @@
 
 
 
-/*/obj/item/weapon/tray/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/weapon/kitchen/utensil/fork))
+/*/obj/item/tray/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/kitchen/utensil/fork))
 		if (W.icon_state == "forkloaded")
 			user << "\red You already have omelette on your fork."
 			return

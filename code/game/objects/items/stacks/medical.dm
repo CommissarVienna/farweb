@@ -59,8 +59,8 @@
 	heal_brute = 15
 	origin_tech = "biotech=1"
 
-/obj/item/stack/medical/bruise_pack/attackby(obj/item/weapon/P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/reagent_containers/food/snacks/grown/weed))
+/obj/item/stack/medical/bruise_pack/attackby(obj/item/P as obj, mob/user as mob)
+	if(istype(P, /obj/item/reagent_containers/food/snacks/grown/weed))
 		new/obj/item/clothing/mask/cigarette/weed(src.loc)
 		qdel(P)
 		qdel(src)
@@ -79,22 +79,13 @@
 				to_chat(user, "The wounds on [M]'s [affecting.display_name] have already been bandaged.")
 				return 1
 			if(affecting.bandaged)
-				to_chat(user, "This bandage is dirty. I can't use it.")
 				return 1
 			if(dirty)
+				to_chat(user, "This bandage is dirty. I can't use it.")
 				return 1
 			else
 				if(do_after(user, 10))
-					for (var/datum/wound/W in affecting.wounds)
-						if (W.internal)
-							continue
-						if (W.current_stage <= W.max_bleeding_stage)
-							user.visible_message( 	"<span class='passive'>[user] bandages [M]'s [affecting.display_name].</span>")
-							//H.add_side_effect("Itch")
-						else if (istype(W,/datum/wound/bruise))
-							user.visible_message( 	"<span class='passive'>[user] bandages [M]'s [affecting.display_name].</span>")
-						else
-							user.visible_message( 	"<span class='passive'>[user] bandages [M]'s [affecting.display_name].</span>")
+					user.visible_message("<span class='passive'>[user] bandages [M]'s [affecting.display_name].</span>")
 					user.drop_from_inventory(src)
 					affecting.bandaged = src
 					src.loc = user
@@ -111,7 +102,7 @@
 
 /obj/item/clothing/mask/sleeve
 	name=  "sleeves"
-	icon_state = "clothbandaid"
+	icon_state = "clo"
 	var/soaked = FALSE
 	var/dirty = 0
 	var/heal_brute = 5
@@ -124,8 +115,8 @@
 	var/icon/DI = new /icon(U.icon)
 	src.color = DI.GetPixel(16, 16, icon_state = "[U.icon_state]", dir=U.dir, frame=1, moving=0)
 
-/obj/item/clothing/mask/sleeve/attackby(obj/item/weapon/P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/reagent_containers/food/snacks/grown/weed))
+/obj/item/clothing/mask/sleeve/attackby(obj/item/P as obj, mob/user as mob)
+	if(istype(P, /obj/item/reagent_containers/food/snacks/grown/weed))
 		new/obj/item/clothing/mask/cigarette/weed(src.loc)
 		qdel(P)
 		qdel(src)
@@ -134,12 +125,12 @@
 	if(!proximity) return
 	if(istype(A, /turf) && src in user)
 		if(!soaked)
-			to_chat(user,"<span class='combat'>[pick(nao_consigoen)] it's  dry!</span>")
+			to_chat(user,"<span class='combat'>[pick(fnord)] it's  dry!</span>")
 			return
 		user.visible_message("[user] starts to wipe down [A] with [src]!")
 		var/cleancheck
-		if(user.my_skills.GET_SKILL(SKILL_CLEAN) >= 1)
-			cleancheck = user.my_skills.GET_SKILL(SKILL_CLEAN) * 2
+		if(user.my_skills.get_skill(SKILL_CLEAN) >= 1)
+			cleancheck = user.my_skills.get_skill(SKILL_CLEAN) * 2
 		var/cleanskill = max(0, 18 - cleancheck)
 		if(do_after(user,cleanskill))
 			user.visible_message("[user] finishes wiping off the [A]!")
@@ -167,9 +158,9 @@ obj/item/clothing/mask/sleeve/attack(mob/living/carbon/M as mob, mob/user as mob
 				to_chat(user, "The wounds on [M]'s [affecting.display_name] have already been bandaged.")
 				return 1
 			if(affecting.bandaged)
-				to_chat(user, "This bandage is dirty. I can't use it.")
 				return 1
 			if(dirty)
+				to_chat(user, "This bandage is dirty. I can't use it.")
 				return 1
 			else
 				if(do_after(user, 10))
@@ -351,7 +342,7 @@ obj/item/clothing/mask/sleeve/attack(mob/living/carbon/M as mob, mob/user as mob
 				return
 			user.visible_message("\red [user] starts to apply \the [src] to their [limb].", "\red You start to apply \the [src] to your [limb].", "\red You hear something being wrapped.")
 		if(do_after(user, 50))
-			if(skillcheck(HH.my_skills.GET_SKILL(SKILL_MEDIC), 38, 0, user))
+			if(skillcheck(HH.my_skills.get_skill(SKILL_MEDIC), 38, 0, user))
 				user.visible_message("\red [user] finishes applying \the [src] to [M]'s [limb].", "\red You finish applying \the [src] to [M]'s [limb].", "\red You hear something being wrapped.")
 				affecting.status |= ORGAN_SPLINTED
 				use(1)

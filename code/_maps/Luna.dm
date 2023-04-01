@@ -21,14 +21,14 @@ var/list/accessable_z_levels = list("1" = 10, "2" = 10, "3" = 10, "4" = 10, "5" 
 	shipname = "NSV Luna"
 	name = "generic ship"
 	desc = "Space faring vessel."
-	icon = 'maps/overmap/bearcat/bearcat.dmi'
+	icon = 'maps/oldweb/overmap/bearcat/bearcat.dmi'
 	icon_state = "luna"
 
 var/list/leversinworld = list()
 
 /obj/machinery/key_card/g/magma/Trem
-	name = "Alavanca do trem"
-	desc = "Alavanca do trem utilizada para mover o trem da estação para ravenheart e vice-versa."
+	name = "train lever"
+	desc = "Train lever used to move train from station to Firethorn and vice versa."
 	icon_state = "lever0"
 	airlock_tag = "magma"
 
@@ -37,7 +37,7 @@ var/list/leversinworld = list()
 	leversinworld.Add(src)
 
 /obj/machinery/key_card/g/magma/Trem/Station
-	name = "Alavanca da Estação"
+	name = "fortress lever"
 
 var/global/trainmoving = 0
 var/global/trainwhereisit = 2 // 1 fortress 2 station

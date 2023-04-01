@@ -74,7 +74,13 @@
 	var/improved = 0
 	var/accuracy = 0 // negative = chance to hit, positive = chance to miss
 	var/can_improv = FALSE
-	var/can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	var/smelted_return = null
+	var/item_reach = 1 //How many tiles away you can attack with the weapon.
+	var/table_pickup_sound = null
+	var/table_sound = null		  //Called when you put something on the table.
+	var/RightLeft = FALSE
+	var/wielded_underlay
+	var/hand_underlay
 
 /obj/item/Crossed(H as mob|obj)
 	..()
@@ -83,7 +89,7 @@
 		if(descriptive_var_name.m_intent == "walk" && prob(40)) return
 		if(istype(src, /obj/item/device/radio/intercom))
 			return
-		if(istype(src, /obj/item/weapon/storage/forge))
+		if(istype(src, /obj/item/storage/forge))
 			return
 		src.pixel_y = initial(pixel_y) + rand(-4,4)
 		src.pixel_x = initial(pixel_x) + rand(-4,4)
@@ -134,13 +140,12 @@
 		if(6)
 			name = "<i>[name]</i>"
 			force += 12
-			//item_worth = item_worth*120
-			item_worth = item_worth*20
+			item_worth = item_worth*25
 			if(istype(src, /obj/item/clothing))
 				armor["melee"] = initial(armor["melee"])
 				armor["melee"] += 10
 
-/obj/item/proc/QualityToThingo(obj/item/A)
+/obj/item/proc/QualityToThing(obj/item/A)
 	switch(A)
 		if(1)
 			return " It's a well-crafted item."
@@ -201,16 +206,14 @@
 
 	src.loc = T
 
-/obj/item/examine()
-	set src in view()
-
+/obj/item/examine(mob/user)
 	var/TheSpec
 	var/TheReach
-	if(istype(src, /obj/item/weapon))
-		var/obj/item/weapon/W = src
-		if(W.w_class >= 1)
+	if(istype(src, /obj/item))
+		var/obj/item/W = src
+		if(W.item_reach >= 1)
 			TheReach = "Reach: "
-			switch(W.w_class)
+			switch(W.item_reach)
 				if(1)
 					TheReach += "•"
 				if(2)
@@ -227,54 +230,53 @@
 			if(SKILL_FLAIL)
 				TheSpec = "[generatehintbox("https://cdn.discordapp.com/attachments/781574628229382144/828004675676012595/unknown.png","IMPROVISED. Lesser chance to hit. A little better than nothing.")]"
 			if(SKILL_SWORD)
-				TheSpec = "[generatehintbox("https://cdn.discordapp.com/attachments/781574628229382144/828016818261458954/sword.png","SWORD - Cuts or stabs. Your finesse of wieldy or unwieldy blades.")]"
+				TheSpec = "[generatehintbox("https://cdn.discordapp.com/attachments/1070002834642325534/1070061537684889700/sword.png","SWORD - Cuts or stabs. Your finesse of wieldy or unwieldy blades.")]"
 			if(SKILL_SWING)
-				TheSpec = "[generatehintbox("https://cdn.discordapp.com/attachments/781574628229382144/828016821218312242/club.png","CLUB/AXES - Smashes bones. Your control in assaults and parrying with crushing weapons.")]"
+				TheSpec = "[generatehintbox("https://cdn.discordapp.com/attachments/1070002834642325534/1070061537357738015/club.png","CLUB/AXES - Smashes bones. Your control in assaults and parrying with crushing weapons.")]"
 
 
-	if(!isobserver(usr))
-		usr.visible_message("<span class='looksatbold'>[usr.name]</span> <span class='looksat'>looks at [src].</span>")
-		if(get_dist(usr,src) > 5)//Don't get descriptions of things far away.
-			to_chat(usr, "<span class='passivebold'>It's too far away to see clearly.</span>")
+	if(!isobserver(user))
+		user.visible_message("<span class='looksatbold'>[user.name]</span> <span class='looksat'>looks at [src].</span>")
+		if(get_dist(user,src) > 5)//Don't get descriptions of things far away.
+			to_chat(user, "<span class='passivebold'>It's too far away to see clearly.</span>")
 			return
 
 	var/randtext = null
-	var/valuetext = "No idea."
-
-	if(ishuman(usr))
-		var/mob/living/carbon/human/H = usr
-		if(H.my_stats.it <= 5)
-			randtext = pick("Yoh!","Doh!","Haha")
-		if(H.check_perk(/datum/perk/ref/value))
-			valuetext = "[src.item_worth]"
-
-		to_chat(H, "<div class='firstdivexamine'><div class='box'><span class='statustext'>This is a [src.blood_DNA ? "bloody " : ""][icon2html(src, usr)]</span> <span class='uppertext'>[src.name].[QualityToThingo(src?.quality)] [randtext]</span>\n<span class='statustext'>[src.desc]</span>\n[TheReach]<span class='bname'>Cost: [valuetext] </span><hr class='linexd'>[TheSpec]</div></div>")
+	var/valuetext = null
+	var/sharptext = ""
+	var/duratext = ""
+	var/cost_of_item = ""
 
 	if(src.sharp)
 		if(src.sharpness > 75)
-			to_chat(usr, "<span class='passive'>It's well sharpened, it's </span><span class='passivebold'>[sharpness]%</span><span class='passive'> sharp!</span>")
-		else
-			if(src.sharpness > 50)
-				to_chat(usr, "<span class='passive'>it's <span class='passivebold'>[sharpness]%</span><span class='passive'> sharp!</span>")
-			else
-				if(src.sharpness < 50)
-					to_chat(usr, "<span class='combat'>It's blunt, it's <span class='combatbold'>[sharpness]%</span><span class='combat'> sharp!</span>")
-				else
-					if(src.sharpness <= 1)
-						to_chat(usr, "<span class='combat'>It's completely blunt!</span>")
+			sharptext = "<span class='passive'>It's well sharpened, it's </span><span class='passivebold'>[sharpness]%</span><span class='passive'> sharp!</span>"
+		else if(src.sharpness > 50)
+			sharptext = "<span class='passive'>it's <span class='passivebold'>[sharpness]%</span><span class='passive'> sharp!</span>"
+		else if(src.sharpness < 50)
+			sharptext = "<span class='combat'>It's blunt, it's <span class='combatbold'>[sharpness]%</span><span class='combat'> sharp!</span>"
+		else if(src.sharpness <= 1)
+			sharptext = "<span class='combat'>It's completely blunt!</span>"
 
-	if(src.durability)
-		if(src.durability == 0)
-			to_chat(usr, "<span class='combat'>it's broken!</span>")
-		else
-			if(src.durability < 20)
-				to_chat(usr, "<span class='combat'>it's heavily damaged!</span>")
-			else
-				if(src.durability < 50)
-					to_chat(usr, "<span class='combat'>it's damaged!</span>")
-				else
-					if(src.durability < 80)
-						to_chat(usr, "<span class='combat'>it's slightly damaged!</span>")
+	if(src.durability == 0)
+		duratext = "<span class='combat'>it's broken!</span>"
+	else if(src.durability < 20 && durability > 0)
+		duratext = "<span class='combat'>it's heavily damaged!</span>"
+	else if(src.durability < 50 && durability > 20)
+		duratext = "<span class='combat'>it's damaged!</span>"
+	else if(src.durability < 80 && durability > 50)
+		duratext = "<span class='combat'>it's slightly damaged!</span>"
+
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.my_stats.get_stat(STAT_IN) <= 5)
+			randtext = pick("Yoh!","Doh!","Haha")
+		if(H.check_perk(/datum/perk/ref/value))
+			valuetext = "[src.item_worth]"
+		if(valuetext)//Only show how much the item costs if we actually know it's value. Otherwise it just spams the chat with "no idea" and that's fucking annoying.
+			cost_of_item = "<span class='bname'>Cost: [valuetext]\n</span>"
+		
+		to_chat(H, "<div class='firstdivexamine'><div class='box'><span class='statustext'>This is a [src.blood_DNA ? "bloody " : ""][icon2html(src, user)]</span> <span class='uppertext'>[src.name].[QualityToThing(src?.quality)] [randtext]</span>\n<span class='statustext'>[src.desc]</span>\n[cost_of_item][TheReach]\n[sharptext]\n[duratext]<hr class='linexd'>[TheSpec]</div></div>")
+
 	return
 
 
@@ -291,7 +293,7 @@
 		durability -= modifier
 	if(durability <= 0)
 		durability = 0
-		playsound(src.loc, 'breaksound.ogg', 100, 1)
+		playsound(src.loc, 'sound/items/breaksound.ogg', 100, 1)
 		src.visible_message("<span class='combatbold'>[src]</span><span class='combat'> breaks!</span>")
 		qdel(src)
 
@@ -309,54 +311,7 @@
 			modifier += 2
 	if(sharpness > 0)
 		sharpness = max(1, sharpness-modifier)
-/*
-/obj/item/weapon/reagent_containers/food/snacks/organ/Click(location, control, params, var/proximity_flag)
 
-	if(world.time <= usr.next_move)
-		return 1
-	if(usr.stat || usr.paralysis || usr.stunned || usr.weakened)
-		return 1
-	if (istype(usr.loc,/obj/mecha)) // stops inventory actions in a mech
-		return 1
-
-	usr.face_atom(src)
-
-	if(src.Adjacent(usr))
-		proximity_flag = 1
-
-	if(src?.owner?.loc?.Adjacent(usr) && src.owner == src.loc)
-		proximity_flag = 1
-
-	if(proximity_flag > 0)
-		var/list/modifiers = params2list(params)
-		if(modifiers["shift"])
-			src.examine(usr)
-
-		else if(modifiers["left"])
-			if(istype(usr, /mob/living/carbon/human))
-				var/mob/living/carbon/human/H = usr
-				if(H.get_active_hand() == null)
-					if(H.s_active && istype(src.loc, /mob/living/carbon/human))
-						var/datum/organ/internal/heart/Heart = src.owner.internal_organs_by_name[pick("heart")]
-						if(Heart && Heart.escritura)
-							if(istype(src, /obj/item/weapon/reagent_containers/food/snacks/organ/heart))
-								src.escritura = Heart.escritura
-						H.s_active.remove_from_storage(src)
-						H.put_in_hands(src)
-						if(connected)
-							H.coisa(src, src.owner, 0)
-							src.organ_data.damage += 60
-							health -= 60
-							connected = FALSE
-						var/damage_organ = rand(30, 40)
-						src.organ_data.damage += damage_organ
-						health -= damage_organ
-						src.removed(src.owner, H)
-						H.visible_message("[H] exhumes [src.owner]!")
-						playsound(H.loc, pick('sound/lfwbsounds/itm_ingredient_heart_01.ogg', 'sound/lfwbsounds/itm_ingredient_heart_02.ogg'), 100)
-		src.attack_hand(usr)
-		usr.next_move = world.time + 2
-*/
 /obj/item/attack_hand(mob/user as mob)
 	if (!user) return
 	if (hasorgans(user))
@@ -364,7 +319,7 @@
 		if (user.hand)
 			temp = user:organs_by_name["l_hand"]
 		if(temp && !temp.is_usable())
-			to_chat(src, "<span class='combat'>[pick(nao_consigoen)] I can't use my [temp.display_name].</span>")
+			to_chat(src, "<span class='combat'>[pick(fnord)] I can't use my [temp.display_name].</span>")
 			return
 
 	if(istype(user, /mob/living/carbon/human))
@@ -375,10 +330,10 @@
 		if(istype(H.amulet, /obj/item/clothing/head/amulet/breaker))
 			return
 
-	if (istype(src.loc, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/S = src.loc
-		if(istype(S, /obj/item/weapon/storage/forge))
-			var/obj/item/weapon/storage/forge/F = S
+	if (istype(src.loc, /obj/item/storage))
+		var/obj/item/storage/S = src.loc
+		if(istype(S, /obj/item/storage/forge))
+			var/obj/item/storage/forge/F = S
 			if(F.on || F.tocomplete)
 				return
 		S.remove_from_storage(src)
@@ -398,7 +353,7 @@
 				else
 					return
 			else
-				if(istype(src, /obj/item/clothing/suit/armor/vest))
+				if(istype(src, /obj/item/clothing/suit/armor))
 					if(do_after(user, 28))
 						user.u_equip(src)
 						user.put_in_active_hand(src)
@@ -430,16 +385,16 @@
 	if(iszombie(user) || istype(user?:species, /datum/species/human/alien))						//Dirty, but in such a way it will not break the item's layer
 		var/mob/living/carbon/human/H = user
 		if(H.l_hand)
-			if(!istype(H.l_hand, /obj/item/weapon/grab))
+			if(!istype(H.l_hand, /obj/item/grab))
 				H.drop_from_inventory(H.l_hand)
 		if(H.r_hand)
-			if(!istype(H.r_hand, /obj/item/weapon/grab))
+			if(!istype(H.r_hand, /obj/item/grab))
 				H.drop_from_inventory(H.r_hand)
 	return
 
 /obj/item/attack_paw(mob/user as mob)
 
-	if (istype(src.loc, /obj/item/weapon/storage))
+	if (istype(src.loc, /obj/item/storage))
 		for(var/mob/M in range(1, src.loc))
 			if (M.s_active == src.loc)
 				if (M.client)
@@ -462,19 +417,19 @@
 
 // Due to storage type consolidation this should get used more now.
 // I have cleaned it up a little, but it could probably use more.  -Sayu
-/obj/item/weapon/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/attackby(obj/item/W as obj, mob/user as mob)
 
-	if(istype(W,/obj/item/weapon/censer))
+	if(istype(W,/obj/item/censer))
 		if(sanctified)
 			return
 		sanctified = 1
 		var/nameNew = name
 		name = "[pick("Blessed","Holy","Sanctified")] [nameNew]"
 
-	if(istype(W, /obj/item/weapon/carverhammer) && can_improv)
+	if(istype(W, /obj/item/carverhammer) && can_improv)
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
-			if(H.my_skills.GET_SKILL(SKILL_SMITH) > 3)
+			if(H.my_skills.get_skill(SKILL_SMITH) > 3)
 				if(src.durability < 100)
 					src.durability = min(100, durability += rand(5,7))
 					user.visible_message("<span class='passivebold'>[user]</span> <span class='passive'>repairs \the [src]!</span>")
@@ -525,19 +480,19 @@
 					playsound(src.loc, 'sound/effects/forge.ogg', 50, 1)
 					src.sound2()
 
-	if(istype(W, /obj/item/weapon/stone))
+	if(istype(W, /obj/item/stone))
 		if(!src.sharp)
 			return
 		src.sharpness = min(100, sharpness+rand(1,3))
 		user.visible_message("<span class='passivebold'>[user]</span> <span class='passive'>sharpens \the [src]!</span>")
-		playsound(user.loc, pick('sharpen_long1.ogg','sharpen_long2.ogg','sharpen_short1.ogg','sharpen_short2.ogg'), 65, 1)
+		playsound(user.loc, pick('sound/effects/sharpen_long1.ogg','sound/effects/sharpen_long2.ogg','sound/effects/sharpen_short1.ogg','sound/effects/sharpen_short2.ogg'), 65, 1)
 		src.sound2()
 		if(prob(12))
 			usr.visible_message("<span class='bname'>[src]</span> makes a spark!")
 			var/turf/newLoc = get_step(loc, usr.dir)
 			for(var/obj/O in newLoc)
-				if(istype(O, /obj/item/weapon/flame/torch))
-					var/obj/item/weapon/flame/torch/T = O
+				if(istype(O, /obj/item/flame/torch))
+					var/obj/item/flame/torch/T = O
 					T.turn_on()
 				if(istype(O, /obj/structure/fireplace))
 					var/obj/structure/fireplace/T = O
@@ -548,8 +503,8 @@
 						T.on = TRUE
 						T.checkfire()
 
-	if(istype(W,/obj/item/weapon/storage))
-		var/obj/item/weapon/storage/S = W
+	if(istype(W,/obj/item/storage))
+		var/obj/item/storage/S = W
 		if(S.use_to_pickup)
 			if(S.collection_mode) //Mode is set to collect all items on a tile and we clicked on a valid one.
 				if(isturf(src.loc))
@@ -606,16 +561,13 @@
 	if(wielded)
 		unwield(user)
 
-	update_twohanding()
 	if(user)
 		if(user.l_hand)
-			user.l_hand.update_twohanding()
 			user.update_inv_l_hand()
 			src.item_state = "[initial(item_state)]"
 			if(blooded_icon)
 				src.item_state = "[initial(item_state)+blood_suffix]"
 		if(user.r_hand)
-			user.r_hand.update_twohanding()
 			user.update_inv_r_hand()
 			src.item_state = "[initial(item_state)]"
 			if(blooded_icon)
@@ -623,21 +575,18 @@
 	..()
 
 // called just as an item is picked up (loc is not yet changed)
-/obj/item/proc/pickup(mob/user, var/togglesound)
-	if(user.loc)
-		if(!togglesound)
-			playsound(user.loc, pickupsound, 75, 0)
-		return
+/obj/item/proc/pickup(mob/user)
+	if(locate(/obj/structure/rack/lwtable) in loc)
+		if(table_pickup_sound)
+			playsound(src, table_pickup_sound, 50)
 	return
 
 // called when this item is removed from a storage item, which is passed on as S. The loc variable is already set to the new destination before this is called.
-/obj/item/proc/on_exit_storage(obj/item/weapon/storage/S as obj, var/new_location)
+/obj/item/proc/on_exit_storage(obj/item/storage/S as obj, var/new_location)
 	return
 
-/obj/item/proc/nigga_cat(obj/item/W as obj, mob/target as mob)
-
 // called when this item is added into a storage item, which is passed on as S. The loc variable is already set to the storage item.
-/obj/item/proc/on_enter_storage(obj/item/weapon/storage/S as obj)
+/obj/item/proc/on_enter_storage(obj/item/storage/S as obj)
 	return
 
 // called when "found" in pockets and storage items. Returns 1 if the search should end.
@@ -707,7 +656,7 @@
 					return 0
 				if(!H.w_uniform)
 					if(!disable_warning)
-						H << "\red You need a jumpsuit before you can attach this [name]."
+						to_chat(H, "\red You need a uniform before you can attach this [name].")
 					return 0
 				if( !(slot_flags & SLOT_BELT) )
 					return
@@ -785,7 +734,7 @@
 					return 0
 				if(!H.w_uniform)
 					if(!disable_warning)
-						H << "\red You need a jumpsuit before you can attach this [name]."
+						to_chat(H, "\red You need a uniform before you can attach this [name].")
 					return 0
 				if(slot_flags & SLOT_DENYPOCKET)
 					return 0
@@ -796,7 +745,7 @@
 					return 0
 				if(!H.w_uniform)
 					if(!disable_warning)
-						H << "\red You need a jumpsuit before you can attach this [name]."
+						to_chat(H, "\red You need a uniform before you can attach this [name].")
 					return 0
 				if(slot_flags & SLOT_DENYPOCKET)
 					return 0
@@ -808,7 +757,7 @@
 					return 0
 				if(!H.w_uniform)
 					if(!disable_warning)
-						H << "\red You need a jumpsuit before you can attach this [name]."
+						to_chat(H, "\red You need a uniform before you can attach this [name].")
 					return 0
 				if( !(slot_flags & SLOT_BELT) )
 					return
@@ -816,18 +765,18 @@
 			if(slot_handcuffed)
 				if(H.handcuffed)
 					return 0
-				if(!istype(src, /obj/item/weapon/handcuffs))
+				if(!istype(src, /obj/item/handcuffs))
 					return 0
 				return 1
 			if(slot_legcuffed)
 				if(H.legcuffed)
 					return 0
-				if(!istype(src, /obj/item/weapon/legcuffs))
+				if(!istype(src, /obj/item/legcuffs))
 					return 0
 				return 1
 			if(slot_in_backpack)
-				if (H.back && istype(H.back, /obj/item/weapon/storage/backpack))
-					var/obj/item/weapon/storage/backpack/B = H.back
+				if (H.back && istype(H.back, /obj/item/storage/backpack))
+					var/obj/item/storage/backpack/B = H.back
 					if(B.contents.len < B.storage_slots && w_class <= B.max_w_class)
 						return 1
 				return 0
@@ -929,7 +878,7 @@
 		return 0
 	if(!M)
 		return
-	if(istype(src, /obj/item/weapon/melee/energy))
+	if(istype(src, /obj/item/melee/energy))
 		return
 
 	//if we haven't made our blood_overlay already
@@ -1011,21 +960,14 @@ var/global/list/blood_overlay_cache = list()
 		force = force_unwielded
 	else
 		force = (force / 1.5)
-/*	var/sf = findtext(name," (Wielded)")
-	if(sf)
-		name = copytext(name,1,sf)
-	else //something wrong
-		name = "[initial(name)]"*/
-	update_unwield_icon()
 	update_icon()
-	if(user)
-		user.update_inv_r_hand()
-		user.update_inv_l_hand()
-		user.moreactions.overlays -= "moreactions_2h"
+	user.update_inv_r_hand()
+	user.update_inv_l_hand()
+	user.moreactions.overlays -= "moreactions_2h"
 
 	if(unwieldsound)
 		playsound(loc, unwieldsound, 50, 1)
-	var/obj/item/weapon/twohanded/offhand/O = user.get_inactive_hand()
+	var/obj/item/twohanded/offhand/O = user.get_inactive_hand()
 	if(O && istype(O))
 		user.drop_from_inventory(O)
 	return
@@ -1043,30 +985,20 @@ var/global/list/blood_overlay_cache = list()
 		force = force_wielded
 	else
 		force = (force * 1.5)
-	//name = "wielded [name]"
-	update_wield_icon()
 	update_icon()//Legacy
-	if(user)
-		user.update_inv_r_hand()
-		user.update_inv_l_hand()
-		user.moreactions.overlays += "moreactions_2h"
+	user.update_inv_r_hand()
+	user.update_inv_l_hand()
+	user.moreactions.overlays += "moreactions_2h"
 	user.visible_message("<span class='combatbold'>[user]</span> <span class='combat'>squeezes his</span> <span class='combatbold'>[user.r_hand ? "right hand" : "left hand"]</span><span class='combat'>!</span>")
 	if(wieldsound)
 		playsound(loc, wieldsound, 50, 1)
-	var/obj/item/weapon/twohanded/offhand/O = new(user) ////Let's reserve his other hand~
+	var/obj/item/twohanded/offhand/O = new(user) ////Let's reserve his other hand~
 	O.name = "[name]"
 	O.desc = "Your second grip on the [name]"
 	user.put_in_inactive_hand(O)
 	return
 
 
-/obj/item/proc/update_wield_icon()
-	if(wielded && wielded_icon)
-		item_state = wielded_icon
-
-/obj/item/proc/update_unwield_icon()//That way it doesn't interupt any other special icon_states.
-	if(!wielded && wielded_icon)
-		item_state = "[initial(item_state)]"
 
 //For general weapons.
 /obj/item/proc/attempt_wield(mob/user)
@@ -1074,10 +1006,6 @@ var/global/list/blood_overlay_cache = list()
 		unwield(user)
 	else //Trying to wield it
 		wield(user)
-
-//Checks if the item is being held by a mob, and if so, updates the held icons
-/obj/item/proc/update_twohanding()
-	update_held_icon()
 
 /obj/item/proc/update_held_icon()
 	if(ismob(src.loc))
@@ -1100,7 +1028,7 @@ var/global/list/blood_overlay_cache = list()
 	//is probabilistic so we can't do that and it would be unfair to just check one.
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		//var/obj/item/weapon/reagent_containers/food/snacks/organ/external/hand = H.organs_by_name[check_hand]
+		//var/obj/item/reagent_containers/food/snacks/organ/external/hand = H.organs_by_name[check_hand]
 		var/datum/organ/external/hand = H.organs_by_name[check_hand]
 		if(istype(hand) && hand.is_usable())
 			return TRUE
@@ -1108,12 +1036,11 @@ var/global/list/blood_overlay_cache = list()
 
 //OFFHAND PRO WIELD
 
-/obj/item/weapon/twohanded/offhand
+/obj/item/twohanded/offhand
 	name = "offhand"
 	icon = 'icons/mob/screen1_White.dmi'
 	icon_state = "offhand"
-/*
-/obj/item/weapon/twohanded/offhand/RightClick(mob/user)
+/obj/item/twohanded/offhand/RightClick(mob/user)
 	var/obj/item/I = user.get_active_hand()
 	var/obj/item/II = user.get_inactive_hand()
 	if(I)
@@ -1122,10 +1049,7 @@ var/global/list/blood_overlay_cache = list()
 		II.unwield(user)
 
 	loc = null
-	if(!QDELETED(src))
-		qdel(src)
-*/
-/obj/item/weapon/twohanded/offhand/unwield()
+/obj/item/twohanded/offhand/unwield()
 	//if(wielded)//Only delete if we're wielded
 	wielded = FALSE
 	loc = null
@@ -1133,15 +1057,13 @@ var/global/list/blood_overlay_cache = list()
 	/*if(!QDELETED(src))
 		qdel(src)*/
 
-/obj/item/weapon/twohanded/offhand/wield()
+/obj/item/twohanded/offhand/wield()
 	if(wielded)//Only delete if we're wielded
 		wielded = FALSE
 		loc = null
 		qdel(src)
-	/*if(!QDELETED(src))
-		qdel(src)*/
 
-/obj/item/weapon/twohanded/offhand/dropped(mob/user)
+/obj/item/twohanded/offhand/dropped(mob/user)
 	..()
 	var/obj/item/I = user.get_active_hand()
 	var/obj/item/II = user.get_inactive_hand()
@@ -1151,10 +1073,7 @@ var/global/list/blood_overlay_cache = list()
 		II.unwield(user)
 	loc = null
 	qdel(src)
-/*
-	if(!QDELETED(src))
-		qdel(src)
-*/
+
 /mob/verb/wield_hotkey()//For the hotkeys.
 	set name = ".wield"
 	do_wield()
@@ -1174,3 +1093,35 @@ var/global/list/blood_overlay_cache = list()
 	src.throw_at(target, rand(1,3), src.throw_speed)
 	visible_message("<span class='hitbold'>[user]</span> <span class='hit'>kicks <span class='hitbold'>[src]!</span>")
 	playsound(user.loc, 'sound/effects/kick1.ogg', 50, 0)
+
+
+/obj/item/proc/randomize_offset(var/bool_offset_x = 1, var/bool_offset_y = 1)
+	if(bool_offset_x)
+		pixel_x = rand(-10, 10)
+	if(bool_offset_y)
+		pixel_y = rand(-10, 10)
+
+/obj/item/proc/reset_offset(var/bool_offset_x = 1, var/bool_offset_y = 1)
+	if(bool_offset_x)
+		pixel_x = initial(pixel_x)
+	if(bool_offset_y)
+		pixel_y = initial(pixel_y)
+
+/obj/item/afterattack(atom/target, mob/user as mob, proximity, var/params)
+	..()
+	if(istype(target, /obj/structure/table) || istype(target, /obj/structure/rack/lwtable) || istype(target, /obj/structure/closet) || istype(target, /obj/structure/rack) || istype(target, /obj/structure/closet/crate))
+		var/list/param_list = params2list(params)
+		//world << "doing the pixel table magic, pixel_x: [pixel_x], pixel_y: [pixel_y], param_list\[\"icon-x\"\]: [param_list["icon-x"]], param_list\[\"icon-y\"\]: [param_list["icon-y"]]"
+		pixel_x = text2num(param_list["icon-x"]) - 16
+		pixel_y = text2num(param_list["icon-y"]) - 16
+		if(pixel_x > 16)
+			pixel_x = 16
+		if(pixel_x < -16)
+			pixel_x = -16
+		if(pixel_y > 16)
+			pixel_y = 16
+		if(pixel_y < -16)
+			pixel_y = -16
+		//world << "did the magic, pixel_x: [pixel_x], pixel_y: [pixel_y]"
+		//for(var/a in param_list)
+		//	world << "[a] <=> [param_list[a]]"

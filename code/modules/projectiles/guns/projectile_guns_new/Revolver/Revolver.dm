@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/projectile/newRevolver
+/obj/item/gun/projectile/newRevolver
 	name = "gun"
 	desc = "A gun. It looks a pretty terrible gun."
 	icon = 'icons/obj/gunnew.dmi'
@@ -13,14 +13,14 @@
 	var/opensound = 'sound/lfwbsounds/duelista_open.ogg'
 	var/closesound = 'sound/lfwbsounds/duelista_close.ogg'
 
-/obj/item/weapon/gun/projectile/newRevolver/chamber_round()
+/obj/item/gun/projectile/newRevolver/chamber_round()
 	if (chambered || !magazine)
 		return
 	else if (magazine.ammo_count())
 		chambered = magazine.get_round(1)
 	return
 
-/obj/item/weapon/gun/projectile/newRevolver/process_chambered()
+/obj/item/gun/projectile/newRevolver/process_chambered()
 	var/obj/item/ammo_casing/AC = chambered //Find chambered round
 	if(isnull(AC) || !istype(AC))
 		return 0
@@ -38,7 +38,7 @@
 	AC.update_icon()
 	return 0
 
-/obj/item/weapon/gun/projectile/newRevolver/get_ammo(var/countchambered = 0, var/countempties = 1)
+/obj/item/gun/projectile/newRevolver/get_ammo(var/countchambered = 0, var/countempties = 1)
 	var/boolets = 0 //mature var names for mature people
 	if (chambered && countchambered)
 		boolets++
@@ -46,7 +46,7 @@
 		boolets += magazine.ammo_count(countempties)
 	return boolets
 
-/obj/item/weapon/gun/projectile/newRevolver/proc/spin()
+/obj/item/gun/projectile/newRevolver/proc/spin()
 	set name = "Spin Chamber"
 	set category = "Object"
 	set desc = "Click to spin your revolver's chamber."

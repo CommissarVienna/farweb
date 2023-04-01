@@ -1,4 +1,4 @@
-/obj/item/weapon/melee/energy
+/obj/item/melee/energy
 	var/active = 0
 	flags = FPRINT | TABLEPASS | NOBLOODY
 
@@ -7,7 +7,7 @@
 							"\red <b>[user] is falling on the [src.name]! It looks like \he's trying to commit suicide.</b>")
 		return (BRUTELOSS|FIRELOSS)
 
-/obj/item/weapon/melee/energy/axe
+/obj/item/melee/energy/axe
 	name = "energy axe"
 	desc = "An energised battle axe."
 	icon_state = "axe0"
@@ -26,8 +26,7 @@
 		viewers(user) << "\red <b>[user] swings the [src.name] towards /his head! It looks like \he's trying to commit suicide.</b>"
 		return (BRUTELOSS|FIRELOSS)
 
-/obj/item/weapon/melee/energy/sword
-	color
+/obj/item/melee/energy/sword
 	name = "energy sword"
 	desc = "May the force be within you."
 	icon_state = "sword0"
@@ -46,31 +45,15 @@
 	//edge = 1
 	var/hacked = 0
 
-/obj/item/weapon/melee/energy/sword/pirate
+/obj/item/melee/energy/sword/pirate
 	name = "energy cutlass"
 	desc = "Arrrr matey."
 	icon_state = "cutlass0"
 
 
 
-/obj/item/weapon/melee/energy/sword/attackby(obj/item/weapon/W, mob/living/user)
+/obj/item/melee/energy/sword/attackby(obj/item/W, mob/living/user)
 	..()
-/*	if(istype(W, /obj/item/weapon/melee/energy/sword))
-		if(W == src)
-			user << "<span class='notice'>You try to attach the end of the energy sword to... itself. You're not very smart, are you?</span>"
-			if(ishuman(user))
-				user.adjustBrainLoss(10)
-		else
-			user << "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon! You're cool.</span>"
-			var/obj/item/weapon/twohanded/dualsaber/newSaber = new /obj/item/weapon/twohanded/dualsaber(user.loc)
-			if(src.hacked) // That's right, we'll only check the "original" esword.
-				newSaber.hacked = 1
-				newSaber.item_color = "rainbow"
-			user.u_equip(W)
-			user.u_equip(src)
-			qdel(W)
-			qdel(src)
-			user.put_in_hands(newSaber)*/
 	if(istype(W, /obj/item/device/multitool))
 		if(hacked == 0)
 			hacked = 1
@@ -89,7 +72,7 @@
 
 
 
-/obj/item/weapon/melee/energy/blade
+/obj/item/melee/energy/blade
 	name = "energy blade"
 	desc = "A concentrated beam of energy in the shape of a blade. Very stylish... and lethal."
 	icon_state = "blade"

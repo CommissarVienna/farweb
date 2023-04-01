@@ -70,7 +70,7 @@ proc/explosion_rec(turf/epicenter, power)
 /turf/space/Entered(mob/living/M as mob)
 	..()
 	if(istype(M, /mob/living))
-		M << sound('A_Real_Hero.ogg', repeat = 1, wait = 1, volume = 60, channel = 2)
+		M << sound('sound/music/A_Real_Hero.ogg', repeat = 1, wait = 1, volume = 60, channel = 2)
 		M.overlay_fullscreen("spacehero", /obj/screen/fullscreen/spacehero, 1)
 
 /turf/simulated/floor

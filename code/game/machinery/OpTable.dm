@@ -77,7 +77,7 @@
 
 /obj/machinery/optable/MouseDrop_T(obj/O as obj, mob/user as mob)
 
-	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+	if ((!( istype(O, /obj/item) ) || user.get_active_hand() != O))
 		return
 	user.drop_item()
 	if (O.loc != src.loc)
@@ -91,7 +91,7 @@
 			src.victim = M
 			icon_state = M.pulse ? "table2-active" : "table2-idle"
 			spawn(M.pulse)
-				playsound(src, 'heartbeatmonitor.ogg', 50, 0)
+				playsound(src, 'sound/effects/heartbeatmonitor.ogg', 50, 0)
 			return 1
 	src.victim = null
 	icon_state = "table2-idle"
@@ -108,7 +108,7 @@
 	if (C.client)
 		C.client.perspective = EYE_PERSPECTIVE
 		C.client.eye = src
-	C.resting = 1
+	C.SetResting(TRUE)
 	C.loc = src.loc
 	for(var/obj/O in src)
 		O.loc = src.loc
@@ -134,8 +134,8 @@
 
 	take_victim(usr,usr)
 
-/obj/machinery/optable/attackby(obj/item/weapon/W as obj, mob/living/carbon/user as mob)
-	if (istype(W, /obj/item/weapon/grab))
+/obj/machinery/optable/attackby(obj/item/W as obj, mob/living/carbon/user as mob)
+	if (istype(W, /obj/item/grab))
 		if(iscarbon(W:affecting))
 			take_victim(W:affecting,usr)
 			qdel(W)

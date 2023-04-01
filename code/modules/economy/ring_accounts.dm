@@ -22,14 +22,14 @@
 	money = M
 
 /proc/found_account_by_human(var/mob/living/carbon/human/H)
-	for(var/obj/item/weapon/card/id/ID in rings_account)
+	for(var/obj/item/card/id/ID in rings_account)
 		var/datum/ring_account/RA = rings_account[ID]
 		if(RA.owner == H)
 			return RA
 	return null
 
 /proc/found_ring_by_human(var/mob/living/carbon/human/H)
-	for(var/obj/item/weapon/card/id/ID in rings_account)
+	for(var/obj/item/card/id/ID in rings_account)
 		var/datum/ring_account/RA = rings_account[ID]
 		if(RA.owner == H)
 			return ID

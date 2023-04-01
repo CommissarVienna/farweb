@@ -940,8 +940,8 @@ steam.start() -- spawns the effect
 
 	attackby(var/obj/item/I, var/mob/user)
 
-		if (istype(I, /obj/item/weapon/grab))
-			var/obj/item/weapon/grab/G = I
+		if (istype(I, /obj/item/grab))
+			var/obj/item/grab/G = I
 			G.affecting.loc = src.loc
 			for(var/mob/O in viewers(src))
 				if (O.client)

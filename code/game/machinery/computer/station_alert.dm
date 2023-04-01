@@ -3,7 +3,7 @@
 	name = "General Alert Computer"
 	desc = "Used to access the station's automated alert system."
 	icon_state = "alert:0"
-	circuit = "/obj/item/weapon/circuitboard/stationalert"
+	circuit = "/obj/item/circuitboard/stationalert"
 	var/alarms = list("Fire"=list(), "Atmosphere"=list(), "Power"=list())
 
 

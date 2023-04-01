@@ -1,5 +1,5 @@
 
-/obj/item/weapon/ghettobox/special
+/obj/item/ghettobox/special
 	name = "pocket ghettobox"
 	desc = "A GUETTOOOOOOOOOOOOOOO!! BOX!"
 	icon_state = "radiobailole"
@@ -9,22 +9,22 @@
 	var/retard_name
 	var/writing = 0
 
-/obj/item/weapon/ghettobox/special/attackby(obj/item/I, mob/user, params)
+/obj/item/ghettobox/special/attackby(obj/item/I, mob/user, params)
 	if(coolboombox.Find(ckey(user.key)))
 		..()
 	else
-		to_chat(user, "<span class='combat'>[pick(nao_consigoen)] I'm stuck!</span>")
+		to_chat(user, "<span class='combat'>[pick(fnord)] I'm stuck!</span>")
 
-/obj/item/weapon/ghettobox/special/update_icon()
+/obj/item/ghettobox/special/update_icon()
 	if(playing)
 		icon_state = "radiobailole"
 	else
 		icon_state = "radiobailole"
 
-/obj/item/weapon/ghettobox/special/RightClick(mob/user)
+/obj/item/ghettobox/special/RightClick(mob/user)
 	var/dat = ""
 	if(!coolboombox.Find(ckey(user.key)))
-		to_chat(user, "<span class='combat'>[pick(nao_consigoen)] I'm stuck!</span>")
+		to_chat(user, "<span class='combat'>[pick(fnord)] I'm stuck!</span>")
 		return
 	if(writing)
 		dat += "Memory scan completed. <br>Writing from scan of [retard_name] mind... Please Stand By."
@@ -38,7 +38,7 @@
 	onclose(user, "onclose")
 	return
 
-/obj/item/weapon/ghettobox/special/Topic(href, href_list)
+/obj/item/ghettobox/special/Topic(href, href_list)
 	if(href_list["write"])
 		if(!writing && !retard)
 			writing = 1
@@ -50,7 +50,7 @@
 				var/sound/S = input("Your music file") as sound|null
 				if(S)
 					var/datum/turntable_soundtrack/T = new()
-					var/obj/item/weapon/disk/music/disk = new()
+					var/obj/item/disk/music/disk = new()
 					T.path = S
 					T.f_name = copytext(N, 1, 2)
 					T.name = copytext(N, 2)
@@ -69,13 +69,13 @@
 			retard_name = null
 
 
-/obj/item/weapon/ghettobox
+/obj/item/ghettobox
 	name = "Ghettobox"
 	icon = 'icons/obj/personal.dmi'
 	icon_state = "boombox0"
 	item_state = "boombox"
 	desc = "A GUETTOOOOOOOOOOOOOOOOOOOOOOOOOOO!"
-	var/obj/item/weapon/disk/music/casseta = null
+	var/obj/item/disk/music/casseta = null
 	var/datum/sound_token/sound_token
 	var/playing = 0
 	var/sound_id
@@ -85,13 +85,13 @@
 	force_unwielded = 18
 	weight = 40
 
-/obj/item/weapon/ghettobox/New()
+/obj/item/ghettobox/New()
 	..()
 	sound_id = "[type]_[sequential_id(type)]"
 
 
-/obj/item/weapon/ghettobox/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/weapon/disk/music))
+/obj/item/ghettobox/attackby(obj/item/I, mob/user, params)
+	if(istype(I, /obj/item/disk/music))
 		if(casseta)
 			to_chat(user, "<span class='warning'>There is already cassette inside.</span>")
 			return
@@ -103,13 +103,13 @@
 		return
 	..()
 
-/obj/item/weapon/ghettobox/update_icon()
+/obj/item/ghettobox/update_icon()
 	if(playing)
 		icon_state = "boombox1"
 	else
 		icon_state = "boombox0"
 
-/obj/item/weapon/ghettobox/MouseDrop(var/obj/over_object)
+/obj/item/ghettobox/MouseDrop(var/obj/over_object)
 	if (!over_object || !(ishuman(usr)))
 		return
 
@@ -125,7 +125,7 @@
 
 
 
-/obj/item/weapon/ghettobox/proc/eject()
+/obj/item/ghettobox/proc/eject()
 	if(!usr.canmove)
 		return
 	if(!casseta)
@@ -139,7 +139,7 @@
 	usr.put_in_hands(casseta)
 	casseta = null
 
-/obj/item/weapon/ghettobox/attack_self(mob/user)
+/obj/item/ghettobox/attack_self(mob/user)
 	if(playing)
 		StopPlaying()
 		playsound(get_turf(src), 'sound/machines/bomclick.ogg', 50, 1)
@@ -149,12 +149,12 @@
 		playsound(get_turf(src), 'sound/machines/bomclick.ogg', 50, 1)
 
 
-/obj/item/weapon/ghettobox/proc/StopPlaying()
+/obj/item/ghettobox/proc/StopPlaying()
 	playing = 0
 	update_icon()
 	qdel(sound_token)
 
-/obj/item/weapon/ghettobox/proc/StartPlaying()
+/obj/item/ghettobox/proc/StartPlaying()
 	StopPlaying()
 	if(isnull(casseta))
 		return

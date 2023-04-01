@@ -20,7 +20,7 @@
 /obj/machinery/slotmachine/attackby(obj/item/I as obj, mob/user as mob)
 	if(rolling)
 		return
-	if(istype(I,/obj/item/weapon/spacecash))
+	if(istype(I,/obj/item/spacecash))
 		src.storedcash += I:worth
 		to_chat(user, "You insert [I] into [src].")
 		playsound(src.loc, 'sound/effects/moeda.ogg', 100, 1, -5)

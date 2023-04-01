@@ -2,7 +2,7 @@
 /datum/organ/internal/lungs
 	name = "lungs"
 	parent_organ = "chest"
-	removed_type = /obj/item/weapon/reagent_containers/food/snacks/organ/lungs
+	removed_type = /obj/item/reagent_containers/food/snacks/organ/lungs
 
 /datum/organ/internal/lungs/process()
 	..()

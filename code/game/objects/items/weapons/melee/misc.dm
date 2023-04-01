@@ -1,4 +1,4 @@
-/obj/item/weapon/melee/chainofcommand
+/obj/item/melee/chainofcommand
 	name = "chain of command"
 	desc = "A tool used by great men to placate the frothing masses."
 	icon_state = "chain"
@@ -11,13 +11,13 @@
 	origin_tech = "combat=4"
 	attack_verb = list("flogged", "whipped", "lashed", "disciplined")
 	weapon_speed_delay = 20
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	smelted_return = /obj/item/ore/refined/lw/ironlw
 
 	suicide_act(mob/user)
 		viewers(user) << "\red <b>[user] is strangling \himself with the [src.name]! It looks like \he's trying to commit suicide.</b>"
 		return (OXYLOSS)
 
-/obj/item/weapon/gavelhammer
+/obj/item/gavelhammer
 	name = "gavel"
 	icon_state = "gavel"
 	icon = 'icons/obj/items.dmi'
@@ -26,7 +26,7 @@
 	force = 1
 	w_class = 3
 
-/obj/item/weapon/gavelplatform
+/obj/item/gavelplatform
 	name = "platform"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "platform"
@@ -36,10 +36,10 @@
 	var/cooldown
 
 
-/obj/item/weapon/gavelplatform/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/gavelhammer))
+/obj/item/gavelplatform/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/gavelhammer))
 		if(cooldown)
-			to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)] I can't yet!</span>")
+			to_chat(user, "<span class='combatbold'>[pick(fnord)] I can't yet!</span>")
 			return
 		cooldown = TRUE
 		spawn(50)
@@ -49,30 +49,30 @@
 	else
 		..()
 
-/obj/item/weapon/key
+/obj/item/key
 	name = "key"
 	icon_state = "key1"
 	icon = 'icons/obj/items.dmi'
 	flags = FPRINT | TABLEPASS | CONDUCT
 	force = 0
 	w_class = 2
-	drop_sound = 'keydrop.ogg'
-	drawsound = 'keyring_up.ogg'
+	drop_sound = 'sound/webbers/keydrop.ogg'
+	drawsound = 'sound/webbers/keyring_up.ogg'
 	var/key_lock = ""
 
-/obj/item/weapon/key/New()
+/obj/item/key/New()
 	..()
 	icon_state = pick("key1", "key2")
 
-/obj/item/weapon/key/residencesONE
+/obj/item/key/residencesONE
 	key_lock = "residencesONE"
 
-/obj/item/weapon/key/residencesTWO
+/obj/item/key/residencesTWO
 	key_lock = "residencesTWO"
 
-/obj/item/weapon/key/residencesHUMP
+/obj/item/key/residencesHUMP
 	key_lock = "residencesHUMP"
 
-/obj/item/weapon/key/residencesHUMP/New()
+/obj/item/key/residencesHUMP/New()
 	..()
 	icon_state = "key3"

@@ -262,14 +262,14 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 	if (istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		if (H.wear_id)
-			var/obj/item/weapon/card/id/id = H.wear_id
+			var/obj/item/card/id/id = H.wear_id
 			if(istype(H.wear_id, /obj/item/device/pda))
 				var/obj/item/device/pda/pda = H.wear_id
 				id = pda.id
 			id.icon_state = "gold"
 			id:access = get_all_accesses()+get_all_centcom_access()+get_all_syndicate_access()
 		else
-			var/obj/item/weapon/card/id/id = new/obj/item/weapon/card/id(M);
+			var/obj/item/card/id/id = new/obj/item/card/id(M);
 			id.icon_state = "gold"
 			id:access = get_all_accesses()+get_all_centcom_access()+get_all_syndicate_access()
 			id.registered_name = H.real_name
@@ -536,3 +536,9 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 				var/mob/temp = input("Select mob", "Selection", usr) as mob in world
 				lst += temp.loc
 	return lst
+
+
+/client/verb/show_cpu_usage()
+	set hidden = 1
+	set name = "ShowCPU"
+	to_chat(src, "[world.cpu]")

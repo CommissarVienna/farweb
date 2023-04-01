@@ -1,21 +1,21 @@
 /proc/blackJudgment(var/text = null, var/mob/usr, var/turf/C)
 	for(var/atom/A in C.contents)
-		if(istype(A, /obj/item/weapon/spacecash/c1))
+		if(istype(A, /obj/item/spacecash/c1))
 			qdel(A)
-			new /obj/item/weapon/spacecash/c1/thanati(C)
+			new /obj/item/spacecash/c1/thanati(C)
 			to_chat(usr, "<i><b>You feel something happening</b></i>")
 			break
 
-/obj/item/weapon/spacecash/c1/thanati
+/obj/item/spacecash/c1/thanati
 	var/victim = null
 
-/obj/item/weapon/spacecash/c1/thanati/hear_talk(mob/M as mob, msg, var/verb, var/datum/language/speaking = null)
+/obj/item/spacecash/c1/thanati/hear_talk(mob/M as mob, msg, var/verb, var/datum/language/speaking = null)
 	src.victim = replacetext(replacetext(replacetext(msg, ".", ""), "!", ""), "?", "")
 	return
 
 
 
-/obj/item/weapon/spacecash/c1/thanati/attack_self(var/mob/living/carbon/human/user)
+/obj/item/spacecash/c1/thanati/attack_self(var/mob/living/carbon/human/user)
 	..()
 
 	if(last)

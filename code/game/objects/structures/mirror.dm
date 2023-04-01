@@ -1,6 +1,6 @@
 /obj/structure/mirror
 	name = "mirror"
-	desc = "Mirror mirror on the wall, who's the most robust of them all?"
+	desc = "You look like you've been dead for years."
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "mirror"
 	density = 0
@@ -77,6 +77,7 @@
 	pixel_x = -32
 
 /obj/structure/mirror/examine(mob/living/carbon/human/user)
+	..()
 	if(is_dreamer(user))
 		var/frase = null
 		frase = "You realize that the face reflecting in the mirror is not yours. Who are you?"

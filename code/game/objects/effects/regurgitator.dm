@@ -27,7 +27,8 @@
 	if(ismonster(M))
 		return
 	if(ishuman(M))
-		catchperson(M)
+		if(!M.throwing)
+			catchperson(M)
 
 /obj/effect/regurgitator/proc/buckle_mob()
 	if(!buckled_mob)
@@ -41,7 +42,7 @@
 
 /obj/effect/regurgitator/proc/catchperson(var/mob/AM)
 	var/mob/living/carbon/human/H = AM
-	playsound(H.loc, pick('reg_eat1.ogg','reg_eat2.ogg'), 40, 0, -1)
+	playsound(H.loc, pick('sound/effects/reg_eat1.ogg','sound/effects/reg_eat2.ogg'), 40, 0, -1)
 	catched = H
 	src.buckle_mob(H)
 	if(prob(70))
@@ -68,7 +69,7 @@
 				H.buckled = initial(H.buckled)
 				playsound(H.loc, 'sound/weapons/bite.ogg', 100, 1)
 			else
-				playsound(H.loc, pick('reg_eat1.ogg','reg_eat2.ogg'), 60, 0, -1)
+				playsound(H.loc, pick('sound/effects/reg_eat1.ogg','sound/effects/reg_eat2.ogg'), 60, 0, -1)
 				H.buckled = initial(H.buckled)
 				src.unbuckle()
 				if(H.stat != DEAD && H.client)

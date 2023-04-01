@@ -7,11 +7,11 @@
 	var/name                                             // Species name.
 	var/name_plural
 
-	var/icobase = 'icons/mob/human_races/r_human.dmi'    // Normal icon set.
+	var/icobase = 'icons/mob/human.dmi'    // Normal icon set.
 	var/deform = 'icons/mob/human_races/r_def_human.dmi' // Mutated icon set.
 	var/icon/damage_icon = 'icons/mob/dam_human.dmi'
 	var/prone_icon                                       // If set, draws this from icobase when mob is prone.
-	var/eyes = "eyes_s"                                  // Icon for eyes.
+	var/eyes = "eyes"                                  // Icon for eyes.
 
 	var/primitive                              // Lesser form, if any (ie. monkey for humans)
 	var/tail                                   // Name of tail image in species effects icon file.
@@ -118,7 +118,7 @@
 	if(unarmed_type) unarmed = new unarmed_type()
 	if(secondary_unarmed_type) secondary_unarmed = new secondary_unarmed_type()
 
-/mob/living/carbon/var/obj/item/weapon/storage/touchable/organ/organ_storage
+/mob/living/carbon/var/obj/item/storage/touchable/organ/organ_storage
 
 /datum/species/proc/create_organs(var/mob/living/carbon/human/H) //Handles creation of mob organs.
 
@@ -133,7 +133,7 @@
 	H.internal_organs = list()
 	H.organs_by_name = list()
 	H.internal_organs_by_name = list()
-	H.organ_storage = new /obj/item/weapon/storage/touchable/organ(H)
+	H.organ_storage = new /obj/item/storage/touchable/organ(H)
 	if(!H.height)
 		if(H.gender == FEMALE)
 			H.height = rand(minheightf, maxheightf)
@@ -150,16 +150,16 @@
 	H.organs_by_name["r_arm"] = new/datum/organ/external/r_arm(H.organs_by_name["chest"])
 	H.organs_by_name["r_leg"] = new/datum/organ/external/r_leg(H.organs_by_name["vitals"])
 	H.organs_by_name["l_leg"] = new/datum/organ/external/l_leg(H.organs_by_name["vitals"])
-	H.organs_by_name["l_hand"] = new/datum/organ/external/hand/l_hand(H.organs_by_name["l_arm"])
-	H.organs_by_name["r_hand"] = new/datum/organ/external/hand/r_hand(H.organs_by_name["r_arm"])
-	H.organs_by_name["l_foot"] = new/datum/organ/external/foot/l_foot(H.organs_by_name["l_leg"])
-	H.organs_by_name["r_foot"] = new/datum/organ/external/foot/r_foot(H.organs_by_name["r_leg"])
+	H.organs_by_name["l_hand"] = new/datum/organ/external/extrem/hand/l_hand(H.organs_by_name["l_arm"])
+	H.organs_by_name["r_hand"] = new/datum/organ/external/extrem/hand/r_hand(H.organs_by_name["r_arm"])
+	H.organs_by_name["l_foot"] = new/datum/organ/external/extrem/foot/l_foot(H.organs_by_name["l_leg"])
+	H.organs_by_name["r_foot"] = new/datum/organ/external/extrem/foot/r_foot(H.organs_by_name["r_leg"])
 
 	H.organs_by_name["groin"] = new/datum/organ/external/groin(H.organs_by_name["chest"])
 	H.organs_by_name["face"]   = new/datum/organ/external/face(H.organs_by_name["head"])
 	H.organs_by_name["mouth"]   = new/datum/organ/external/mouth(H.organs_by_name["head"])
 
-	//H.items_organ = list(new/obj/item/weapon/reagent_containers/food/snacks/organ/heart(H), new/obj/item/weapon/reagent_containers/food/snacks/organ/lungs(H), new/obj/item/weapon/reagent_containers/food/snacks/organ/kidneys(H), new/obj/item/weapon/reagent_containers/food/snacks/organ/liver(H), new/obj/item/weapon/reagent_containers/food/snacks/organ/stomach(H), new/obj/item/weapon/reagent_containers/food/snacks/organ/guts(H))
+	//H.items_organ = list(new/obj/item/reagent_containers/food/snacks/organ/heart(H), new/obj/item/reagent_containers/food/snacks/organ/lungs(H), new/obj/item/reagent_containers/food/snacks/organ/kidneys(H), new/obj/item/reagent_containers/food/snacks/organ/liver(H), new/obj/item/reagent_containers/food/snacks/organ/stomach(H), new/obj/item/reagent_containers/food/snacks/organ/guts(H))
 
 	for(var/organ in has_organ)
 		var/organ_type = has_organ[organ]
@@ -167,7 +167,7 @@
 		H.internal_organs_by_name[organ] = I
 		if(organ in not_in_storage)
 			continue
-		var/obj/item/weapon/reagent_containers/food/snacks/organ/O = new I.removed_type(H.organ_storage)
+		var/obj/item/reagent_containers/food/snacks/organ/O = new I.removed_type(H.organ_storage)
 		O.organ_type = I
 
 	for(var/name in H.organs_by_name)

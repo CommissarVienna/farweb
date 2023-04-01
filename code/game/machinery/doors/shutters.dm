@@ -22,9 +22,9 @@
 	..()
 	layer = 3.3
 
-/obj/machinery/door/poddoor/shutters/attackby(obj/item/weapon/C as obj, mob/user as mob)
+/obj/machinery/door/poddoor/shutters/attackby(obj/item/C as obj, mob/user as mob)
 	add_fingerprint(user)
-	if(!(istype(C, /obj/item/weapon/crowbar) || (istype(C, /obj/item/weapon/twohanded/fireaxe) && C:wielded == 1) ))
+	if(!(istype(C, /obj/item/crowbar) || (istype(C, /obj/item/twohanded/fireaxe) && C:wielded == 1) ))
 		return
 	if(density && (stat & NOPOWER) && !operating)
 		operating = 1
@@ -46,7 +46,7 @@
 	if(!operating) //in case of emag
 		operating = 1
 	//playsound(src.loc, 'sound/lfwbsounds/lava_open.ogg', 30, 1)
-	playsound(src.loc, 'airlock_open_force.ogg', 70, 0, 4)
+	playsound(src.loc, 'sound/machines/airlock_open_force.ogg', 70, 0, 4)
 	flick("opening", src)
 	icon_state = "open"
 	sleep(10)
@@ -65,7 +65,7 @@
 	if(operating)
 		return
 	operating = 1
-	playsound(src.loc, 'airlock_close_force.ogg', 70, 0, 4)
+	playsound(src.loc, 'sound/machines/airlock_close_force.ogg', 70, 0, 4)
 	flick("closing", src)
 	icon_state = "closed"
 	density = 1

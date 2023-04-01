@@ -64,10 +64,10 @@
 		erpcooldown -= rand(1,2)
 	//GAMBIARRACODING TALVEZ NAO FUNFE!!
 	if(!can_stand && !buckled)
-		src.resting = TRUE
+		src.SetResting(TRUE)
 		src.lying = TRUE
 	if(istype(src.amulet, /obj/item/clothing/head/amulet/breaker))
-		src.resting = TRUE
+		src.SetResting(TRUE)
 		src.lying = TRUE
 		src.canmove = FALSE
 	//TODO: seperate this out
@@ -82,11 +82,13 @@
 
 	handle_zombify()
 
+	update_all_society_icons()
+
 	update_fire()
 
 	check_kg()
 
-	if(species?.name == "Zombie" || species?.name == "Skeleton")
+	if(species?.name == "Zombie" || isskeleton(src))
 		reagents.add_reagent("tramadol", 30)
 		if(prob(20))
 			emote(pick("z_roar","z_shout","z_mutter"))
@@ -107,7 +109,7 @@
 
 	if(april_fools)
 		if(prob(25))
-			playsound(src.loc, pick('worm_speech3.ogg','worm_speech2.ogg', 'worm_speech1.ogg', 'worm_speech4.ogg'), 60, 0, -1)
+			playsound(src.loc, pick('sound/SHITTYJOKE/worm_speech3.ogg','sound/SHITTYJOKE/worm_speech2.ogg', 'sound/SHITTYJOKE/worm_speech1.ogg', 'sound/SHITTYJOKE/worm_speech4.ogg'), 60, 0, -1)
 
 	if(src.species && src.species.name == "Alien")
 		stamina_loss = 0
@@ -115,9 +117,11 @@
 		for(var/mob/living/carbon/human/H in view(7, src))
 			if(src?.loc?:luminosity && !H?.StingerSeen?.Find(src))
 				H.StingerSeen.Add(src)
-				playsound(H, pick('alien_encounter.ogg','alien_encounter2.ogg'), 60, 1)
+				playsound(H, pick('sound/webbers/alien_encounter.ogg','sound/webbers/alien_encounter2.ogg'), 60, 1)
 
 	handle_knock()
+
+	handle_climbing()
 
 	pain_handler()
 
@@ -192,7 +196,7 @@
 
 		handle_pain()
 
-		my_stats.spd = (my_stats.dx + my_stats.ht) / 4
+
 
 
 		if(nutrition_icon)
@@ -207,10 +211,7 @@
 		handle_medical_side_effects()
 
 		handle_vice()
-		if(Lifewebbed)
-			if(job != "Mortus" && job != "Archmortus")
-				blur()
-
+		
 		handle_reflect()
 
 		if(dizziness & slurring)
@@ -223,7 +224,7 @@
 		CheckStamina()
 
 		if(bodytemperature <= 180.505)
-			if(prob((40-src.my_stats.im) / 2))
+			if(prob((40-src.my_stats.get_stat(STAT_IM)) / 2))
 				src.contract_disease(new /datum/disease/cold,1,0)
 
 		//update_fov_check()
@@ -264,7 +265,7 @@
 	//Check if we're on fire
 	handle_fire()
 
-	//handle_drowning()
+	apply_constant_drowning()
 
 	//Tirar pain dos orgao
 	handle_painLW()
@@ -284,6 +285,9 @@
 
 	handle_blood_pools()
 
+	if(client?.current_button == "note" && client.statpanel_loaded == TRUE)
+		client.newtext(noteUpdate())
+
 	handle_cripple()
 
 	pulse = handle_pulse()
@@ -291,7 +295,7 @@
 	prepareLeave()
 	// Grabbing
 	if(grabbed_by.len)
-		for(var/obj/item/weapon/grab/G in src)
+		for(var/obj/item/grab/G in src)
 			G.process()
 
 	if(druggy)
@@ -387,6 +391,12 @@
 	else
 		return ONE_ATMOSPHERE + pressure_difference
 
+/mob/living/carbon/human/proc/handle_climbing()
+	if(!src.clinged_turf)
+		return
+	if(istype(src.loc, /turf/simulated/floor/open))
+		src.adjustStaminaLoss(10)
+		to_chat(src, "<span class='passive'>You feel your arms getting tired.</span>")
 /mob/living/carbon/human
 
 	proc/handle_disabilities()
@@ -457,7 +467,7 @@
 			if(getBrainLoss() >= 50)
 				if(10 <= rn && rn <= 12) if(!lying)
 					src << "\red Your legs won't respond properly, you fall down."
-					resting = 1
+					SetResting(TRUE)
 
 	proc/handle_stasis_bag()
 		// Handle side effects from stasis bag
@@ -477,10 +487,10 @@
 			paralysis = 0
 			oxyloss = 0
 			if(l_hand)
-				if(!istype(l_hand, /obj/item/weapon/grab))
+				if(!istype(l_hand, /obj/item/grab))
 					drop_from_inventory(l_hand)
 			if(r_hand)
-				if(!istype(r_hand, /obj/item/weapon/grab))
+				if(!istype(r_hand, /obj/item/grab))
 					drop_from_inventory(r_hand)
 
 			return
@@ -490,10 +500,10 @@
 			paralysis = 0
 			oxyloss = 0
 			if(l_hand)
-				if(!istype(l_hand, /obj/item/weapon/grab))
+				if(!istype(l_hand, /obj/item/grab))
 					drop_from_inventory(l_hand)
 			if(r_hand)
-				if(!istype(r_hand, /obj/item/weapon/grab))
+				if(!istype(r_hand, /obj/item/grab))
 					drop_from_inventory(r_hand)
 			return
 
@@ -681,16 +691,7 @@
 			failed_last_breath = 1
 			oxygen_alert = max(oxygen_alert, 1)
 			return
-		/*
-		if(can_drown() && loc.is_flooded(lying))
-			adjustOxyLoss(4)//If you are suiciding, you should die a little bit faster
-			failed_last_breath = 1
-			oxygen_alert = max(oxygen_alert, 1)
-			if(prob(40))
-				to_chat(src, "I CAN'T BREATHE!")
-			return 0
-		*/
-		if(src.my_stats.it <= 1)
+		if(src.my_stats.get_stat(STAT_IN) <= 1)
 			adjustOxyLoss(4)//If you are suiciding, you should die a little bit faster
 			failed_last_breath = 1
 			oxygen_alert = max(oxygen_alert, 1)
@@ -1056,7 +1057,7 @@
 			if(-INFINITY to 260.15) //260.15 is 310.15 - 50, the temperature where you start to feel effects.
 				if(nutrition >= 2) //If we are very, very cold we'll use up quite a bit of nutriment to heat us up.
 					nutrition -= 1
-					hidratacao -= 2
+					hydration -= 2
 				var/recovery_amt = max((body_temperature_difference / BODYTEMP_AUTORECOVERY_DIVISOR), BODYTEMP_AUTORECOVERY_MINIMUM)
 //				log_debug("Cold. Difference = [body_temperature_difference]. Recovering [recovery_amt]")
 				bodytemperature += recovery_amt
@@ -1266,8 +1267,8 @@
 		if (nutrition > 0 && stat != 2 && !iszombie(src) && !isVampire)
 			nutrition = max (0, nutrition - HUNGER_FACTOR)
 
-		if (hidratacao > 0 && stat != 2 && !iszombie(src) && !isVampire)
-			hidratacao = max (0, hidratacao - THIRST_FACTOR)
+		if (hydration > 0 && stat != 2 && !iszombie(src) && !isVampire)
+			hydration = max (0, hydration - THIRST_FACTOR)
 
 
 
@@ -1327,7 +1328,7 @@
 			analgesic = max(0, analgesic - 1)
 
 			if(halloss > 100)
-				if(species && species?.flags && NO_PAIN) return
+				if(species && species?.flags & NO_PAIN) return
 				if(status_flags & STATUS_NO_PAIN) return
 				if(is_dreamer(src)) return
 				if(src.consyte) return
@@ -1606,8 +1607,8 @@
 			if(healths)		healths.icon_state = "health7"	//DEAD healthmeter
 /*			if(client)
 				if(client.view != world.view)
-					if(locate(/obj/item/weapon/gun/energy/sniperrifle, contents))
-						var/obj/item/weapon/gun/energy/sniperrifle/s = locate() in src
+					if(locate(/obj/item/gun/energy/sniperrifle, contents))
+						var/obj/item/gun/energy/sniperrifle/s = locate() in src
 						if(s.zoom)
 							s.zoom()*/
 
@@ -1631,6 +1632,13 @@
 				if(prob(5))
 					sight &= ~SEE_MOBS
 					ishunting = 0
+
+			if(head)
+				var/obj/item/clothing/head/hed = head
+				if(hed.blindness)
+					src.sdisabilities |= BLIND
+				else
+					src.sdisabilities &= ~BLIND
 
 			if(glasses)
 				var/obj/item/clothing/glasses/G = glasses
@@ -1781,7 +1789,7 @@
 					else					bodytemp.icon_state = "temp-4"
 
 			if(blind)
-				if(blinded || eye_closed || sleeping || stat == UNCONSCIOUS || eye_blind)
+				if(blinded || eye_closed || sleeping || stat == UNCONSCIOUS || eye_blind || (disabilities & BLIND))
 					client?.screen += global_hud?.blind//blind.layer = 18
 				else
 					client?.screen -= global_hud?.blind//blind.layer = 0
@@ -1803,15 +1811,14 @@
 
 			var/masked = 0
 
-			if( istype(head, /obj/item/clothing/head/welding) || istype(head, /obj/item/clothing/head/helmet/space/unathi))
+			if( istype(head, /obj/item/clothing/head/welding))
 				var/obj/item/clothing/head/welding/O = head
 				if(!O.up && tinted_weldhelh)
 					client.screen += global_hud.darkMask
 					masked = 1
 
 			if(!masked && istype(glasses, /obj/item/clothing/glasses/welding) )
-				var/obj/item/clothing/glasses/welding/O = glasses
-				if(!O.up && tinted_weldhelh)
+				if(tinted_weldhelh)
 					client.screen += global_hud.darkMask
 
 			if((istype(wear_mask, /obj/item/clothing/mask/gas) && !istype(wear_mask, /obj/item/clothing/mask/gas/swat) && !istype(wear_mask, /obj/item/clothing/mask/gas/syndicate)) || istype(glasses, /obj/item/clothing/glasses/night))
@@ -1831,7 +1838,7 @@
 			if ((istype(glasses, /obj/item/clothing/glasses/thermal) && !istype(glasses, /obj/item/clothing/glasses/thermal/syndi)) || istype(glasses, /obj/item/clothing/glasses/hud/security) || istype(wear_mask, /obj/item/clothing/mask/gas/swat) || istype(wear_mask, /obj/item/clothing/mask/gas/syndicate))
 				client.screen += global_hud.r_dither
 
-			if (istype(glasses, /obj/item/clothing/glasses/sunglasses) || istype(head, /obj/item/clothing/head/helmet/riot))
+			if (istype(glasses, /obj/item/clothing/glasses/sunglasses))
 				client.screen += global_hud.gray_dither
 
 			if (istype(glasses, /obj/item/clothing/glasses/meson) || istype(glasses, /obj/item/clothing/glasses/thermal/syndi))
@@ -1921,13 +1928,13 @@
 							nutrition += 10
 		handle_excrement()
 
-		if(hidratacao > THIRST_LEVEL_MEDIUM)
+		if(hydration > THIRST_LEVEL_MEDIUM)
 			clear_event("thirst")
 
-		if(hidratacao < THIRST_LEVEL_MEDIUM)
-			switch(hidratacao)
+		if(hydration < THIRST_LEVEL_MEDIUM)
+			switch(hydration)
 				if(THIRST_LEVEL_THIRSTY to THIRST_LEVEL_MEDIUM)
-					add_event("thirst", /datum/happiness_event/nutrition/bitthirsty)
+					//add_event("thirst", /datum/happiness_event/nutrition/bitthirsty)
 					if(prob(2))
 						to_chat(src, "<span class='hungerasterisks'>*</span><span class='hunger'><i>I'm a bit thirsty.</i></span><span class='hungerasterisks'>*</span>")
 				if(150 to THIRST_LEVEL_THIRSTY)
@@ -1978,7 +1985,7 @@
 
 					if(prob(2))
 						to_chat(src, "<span class='hungerasterisks'>*</span><span class='hunger'><i>You feel hunger.</i></span><span class='hungerasterisks'>*</span>")
-						playsound(src, pick('hungry1.ogg','hungry2.ogg','hungry3.ogg','hungry4.ogg'), 40, 1, -5)
+						playsound(src, pick('sound/effects/hungry1.ogg','sound/effects/hungry2.ogg','sound/effects/hungry3.ogg','sound/effects/hungry4.ogg'), 40, 1, -5)
 				if(100 to 150) //30-60
 					add_event("hunger", /datum/happiness_event/nutrition/hungry)
 					if(sleeping) return
@@ -1986,12 +1993,12 @@
 					if(prob(2))
 						to_chat(src, "<span class='hungerasterisks'>*</span><span class='hunger'><i>You feel really hungry.</i></span><span class='hungerasterisks'>*</span>")
 						if(prob(45))
-							playsound(src, pick('hungry1.ogg','hungry2.ogg','hungry3.ogg','hungry4.ogg'), 40, 1, -5)
+							playsound(src, pick('sound/effects/hungry1.ogg','sound/effects/hungry2.ogg','sound/effects/hungry3.ogg','sound/effects/hungry4.ogg'), 40, 1, -5)
 
 					else if(prob(2) && prob(10)) //5% chance of being weakened
 
 						if(prob(45))
-							playsound(src, pick('hungry1.ogg','hungry2.ogg','hungry3.ogg','hungry4.ogg'), 40, 1, -5)
+							playsound(src, pick('sound/effects/hungry1.ogg','sound/effects/hungry2.ogg','sound/effects/hungry3.ogg','sound/effects/hungry4.ogg'), 40, 1, -5)
 						if(prob(10))
 							Weaken(2)
 							src.sleeping += 3
@@ -2005,7 +2012,7 @@
 
 						to_chat(src, "<span class='hungerasterisks'>*</span><span class='hunger'><i>You are STARVING.</i></span><span class='hungerasterisks'>*</span>")
 						if(prob(45))
-							playsound(src, pick('hungry1.ogg','hungry2.ogg','hungry3.ogg','hungry4.ogg'), rand(20,30), 1)
+							playsound(src, pick('sound/effects/hungry1.ogg','sound/effects/hungry2.ogg','sound/effects/hungry3.ogg','sound/effects/hungry4.ogg'), rand(20,30), 1)
 						if(prob(25))
 							Weaken(2)
 
@@ -2016,7 +2023,7 @@
 						if(prob(25))
 							Weaken(2)
 						if(prob(45))
-							playsound(src, pick('hungry1.ogg','hungry2.ogg','hungry3.ogg','hungry4.ogg'), rand(20,30), 1)
+							playsound(src, pick('sound/effects/hungry1.ogg','sound/effects/hungry2.ogg','sound/effects/hungry3.ogg','sound/effects/hungry4.ogg'), rand(20,30), 1)
 	proc/handle_changeling()
 		if(mind && mind.changeling)
 			mind.changeling.regenerate()
@@ -2084,8 +2091,10 @@
 				if(!buried)
 					if(prob(40))
 						new /obj/effect/effect/smoke/bad(src.loc)
-						/*if(prob(8))
-							new /mob/living/simple_animal/maggot(src.loc)*/
+						/*
+						if(prob(2))
+							new /mob/living/simple_animal/maggot(src.loc)
+						*/
 			else
 				return
 
@@ -2095,8 +2104,8 @@
 				if(!buried)
 					if(prob(65))
 						new /obj/effect/effect/smoke/bad(src.loc)
-						/*if(prob(4))
-							new /mob/living/simple_animal/maggot(src.loc)*/
+						//if(prob(2))
+						//	new /mob/living/simple_animal/maggot(src.loc)
 			else
 				return
 
@@ -2169,8 +2178,8 @@
 				if(prob(50))
 					vomit()
 
-		for(var/obj/item/weapon/reagent_containers/food/snacks/poo/P in range(5, src))
-			if(istype(P.loc, /obj/machinery/disposal) || istype(P.loc, /obj/item/weapon/storage/bag))
+		for(var/obj/item/reagent_containers/food/snacks/poo/P in range(5, src))
+			if(istype(P.loc, /obj/machinery/disposal) || istype(P.loc, /obj/item/storage/bag))
 				return
 			if(wear_mask)
 				return
@@ -2265,33 +2274,26 @@
 //////////////////////////////////////////////
 /mob/living/carbon/human/proc/CheckChemsBuff()
 	if(reagents.has_reagent("mentats"))
-		src.my_stats.it = src.my_stats.initit+5
-		if(!reagents.has_reagent("gelabine"))
-			src.my_stats.dx = src.my_stats.initdx-5
-
+		var/dx_mod = reagents.has_reagent("gelabine") ? 0 : 5
+		src.my_stats.add_mod("mentats", stat_list(IN = 5, DX = dx_mod), time = 10 MINUTES, override = TRUE, override_timer = FALSE)
 	else if(reagents.has_reagent("buffout"))
-		src.my_stats.st = src.my_stats.initst+4
-		if(!reagents.has_reagent("gelabine"))
-			src.my_stats.it = src.my_stats.initit-4
+		var/in_mod = reagents.has_reagent("gelabine") ? 0 : -4
+		src.my_stats.add_mod("buffout", stat_list(ST = 4, IN = in_mod), time = 10 MINUTES, override = TRUE, override_timer = FALSE)
 	else if(reagents.has_reagent("dentrine"))
 		if(!reagents.has_reagent("gelabine"))
-			src.my_stats.dx = src.my_stats.initdx-6
+			src.my_stats.add_mod("dentrine", stat_list(DX = -6), time = 5 MINUTES, override = TRUE, override_timer = FALSE)
 	else if(reagents.has_reagent("oxycodone"))
 		if(!reagents.has_reagent("gelabine"))
-			src.my_stats.ht = src.my_stats.initht-8
+			src.my_stats.add_mod("oxycodone", stat_list(HT = -8), time = 5 MINUTES, override = TRUE, override_timer = FALSE)
 	else if(reagents.has_reagent("dob"))
 		if(!reagents.has_reagent("gelabine"))
-			src << sound('gabbro.ogg', repeat = 1, wait = 1, volume = 80, channel = 30)
+			src << sound('sound/music/gabbro.ogg', repeat = 1, wait = 1, volume = 80, channel = 30)
 			src.overlay_fullscreen("dob", /obj/screen/fullscreen/DOB, 1)
 			src.canmove = FALSE
-			src.resting = TRUE
+			SetResting(TRUE)
 			src.lying = TRUE
 			return
 	else
-		src.my_stats.st = src.my_stats.initst
-		src.my_stats.dx = src.my_stats.initdx
-		src.my_stats.it = src.my_stats.initit
-		src.my_stats.ht = src.my_stats.initht
 		src.clear_fullscreen("dob")
 		src << sound(null, repeat = 0, wait = 0, volume = 0, channel = 30)
 		return
@@ -2308,7 +2310,7 @@
 			var/mob/dead/observer/theghost = null
 			for(var/mob/dead/observer/G in player_list)
 				spawn(0)
-					G << 'console_interact7.ogg'
+					G << 'sound/webbers/console_interact7.ogg'
 					switch(alert(G,"Do you want to play as [src.real_name] ([src.key]) as [src.job]","Please answer in 30 seconds!","Yes","No"))
 						if("Yes")
 							if((world.time-time_passed)>300)

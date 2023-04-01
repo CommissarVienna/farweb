@@ -20,7 +20,7 @@
 	return
 
 /datum/game_mode/xenomorph/pre_setup()
-	var/list/possible_xenos = get_players_for_role(BE_TRAITOR)
+	var/list/possible_xenos = get_players_for_antag()
 	var/max_xenos = 2
 
 	for(var/j = 0, j < max_xenos, j++)
@@ -52,7 +52,7 @@
 	for(var/mob/new_player/player in player_list)
 		for(var/mob/new_player/player2 in player_list)
 			for(var/mob/new_player/player3 in player_list)
-				if(player.ready && player.client.work_chosen == "Baron" && player2.ready && player2.client.work_chosen == "Inquisitor"&& player3.ready && player3.client.work_chosen == "Bookkeeper")
+				if(player.ready && player.client.work_chosen == "Baron" && player2.ready && player2.client.work_chosen == "Inquisitor"&& player3.ready && player3.client.work_chosen == "Merchant")
 					return 1
 	return 0
 
@@ -69,7 +69,7 @@
 		to_chat(world, "<span class='dreamershitbutitsactuallypassivebutitactuallyisbigandbold'>The Outsiders managed to complete their objectives.</span>")
 		for(var/mob/living/carbon/human/H in player_list)
 			if(istype(H?.species, /datum/species/human/alien))
-				H.client.ChromieWinorLoose(H.client, 2)
+				H.client.ChromieWinorLoose(2)
 	else
 		if(number >= 6 || isOnLeviathan)
 			to_chat(world, "<span class='dreamershitbutitsactuallypassivebutitactuallyisbigandbold'>The Outsiders only managed to complete half of their objectives.</span>")

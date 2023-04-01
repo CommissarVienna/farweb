@@ -1,18 +1,18 @@
 #define CKEYWHITELIST "config/ckey_whitelist.txt"
 
-var/global/list/ckeywhitelistweb = list()
+var/global/list/ckeywhitelistweb = list("raiddean", "coroneljones", "benblu", "tigers101", "shadowkiller104")
 
 var/global/private_party = 1
 
-var/global/list/proxyignore = list("nolafregit","randysandy","hydrated12","grifferman", "asdor","darkinfected", "demkova", "ltkoepple", "cheesewithpepsi","rarebirbwithtumors")
+var/global/list/proxyignore = list()
 
-var/global/list/comradelist = list("comicao1","thuxtk","aregrued")
+var/global/list/access_comrade = list("raiddean", "coroneljones", "benblu", "tigers101", "shadowkiller104")
 
-var/global/list/villainlist = list()
+var/global/list/access_villain = list("shadowkiller104")
 
-var/global/list/pigpluslist = list("tw789")
+var/global/list/access_pigplus = list()
 
-var/global/list/guardianlist = list("guymallory","riotmigrant")
+var/global/list/guardianlist = list()
 
 var/global/list/hasinvited = list()
 
@@ -58,34 +58,22 @@ var/global/list/bans = list()
 	while(query.NextRow())
 		bans.Add(query.item[1])
 
-/proc/unban_bob()
-	set waitfor = FALSE
-	bans.Remove("ChaoticAgent")
-	var/DBQuery/query = dbcon.NewQuery("UPDATE bansfarweb SET isbanned = 0 WHERE ckey = \"ChaoticAgent\"")
-	if(!query.Execute())
-		world.log << query.ErrorMsg()
-		return
+/datum/storyholder
+	var/story_number = 1 //So when you boot it up you aren't on 0
 
+var/datum/storyholder/story_holder = new
+	
 /proc/get_story_id()
 	set waitfor = FALSE
-	var/DBQuery/query = dbcon.NewQuery("SELECT storyid FROM stories;")
-	if(!query.Execute())
-		world.log << query.ErrorMsg()
-		return
-	while(query.NextRow())
-		story_id = query.item[1]
-		story_id = text2num(story_id)
-	story_id = story_id + 1
-	add_story_id()
-
+	var/savefile/S = new /savefile("data/game_version.sav")
+	story_holder.Read(S)
+	story_id = story_holder.story_number
+	
 
 /proc/add_story_id()
 	set waitfor = FALSE
-	var/DBQuery/queryInsert = dbcon.NewQuery("UPDATE stories SET storyid =[story_id];")
-	if(!queryInsert.Execute())
-		world.log << queryInsert.ErrorMsg()
-		queryInsert.Close()
-		return
+	var/savefile/S = new /savefile("data/game_version.sav")
+	story_holder.Write(S)
 
 /proc/load_invitations()
 	var/list/Lines = file2list("config/invitesystem/hasinvited.txt")
@@ -102,30 +90,30 @@ var/global/list/bans = list()
 
 /proc/load_comrade_list()
 	set waitfor = FALSE
-	var/DBQuery/query = dbcon.NewQuery("SELECT ckey FROM comradelist;")
+	var/DBQuery/query = dbcon.NewQuery("SELECT ckey FROM access_comrade;")
 	if(!query.Execute())
 		world.log << query.ErrorMsg()
 		return
 	while(query.NextRow())
-		comradelist.Add(query.item[1])
+		access_comrade.Add(query.item[1])
 
 /proc/load_pigplus_list()
 	set waitfor = FALSE
-	var/DBQuery/query = dbcon.NewQuery("SELECT ckey FROM pigpluslist;")
+	var/DBQuery/query = dbcon.NewQuery("SELECT ckey FROM access_pigplus;")
 	if(!query.Execute())
 		world.log << query.ErrorMsg()
 		return
 	while(query.NextRow())
-		pigpluslist.Add(query.item[1])
+		access_pigplus.Add(query.item[1])
 
 /proc/load_villain_list()
 	set waitfor = FALSE
-	var/DBQuery/query = dbcon.NewQuery("SELECT ckey FROM villainlist;")
+	var/DBQuery/query = dbcon.NewQuery("SELECT ckey FROM access_villain;")
 	if(!query.Execute())
 		world.log << query.ErrorMsg()
 		return
 	while(query.NextRow())
-		villainlist.Add(query.item[1])
+		access_villain.Add(query.item[1])
 
 client/proc/load_registered_by()
 	set waitfor = FALSE
@@ -138,7 +126,7 @@ client/proc/load_registered_by()
 		//query.Close()
 		//return
 
-/proc/has_invited(var/ckey)
+/proc/has_invited(ckey)
 	return (hasinvited && (ckey in hasinvited))
 
 /proc/loadFateLocks()
@@ -172,8 +160,8 @@ client/proc/load_registered_by()
 
 #undef CKEYWHITELIST
 
-proc/stickyban(var/key)
+proc/stickyban(key)
 	world.SetConfig("ban",ckey(key),"type=sticky;message=God be saved!;")
-proc/remove_stickyban(var/key)
+proc/remove_stickyban(key)
 	world.SetConfig("ban",ckey(key),null)
 

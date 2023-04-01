@@ -4,15 +4,15 @@ var/global/list/image/splatter_cache=list()
 
 /obj/effect/decal/cleanable/blood
 	name = "blood"
-	desc = "It's thick and gooey. Perhaps it's the chef's cooking?"
+	desc = "Something bad happened here."
 	gender = PLURAL
 	density = 0
 	anchored = 1
 	layer = 2.1
 	icon = 'icons/effects/blood.dmi'
 	color = null
-	icon_state = "mfloor1"
-	random_icon_states = list("mfloor1", "mfloor2", "mfloor3", "mfloor4", "mfloor5", "mfloor6", "mfloor7", "mfloor8", "mfloor9", "mfloor10", "mfloor11", "mfloor12")
+	icon_state = "floor1"
+	random_icon_states = list("floor1", "floor2", "floor3", "floor4", "floor5", "floor6", "floor7", "floor8", "floor9", "floor10", "floor11", "floor12")
 	var/base_icon = 'icons/effects/blood.dmi'
 	var/list/viruses = list()
 	blood_DNA = list()
@@ -22,7 +22,7 @@ var/global/list/image/splatter_cache=list()
 	appearance_flags = NO_CLIENT_COLOR
 	var/probtoturnfootblood = 30
 
-/obj/effect/decal/cleanable/blood/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/effect/decal/cleanable/blood/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/clothing/head/misero))
 		user.visible_message("<span class='passivebold'>[user]</span> <span class='passive'>starts to wipe down </span><span class='passivebold'>[src]</span><span class='passive'> with </span><span class='passivebold'>[W]!</span>")
 		if(do_after(user,4))
@@ -44,7 +44,7 @@ var/global/list/image/splatter_cache=list()
 			for(var/obj/effect/decal/cleanable/blood/B in src.loc)
 				if(B != src)
 					if (B.blood_DNA)
-						blood_DNA |= B.blood_DNA.Copy()
+						blood_DNA |= B.blood_DNA?.Copy()
 					qdel(B)
 	spawn(DRYING_TIME * (amount+1))
 		dry()
@@ -58,25 +58,34 @@ var/global/list/image/splatter_cache=list()
 	if(amount < 1)
 		return
 
+	var/datum/organ/external/l_foot = perp.get_organ(BP_L_FOOT)
+	var/datum/organ/external/r_foot = perp.get_organ(BP_R_FOOT)
+	var/hasfeet = 1
+	if((!l_foot || l_foot.is_broken()) && (!r_foot || r_foot.is_broken()))
+		hasfeet = 0
+
 	if(prob(probtoturnfootblood))
 
-		if(perp.shoes)//Adding blood to shoes
-			perp.shoes.blood_color = basecolor
-			perp.shoes:track_blood = max(amount,perp.shoes:track_blood)
-			if(!perp.shoes.blood_overlay)
-				perp.shoes.generate_blood_overlay()
-			if(!perp.shoes.blood_DNA)
-				perp.shoes.blood_DNA = list()
-				perp.shoes.blood_overlay.color = basecolor
-				perp.shoes.overlays += perp.shoes.blood_overlay
-			perp.shoes.blood_DNA |= blood_DNA.Copy()
+		var/obj/item/clothing/shoes/S = perp.shoes
+		if(S)//Adding blood to shoes
+			S.blood_color = basecolor
+			S.track_blood = max(amount,perp.shoes:track_blood)
+			if(!S.blood_overlay)
+				S.generate_blood_overlay()
+			if(!S.blood_DNA)
+				S.blood_DNA = list()
+				S.blood_overlay.color = basecolor
+				S.overlays += perp.shoes.blood_overlay
+			//S?.blood_DNA |= blood_DNA?.Copy()
 
-		else//Or feet
+		else if(hasfeet)//Or feet
 			perp.feet_blood_color = basecolor
 			perp.track_blood = max(amount,perp.track_blood)
 			if(!perp.feet_blood_DNA)
 				perp.feet_blood_DNA = list()
-			perp.feet_blood_DNA |= blood_DNA?.Copy()
+			if(!blood_DNA)
+				blood_DNA = list()
+			//perp?.feet_blood_DNA |= blood_DNA?.Copy()
 
 		perp.update_inv_shoes(1)
 		amount--
@@ -98,7 +107,7 @@ var/global/list/image/splatter_cache=list()
 		user << "<span class='notice'>You get some of \the [src] on your hands.</span>"
 		if (!user.blood_DNA)
 			user.blood_DNA = list()
-		user.blood_DNA |= blood_DNA.Copy()
+		user.blood_DNA |= blood_DNA?.Copy()
 		user.bloody_hands += taken
 		user.hand_blood_color = basecolor
 		user.update_inv_gloves(1)
@@ -119,7 +128,7 @@ var/global/list/image/splatter_cache=list()
 
 
 /obj/effect/decal/cleanable/blood/splatter
-        random_icon_states = list("mgibbl1", "mgibbl2", "mgibbl3", "mgibbl4", "mgibbl5")
+        random_icon_states = list("gibbl1", "gibbl2", "gibbl3", "gibbl4", "gibbl5")
         amount = 2
 
 /obj/effect/decal/cleanable/blood/drip

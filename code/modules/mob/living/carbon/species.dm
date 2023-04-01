@@ -149,11 +149,11 @@
 	var/datum/organ/external/affected = H.get_organ("head")
 
 	//To avoid duplicates.
-	for(var/obj/item/weapon/implant/cortical/imp in H.contents)
+	for(var/obj/item/implant/cortical/imp in H.contents)
 		affected.implants -= imp
 		qdel(imp)
 
-	var/obj/item/weapon/implant/cortical/I = new(H)
+	var/obj/item/implant/cortical/I = new(H)
 	I.imp_in = H
 	I.implanted = 1
 	affected.implants += I

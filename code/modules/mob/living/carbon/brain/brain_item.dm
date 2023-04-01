@@ -1,4 +1,4 @@
-/obj/item/weapon/reagent_containers/food/snacks/organ/brain
+/obj/item/reagent_containers/food/snacks/organ/brain
 	name = "brain"
 	health = 400 //They need to live awhile longer than other organs.
 	desc = "A piece of juicy meat found in a person's head."
@@ -18,19 +18,19 @@
 
 	var/mob/living/carbon/brain/brainmob = null
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/brain/xeno
+/obj/item/reagent_containers/food/snacks/organ/brain/xeno
 	name = "thinkpan"
 	desc = "It looks kind of like an enormous wad of purple bubblegum."
 	icon = 'icons/mob/alien.dmi'
 	icon_state = "chitin"
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/brain/New()
+/obj/item/reagent_containers/food/snacks/organ/brain/New()
 	..()
 	spawn(5)
 		if(brainmob && brainmob.client)
 			brainmob.client.screen.len = null //clear the hud
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/brain/proc/transfer_identity(var/mob/living/carbon/H)
+/obj/item/reagent_containers/food/snacks/organ/brain/proc/transfer_identity(var/mob/living/carbon/H)
 	H.ghostize(1)
 	name = "[H]'s brain"
 	brainmob = new(src)
@@ -44,7 +44,7 @@
 	brainmob << "\blue You feel slightly disoriented. That's normal when you're just a brain."
 //	callHook("debrain", list(brainmob))
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/brain/examine() // -- TLE
+/obj/item/reagent_containers/food/snacks/organ/brain/examine() // -- TLE
 	set src in oview(12)
 	if (!( usr ))
 		return
@@ -55,21 +55,15 @@
 	else
 		usr << "This one seems particularly lifeless. Perhaps it will regain some of its luster later.."
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/brain/removed(var/mob/living/target,var/mob/living/user)
+/obj/item/reagent_containers/food/snacks/organ/brain/removed(var/mob/living/target,var/mob/living/user)
 
 	..()
-
-	var/mob/living/simple_animal/borer/borer = target.has_brain_worms()
-
-	if(borer)
-		borer.detatch() //Should remove borer if the brain is removed - RR
-
 	var/mob/living/carbon/human/H = target
-	var/obj/item/weapon/reagent_containers/food/snacks/organ/brain/B = src
+	var/obj/item/reagent_containers/food/snacks/organ/brain/B = src
 	if(istype(B) && istype(H))
 		B.transfer_identity(target)
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/brain/replaced(var/mob/living/target)
+/obj/item/reagent_containers/food/snacks/organ/brain/replaced(var/mob/living/target)
 
 	if(target.key)
 		target.ghostize()

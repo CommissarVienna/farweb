@@ -66,7 +66,7 @@
 	if(src.last_water_state == water_state) return
 	var/image/I = null
 	overlays = null
-	I = image('reagents.dmi', "reagent_filling[water_state]")
+	I = image('icons/life/reagents.dmi', "reagent_filling[water_state]")
 	src.appearance_flags |= KEEP_TOGETHER
 	I.blend_mode = BLEND_INSET_OVERLAY
 	I.color = cor
@@ -126,25 +126,13 @@
 		if(depth >= 0.1)
 			if(depth >= 85)
 				electrocute_act(60, src, 1, 0, 1)
-			var/obj/item/weapon/shield/generator/G = getActiveShield()
+			var/obj/item/shield/generator/G = getActiveShield()
 			if(G.CELL.charge && G.active)
 				G.active = 0
 				processing_objects.Remove(G)
 				G.update_icon()
 				src.update_icons()
 
-	if(src.resting && depth >= 85)
-		if(handle_drowning() && client)
-			client.color = cor
-		else
-			client.color = cor
-	if(!src.resting && depth >= 165)
-		if(handle_drowning())
-			if(client)
-				client.color = cor
-		else
-			if(client)
-				client.color = cor
 	if(water_state)
 		add_water(1, water_state, cor, transparencia)
 	if(!water_state)

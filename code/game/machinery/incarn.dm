@@ -11,7 +11,7 @@
 		if(!inputado)
 			return
 		var/obj/item/incarn_register/O = I
-		var/obj/item/weapon/card/id/migrant/NG = new (src.loc)
+		var/obj/item/card/id/migrant/NG = new (src.loc)
 		NG.registered_name = O.person_name
 		NG.assignment = inputado
 		NG.rank = inputado

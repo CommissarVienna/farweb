@@ -23,9 +23,9 @@
 
 /datum/surgery_step/generic/cut_open
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/scalpel = 100,		\
-	/obj/item/weapon/kitchenknife = 75,	\
-	/obj/item/weapon/shard = 50, 		\
+	/obj/item/surgery_tool/scalpel = 100,		\
+	/obj/item/kitchenknife = 75,	\
+	/obj/item/shard = 50, 		\
 	)
 
 	min_duration = 60
@@ -64,7 +64,7 @@
 
 /datum/surgery_step/generic/cauterize
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/suture = 100
+	/obj/item/surgery_tool/suture = 100
 	)
 
 	min_duration = 70
@@ -100,8 +100,8 @@
 
 /datum/surgery_step/generic/cut_limb
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/circular_saw = 100, \
-	/obj/item/weapon/hatchet = 75
+	/obj/item/surgery_tool/circular_saw = 100, \
+	/obj/item/hatchet = 75
 	)
 
 	difficulty = 1
@@ -149,8 +149,8 @@
 
 /datum/surgery_step/teeth
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/surgicaldrill = 100,	\
-	/obj/item/weapon/pen = 75,	\
+	/obj/item/surgery_tool/surgicaldrill = 100,	\
+	/obj/item/pen = 75,	\
 	/obj/item/stack/rods = 50
 	)
 
@@ -211,7 +211,7 @@
 /datum/surgery_step/generic/disinfection
 	can_infect = 0
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/disinfectant = 100
+	/obj/item/surgery_tool/disinfectant = 100
 	)
 
 	difficulty = -1
@@ -221,7 +221,7 @@
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		..()
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		var/obj/item/weapon/surgery_tool/disinfectant/S = tool
+		var/obj/item/surgery_tool/disinfectant/S = tool
 		if(!S.uses)
 			to_chat(user, "<span class='combat'>[S.name] is empty!")
 			return 0
@@ -236,7 +236,7 @@
 
 	end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		var/obj/item/weapon/surgery_tool/disinfectant/S = tool
+		var/obj/item/surgery_tool/disinfectant/S = tool
 		S.uses -= 1
 		affected.germ_level = 0
 		affected.disinfect()
@@ -245,7 +245,7 @@
 		..()
 
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		var/obj/item/weapon/surgery_tool/disinfectant/S = tool
+		var/obj/item/surgery_tool/disinfectant/S = tool
 		S.uses -= 1
 		user.visible_message("<span class='combat'>[user]'s hand slips, spraying [target]'s skin with \the [tool]!</span>", \
 		"<span class='combat'>Your hand slips, spraying [target]'s skin with \the [tool]!</span>")

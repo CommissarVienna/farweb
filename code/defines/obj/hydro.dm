@@ -53,7 +53,7 @@
 	mypath = "/obj/item/seeds/chiliseed"
 	species = "chili"
 	plantname = "Chili Plants"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/chili"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/chili"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -70,7 +70,7 @@
 	mypath = "/obj/item/seeds/apple"
 	species = "apple"
 	plantname = "Apple"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/apple"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/apple"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -87,7 +87,7 @@
 	mypath = "/obj/items/seeds/tomato"
 	species = "tomato"
 	plantname = "Tomato"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/tomato"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/tomato"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -104,7 +104,7 @@
 	mypath = "/obj/items/seeds/carrot"
 	species = "carrot"
 	plantname = "Carrot"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/carrot"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/carrot"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -121,7 +121,7 @@
 	mypath = "/obj/items/seeds/corn"
 	species = "corn"
 	plantname = "Corn"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/corn"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/corn"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -138,7 +138,7 @@
 	mypath = "/obj/items/seeds/potato"
 	species = "potato"
 	plantname = "Potato"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/potato"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/potato"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -155,7 +155,7 @@
 	mypath = "/obj/items/seeds/pumpkin"
 	species = "pumpkin"
 	plantname = "Pumpkin"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/pumpkin"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/pumpkin"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -172,7 +172,7 @@
 	mypath = "/obj/items/seeds/wheat"
 	species = "wheat"
 	plantname = "Wheat"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/wheat"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/wheat"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -189,7 +189,7 @@
 	mypath = "/obj/items/seeds/eggplant"
 	species = "eggplant"
 	plantname = "eggplant"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/eggplant"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/eggplant"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -206,7 +206,7 @@
 	mypath = "/obj/items/seeds/sweetpod"
 	species = "sweet pod"
 	plantname = "Sweet Pod"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/sweetpod"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/sweetpod"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -223,7 +223,7 @@
 	mypath = "/obj/items/seeds/pigtail"
 	species = "pigtail"
 	plantname = "Pigtail"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/pigtail"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/pigtail"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -240,7 +240,7 @@
 	mypath = "/obj/items/seeds/beet"
 	species = "beet"
 	plantname = "Beet"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/beet"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/beet"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -257,7 +257,7 @@
 	mypath = "/obj/items/seeds/turnip"
 	species = "turnip"
 	plantname = "Turnip"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/turnip"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/turnip"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -274,7 +274,7 @@
 	mypath = "/obj/items/seeds/onion"
 	species = "onion"
 	plantname = "Onion"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/onion"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/onion"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -291,7 +291,7 @@
 	mypath = "/obj/items/seeds/garlic"
 	species = "garlic"
 	plantname = "Garlic"
-	productname = "/obj/item/weapon/reagent_containers/food/snacks/grown/garlic"
+	productname = "/obj/item/reagent_containers/food/snacks/grown/garlic"
 	lifespan = 20
 	endurance = 15
 	maturation = 5
@@ -354,7 +354,7 @@
 // Hydroponics Tools
 // *************************************
 
-/obj/item/weapon/weedspray // -- Skie
+/obj/item/weedspray // -- Skie
 	desc = "It's a toxic mixture, in spray form, to kill small weeds."
 	icon = 'icons/obj/hydroponics.dmi'
 	name = "weed-spray"
@@ -373,7 +373,7 @@
 		viewers(user) << "\red <b>[user] is huffing the [src.name]! It looks like \he's trying to commit suicide.</b>"
 		return (TOXLOSS)
 
-/obj/item/weapon/pestspray // -- Skie
+/obj/item/pestspray // -- Skie
 	desc = "It's some pest eliminator spray! <I>Do not inhale!</I>"
 	icon = 'icons/obj/hydroponics.dmi'
 	name = "pest-spray"
@@ -392,7 +392,7 @@
 		viewers(user) << "\red <b>[user] is huffing the [src.name]! It looks like \he's trying to commit suicide.</b>"
 		return (TOXLOSS)
 
-/obj/item/weapon/minihoe // -- Numbers
+/obj/item/minihoe // -- Numbers
 	name = "mini hoe"
 	desc = "It's used for removing weeds or scratching your back."
 	icon = 'icons/obj/weapons.dmi'

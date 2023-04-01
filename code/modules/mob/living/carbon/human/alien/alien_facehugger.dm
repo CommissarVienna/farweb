@@ -38,12 +38,19 @@ var/const/MAX_ACTIVE_TIME = 400
 
 /obj/item/clothing/mask/facehugger/New()
 	..()
-	while(1)
-		sleep(5)
-		if(isturf(src.loc) && stat == CONSCIOUS)
-			step(src, pick(NORTH, SOUTH, EAST, WEST))
-			if(prob(35))
-				playsound(src.loc, pick('facehugger1.ogg', 'facehugger2.ogg'), 70, 1)
+	processing_objects.Add(src)
+
+
+/obj/item/clothing/mask/facehugger/process()
+	if(stat != CONSCIOUS)
+		processing_objects.Remove(src)
+		return
+	sleep(5)
+	if(isturf(src.loc))
+		step(src, pick(NORTH, SOUTH, EAST, WEST))
+		if(prob(35))
+			playsound(src.loc, pick('sound/webbers/facehugger1.ogg', 'sound/webbers/facehugger2.ogg'), 70, 1)
+
 
 /obj/item/clothing/mask/facehugger/attack(mob/living/M as mob, mob/user as mob)
 	..()
@@ -164,7 +171,7 @@ var/const/MAX_ACTIVE_TIME = 400
 		corgi.wear_mask = src
 		//C.regenerate_icons()
 
-	playsound(src.loc, pick('facehugger_attack.ogg', 'facehugger_attack2.ogg'), 70, 1)
+	playsound(src.loc, pick('sound/webbers/facehugger_attack.ogg', 'sound/webbers/facehugger_attack2.ogg'), 70, 1)
 
 	GoIdle() //so it doesn't jump the people that tear it off
 
@@ -181,7 +188,7 @@ var/const/MAX_ACTIVE_TIME = 400
 		//target.contract_disease(new /datum/disease/alien_embryo(0)) //so infection chance is same as virus infection chance
 		new /obj/item/alien_embryo(target)
 		target.status_flags |= XENO_HOST
-		playsound(src.loc, pick('facehug_finished.ogg'), 70, 1)
+		playsound(src.loc, pick('sound/webbers/facehug_finished.ogg'), 70, 1)
 
 		target.visible_message("\red \b [src] falls limp after violating [target]'s face!")
 
@@ -227,7 +234,7 @@ var/const/MAX_ACTIVE_TIME = 400
 	icon_state = "[initial(icon_state)]_dead"
 	stat = DEAD
 	spawn(10)
-		playsound(src.loc, pick('facehugger_death.ogg'), 70, 1)
+		playsound(src.loc, pick('sound/webbers/facehugger_death.ogg'), 70, 1)
 
 	src.visible_message("\red \b[src] curls up into a ball!")
 

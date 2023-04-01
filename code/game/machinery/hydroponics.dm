@@ -448,7 +448,7 @@ obj/machinery/hydroponics/proc/mutatepest()  // Until someone makes a spaceworm,
 obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 
 	//Called when mob user "attacks" it with object O
-	if (istype(O, /obj/item/weapon/reagent_containers/glass/bucket))
+	if (istype(O, /obj/item/reagent_containers/glass/bucket))
 		var/b_amount = O.reagents.get_reagent_amount("water")
 		if(b_amount > 0 && waterlevel < 100)
 			if(b_amount + waterlevel > 100)
@@ -479,8 +479,8 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 		qdel(O)
 		updateicon()
 
-	else if(istype(O, /obj/item/weapon/reagent_containers/syringe))  // Syringe stuff
-		var/obj/item/weapon/reagent_containers/syringe/S = O
+	else if(istype(O, /obj/item/reagent_containers/syringe))  // Syringe stuff
+		var/obj/item/reagent_containers/syringe/S = O
 		if (planted)
 			if (S.mode == 1)
 				if(!S.reagents.total_volume)
@@ -699,7 +699,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 			user << "-Nutrition level: \blue [nutrilevel]/10"
 			user << ""
 
-	else if (istype(O, /obj/item/weapon/reagent_containers/spray/plantbgone))
+	else if (istype(O, /obj/item/reagent_containers/spray/plantbgone))
 		if(planted && myseed)
 			health -= rand(5,20)
 
@@ -717,7 +717,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 			playsound(loc, 'sound/effects/spray3.ogg', 50, 1, -6)
 			updateicon()
 
-	else if (istype(O, /obj/item/weapon/minihoe))  // The minihoe
+	else if (istype(O, /obj/item/minihoe))  // The minihoe
 		//var/deweeding
 		if(weedlevel > 0)
 			user.visible_message("\red [user] starts uprooting the weeds.", "\red You remove the weeds from the [src].")
@@ -729,7 +729,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 			user << "\red This plot is completely devoid of weeds. It doesn't need uprooting."
 			playsound(O, pick('sound/weapons/pfork01.ogg','sound/weapons/pfork02.ogg','sound/weapons/pfork03.ogg'), 30, 0, -6)
 
-	else if ( istype(O, /obj/item/weapon/weedspray) )
+	else if ( istype(O, /obj/item/weedspray) )
 		var/obj/item/weedkiller/myWKiller = O
 		user.u_equip(O)
 		toxic += myWKiller.toxicity
@@ -743,15 +743,15 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 		qdel(O)
 		updateicon()
 
-	else if (istype(O, /obj/item/weapon/storage/bag/plants))
+	else if (istype(O, /obj/item/storage/bag/plants))
 		attack_hand(user)
-		var/obj/item/weapon/storage/bag/plants/S = O
-		for (var/obj/item/weapon/reagent_containers/food/snacks/grown/G in locate(user.x,user.y,user.z))
+		var/obj/item/storage/bag/plants/S = O
+		for (var/obj/item/reagent_containers/food/snacks/grown/G in locate(user.x,user.y,user.z))
 			if(!S.can_be_inserted(G))
 				return
 			S.handle_item_insertion(G, 1)
 
-	else if ( istype(O, /obj/item/weapon/pestspray) )
+	else if ( istype(O, /obj/item/pestspray) )
 		var/obj/item/pestkiller/myPKiller = O
 		user.u_equip(O)
 		toxic += myPKiller.toxicity
@@ -764,11 +764,11 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 		playsound(loc, 'sound/effects/spray3.ogg', 50, 1, -6)
 		qdel(O)
 		updateicon()
-	else if(istype(O, /obj/item/weapon/wrench))
+	else if(istype(O, /obj/item/wrench))
 		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
 		anchored = !anchored
 		user << "You [anchored ? "wrench" : "unwrench"] \the [src]."
-	else if(istype(O, /obj/item/weapon/shovel))
+	else if(istype(O, /obj/item/shovel))
 		if(istype(src, /obj/machinery/portable_atmospherics/hydroponics/soil))
 			user << "You clear up the [src]!"
 			qdel(src)
@@ -821,7 +821,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	var/t_amount = 0
 
 	while ( t_amount < (yield * parent.yieldmod ))
-		var/obj/item/weapon/reagent_containers/food/snacks/grown/t_prod = new produce(user.loc, potency) // User gets a consumable
+		var/obj/item/reagent_containers/food/snacks/grown/t_prod = new produce(user.loc, potency) // User gets a consumable
 		if(!t_prod)	return
 		t_prod.seed = mypath
 		t_prod.species = species
@@ -852,7 +852,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	var/t_amount = 0
 
 	while ( t_amount < (yield * parent.yieldmod ))
-		var/obj/item/weapon/reagent_containers/food/snacks/grown/t_prod = new produce(user.loc, potency) // User gets a consumable
+		var/obj/item/reagent_containers/food/snacks/grown/t_prod = new produce(user.loc, potency) // User gets a consumable
 
 		t_prod.seed = mypath
 		t_prod.species = species
@@ -873,7 +873,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	var/t_amount = 0
 
 	while ( t_amount < (yield * parent.yieldmod ))
-		var/obj/item/weapon/grown/t_prod = new produce(user.loc, potency) // User gets a consumable -QualityVan
+		var/obj/item/grown/t_prod = new produce(user.loc, potency) // User gets a consumable -QualityVan
 		t_prod.seed = mypath
 		t_prod.species = species
 		t_prod.lifespan = lifespan
@@ -893,7 +893,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	var/t_amount = 0
 
 	while ( t_amount < (yield * parent.yieldmod ))
-		var/obj/item/weapon/grown/t_prod = new produce(user.loc, potency) // User gets a consumable -QualityVan
+		var/obj/item/grown/t_prod = new produce(user.loc, potency) // User gets a consumable -QualityVan
 		t_prod.seed = mypath
 		t_prod.species = species
 		t_prod.lifespan = lifespan

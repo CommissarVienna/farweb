@@ -1,5 +1,5 @@
 //soda bomb crafting//
-/obj/item/weapon/reagent_containers/food/drinks/cans/attackby(var/obj/item/I, mob/user as mob)
+/obj/item/reagent_containers/food/drinks/cans/attackby(var/obj/item/I, mob/user as mob)
 	if((istype(I, /obj/item/device/assembly/igniter) || istype(I, /obj/item/device/assembly/igniter)) && assemblystate == 0)
 		assemblystate++
 		qdel(I)
@@ -17,7 +17,7 @@
 		overlays += image('icons/obj/drinks.dmi', icon_state = "grenade_w")
 	else ..()
 
-/obj/item/weapon/reagent_containers/food/drinks/cans
+/obj/item/reagent_containers/food/drinks/cans
 	throw_speed = 4
 	throw_range = 20
 	var/assemblystate = 0
@@ -26,7 +26,7 @@
 
 
 
-/obj/item/weapon/reagent_containers/food/drinks/cans/proc/try_to_explode()
+/obj/item/reagent_containers/food/drinks/cans/proc/try_to_explode()
 	active = 0 //So you can reuse your failed bombs
 
 	if(prob(9)) return //This crap just failed!

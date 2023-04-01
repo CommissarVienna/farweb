@@ -2,7 +2,7 @@
 	name = "arcade machine"
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "arcade"
-	circuit = "/obj/item/weapon/circuitboard/arcade"
+	circuit = "/obj/item/circuitboard/arcade"
 	var/enemy_name = "Mr. Thanati"
 	var/temp = "Winners Don't Use DOB" //Temporary message, for attack messages, etc
 	var/player_hp = 30 //Player health/attack points
@@ -11,11 +11,11 @@
 	var/enemy_mp = 20
 	var/gameover = 0
 	var/blocked = 0 //Player cannot attack/heal while set
-	var/list/prizes = list(/obj/item/weapon/reagent_containers/food/snacks/worms						= 1,
-							/obj/item/weapon/reagent_containers/food/snacks/deadrat						= 1,
-							/obj/item/weapon/spacecash/c1					= 1,
-							/obj/item/weapon/spacecash/silver/c1			= 1,
-							/obj/item/weapon/fakecash/gold/c1				= 1,
+	var/list/prizes = list(/obj/item/reagent_containers/food/snacks/worms						= 1,
+							/obj/item/reagent_containers/food/snacks/deadrat						= 1,
+							/obj/item/spacecash/c1					= 1,
+							/obj/item/spacecash/silver/c1			= 1,
+							/obj/item/fakecash/gold/c1				= 1,
 							)
 
 /obj/machinery/computer/arcade
@@ -138,7 +138,6 @@
 
 			if(emagged)
 				new /obj/effect/spawner/newbomb/timer/syndicate(src.loc)
-				new /obj/item/clothing/head/collectable/petehat(src.loc)
 				message_admins("[key_name_admin(usr)] has outbombed Cuban Pete and been awarded a bomb.")
 				log_game("[key_name_admin(usr)] has outbombed Cuban Pete and been awarded a bomb.")
 				src.New()
@@ -149,9 +148,6 @@
 
 				if(istype(prizeselect, /obj/item/toy/gun)) //Ammo comes with the gun
 					new /obj/item/toy/ammo/gun(src.loc)
-
-				else if(istype(prizeselect, /obj/item/clothing/suit/syndicatefake)) //Helmet is part of the suit
-					new	/obj/item/clothing/head/syndicatefake(src.loc)
 
 			else
 				var/atom/movable/prize = pick(contents)
@@ -199,7 +195,7 @@
 
 
 /obj/machinery/computer/arcade/attackby(I as obj, user as mob)
-	if(istype(I, /obj/item/weapon/card/emag) && !emagged)
+	if(istype(I, /obj/item/card/emag) && !emagged)
 		temp = "If you die in the game, you die for real!"
 		player_hp = 30
 		player_mp = 10
@@ -215,11 +211,11 @@
 
 
 		src.updateUsrDialog()
-	else if(istype(I, /obj/item/weapon/screwdriver))
+	else if(istype(I, /obj/item/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
 			var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
-			var/obj/item/weapon/circuitboard/arcade/M = new /obj/item/weapon/circuitboard/arcade( A )
+			var/obj/item/circuitboard/arcade/M = new /obj/item/circuitboard/arcade( A )
 			for (var/obj/C in src)
 				C.loc = src.loc
 			A.circuit = M
@@ -227,7 +223,7 @@
 
 			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
-				new /obj/item/weapon/shard( src.loc )
+				new /obj/item/shard( src.loc )
 				A.state = 3
 				A.icon_state = "3"
 			else

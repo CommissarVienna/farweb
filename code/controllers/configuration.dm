@@ -67,6 +67,7 @@
 	var/limitalienplayers = 0
 	var/alien_to_human_ratio = 0.5
 	var/static/regex/ic_filter_regex //For the cringe filter.
+	var/static/regex/ooc_filter_regex
 	var/server
 	var/banappeals
 	var/wikiurl = "http://wiki.ss13.ru"
@@ -537,6 +538,7 @@
 
 /datum/configuration/proc/LoadChatFilter()
 	in_character_filter = list()
+	ooc_filter = list()
 
 	for(var/line in world.file2list("config/in_character_filter.txt"))
 		if(!line)
@@ -547,3 +549,14 @@
 
 	if(!ic_filter_regex && in_character_filter.len)
 		ic_filter_regex = regex("\\b([jointext(in_character_filter, "|")])\\b", "i")
+	
+	//Same thing for the OOC filter.
+	for(var/line in world.file2list("config/ooc_filter.txt"))
+		if(!line)
+			continue
+		if(findtextEx(line,"#",1,2))
+			continue
+		ooc_filter += line
+
+	if(!ooc_filter_regex && ooc_filter.len)
+		ooc_filter_regex = regex("\\b([jointext(ooc_filter, "|")])\\b", "i")

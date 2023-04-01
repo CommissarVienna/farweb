@@ -242,6 +242,8 @@
 	updateUsrDialog()
 
 /obj/structure/device/piano/attack_hand(var/mob/user as mob)
+	return
+	/*
 	if(!anchored)
 		return
 
@@ -293,6 +295,7 @@
 	dat += "</BODY></HTML>"
 	user << browse(dat, "window=piano;size=700x300")
 	onclose(user, "piano")
+	*/
 
 /obj/structure/device/piano/Topic(href, href_list)
 
@@ -399,7 +402,7 @@
 	return
 
 /obj/structure/device/piano/attackby(obj/item/O as obj, mob/user as mob)
-	if (istype(O, /obj/item/weapon/wrench))
+	if (istype(O, /obj/item/wrench))
 		if (anchored)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 			user << "\blue You begin to loosen \the [src]'s casters..."

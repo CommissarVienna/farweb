@@ -40,6 +40,7 @@
 		if(client)	client.screen |= W
 		if(pulling == W) stop_pulling()
 		update_inv_l_hand()
+		hud_used?.add_inventory_overlay()
 		return 1
 	return 0
 
@@ -58,6 +59,7 @@
 		if(client)	client.screen |= W
 		if(pulling == W) stop_pulling()
 		update_inv_r_hand()
+		hud_used?.add_inventory_overlay()
 		return 1
 	return 0
 
@@ -73,11 +75,29 @@
 	if(hand)	return put_in_r_hand(W)
 	else		return put_in_l_hand(W)
 
+/mob/proc/vamp_check(var/obj/item/W)
+	if(!ishuman(src))
+		return FALSE
+	var/mob/living/carbon/human/H = src
+	var/vamp_hand = H.l_hand ? "l_hand" : "r_hand" //I hate this so much.
+	if(H.isVampire)
+		if(W.silver && !H.gloves)
+			if(vamp_hand)
+				to_chat(H, pick("<span class='combatglow'><b>GET THIS OUT OF HERE!</b></span>", "<span class='combatglow'><b>ACCURSED SILVER!</b></span>", "<span class='combatglow'><b>IT BURNS! IT BURNS!</b></span>"))
+				H.drop_from_inventory(H.get_active_hand())
+				H.apply_damage(rand(5, 10), BRUTE, vamp_hand)
+				H.flash_pain()
+				H.rotate_plane(1)
+				return TRUE
+	return FALSE
+
 //Puts the item our active hand if possible. Failing that it tries our inactive hand. Returns 1 on success.
 //If both fail it drops it on the floor and returns 0.
 //This is probably the main one you need to know :)
 /mob/proc/put_in_hands(var/obj/item/W)
 	if(!W)		return 0
+	if(vamp_check(W))
+		return 0
 	if(put_in_active_hand(W))
 		update_inv_l_hand()
 		update_inv_r_hand()
@@ -94,8 +114,7 @@
 
 		W.dropped()
 		return 0
-	hud_used.add_inventory_overlay()
-
+	hud_used?.add_inventory_overlay()
 
 /mob/proc/drop_item_v()		//this is dumb.
 	if(stat == CONSCIOUS && isturf(loc))
@@ -155,8 +174,11 @@
 		l_hand.appearance_flags = initial(l_hand.appearance_flags)
 
 
-		if(Target)	l_hand.loc = Target.loc
-		else		l_hand.loc = loc
+		if(Target)
+			l_hand.loc = Target.loc
+		else
+			l_hand.loc = loc
+			l_hand.randomize_offset()
 
 		var/turf/T = get_turf(loc)
 		if(isturf(T))
@@ -177,10 +199,11 @@
 		r_hand.plane = initial(r_hand.plane)
 		r_hand.appearance_flags = initial(r_hand.appearance_flags)
 
-
-
-		if(Target)	r_hand.loc = Target.loc
-		else		r_hand.loc = loc
+		if(Target)
+			r_hand.loc = Target.loc
+		else
+			r_hand.loc = loc
+			r_hand.randomize_offset()
 
 		var/turf/T = get_turf(Target)
 		if(istype(T))
@@ -198,7 +221,7 @@
 	if(sound)
 		if(!istype(Target, /obj/structure/rack))
 			make_item_drop_sound()
-	unwield_drop()
+	
 	if(istype(src, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = src
 		var/obj/item/I = get_active_hand()
@@ -212,29 +235,11 @@
 /mob/proc/drop_item_vv(var/atom/Target, var/sound = 1)
 	if(sound)
 		make_item_drop_sound()
-	unwield_drop()
 	if(hand)
 		return drop_r_hand(Target)
 	else		return drop_l_hand(Target)
 
 
-/mob/proc/unwield_drop()
-	var/obj/item/I = get_active_hand()
-	var/obj/item/II = get_inactive_hand()
-	if(!I)
-		return
-	if(istype(I, /obj/item/weapon/twohanded/offhand))
-		if(I.wielded)
-			I.unwield(usr)
-			I.wielded = 0
-
-	if(!II)
-		return
-
-	if(istype(II, /obj/item/weapon/twohanded/offhand))
-		if(II.wielded)
-			II.unwield(usr)
-			II.wielded = 0
 
 
 /mob/proc/make_item_drop_sound()
@@ -246,8 +251,8 @@
 			I.visible_message("<span class='passiveboldsmaller'>[capitalize(I.name)]</span> <span class='passivesmaller'>falls on \the [src.loc].</span>")
 		if(I.drop_sound)
 			playsound(I, I.drop_sound, 25, 0)
-		if(istype(I, /obj/item/weapon/gun))//Snowflake check yeah, but I'm tired of people getting fucking shot when they pull their gun out from their inventory.
-			var/obj/item/weapon/gun/G = I
+		if(istype(I, /obj/item/gun))//Snowflake check yeah, but I'm tired of people getting fucking shot when they pull their gun out from their inventory.
+			var/obj/item/gun/G = I
 			G.check_gun_safety(src)
 		if(src?:loc?:liquid)
 			src?:loc?:liquid?:update_atoms()
@@ -430,8 +435,8 @@
 				src.back2 = W
 				equipped = 1
 		if(slot_in_backpack)
-			if (src.back && istype(src.back, /obj/item/weapon/storage/backpack))
-				var/obj/item/weapon/storage/backpack/B = src.back
+			if (src.back && istype(src.back, /obj/item/storage/backpack))
+				var/obj/item/storage/backpack/B = src.back
 				if(B.contents.len < B.storage_slots && W.w_class <= B.max_w_class)
 					W.loc = B
 					equipped = 1

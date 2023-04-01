@@ -2,28 +2,28 @@
 	var/mob/living/carbon/human/H = src
 	var/new_kg
 	if(isChild(src))
-		new_kg = round(8 + (H.my_stats.st + H.my_stats.ht)) * 2
+		new_kg = round(8 + (H.my_stats.get_stat(STAT_ST) + H.my_stats.get_stat(STAT_HT))) * 2
 		src.maxweight = new_kg
 	else
 		if(check_perk(/datum/perk/ref/strongback))
-			new_kg = round(10 + (H.my_stats.st + H.my_stats.ht)) * 6
+			new_kg = round(10 + (H.my_stats.get_stat(STAT_ST) + H.my_stats.get_stat(STAT_HT))) * 6
 			src.maxweight = new_kg
 		else
-			new_kg	= round(16 + (H.my_stats.st + H.my_stats.ht)) * 2
+			new_kg	= round(16 + (H.my_stats.get_stat(STAT_ST) + H.my_stats.get_stat(STAT_HT))) * 2
 			src.maxweight = new_kg
 
 /mob/living/carbon/human/proc/check_kg()
 	var/new_kg
 	var/mob/living/carbon/human/H = src
 	if(isChild(src))
-		new_kg = round(8 + (H.my_stats.st + H.my_stats.ht)) * 2
+		new_kg = round(8 + (H.my_stats.get_stat(STAT_ST) + H.my_stats.get_stat(STAT_HT))) * 2
 		src.maxweight = new_kg
 	else
 		if(check_perk(/datum/perk/ref/strongback))
-			new_kg = round(10 + (H.my_stats.st + H.my_stats.ht)) * 4
+			new_kg = round(10 + (H.my_stats.get_stat(STAT_ST) + H.my_stats.get_stat(STAT_HT))) * 4
 			src.maxweight = new_kg
 		else
-			new_kg	= round(16 + (H.my_stats.st + H.my_stats.ht)) * 2
+			new_kg	= round(16 + (H.my_stats.get_stat(STAT_ST) + H.my_stats.get_stat(STAT_HT))) * 2
 			src.maxweight = new_kg
 
 	var/half = maxweight*0.5

@@ -98,16 +98,16 @@
 									O:broken = 0
 									O:times_used = 0
 									O:icon_state = "flash"
-							if(istype(O,/obj/item/weapon/melee/baton))
+							if(istype(O,/obj/item/melee/baton))
 								if(O:charges < 10)
 									O:charges += 1
 							//Service
-							if(istype(O,/obj/item/weapon/reagent_containers/food/condiment/enzyme))
+							if(istype(O,/obj/item/reagent_containers/food/condiment/enzyme))
 								if(O.reagents.get_reagent_amount("enzyme") < 50)
 									O.reagents.add_reagent("enzyme", 2)
 							//Medical
-							if(istype(O,/obj/item/weapon/reagent_containers/glass/bottle/robot))
-								var/obj/item/weapon/reagent_containers/glass/bottle/robot/B = O
+							if(istype(O,/obj/item/reagent_containers/glass/bottle/robot))
+								var/obj/item/reagent_containers/glass/bottle/robot/B = O
 								if(B.reagent && (B.reagents.get_reagent_amount(B.reagent) < B.volume))
 									B.reagents.add_reagent(B.reagent, 2)
 							//Janitor
@@ -121,8 +121,8 @@
 
 						//Emagged items for janitor and medical borg
 						if(R.module.emag)
-							if(istype(R.module.emag, /obj/item/weapon/reagent_containers/spray))
-								var/obj/item/weapon/reagent_containers/spray/S = R.module.emag
+							if(istype(R.module.emag, /obj/item/reagent_containers/spray))
+								var/obj/item/reagent_containers/spray/S = R.module.emag
 								if(S.name == "Polyacid spray")
 									S.reagents.add_reagent("pacid", 2)
 								else if(S.name == "Lube spray")

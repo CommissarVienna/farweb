@@ -1,5 +1,5 @@
 
-/obj/item/weapon/gun
+/obj/item/gun
 	name = "gun"
 	desc = "Its a gun. It's pretty terrible, though."
 	icon = 'icons/obj/gun.dmi'
@@ -76,19 +76,16 @@
 			return
 		H.beingaimedby = src
 		H.add_aim()
-		if(H.combat_mode)
+		if(!H.combat_mode)
 			H.rotate_plane()
 
 	emp_act(severity)
 		for(var/obj/O in contents)
 			O.emp_act(severity)
 
-/obj/item/weapon/gun/afterattack(atom/A as mob|obj|turf|area, mob/living/user as mob|obj, flag, params)
+/obj/item/gun/afterattack(atom/A as mob|obj|turf|area, mob/living/user as mob|obj, flag, params)
 	if(flag)	return //we're placing gun on a table or in backpack
-	if(istype(target, /obj/machinery/recharger) && istype(src, /obj/item/weapon/gun/energy))	return//Shouldnt flag take care of this?
-//	if(user && user.client && user.client.gun_mode && !(A in target))
-//		PreFire(A,user,params) //They're using the new gun system, locate what they're aiming at.
-//	else
+	if(istype(target, /obj/machinery/recharger) && istype(src, /obj/item/gun/energy))	return//Shouldnt flag take care of this?
 	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		if(H.hasActiveShield(1))
@@ -101,7 +98,7 @@
 			src.is_jammed = 1
 			user.visible_message("<span class='hitbold'>[user]</span> <span class='hit'>tries to shoot at</span> <span class='hitbold'>[target]</span><span class='hit'>, but</span> <span class='hitbold'>[src]</span> <span class='hit'>just makes a click.</span>")
 			playsound(user, jam_sound, 100, 1)
-			if(istype(src, /obj/item/weapon/gun/energy/taser/leet))
+			if(istype(src, /obj/item/gun/energy/taser/leet))
 				to_chat(user, "<span class='malfunction'>OH [uppertext(H.god_text())] OH FUCK!!</span>")
 				explosion(src.loc,0,3,5,7,10)
 			return
@@ -110,12 +107,12 @@
 	else
 		Fire(A,user,params) //Otherwise, fire normally.
 
-/obj/item/weapon/gun/proc/isHandgun()
+/obj/item/gun/proc/isHandgun()
 	return 1
 //SAFETY DO IS12
-/obj/item/weapon/gun/RightClick(mob/user)
+/obj/item/gun/RightClick(mob/user)
 
-	if(user.get_active_hand() == null || istype(user.get_active_hand(), /obj/item/weapon/gun/))
+	if(user.get_active_hand() == null || istype(user.get_active_hand(), /obj/item/gun/))
 
 		if(usr.next_move >= world.time)
 			return
@@ -129,11 +126,11 @@
 		user.next_move = world.time + 6
 
 		toggle_safety(user)
-		if(istype(src, /obj/item/weapon/gun/projectile/revolver))
-			var/obj/item/weapon/gun/projectile/revolver/R = src
+		if(istype(src, /obj/item/gun/projectile/revolver))
+			var/obj/item/gun/projectile/revolver/R = src
 			R.spin()
 
-/obj/item/weapon/gun/proc/toggle_safety(mob/user)
+/obj/item/gun/proc/toggle_safety(mob/user)
 	if(src != user.get_active_hand())
 		return
 
@@ -146,17 +143,7 @@
 		update_icon()
 		to_chat(user, "I toggle the safety [safety ? "on":"off"].")
 
-/obj/item/weapon/gun/proc/ShootSelf(var/mob/user)
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		H.apply_damage(rand(70,90), BURN, "r_hand")
-		if(wielded)
-			H.apply_damage(rand(70,90), BURN, "l_hand")
-			H.apply_damage(rand(70,90), BURN, "r_hand")
-			return
-	return
-
-/obj/item/weapon/gun/proc/Fire(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, params, pointblank=0, reflex = 0)//TODO: go over this
+/obj/item/gun/proc/Fire(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, params, pointblank=0, reflex = 0)//TODO: go over this
 	//Exclude lasertag guns from the CLUMSY check.
 	var/mob/living/carbon/human/HHC = user
 	if(HHC.consyte == TRUE)
@@ -165,7 +152,7 @@
 	if(HHC.gloves)
 		var/obj/item/clothing/gloves/G = HHC.gloves
 		if(!no_trigger_guard && G.blocks_firing)
-			to_chat(user,"<span class='combatbold'><span class='combat'>[pick(nao_consigoen)]</span> I can't pull the trigger in these gloves!</span>")
+			to_chat(user,"<span class='combatbold'><span class='combat'>[pick(fnord)]</span> I can't pull the trigger in these gloves!</span>")
 			return
 	if(safety)
 		click_empty(user, target)
@@ -175,7 +162,7 @@
 	var/list/new3d6Roll = roll3d6(HHC,SKILL_RANGE,null)
 	switch(new3d6Roll[GP_RESULT])
 		if(GP_CRITFAIL)
-			if(istype(src, /obj/item/weapon/gun/energy))
+			if(istype(src, /obj/item/gun/energy))
 				if (!is_malfunction && prob(explode_chance))
 					is_malfunction = 1
 					to_chat(usr, "<span class='malfunction'>Malfunction!</span>")
@@ -193,8 +180,8 @@
 					playsound(src.loc, jam_sound, 100, 1)
 				is_jammed = 1
 				return 0
-		if(GP_FAILED)
-			if(istype(src, /obj/item/weapon/gun/energy))
+		if(GP_FAIL)
+			if(istype(src, /obj/item/gun/energy))
 				if (!is_malfunction && prob(explode_chance))
 					is_malfunction = 1
 					to_chat(usr, "<span class='malfunction'>Malfunction!</span>")
@@ -231,12 +218,12 @@
 	if(!special_check(user))
 		return
 
-	if (!ready_to_fire() && !istype(src, /obj/item/weapon/gun/projectile/automatic) && !istype(src, /obj/item/weapon/gun/energy/taser/MERCY))
+	if (!ready_to_fire() && !istype(src, /obj/item/gun/projectile/automatic) && !istype(src, /obj/item/gun/energy/taser/MERCY))
 		if (world.time % 3) //to prevent spam
 			to_chat(user, "<span class='bname'>[src] is not ready to fire again!</span>")
 		return
 
-	if(!process_chambered() && !pointblank) //Ta, isso aqui checa se tem bala na camara da arma e tem o bagulho do pointblank, se for pointblank n precisa checar pq o proprio pointblank ja faz isso
+	if(!process_chambered()) //Ta, isso aqui checa se tem bala na camara da arma e tem o bagulho do pointblank, se for pointblank n precisa checar pq o proprio pointblank ja faz isso
 		return click_empty(user, target)
 
 	if(!in_chamber)
@@ -249,22 +236,20 @@
 				src.visible_message("<span class='hitbold'>[src]</span> <span class='hit'>just makes a click.</span>")
 				playsound(src.loc, jam_sound, 100, 1)
 				is_jammed = 1
+				return
 
 	in_chamber.firer = user
 	in_chamber.def_zone = user.zone_sel.selecting
-	if(targloc == curloc)
-		user.bullet_act(in_chamber)
-		qdel(in_chamber)
-		update_icon()
-		return
+
 	var/mob/living/carbon/human/H = user
 	if(recoil)
 		spawn()
-			if(H.my_skills.GET_SKILL(SKILL_RANGE) <= 3)
+			if(H.my_skills.get_skill(SKILL_RANGE) <= 3)
 				shake_camera(H, recoil + 1, recoil)
 				if(prob(50))
 					H.blur(1, 6)
 					H.CU()
+					H.ear_deaf += 10
 			else
 				if(recoil_type == 1 && should_sound)
 					recoil_two(H)
@@ -324,20 +309,20 @@
 
 	user.newtonian_move(get_dir(target, user))
 
-/obj/item/weapon/gun/proc/can_fire()
+/obj/item/gun/proc/can_fire()
 	return process_chambered()
 
-/obj/item/weapon/gun/examine(mob/user)
+/obj/item/gun/examine(mob/user)
 	. = ..()
 	if(safety)
 		to_chat(user, "<span class='jogtowalk'>The safety is on.</span>")
 	else
 		to_chat(user, "<span class='jogtowalk'>The safety is off.</span>")
 
-/obj/item/weapon/gun/proc/can_hit(var/mob/living/target as mob, var/mob/living/user as mob)
+/obj/item/gun/proc/can_hit(var/mob/living/target as mob, var/mob/living/user as mob)
 	return in_chamber.check_fire(target,user)
 
-/obj/item/weapon/gun/proc/click_empty(mob/user = null, target)
+/obj/item/gun/proc/click_empty(mob/user = null, target)
 	if (user && should_sound)
 		if(is_jammed)
 			user.visible_message("<span class='hitbold'>[user]</span> <span class='hit'>tries to shoot at</span> <span class='hitbold'>[target]</span><span class='hit'>, but</span> <span class='hitbold'>[src]</span> <span class='hit'>just makes a click.</span>")
@@ -349,7 +334,7 @@
 		src.visible_message("<span class='hitbold'>[src]</span> <span class='hit'>just makes a click.</span>")
 		playsound(src.loc, emptysound, 100, 1)
 
-/obj/item/weapon/gun/attack(atom/A, mob/living/user, def_zone)
+/obj/item/gun/attack(atom/A, mob/living/user, def_zone)
 	if (process_chambered())
 		//Point blank shooting if on harm intent or target we were targeting.
 		if(user.a_intent == "hurt")
@@ -364,7 +349,7 @@
 	else
 		return ..() //Pistolwhippin'
 
-/obj/item/weapon/gun/proc/unjam(var/mob/M)
+/obj/item/gun/proc/unjam(var/mob/M)
 	if(is_jammed)
 		M.visible_message("<span class='hitbold'>[M.name]</span> <span class='hit'>is trying to unjam</span> <span class='hitbold'>[src]!</span>")
 		if(do_after(M, 15))
@@ -374,7 +359,7 @@
 		else
 			return
 
-/obj/item/weapon/gun/proc/check_gun_safety(mob/user)//Used in inventory.dm to see whether or not you fucking shoot someone when you drop your gun on the ground.
+/obj/item/gun/proc/check_gun_safety(mob/user)//Used in inventory.dm to see whether or not you fucking shoot someone when you drop your gun on the ground.
 	if(!safety && prob(10))
 		user.visible_message("<span class='hitbold'>[src] goes off!</span>")
 		var/list/targets = list(user)

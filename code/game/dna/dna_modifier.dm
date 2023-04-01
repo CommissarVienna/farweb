@@ -47,7 +47,7 @@
 	idle_power_usage = 50
 	active_power_usage = 300
 	var/locked = 0
-	var/obj/item/weapon/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/glass/beaker = null
 	var/opened = 0
 
 	power_change()
@@ -61,11 +61,11 @@
 	. = ..()
 
 	component_parts = newlist(
-		/obj/item/weapon/circuitboard/clonescanner,
-		/obj/item/weapon/stock_parts/scanning_module,
-		/obj/item/weapon/stock_parts/manipulator,
-		/obj/item/weapon/stock_parts/micro_laser,
-		/obj/item/weapon/stock_parts/console_screen
+		/obj/item/circuitboard/clonescanner,
+		/obj/item/stock_parts/scanning_module,
+		/obj/item/stock_parts/manipulator,
+		/obj/item/stock_parts/micro_laser,
+		/obj/item/stock_parts/console_screen
 	)
 
 	RefreshParts()
@@ -95,8 +95,8 @@
 /obj/machinery/dna_scannernew/proc/eject_occupant()
 	src.go_out()
 	for(var/obj/O in src)
-		if(!istype(O,/obj/item/weapon/circuitboard/clonescanner) && \
-		   !istype(O,/obj/item/weapon/stock_parts) && \
+		if(!istype(O,/obj/item/circuitboard/clonescanner) && \
+		   !istype(O,/obj/item/stock_parts) && \
 		   !istype(O,/obj/item/stack/cable_coil) && \
 		   O != beaker)
 			O.loc = get_turf(src)//Ejects items that manage to get in there (exluding the components and beaker)
@@ -169,8 +169,8 @@
 	if(user.pulling == L)
 		user.pulling = null
 
-/obj/machinery/dna_scannernew/attackby(var/obj/item/weapon/item as obj, var/mob/user as mob)
-	if (istype(item, /obj/item/weapon/screwdriver))
+/obj/machinery/dna_scannernew/attackby(var/obj/item/item as obj, var/mob/user as mob)
+	if (istype(item, /obj/item/screwdriver))
 		if (!opened)
 			src.opened = 1
 			user << "You open the maintenance hatch of [src]."
@@ -180,7 +180,7 @@
 			user << "You close the maintenance hatch of [src]."
 			src.icon_state = "scanner_0"
 		return 1
-	else if(istype(item, /obj/item/weapon/crowbar))
+	else if(istype(item, /obj/item/crowbar))
 		if (occupant)
 			user << "\red You cannot disassemble this [src], it's occupado."
 			return
@@ -195,7 +195,7 @@
 				I.loc = src.loc
 			qdel(src)
 			return 1
-	else if(istype(item, /obj/item/weapon/reagent_containers/glass))
+	else if(istype(item, /obj/item/reagent_containers/glass))
 		if(beaker)
 			user << "\red A beaker is already loaded into the machine."
 			return
@@ -205,8 +205,8 @@
 		item.loc = src
 		user.visible_message("[user] adds \a [item] to \the [src]!", "You add \a [item] to \the [src]!")
 		return
-	if(istype(item, /obj/item/weapon/grab)) //sanity checks, you chucklefucks
-		var/obj/item/weapon/grab/G = item
+	if(istype(item, /obj/item/grab)) //sanity checks, you chucklefucks
+		var/obj/item/grab/G = item
 		if (!ismob(G.affecting))
 			return
 		if (src.occupant)
@@ -300,7 +300,7 @@
 	anchored = 1
 	idle_power_usage = 200
 	active_power_usage = 400
-	circuit = "/obj/item/weapon/circuitboard/scan_consolenew"
+	circuit = "/obj/item/circuitboard/scan_consolenew"
 
 	var/selected_ui_block = 1.0
 	var/selected_ui_subblock = 1.0
@@ -317,7 +317,7 @@
 	var/injector_ready = 0
 
 	var/obj/machinery/dna_scannernew/connected
-	var/obj/item/weapon/disk/data/disk
+	var/obj/item/disk/data/disk
 	var/selected_menu_key
 
 	// Fix for #274 (Mash create block injector without answering dialog to make unlimited injectors) - N3X.
@@ -326,7 +326,7 @@
 
 /obj/machinery/computer/scan_consolenew/attackby(obj/O as obj, mob/user as mob)
 	..()
-	if (istype(O, /obj/item/weapon/disk/data)) //INSERT SOME diskS
+	if (istype(O, /obj/item/disk/data)) //INSERT SOME diskS
 		if (!src.disk)
 			user.drop_item()
 			O.loc = src
@@ -389,7 +389,7 @@
 		arr += "[i]:[EncodeDNABlock(buffer[i])]"
 	return arr
 
-/obj/machinery/computer/scan_consolenew/proc/setInjectorBlock(var/obj/item/weapon/dnainjector/I, var/blk, var/datum/dna2/record/buffer)
+/obj/machinery/computer/scan_consolenew/proc/setInjectorBlock(var/obj/item/dnainjector/I, var/blk, var/datum/dna2/record/buffer)
 	var/pos = findtext(blk,":")
 	if(!pos) return 0
 	var/id = text2num(copytext(blk,1,pos))
@@ -758,7 +758,7 @@
 
 	if(href_list["ejectBeaker"])
 		if(connected.beaker)
-			var/obj/item/weapon/reagent_containers/glass/B = connected.beaker
+			var/obj/item/reagent_containers/glass/B = connected.beaker
 			B.loc = connected.loc
 			connected.beaker = null
 		return 1
@@ -873,7 +873,7 @@
 			if (src.injector_ready || waiting_for_user_input)
 
 				var/success = 1
-				var/obj/item/weapon/dnainjector/I = new /obj/item/weapon/dnainjector
+				var/obj/item/dnainjector/I = new /obj/item/dnainjector
 				var/datum/dna2/record/buf = src.buffers[bufferId]
 				if(href_list["createBlockInjector"])
 					waiting_for_user_input=1

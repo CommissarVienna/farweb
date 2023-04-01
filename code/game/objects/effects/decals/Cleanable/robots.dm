@@ -47,5 +47,5 @@
 	return
 
 /obj/effect/decal/cleanable/blood/oil/streak
-	random_icon_states = list("mgibbl1", "mgibbl2", "mgibbl3", "mgibbl4", "mgibbl5")
+	random_icon_states = list("gibbl1", "gibbl2", "gibbl3", "gibbl4", "gibbl5")
 	amount = 2

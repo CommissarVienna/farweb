@@ -1,5 +1,5 @@
 /*
- *	Absorbs /obj/item/weapon/secstorage.
+ *	Absorbs /obj/item/secstorage.
  *	Reimplements it only slightly to use existing storage functionality.
  *
  *	Contains:
@@ -10,7 +10,7 @@
 // -----------------------------
 //         Generic Item
 // -----------------------------
-/obj/item/weapon/storage/secure
+/obj/item/storage/secure
 	name = "secstorage"
 	var/icon_locking = "secureb"
 	var/icon_sparking = "securespark"
@@ -35,16 +35,16 @@
 	attack_paw(mob/user as mob)
 		return attack_hand(user)
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
+	attackby(obj/item/W as obj, mob/user as mob)
 		if(locked)
-			if ( (istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && (!src.emagged))
+			if ( (istype(W, /obj/item/card/emag)||istype(W, /obj/item/melee/energy/blade)) && (!src.emagged))
 				emagged = 1
 				src.overlays += image('icons/obj/storage.dmi', icon_sparking)
 				sleep(6)
 				src.overlays = null
 				overlays += image('icons/obj/storage.dmi', icon_locking)
 				locked = 0
-				if(istype(W, /obj/item/weapon/melee/energy/blade))
+				if(istype(W, /obj/item/melee/energy/blade))
 					var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 					spark_system.set_up(5, 0, src.loc)
 					spark_system.start()
@@ -55,7 +55,7 @@
 					user << "You short out the lock on [src]."
 				return
 
-			if (istype(W, /obj/item/weapon/screwdriver))
+			if (istype(W, /obj/item/screwdriver))
 				if (do_after(user, 20))
 					src.open =! src.open
 					user.show_message(text("\blue You [] the service panel.", (src.open ? "open" : "close")))
@@ -144,7 +144,7 @@
 // -----------------------------
 //        Secure Briefcase
 // -----------------------------
-/obj/item/weapon/storage/secure/briefcase
+/obj/item/storage/secure/briefcase
 	name = "secure briefcase"
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "secure"
@@ -158,8 +158,8 @@
 
 	New()
 		..()
-		new /obj/item/weapon/paper(src)
-		new /obj/item/weapon/pen(src)
+		new /obj/item/paper(src)
+		new /obj/item/pen(src)
 
 	attack_hand(mob/user as mob)
 		if ((src.loc == user) && (src.locked == 1))
@@ -182,7 +182,7 @@
 //        Secure Safe
 // -----------------------------
 
-/obj/item/weapon/storage/secure/safe
+/obj/item/storage/secure/safe
 	name = "secure safe"
 	desc = "A large wall-mounted safe with a digital locking system."
 	icon = 'icons/obj/storage.dmi'
@@ -197,30 +197,30 @@
 	anchored = 1.0
 	density = 0
 	plane = 21
-	cant_hold = list("/obj/item/weapon/storage/secure/briefcase")
+	cant_hold = list("/obj/item/storage/secure/briefcase")
 
 	New()
 		..()
-		new /obj/item/weapon/paper(src)
-		new /obj/item/weapon/pen(src)
+		new /obj/item/paper(src)
+		new /obj/item/pen(src)
 
 	attack_hand(mob/user as mob)
 		return attack_self(user)
 
-/obj/item/weapon/storage/secure/safe/security/
+/obj/item/storage/secure/safe/security/
 	desc = "A large wall-mounted safe with a digital locking system. This one has an automatic radio-alert system."
 
-/obj/item/weapon/storage/secure/safe/security/New()
-	new /obj/item/weapon/reagent_containers/hypospray/medipen/combat(src)
-	new /obj/item/weapon/reagent_containers/hypospray/medipen/combat(src)
-	new /obj/item/weapon/reagent_containers/hypospray/medipen/combat(src)
-	new /obj/item/weapon/gun/projectile/automatic/pistol(src)
-	new /obj/item/weapon/gun/projectile/automatic/pistol(src)
+/obj/item/storage/secure/safe/security/New()
+	new /obj/item/reagent_containers/hypospray/medipen/combat(src)
+	new /obj/item/reagent_containers/hypospray/medipen/combat(src)
+	new /obj/item/reagent_containers/hypospray/medipen/combat(src)
+	new /obj/item/gun/projectile/automatic/pistol(src)
+	new /obj/item/gun/projectile/automatic/pistol(src)
 	new /obj/item/ammo_magazine/external/mc9mm(src)
 	new /obj/item/ammo_magazine/external/mc9mm(src)
 	..()
 
-/obj/item/weapon/storage/secure/safe/security/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/storage/secure/safe/security/attackby(obj/item/W as obj, mob/user as mob)
 	if (locked && (istype(W, /obj/item/device/multitool)) && (!src.open) && (!src.l_hacking))
 		user.show_message(text("\red Now attempting to reset internal memory, please hold."), 1)
 		src.visible_message("\red <B>[user] picks in wires of the [src] with a multitool!</B>")
@@ -246,15 +246,15 @@
 		return ..()
 
 
-/obj/item/weapon/storage/secure/safe/HoS/New()
+/obj/item/storage/secure/safe/HoS/New()
 	..()
-	//new /obj/item/weapon/storage/lockbox/clusterbang(src) This item is currently broken... and probably shouldnt exist to begin with (even though it's cool)
+	//new /obj/item/storage/lockbox/clusterbang(src) This item is currently broken... and probably shouldnt exist to begin with (even though it's cool)
 
-/obj/item/weapon/storage/secure/safe/sheriff/New()
+/obj/item/storage/secure/safe/sheriff/New()
 	..()
-	new/obj/item/weapon/gun/projectile/newRevolver/duelista/neoclassic(src)
+	new/obj/item/gun/projectile/newRevolver/duelista/neoclassic(src)
 	new/obj/item/stack/bullets/Neoclassic/seven(src)
 
-/obj/item/weapon/storage/secure/safe/sniffer/New()
+/obj/item/storage/secure/safe/sniffer/New()
 	..()
-	new/obj/item/weapon/gun/projectile/newRevolver/duelista(src)
+	new/obj/item/gun/projectile/newRevolver/duelista(src)

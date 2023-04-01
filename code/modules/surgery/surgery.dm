@@ -63,16 +63,16 @@
 
 	// does stuff to end the step, which is normally print a message + do whatever this step changes
 	proc/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		if(istype(tool, /obj/item/weapon/surgery_tool))
-			var/obj/item/weapon/surgery_tool/T = tool
+		if(istype(tool, /obj/item/surgery_tool))
+			var/obj/item/surgery_tool/T = tool
 			if(T.operation_sound)
 				playsound(user.loc, T.operation_sound, 50, 3)
 		return
 
 	// stuff that happens when the step fails
 	proc/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		if(istype(tool, /obj/item/weapon/surgery_tool))
-			var/obj/item/weapon/surgery_tool/T = tool
+		if(istype(tool, /obj/item/surgery_tool))
+			var/obj/item/surgery_tool/T = tool
 			if(T.operation_sound_fail)
 				playsound(user.loc, T.operation_sound_fail, 50, 3)
 		return null
@@ -92,7 +92,7 @@ proc/spread_germs_to_organ(datum/organ/external/E, mob/living/carbon/human/user)
 proc/do_surgery(mob/living/carbon/human/M, mob/living/carbon/human/user, obj/item/tool)
 	if(!istype(M))
 		return 0
-	if (user.a_intent == "harm")	//check for Hippocratic Oath
+	if (user.a_intent == "hurt")	//check for Hippocratic Oath
 		return 0
 	if(M.op_stage.in_progress) //Can't operate on someone repeatedly.
 		user << "\red You can't operate on the patient while surgery is already in progress."
@@ -113,7 +113,7 @@ proc/do_surgery(mob/living/carbon/human/M, mob/living/carbon/human/user, obj/ite
 					switch(roll_result[GP_RESULT])
 						if(GP_SUCCESS, GP_CRITSUCCESS)
 							S.end_step(user, M, user.zone_sel.selecting, tool)		//finish successfully
-						if(GP_FAILED, GP_CRITFAIL)
+						if(GP_FAIL, GP_CRITFAIL)
 							S.fail_step(user, M, user.zone_sel.selecting, tool)
 				else if (tool in user.contents && user.Adjacent(M))			//or
 					S.fail_step(user, M, user.zone_sel.selecting, tool)		//malpractice~

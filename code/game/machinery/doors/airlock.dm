@@ -94,7 +94,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	var/safe = 1
 	var/list/areas_added
 	normalspeed = 1
-	var/obj/item/weapon/airlock_electronics/electronics = null
+	var/obj/item/airlock_electronics/electronics = null
 	var/hasShocked = 0 //Prevents multiple shocks from happening
 
 /obj/machinery/door/airlock/New()
@@ -1056,7 +1056,7 @@ About the new airlock wires panel:
 		usr.set_machine(src)
 		if(href_list["wires"])
 			var/t1 = text2num(href_list["wires"])
-			if(!( istype(usr.get_active_hand(), /obj/item/weapon/wirecutters) ))
+			if(!( istype(usr.get_active_hand(), /obj/item/wirecutters) ))
 				usr << "You need wirecutters!"
 				return
 			if(src.isWireColorCut(t1))
@@ -1298,8 +1298,8 @@ About the new airlock wires panel:
 				return
 
 	src.add_fingerprint(user)
-	if((istype(C, /obj/item/weapon/weldingtool) && !( src.operating > 0 ) && src.density))
-		var/obj/item/weapon/weldingtool/W = C
+	if((istype(C, /obj/item/weldingtool) && !( src.operating > 0 ) && src.density))
+		var/obj/item/weldingtool/W = C
 		if(W.remove_fuel(0,user))
 			if(!src.welded)
 				src.welded = 1
@@ -1309,21 +1309,21 @@ About the new airlock wires panel:
 			return
 		else
 			return
-	else if(istype(C, /obj/item/weapon/screwdriver))
+	else if(istype(C, /obj/item/screwdriver))
 		src.p_open = !( src.p_open )
 		src.update_icon()
-	else if(istype(C, /obj/item/weapon/wirecutters))
+	else if(istype(C, /obj/item/wirecutters))
 		return src.attack_hand(user)
 	else if(istype(C, /obj/item/device/multitool))
 		return src.attack_hand(user)
 	else if(istype(C, /obj/item/device/assembly/signaler))
 		return src.attack_hand(user)
-	else if(istype(C, /obj/item/weapon/pai_cable))	// -- TLE
-		var/obj/item/weapon/pai_cable/cable = C
+	else if(istype(C, /obj/item/pai_cable))	// -- TLE
+		var/obj/item/pai_cable/cable = C
 		cable.plugin(src, user)
-	else if(istype(C, /obj/item/weapon/crowbar) || istype(C, /obj/item/weapon/twohanded/fireaxe) )
+	else if(istype(C, /obj/item/crowbar) || istype(C, /obj/item/twohanded/fireaxe) )
 		var/beingcrowbarred = null
-		if(istype(C, /obj/item/weapon/crowbar) )
+		if(istype(C, /obj/item/crowbar) )
 			beingcrowbarred = 1 //derp, Agouri
 		else
 			beingcrowbarred = 0
@@ -1344,9 +1344,9 @@ About the new airlock wires panel:
 				da.created_name = src.name
 				da.update_state()
 
-				var/obj/item/weapon/airlock_electronics/ae
+				var/obj/item/airlock_electronics/ae
 				if(!electronics)
-					ae = new/obj/item/weapon/airlock_electronics( src.loc )
+					ae = new/obj/item/airlock_electronics( src.loc )
 					if(src.req_access.len)
 						ae.conf_access = src.req_access
 					else if (src.req_one_access.len)
@@ -1367,12 +1367,12 @@ About the new airlock wires panel:
 		else if(locked)
 			user << "\blue The airlock's bolts prevent it from being forced."
 
-		else if(statcheck(H.my_stats.st, 20, 1, user, message = "Gah, I'm not strong enough to open the door. Maybe if I try again."))//Gotta be strong to get that there door open.
+		else if(statcheck(H.my_stats.get_stat(STAT_ST), 20, 1, user, message = "Gah, I'm not strong enough to open the door. Maybe if I try again."))//Gotta be strong to get that there door open.
 
 		else if( !welded && !operating )
 			if(density)
 				if(beingcrowbarred == 0) //being fireaxe'd
-					var/obj/item/weapon/twohanded/fireaxe/F = C
+					var/obj/item/twohanded/fireaxe/F = C
 					if(F:wielded)
 						spawn(0)	open(1)
 					else
@@ -1381,7 +1381,7 @@ About the new airlock wires panel:
 					spawn(0)	open(1)
 			else
 				if(beingcrowbarred == 0)
-					var/obj/item/weapon/twohanded/fireaxe/F = C
+					var/obj/item/twohanded/fireaxe/F = C
 					if(F:wielded)
 						spawn(0)	close(1)
 					else

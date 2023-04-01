@@ -25,12 +25,12 @@
 				P = trim(P)
 				var/path = text2path(P)
 				var/obj/item/Item = new path()
-				if(istype(M.back,/obj/item/weapon/storage) && M.back:contents.len < M.back:storage_slots) // Try to place it in something on the mob's back
+				if(istype(M.back,/obj/item/storage) && M.back:contents.len < M.back:storage_slots) // Try to place it in something on the mob's back
 					Item.loc = M.back
 					ok = 1
 
 				else
-					for(var/obj/item/weapon/storage/S in M.contents) // Try to place it in any item that can store stuff, on the mob.
+					for(var/obj/item/storage/S in M.contents) // Try to place it in any item that can store stuff, on the mob.
 						if (S.contents.len < S.storage_slots)
 							Item.loc = S
 							ok = 1

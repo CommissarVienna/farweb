@@ -2,7 +2,7 @@
 	name = "\improper Telepad Control Console"
 	desc = "Used to teleport objects to and from the telescience telepad."
 	icon_state = "teleport"
-	circuit = /obj/item/weapon/circuitboard/telesci_console
+	circuit = /obj/item/circuitboard/telesci_console
 	var/sending = 1
 	var/obj/machinery/telepad/telepad = null
 	var/temp_msg = "Telescience control console initialized.<BR>Welcome."
@@ -40,7 +40,7 @@
 /obj/machinery/computer/telescience/initialize()
 	..()
 	for(var/i = 1; i <= starting_crystals; i++)
-		crystals += new /obj/item/weapon/stock_parts/bluespace_crystal/artificial(null) // starting crystals
+		crystals += new /obj/item/stock_parts/bluespace_crystal/artificial(null) // starting crystals
 
 /obj/machinery/computer/telescience/update_icon()
 	if(stat & BROKEN)
@@ -58,7 +58,7 @@
 	return
 
 /obj/machinery/computer/telescience/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/weapon/stock_parts/bluespace_crystal))
+	if(istype(W, /obj/item/stock_parts/bluespace_crystal))
 		if(crystals.len >= max_crystals)
 			user << "<span class='warning'>There are not enough crystal slots.</span>"
 			return
@@ -93,9 +93,9 @@
 	else
 		t += "<div class='statusDisplay'>[temp_msg]</div><BR>"
 		t += "<A href='?src=\ref[src];setrotation=1'>Set Bearing</A>"
-		t += "<div class='statusDisplay'>[rotation]°</div>"
+		t += "<div class='statusDisplay'>[rotation]ï¿½</div>"
 		t += "<A href='?src=\ref[src];setangle=1'>Set Elevation</A>"
-		t += "<div class='statusDisplay'>[angle]°</div>"
+		t += "<div class='statusDisplay'>[angle]ï¿½</div>"
 		t += "<span class='linkOn'>Set Power</span>"
 		t += "<div class='statusDisplay'>"
 

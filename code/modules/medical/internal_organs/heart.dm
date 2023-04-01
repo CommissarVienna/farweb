@@ -2,7 +2,7 @@
 /datum/organ/internal/heart // This is not set to vital because death immediately occurs in blood.dm if it is removed.
 	name = "heart"
 	parent_organ = "chest"
-	removed_type = /obj/item/weapon/reagent_containers/food/snacks/organ/heart
+	removed_type = /obj/item/reagent_containers/food/snacks/organ/heart
 	vital = 1
 
 /datum/organ/internal/heart/mechanize()

@@ -1,4 +1,4 @@
-/obj/item/weapon/arrow
+/obj/item/arrow
 
 	name = "bolt"
 	desc = "It's got a tip for you - get the point?"
@@ -11,10 +11,10 @@
 	sharp = 1
 	edge = 0
 
-/obj/item/weapon/arrow/proc/removed() //Helper for metal rods falling apart.
+/obj/item/arrow/proc/removed() //Helper for metal rods falling apart.
 	return
 
-/obj/item/weapon/spike
+/obj/item/spike
 	name = "alloy spike"
 	desc = "It's about a foot of weird silver metal with a wicked point."
 	sharp = 1
@@ -25,7 +25,7 @@
 	icon_state = "metal-rod"
 	item_state = "bolt"
 
-/obj/item/weapon/arrow/quill
+/obj/item/arrow/quill
 
 	name = "vox quill"
 	desc = "A wickedly barbed quill from some bizarre animal."
@@ -34,28 +34,28 @@
 	item_state = "quill"
 	throwforce = 5
 
-/obj/item/weapon/arrow/rod
+/obj/item/arrow/rod
 
 	name = "metal rod"
 	desc = "Don't cry for me, Orithena."
 	icon_state = "metal-rod"
 
-/obj/item/weapon/arrow/rod/removed(mob/user)
+/obj/item/arrow/rod/removed(mob/user)
 	if(throwforce == 15) // The rod has been superheated - we don't want it to be useable when removed from the bow.
 		user  << "[src] shatters into a scattering of overstressed metal shards as it leaves the crossbow."
-		var/obj/item/weapon/shard/shrapnel/S = new()
+		var/obj/item/shard/shrapnel/S = new()
 		S.loc = get_turf(src)
 		src.Destroy()
 
-/obj/item/weapon/crossbow
+/obj/item/crossbow
 
 	name = "crossbow"
 	desc = "A 2557AD twist on an old classic. Pick up that can."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "crossbow0"
 	item_state = "crossbow"
-	drop_sound = 'crossbow_sheath.ogg'
-	drawsound = 'crossbow_unsheath.ogg'
+	drop_sound = 'sound/weapons/crossbow_sheath.ogg'
+	drawsound = 'sound/weapons/crossbow_unsheath.ogg'
 	w_class = 5.0
 	flags =  FPRINT | TABLEPASS | CONDUCT |  USEDELAY
 	slot_flags = SLOT_BACK
@@ -66,28 +66,27 @@
 	var/max_tension = 5                   // Highest possible tension.
 	var/release_speed = 5                 // Speed per unit of tension.
 	var/mob/living/current_user = null    // Used to see if the person drawing the bow started drawing it.
-	var/obj/item/weapon/arrow = null      // Nocked arrow.
-	var/obj/item/weapon/cell/cell = null  // Used for firing special projectiles like rods.
-	can_be_smelted_to = /obj/item/weapon/ore/refined/lw/ironlw
+	var/obj/item/arrow = null      // Nocked arrow.
+	var/obj/item/cell/cell = null  // Used for firing special projectiles like rods.
 
-/obj/item/weapon/crossbow/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/crossbow/attackby(obj/item/W as obj, mob/user as mob)
 	if(!arrow)
-		if (istype(W,/obj/item/weapon/arrow))
+		if (istype(W,/obj/item/arrow))
 			user.drop_item()
 			arrow = W
 			arrow.loc = src
 			user.visible_message("[user] slides [arrow] into [src].","You slide [arrow] into [src].")
 			icon_state = "crossbow1"
-			playsound(src.loc, 'bow_draw.ogg', 40, 0)
+			playsound(src.loc, 'sound/weapons/bow_draw.ogg', 40, 0)
 			return
 	else
 		..()
 
-/obj/item/weapon/crossbow/attack_self(mob/living/user as mob)
+/obj/item/crossbow/attack_self(mob/living/user as mob)
 	if(tension)
 		if(arrow)
 			user.visible_message("[user] relaxes the tension on [src]'s string and removes [arrow].","You relax the tension on [src]'s string and remove [arrow].")
-			var/obj/item/weapon/arrow/A = arrow
+			var/obj/item/arrow/A = arrow
 			A.loc = get_turf(src)
 			A.removed(user)
 			arrow = null
@@ -98,7 +97,7 @@
 	else
 		draw(user)
 
-/obj/item/weapon/crossbow/proc/draw(var/mob/user as mob)
+/obj/item/crossbow/proc/draw(var/mob/user as mob)
 
 	if(!arrow)
 		user << "You don't have anything nocked to [src]."
@@ -110,15 +109,15 @@
 	current_user = user
 
 	user.visible_message("[user] begins to draw back the string of [src].","You begin to draw back the string of [src].")
-	playsound(src.loc, 'bow_string.ogg', 40, 0)
+	playsound(src.loc, 'sound/weapons/bow_string.ogg', 40, 0)
 	if(do_after(user, 40))
 		tension = max_tension
 		icon_state = "crossbow1"
 	//spawn(12) increase_tension(user)
 
-/obj/item/weapon/crossbow/afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, flag, params)
+/obj/item/crossbow/afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, flag, params)
 
-	if (istype(target, /obj/item/weapon/storage/backpack ))
+	if (istype(target, /obj/item/storage/backpack ))
 		src.dropped()
 		return
 
@@ -141,7 +140,7 @@
 	else
 		spawn(0) Fire(target,user,params)
 
-/obj/item/weapon/crossbow/proc/Fire(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, params, reflex = 0)
+/obj/item/crossbow/proc/Fire(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, params, reflex = 0)
 
 	add_fingerprint(user)
 
@@ -151,9 +150,9 @@
 		return
 
 	user.visible_message("<span class='danger'>[user] releases [src] and sends [arrow] streaking toward [target]!</span>","<span class='danger'>You release [src] and send [arrow] streaking toward [target]!</span>")
-	playsound(src.loc, 'crossbow_fire.ogg', 40, 0)
+	playsound(src.loc, 'sound/weapons/crossbow_fire.ogg', 40, 0)
 
-	var/obj/item/weapon/arrow/A = arrow
+	var/obj/item/arrow/A = arrow
 	A.loc = get_turf(user)
 	A.throw_at(target,10,tension*release_speed)
 	arrow = null
@@ -161,9 +160,9 @@
 	icon_state = "crossbow0"
 
 /*
-/obj/item/weapon/crossbow/dropped(mob/user)
+/obj/item/crossbow/dropped(mob/user)
 	if(arrow)
-		var/obj/item/weapon/arrow/A = arrow
+		var/obj/item/arrow/A = arrow
 		A.loc = get_turf(src)
 		A.removed(user)
 		arrow = null

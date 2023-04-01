@@ -1,4 +1,4 @@
-/obj/item/weapon/grenade/smokebomb
+/obj/item/grenade/smokebomb
 	desc = "It is set to detonate in 2 seconds."
 	name = "smoke grenade"
 	icon = 'icons/obj/grenade.dmi'
@@ -34,7 +34,7 @@
 		qdel(src)
 		return
 
-/obj/item/weapon/grenade/smokebomb/church
+/obj/item/grenade/smokebomb/church
 	desc = "It is set to detonate in 2 seconds."
 	name = "gas grenade"
 	icon = 'icons/obj/grenade.dmi'

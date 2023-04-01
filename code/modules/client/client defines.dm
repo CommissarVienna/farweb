@@ -46,7 +46,7 @@
 	var/married = null
 	preload_rsc = 0 // This is 0 so we can set it to an URL once the player logs in and have them download the resources from a different server.
 	//preload_rsc = "https://www.dropbox.com/s/kfe9yimm9oi2ooj/MACACHKA.zip?dl=1"
-	mouse_pointer_icon='pointer.dmi'
+	mouse_pointer_icon='icons/pointer.dmi'
 	var/datum/chatOutput/chatOutput
 	var/JoinDate = null
 	var/InvitedBy = null

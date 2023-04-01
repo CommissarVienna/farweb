@@ -51,8 +51,8 @@
 	if(below.liquid)
 		var/obj/reagent/R = below.liquid
 		if(R.depth >= 10 && user.a_intent != "hurt")
-			if (istype(O, /obj/item/weapon/reagent_containers))
-				var/obj/item/weapon/reagent_containers/RG = O
+			if (istype(O, /obj/item/reagent_containers))
+				var/obj/item/reagent_containers/RG = O
 				R.reagents.trans_to(RG, R.reagents.total_volume/6)
 				user.visible_message("<span class='passivebold'>[user]</span><span class='passive'> fills \the [RG] on \the [R].</span>")
 				playsound(R, pick('sound/webbers/water_max1.ogg', 'sound/webbers/water_max2.ogg'), rand(35, 50), 1)
@@ -94,9 +94,9 @@
 	var/chiseled = FALSE
 
 
-/obj/structure/lifeweb/statue/pillar/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/weapon/chisel) && !chiseled)
-		playsound(src, 'obj_stone_generic_switch_enter_01.ogg', 80, 0,0)
+/obj/structure/lifeweb/statue/pillar/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/chisel) && !chiseled)
+		playsound(src, 'sound/weapons/obj_stone_generic_switch_enter_01.ogg', 80, 0,0)
 		var/list/styles = list("Style I", "Style II", "Style III", "(Return)")
 		var/styletype = input(user,"Select a column appearance style.","[src]") in styles
 		switch(styletype)
@@ -108,7 +108,7 @@
 				icon_state = "column3"
 			if("(Return)")
 				return
-		playsound(src, 'obj_stone_generic_switch_enter_01.ogg', 80, 0,0)
+		playsound(src, 'sound/weapons/obj_stone_generic_switch_enter_01.ogg', 80, 0,0)
 		chiseled = TRUE
 		user.visible_message("<span class='passive'>\The [user] chisels \the [src]</span>")
 		return

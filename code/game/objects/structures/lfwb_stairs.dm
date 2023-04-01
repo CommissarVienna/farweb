@@ -23,11 +23,6 @@
 	if(M.loc != src.loc)
 		return 0
 
-	var/dir_bimp = reverse ? turn(dir, 180) : dir
-
-	if(M.dir != dir_bimp)
-		return
-
 	if(!M.gravitydep)
 		return
 
@@ -38,8 +33,9 @@
 			to_chat(M, "<span class='combat'>There are no stairs up!</span>")
 		return 0
 
-	if(ismob(M) && M:client)
-		M:client.moving = 1
+	if(ismob(M))
+		var/mob/moob = M
+		moob.client?.moving = 1
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -65,13 +61,16 @@
 	M.forceMove(stairs_where.loc)
 	if(isliving(M))
 		var/mob/living/L = M
+		if(L.pulling)
+			L.pulling.forceMove(stairs_where.loc)
 		if(L.client)
 			if(istop)
 				to_chat(L,"<i>You climb down the stairs.</i>")
 			else
 				to_chat(L,"<i>You climb up the stairs.</i>")
-	if (ismob(M) && M:client)
-		M:client.moving = 0
+	if (ismob(M))
+		var/mob/doublemob = M
+		doublemob.client?.moving = 0
 
 /obj/structure/lifeweb/stairs/Click()
 	if(!istype(usr,/mob/dead/observer))

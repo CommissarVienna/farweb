@@ -1,13 +1,13 @@
 /*********************MANUALS (BOOKS)***********************/
 
 //Oh god what the fuck I am not good at computer
-/obj/item/weapon/book/manual
+/obj/item/book/manual
 	icon = 'icons/obj/library.dmi'
 	due_date = 0 // Game time in 1/10th seconds
 	unique = 1   // 0 - Normal book, 1 - Should not be treated as normal book, unable to be copied, unable to be modified
 
 
-/obj/item/weapon/book/manual/engineering_construction
+/obj/item/book/manual/engineering_construction
 	name = "Station Repairs and Construction"
 	icon_state ="bookEngineering"
 	author = "Engineering Encyclopedia"		 // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
@@ -27,7 +27,7 @@
 		"}
 
 
-/obj/item/weapon/book/manual/engineering_particle_accelerator
+/obj/item/book/manual/engineering_particle_accelerator
 	name = "Particle Accelerator User's Guide"
 	icon_state ="bookParticleAccelerator"
 	author = "Engineering Encyclopedia"		 // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
@@ -69,7 +69,7 @@
 				</html>"}
 
 
-/obj/item/weapon/book/manual/supermatter_engine
+/obj/item/book/manual/supermatter_engine
 	name = "Supermatter Engine User's Guide"
 	icon_state = "bookSupermatter"
 	author = "Waleed Asad"
@@ -157,7 +157,7 @@
 
 			-Waleed Asad, Senior Engine Technician."}
 
-/obj/item/weapon/book/manual/engineering_hacking
+/obj/item/book/manual/engineering_hacking
 	name = "Hacking"
 	icon_state ="bookHacking"
 	author = "Engineering Encyclopedia"		 // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
@@ -177,7 +177,7 @@
 		"}
 
 
-/obj/item/weapon/book/manual/engineering_singularity_safety
+/obj/item/book/manual/engineering_singularity_safety
 	name = "Singularity Safety in Special Circumstances"
 	icon_state ="bookEngineeringSingularitySafety"
 	author = "Engineering Encyclopedia"		 // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
@@ -226,7 +226,7 @@
 				"}
 
 
-/obj/item/weapon/book/manual/hydroponics_pod_people
+/obj/item/book/manual/hydroponics_pod_people
 	name = "The Diona Harvest - From seed to market"
 	icon_state ="bookHydroponicsPodPeople"
 	author = "Farmer John"
@@ -259,7 +259,7 @@
 				"}
 
 
-/obj/item/weapon/book/manual/medical_cloning
+/obj/item/book/manual/medical_cloning
 	name = "Cloning techniques of the 26th century"
 	icon_state ="bookCloning"
 	author = "Medical Journal, volume 3"		 // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
@@ -278,9 +278,9 @@
 				<body>
 
 				<H3>How to Clone People</H3>
-				So there’s 50 dead people lying on the floor, chairs are spinning like no tomorrow and you haven’t the foggiest idea of what to do? Not to worry!
+				So thereï¿½s 50 dead people lying on the floor, chairs are spinning like no tomorrow and you havenï¿½t the foggiest idea of what to do? Not to worry!
 				This guide is intended to teach you how to clone people and how to do it right, in a simple step-by-step process! If at any point of the guide you have a mental meltdown,
-				genetics probably isn’t for you and you should get a job-change as soon as possible before you’re sued for malpractice.
+				genetics probably isnï¿½t for you and you should get a job-change as soon as possible before youï¿½re sued for malpractice.
 
 				<ol>
 					<li><a href='#1'>Acquire body</a></li>
@@ -300,57 +300,57 @@
 				This is pretty much vital for the process because without a body, you cannot clone it. Usually, bodies will be brought to you, so you do not need to worry so much about this step. If you already have a body, great! Move on to the next step.
 
 				<a name='2'><H4>Step 2: Strip body</H4>
-				The cloning machine does not like abiotic items. What this means is you can’t clone anyone if they’re wearing clothes, so take all of it off. If it’s just one person, it’s courteous to put their possessions in the closet.
-				If you have about seven people awaiting cloning, just leave the piles where they are, but don’t mix them around and for God’s sake don’t let people in to steal them.
+				The cloning machine does not like abiotic items. What this means is you canï¿½t clone anyone if theyï¿½re wearing clothes, so take all of it off. If itï¿½s just one person, itï¿½s courteous to put their possessions in the closet.
+				If you have about seven people awaiting cloning, just leave the piles where they are, but donï¿½t mix them around and for Godï¿½s sake donï¿½t let people in to steal them.
 
 				<a name='3'><H4>Step 3: Put body in cloning machine</H4>
 				Grab the body and then put it inside the DNA modifier. If you cannot do this, then you messed up at Step 2. Go back and check you took EVERYTHING off - a commonly missed item is their headset.
 
 				<a name='4'><H4>Step 4: Scan body</H4>
-				Go onto the computer and scan the body by pressing ‘Scan - <Subject Name Here>’. If you’re successful, they will be added to the records (note that this can be done at any time, even with living people,
-				so that they can be cloned without a body in the event that they are lying dead on port solars and didn‘t turn on their suit sensors)!
-				If not, and it says “Error: Mental interface failure.”, then they have left their bodily confines and are one with the spirits. If this happens, just shout at them to get back in their body,
-				click ‘Refresh‘ and try scanning them again. If there’s no success, threaten them with gibbing.
-				Still no success? Skip over to Step 7 and don‘t continue after it, as you have an unresponsive body and it cannot be cloned.
-				If you got “Error: Unable to locate valid genetic data.“, you are trying to clone a monkey - start over.
+				Go onto the computer and scan the body by pressing ï¿½Scan - <Subject Name Here>ï¿½. If youï¿½re successful, they will be added to the records (note that this can be done at any time, even with living people,
+				so that they can be cloned without a body in the event that they are lying dead on port solars and didnï¿½t turn on their suit sensors)!
+				If not, and it says ï¿½Error: Mental interface failure.ï¿½, then they have left their bodily confines and are one with the spirits. If this happens, just shout at them to get back in their body,
+				click ï¿½Refreshï¿½ and try scanning them again. If thereï¿½s no success, threaten them with gibbing.
+				Still no success? Skip over to Step 7 and donï¿½t continue after it, as you have an unresponsive body and it cannot be cloned.
+				If you got ï¿½Error: Unable to locate valid genetic data.ï¿½, you are trying to clone a monkey - start over.
 
 				<a name='5'><H4>Step 5: Clone body</H4>
-				Now that the body has a record, click ’View Records’, click the subject’s name, and then click ‘Clone’ to start the cloning process. Congratulations! You’re halfway there.
-				Remember not to ‘Eject’ the cloning pod as this will kill the developing clone and you’ll have to start the process again.
+				Now that the body has a record, click ï¿½View Recordsï¿½, click the subjectï¿½s name, and then click ï¿½Cloneï¿½ to start the cloning process. Congratulations! Youï¿½re halfway there.
+				Remember not to ï¿½Ejectï¿½ the cloning pod as this will kill the developing clone and youï¿½ll have to start the process again.
 
 				<a name='6'><H4>Step 6: Get clean SEs for body</H4>
 				Cloning is a finicky and unreliable process. Whilst it will most certainly bring someone back from the dead, they can have any number of nasty disabilities given to them during the cloning process!
-				For this reason, you need to prepare a clean, defect-free Structural Enzyme (SE) injection for when they’re done. If you’re a competent Geneticist, you will already have one ready on your working computer.
+				For this reason, you need to prepare a clean, defect-free Structural Enzyme (SE) injection for when theyï¿½re done. If youï¿½re a competent Geneticist, you will already have one ready on your working computer.
 				If, for any reason, you do not, then eject the body from the DNA modifier (NOT THE CLONING POD) and take it next door to the Genetics research room. Put the body in one of those DNA modifiers and then go onto the console.
-				Go into View/Edit/Transfer Buffer, find an open slot and click “SE“ to save it. Then click ‘Injector’ to get the SEs in syringe form. Put this in your pocket or something for when the body is done.
+				Go into View/Edit/Transfer Buffer, find an open slot and click ï¿½SEï¿½ to save it. Then click ï¿½Injectorï¿½ to get the SEs in syringe form. Put this in your pocket or something for when the body is done.
 
 				<a name='7'><H4>Step 7: Put body in morgue</H4>
 				Now that the cloning process has been initiated and you have some clean Structural Enzymes, you no longer need the body! Drag it to the morgue and tell the Chef over the radio that they have some fresh meat waiting for them in there.
-				To put a body in a morgue bed, simply open the tray, grab the body, put it on the open tray, then close the tray again. Use one of the nearby pens to label the bed “CHEF MEAT” in order to avoid confusion.
+				To put a body in a morgue bed, simply open the tray, grab the body, put it on the open tray, then close the tray again. Use one of the nearby pens to label the bed ï¿½CHEF MEATï¿½ in order to avoid confusion.
 
 				<a name='8'><H4>Step 8: Await cloned body</H4>
-				Now go back to the lab and wait for your patient to be cloned. It won’t be long now, I promise.
+				Now go back to the lab and wait for your patient to be cloned. It wonï¿½t be long now, I promise.
 
 				<a name='9'><H4>Step 9: Cyo and clean clean SE injector on person</H4>
-				Has your body been cloned yet? Great! As soon as the guy pops out, grab them and stick them in cryo. Clonexadone and Cryoxadone help rebuild their genetic material. Then grab your cleanr SE injector and jab it in them. Once you’ve injected them,
+				Has your body been cloned yet? Great! As soon as the guy pops out, grab them and stick them in cryo. Clonexadone and Cryoxadone help rebuild their genetic material. Then grab your cleanr SE injector and jab it in them. Once youï¿½ve injected them,
 				they now have clean Structural Enzymes and their defects, if any, will disappear in a short while.
 
 				<a name='10'><H4>Step 10: Give person clothes back</H4>
-				Obviously the person will be naked after they have been cloned. Provided you weren’t an irresponsible little shit, you should have protected their possessions from thieves and should be able to give them back to the patient.
-				No matter how cruel you are, it’s simply against protocol to force your patients to walk outside naked.
+				Obviously the person will be naked after they have been cloned. Provided you werenï¿½t an irresponsible little shit, you should have protected their possessions from thieves and should be able to give them back to the patient.
+				No matter how cruel you are, itï¿½s simply against protocol to force your patients to walk outside naked.
 
 				<a name='11'><H4>Step 11: Send person on their way</H4>
-				Give the patient one last check-over - make sure they don’t still have any defects and that they have all their possessions. Ask them how they died, if they know, so that you can report any foul play over the radio.
-				Once you’re done, your patient is ready to go back to work! Chances are they do not have Medbay access, so you should let them out of Genetics and the Medbay main entrance.
+				Give the patient one last check-over - make sure they donï¿½t still have any defects and that they have all their possessions. Ask them how they died, if they know, so that you can report any foul play over the radio.
+				Once youï¿½re done, your patient is ready to go back to work! Chances are they do not have Medbay access, so you should let them out of Genetics and the Medbay main entrance.
 
-				<p>If you’ve gotten this far, congratulations! You have mastered the art of cloning. Now, the real problem is how to resurrect yourself after that traitor had his way with you for cloning his target.
+				<p>If youï¿½ve gotten this far, congratulations! You have mastered the art of cloning. Now, the real problem is how to resurrect yourself after that traitor had his way with you for cloning his target.
 
 				</body>
 				</html>
 				"}
 
 
-/obj/item/weapon/book/manual/ripley_build_and_repair
+/obj/item/book/manual/ripley_build_and_repair
 	name = "APLU \"Ripley\" Construction and Operation Manual"
 	icon_state ="book"
 	author = "Randall Varn, Einstein Engines Senior Mechanic"		 // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
@@ -423,7 +423,7 @@
 			"}
 
 
-/obj/item/weapon/book/manual/research_and_development
+/obj/item/book/manual/research_and_development
 	name = "Research and Development 101"
 	icon_state = "rdbook"
 	author = "Dr. L. Ight"
@@ -489,7 +489,7 @@
 			"}
 
 
-/obj/item/weapon/book/manual/robotics_cyborgs
+/obj/item/book/manual/robotics_cyborgs
 	name = "Cyborgs for Dummies"
 	icon_state = "borgbook"
 	author = "XISC"
@@ -693,7 +693,7 @@
 		"}
 
 
-/obj/item/weapon/book/manual/security_space_law
+/obj/item/book/manual/security_space_law
 	name = "Space Law"
 	desc = "A set of Nanotrasen guidelines for keeping law and order on their space stations."
 	icon_state = "bookSpaceLaw"
@@ -715,7 +715,7 @@
 		"}
 
 
-/obj/item/weapon/book/manual/security_space_law/attack(mob/living/M as mob, mob/living/user as mob)
+/obj/item/book/manual/security_space_law/attack(mob/living/M as mob, mob/living/user as mob)
 	if(user.mind && user.mind.assigned_role == "Head of Security")
 		if(M.mind && M.mind.assigned_role == "Security Officer" || M.mind && M.mind.assigned_role == "Detective" || M.mind && M.mind.assigned_role == "Warden")
 			if(istype(M, /mob/living/carbon/human) && prob(60))
@@ -728,7 +728,7 @@
 					playsound(src.loc, "punch", 25, 0, -1)
 	else ..()
 
-/obj/item/weapon/book/manual/engineering_guide
+/obj/item/book/manual/engineering_guide
 	name = "Engineering Textbook"
 	icon_state ="bookEngineering2"
 	author = "Engineering Encyclopedia"
@@ -747,7 +747,7 @@
 		"}
 
 
-/obj/item/weapon/book/manual/chef_recipes
+/obj/item/book/manual/chef_recipes
 	name = "Chef Recipes"
 	icon_state = "cooked_book"
 	author = "Lord Frenrir Cageth"
@@ -801,7 +801,7 @@
 			"}
 
 
-/obj/item/weapon/book/manual/barman_recipes
+/obj/item/book/manual/barman_recipes
 	name = "Barman Recipes"
 	icon_state = "barbook"
 	author = "Sir John Rose"
@@ -855,7 +855,7 @@
 			"}
 
 
-/obj/item/weapon/book/manual/detective
+/obj/item/book/manual/detective
 	name = "The Film Noir: Proper Procedures for Investigations"
 	icon_state ="bookDetective"
 	author = "Nanotrasen"
@@ -898,7 +898,7 @@
 				</html>"}
 		..()
 
-/obj/item/weapon/book/manual/nuclear
+/obj/item/book/manual/nuclear
 	name = "Fission Mailed: Nuclear Sabotage 101"
 	icon_state ="bookNuclear"
 	author = "Syndicate"
@@ -934,7 +934,7 @@
 			Good luck!
 			</html>"}
 
-/obj/item/weapon/book/manual/atmospipes
+/obj/item/book/manual/atmospipes
 	name = "Pipes and You: Getting To Know Your Scary Tools"
 	icon_state = "pipingbook"
 	author = "Maria Crash, Senior Atmospherics Technician"
@@ -1031,7 +1031,7 @@
 				</html>
 			"}
 
-/obj/item/weapon/book/manual/evaguide
+/obj/item/book/manual/evaguide
 	name = "EVA Gear and You: Not Spending All Day Inside"
 	icon_state = "evabook"
 	author = "Maria Crash, Senior Atmospherics Technician"
@@ -1103,16 +1103,16 @@
 // Wiki books that are linked to the configured wiki link.
 
 // A book that links to the wiki
-/obj/item/weapon/book/manual/wiki
+/obj/item/book/manual/wiki
 	var/page_link = ""
 //	window_size = "970x710"
 
-/obj/item/weapon/book/manual/wiki/attack_self()
+/obj/item/book/manual/wiki/attack_self()
 	if(!dat)
 		initialize_wikibook()
 	..()
 
-/obj/item/weapon/book/manual/wiki/proc/initialize_wikibook()
+/obj/item/book/manual/wiki/proc/initialize_wikibook()
 	if(config.wikiurl)
 		dat = {"
 
@@ -1127,35 +1127,35 @@
 
 			"}
 
-/obj/item/weapon/book/manual/wiki/engineering_construction
+/obj/item/book/manual/wiki/engineering_construction
 	name = "Station Repairs and Construction"
 	icon_state ="bookEngineering"
 	author = "Engineering Encyclopedia"
 	title = "Station Repairs and Construction"
 	page_link = "Guide_to_construction"
 
-/obj/item/weapon/book/manual/wiki/engineering_guide
+/obj/item/book/manual/wiki/engineering_guide
 	name = "Engineering Textbook"
 	icon_state ="bookEngineering2"
 	author = "Engineering Encyclopedia"
 	title = "Engineering Textbook"
 	page_link = "Guide_to_engineering"
 
-/obj/item/weapon/book/manual/wiki/infections
+/obj/item/book/manual/wiki/infections
 	name = "Infections - Making your own pandemic!"
 	icon_state = "bookInfections"
 	author = "Infections Encyclopedia"
 	title = "Infections - Making your own pandemic!"
 	page_link = "Infections"
 
-/obj/item/weapon/book/manual/wiki/telescience
+/obj/item/book/manual/wiki/telescience
 	name = "Teleportation Science - Bluespace for dummies!"
 	icon_state = "book7"
 	author = "University of Bluespace"
 	title = "Teleportation Science - Bluespace for dummies!"
 	page_link = "Guide_to_telescience"
 
-/obj/item/weapon/book/manual/wiki/engineering_hacking
+/obj/item/book/manual/wiki/engineering_hacking
 	name = "Hacking"
 	icon_state ="bookHacking"
 	author = "Engineering Encyclopedia"

@@ -14,8 +14,8 @@
 		spawn(5)
 			M.canmove = 1
 
-/obj/effect/mound/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/shovel))
+/obj/effect/mound/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/shovel))
 		visible_message("<span class='notice'>\The [user] starts removing \the [src]</span>")
 		playsound(src, 'sound/effects/dig_shovel.ogg', 50, 1)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)

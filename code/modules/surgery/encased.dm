@@ -21,8 +21,8 @@
 
 /datum/surgery_step/open_encased/saw
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/circular_saw = 100, \
-	/obj/item/weapon/hatchet = 75
+	/obj/item/surgery_tool/circular_saw = 100, \
+	/obj/item/hatchet = 75
 	)
 
 	min_duration = 50
@@ -71,7 +71,7 @@
 
 /datum/surgery_step/open_encased/speculum
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/speculum = 100
+	/obj/item/surgery_tool/speculum = 100
 	)
 
 	min_duration = 1
@@ -128,7 +128,7 @@
 
 /datum/surgery_step/open_encased/cutopen
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/scalpel = 100
+	/obj/item/surgery_tool/scalpel = 100
 	)
 
 	min_duration = 1
@@ -187,7 +187,7 @@
 
 /datum/surgery_step/open_encased/close
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/suture = 100
+	/obj/item/surgery_tool/suture = 100
 	)
 
 	min_duration = 20

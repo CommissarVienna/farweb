@@ -72,7 +72,7 @@ proc/move_church_shuttle()
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "train"
 	req_access = null
-	circuit = "/obj/item/weapon/circuitboard/church_shuttle"
+	circuit = "/obj/item/circuitboard/church_shuttle"
 	var/hacked = 0
 	var/location = 1 //0 = station, 1 = mining base
 
@@ -113,18 +113,18 @@ proc/move_church_shuttle()
 
 	updateUsrDialog()
 
-/obj/machinery/computer/church_shuttle/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/computer/church_shuttle/attackby(obj/item/W as obj, mob/user as mob)
 
-	if (istype(W, /obj/item/weapon/card/emag))
+	if (istype(W, /obj/item/card/emag))
 		src.req_access = list()
 		hacked = 1
 		usr << "You fried the consoles ID checking system. It's now available to everyone!"
 
-	else if(istype(W, /obj/item/weapon/screwdriver))
+	else if(istype(W, /obj/item/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
 			var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
-			var/obj/item/weapon/circuitboard/church_shuttle/M = new /obj/item/weapon/circuitboard/church_shuttle( A )
+			var/obj/item/circuitboard/church_shuttle/M = new /obj/item/circuitboard/church_shuttle( A )
 			for (var/obj/C in src)
 				C.loc = src.loc
 			A.circuit = M
@@ -132,7 +132,7 @@ proc/move_church_shuttle()
 
 			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
-				new /obj/item/weapon/shard( src.loc )
+				new /obj/item/shard( src.loc )
 				A.state = 3
 				A.icon_state = "3"
 			else

@@ -240,43 +240,44 @@ its easier to just keep the beam vertical.
 
 
 //All atoms
-/atom/verb/examine()
-	set name = "Examine"
-	set category = "IC"
-	set src in view(usr.client) //If it can be seen, it can be examined.
+/atom/proc/examine(mob/user, var/distance = -1, var/infix = "", var/suffix = "")
+	if(user.sleeping)
+		return
 	//This reformat names to get a/an properly working on item descriptions when they are bloody
 	var/f_name = "[src.name]."
 	var/x_name = "a"
-	var/obj/item/device/flashlight/FL = locate() in usr
-	if (FL && FL.on && usr.stat != DEAD)
-		FL.afterattack(src,usr)
 	if(src.blood_DNA && !istype(src, /obj/effect/decal))
 		if(gender == PLURAL)
 			x_name = "some "
 		else
 			x_name = "a "
 		f_name += "<span class='combatglow'>blood-stained</span> <span class='uppertext'>[name]</span><span class='statustext'>!"
-	if(!isobserver(usr))
-		usr.visible_message("<span class='looksatbold'>[usr.name]</span> <span class='looksat'>looks at [src].</span>")
-		if(get_dist(usr,src) > 5)//Don't get descriptions of things far away.
-			to_chat(usr, "<span class='passivebold'>It's too far away to see clearly.</span>")
+	if(!isobserver(user))
+		user.visible_message("<span class='looksatbold'>[user.name]</span> <span class='looksat'>looks at [src].</span>")
+		if(get_dist(user,src) > 5)//Don't get descriptions of things far away.
+			to_chat(user, "<span class='passivebold'>It's too far away to see clearly.</span>")
 			return
+	if(ishuman(user))
+		var/mob/living/carbon/human/open_your_eyes = user
+		if(open_your_eyes.eye_closed)
+			to_chat(user, "My eyes are closed. I can see nothing.")
+			return //OPEN YOUR FUCKING EYES
 	if(desc)
-		if(ishuman(usr))
-			var/mob/living/carbon/human/H = usr
-			if(H.my_stats.it <= 5)
+		if(ishuman(user))
+			var/mob/living/carbon/human/H = user
+			if(H.my_stats.get_stat(STAT_IN) <= 5)
 				var/randtext = pick("Yoh!","Doh!","Haha")
-				to_chat(usr, "<span class='statustext'>That's [x_name] [f_name]</span>, [randtext]")
+				to_chat(user, "<span class='statustext'>That's [x_name] [f_name]</span>, [randtext]")
 			else
-				to_chat(usr, "<span class='statustext'>That's [x_name]</span> <span class='uppertext'>[f_name]</span>\n<span class='statustext'>[desc]</span>")
+				to_chat(user, "<span class='statustext'>That's [x_name]</span> <span class='uppertext'>[f_name]</span>\n<span class='statustext'>[desc]</span>")
 	else
-		if(ishuman(usr))
-			var/mob/living/carbon/human/H = usr
-			if(H.my_stats.it <= 5)
+		if(ishuman(user))
+			var/mob/living/carbon/human/H = user
+			if(H.my_stats.get_stat(STAT_IN) <= 5)
 				var/randtext = pick("Yoh!","Doh!","Haha")
-				to_chat(usr, "<span class='statustext'>That's [x_name] [f_name]</span>, [randtext]")
+				to_chat(user, "<span class='statustext'>That's [x_name] [f_name]</span>, [randtext]")
 			else
-				to_chat(usr, "<span class='statustext'>That's [x_name]</span> <span class='uppertext'>[f_name]</span>")
+				to_chat(user, "<span class='statustext'>That's [x_name]</span> <span class='uppertext'>[f_name]</span>")
  // tirei o icon e a caixa pq n tem isso no lwb :+1: -- izumi
 
 /atom/proc/relaymove()
@@ -489,7 +490,7 @@ its easier to just keep the beam vertical.
 	if(ismob(src))
 		var/mob/M = src
 
-		for(var/obj/item/weapon/grab/G in M.grabbed_by)
+		for(var/obj/item/grab/G in M.grabbed_by)
 			if(G.assailant == G.affecting)
 				continue
 			return
@@ -516,7 +517,7 @@ its easier to just keep the beam vertical.
 		return
 
 	if(user.legcuffed)
-		to_chat(user, "<span class='combatbold'>[pick(nao_consigoen)] I'm stuck!</span>")
+		to_chat(user, "<span class='combatbold'>[pick(fnord)] I'm stuck!</span>")
 		return
 	if(user.handcuffed)
 		if(isliving(src))
@@ -524,7 +525,7 @@ its easier to just keep the beam vertical.
 			if(!L.lying)
 				var/list/kickRollCuff = roll3d6(user,SKILL_UNARM,null)
 				switch(kickRollCuff[GP_RESULT])
-					if(GP_FAILED)
+					if(GP_FAIL)
 						user.visible_message("<span class='danger'>[user.name] loses \his balance while trying to kick \the [src].</span>", \
 									"<span class='warning'> You lost your balance.</span>")
 						user.Weaken(3)
@@ -586,8 +587,8 @@ its easier to just keep the beam vertical.
 			if(user.grabbed_by[x])
 				return
 		/*
-		if(istype(user.grabbed_by[1], /obj/item/weapon/grab))
-			var/obj/item/weapon/grab/G = user.grabbed_by[1]
+		if(istype(user.grabbed_by[1], /obj/item/grab))
+			var/obj/item/grab/G = user.grabbed_by[1]
 
 			if(ishuman(G?.assailant))
 				var/mob/living/carbon/human/H = G.assailant
@@ -616,12 +617,12 @@ its easier to just keep the beam vertical.
 //	playsound(user, "sound/effects/jump_[user.gender == MALE ? "male" : "female"].ogg", 25)
 	var/jump_safe = get_dist(user, target)
 	if(user.species.name == "Zombie")
-		playsound(user, pick('zombie_lounge.ogg','zombie_lounge2.ogg','zombie_lounge3.ogg','zombie_lounge4.ogg'), 25)
+		playsound(user, pick('sound/voice/zombie_lounge.ogg','sound/voice/zombie_lounge2.ogg','sound/voice/zombie_lounge3.ogg','sound/voice/zombie_lounge4.ogg'), 25)
 		user.canmove = 0
 		spawn(10)
 			user.canmove = 1
 	if(user.species.name == "Alien")
-		playsound(user, pick('alien_jump.ogg'), 50)
+		playsound(user, pick('sound/webbers/alien_jump.ogg'), 50)
 	else
 		if(!april_fools)
 			if(user.acrobat)
@@ -636,7 +637,7 @@ its easier to just keep the beam vertical.
 					else
 						playsound(user, 'sound/effects/jump_female.ogg', 100, 0, -5)
 		else
-			playsound(user, 'worms_jump.ogg', 25)
+			playsound(user, 'sound/SHITTYJOKE/worms_jump.ogg', 25)
 			user.say("Hop!")
 	user.jumping = TRUE
 	user.sound2()
@@ -659,7 +660,7 @@ its easier to just keep the beam vertical.
 			user.adjustStaminaLoss(rand(5,10))
 			user:weakened = max(user:weakened,4)
 	if(user.carryingweight >= user.maxweight)
-		if(user.my_stats.dx >= rand(13,15))
+		if(user.my_stats.get_stat(STAT_DX) >= rand(13,15))
 			user.throw_at(target, 2, 0.5, user)
 			user.adjustStaminaLoss(rand(10,20))
 			user:weakened = max(user:weakened,3)
@@ -670,7 +671,7 @@ its easier to just keep the beam vertical.
 			user:weakened = max(user:weakened,4)
 			to_chat(user, "TOO HEAVY!")
 	else
-		if(user.my_stats.dx >= 20 || user.check_perk(/datum/perk/ref/jumper) || user.acrobat)
+		if(user.my_stats.get_stat(STAT_DX) >= 20 || user.check_perk(/datum/perk/ref/jumper) || user.acrobat)
 			if(user.acrobat)
 				user.FusRoDah(5)
 				user.throw_at(target, 4, 0.5, user)
@@ -685,7 +686,7 @@ its easier to just keep the beam vertical.
 
 /obj/screen/text/atm
 
-var/list/fonts = list('gothic.ttf', 'hando.ttf', 'type.ttf')
+var/list/fonts = list('code/chatpanel/browserassets/rsc/gothic.ttf', 'code/chatpanel/browserassets/rsc/hando.ttf', 'code/chatpanel/browserassets/rsc/type.ttf')
 
 /client/MouseEntered(var/atom/a)
 	if(mob && ishuman(mob))
@@ -706,6 +707,9 @@ var/list/fonts = list('gothic.ttf', 'hando.ttf', 'type.ttf')
 				H.facedir(direction)
 				H.facing_dir = direction
 		var/colorofText = "#999897"
+		var/display_name = a.name
+		if(ishuman(a) && a:isStealth())
+			display_name = "R a t"
 		if(istype(a, /turf))
 			colorofText = "#999897"
 		if(istype(a, /obj))
@@ -715,10 +719,8 @@ var/list/fonts = list('gothic.ttf', 'hando.ttf', 'type.ttf')
 		if(istype(a, /mob/living))
 			colorofText = "#04c918"
 		if(a.mouse_opacity)  // i spread this out to make it more "readable"
-			H.hovertext.maptext = "<center><br><br><br><span style=\"\
-			color: [colorofText]; \
-			\"><font face='Deutsch Gothic'>[a.name]\
-			</font></span></center>"
+			if(!istype(a, /obj/screen))//Screens should not have map text please. Thank you.
+				H.hovertext.maptext = "<center style=\"text-shadow: 1px 1px 2px black;\"><span style=\"font-family: 'Small Fonts'; color: [colorofText];\"><b>[uppertext(display_name)]</b></span></center>"
 		else
 			H.hovertext.maptext = ""  // ui is blank, sad!
 
@@ -794,43 +796,43 @@ var/list/fonts = list('gothic.ttf', 'hando.ttf', 'type.ttf')
 /obj/effect/regurgitator/acid_act()
 	return
 
-/obj/item/weapon/flame/candle/tnt/bundle/acid_act()
+/obj/item/flame/candle/tnt/bundle/acid_act()
 	explosion(src.loc, 2, 4, 6, 4)
 	qdel(src)
 	return
 
-/obj/item/weapon/flame/candle/tnt/acid_act()
+/obj/item/flame/candle/tnt/acid_act()
 	explosion(src.loc, 1, 2, 2, 2)
 	qdel(src)
 	return
 
-/obj/item/weapon/cell/crap/acid_act()
+/obj/item/cell/crap/acid_act()
 	explosion(src.loc, 1, 1, 1, 1)
 	qdel(src)
 	return
 
-/obj/item/weapon/gun/energy/taser/leet/flame_act()
+/obj/item/gun/energy/taser/leet/flame_act()
 	explosion(src.loc, 1, 1, 1, 1)
 	qdel(src)
 	return
 
 
-/obj/item/weapon/flame/candle/tnt/bundle/flame_act()
+/obj/item/flame/candle/tnt/bundle/flame_act()
 	explosion(src.loc, 2, 4, 6, 4)
 	qdel(src)
 	return
 
-/obj/item/weapon/flame/candle/tnt/flame_act()
+/obj/item/flame/candle/tnt/flame_act()
 	explosion(src.loc, 1, 2, 2, 2)
 	qdel(src)
 	return
 
-/obj/item/weapon/cell/crap/flame_act()
+/obj/item/cell/crap/flame_act()
 	explosion(src.loc, 1, 1, 1, 1)
 	qdel(src)
 	return
 
-/obj/item/weapon/gun/energy/taser/leet/flame_act()
+/obj/item/gun/energy/taser/leet/flame_act()
 	explosion(src.loc, 1, 1, 1, 1)
 	qdel(src)
 	return
@@ -844,15 +846,15 @@ var/list/fonts = list('gothic.ttf', 'hando.ttf', 'type.ttf')
 	return
 
 /obj/structure/lifeweb/statue/acid_act()
-	new/obj/item/weapon/stone(src.loc)
-	new/obj/item/weapon/stone(src.loc)
-	new/obj/item/weapon/stone(src.loc)
+	new/obj/item/stone(src.loc)
+	new/obj/item/stone(src.loc)
+	new/obj/item/stone(src.loc)
 	return
 
 /obj/machinery/nuclearbomb/acid_act()
 	return
 
-/obj/item/weapon/disk/nuclear/acid_act()
+/obj/item/disk/nuclear/acid_act()
 	return
 
 /obj/machinery/chem_master/holy_altar/acid_act()

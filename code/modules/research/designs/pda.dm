@@ -21,7 +21,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge
+	build_path = /obj/item/cartridge
 
 /datum/design/cart_engineering
 	name = "Power-ON Cartridge"
@@ -30,7 +30,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/engineering
+	build_path = /obj/item/cartridge/engineering
 
 /datum/design/cart_atmos
 	name = "BreatheDeep Cartridge"
@@ -39,7 +39,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/atmos
+	build_path = /obj/item/cartridge/atmos
 
 /datum/design/cart_medical
 	name = "Med-U Cartridge"
@@ -48,7 +48,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/medical
+	build_path = /obj/item/cartridge/medical
 
 /datum/design/cart_chemistry
 	name = "ChemWhiz Cartridge"
@@ -57,7 +57,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/chemistry
+	build_path = /obj/item/cartridge/chemistry
 
 /datum/design/cart_security
 	name = "R.O.B.U.S.T. Cartridge"
@@ -66,7 +66,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/security
+	build_path = /obj/item/cartridge/security
 	locked = 0
 
 /datum/design/cart_janitor
@@ -76,7 +76,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/janitor
+	build_path = /obj/item/cartridge/janitor
 
 /*
 /datum/design/cart_clown
@@ -86,7 +86,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/clown
+	build_path = /obj/item/cartridge/clown
 /datum/design/cart_mime
 	name = "Gestur-O 1000 Cartridge"
 	desc = "A data cartridge for portable microcomputers."
@@ -94,7 +94,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/mime
+	build_path = /obj/item/cartridge/mime
 */
 
 /datum/design/cart_toxins
@@ -104,7 +104,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/signal/toxins
+	build_path = /obj/item/cartridge/signal/toxins
 
 /datum/design/cart_quartermaster
 	name = "Space Parts & Space Vendors Cartridge"
@@ -113,7 +113,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/quartermaster
+	build_path = /obj/item/cartridge/quartermaster
 	locked = 0
 
 /datum/design/cart_hop
@@ -123,7 +123,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/hop
+	build_path = /obj/item/cartridge/hop
 	locked = 0
 
 /datum/design/cart_hos
@@ -133,7 +133,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/hos
+	build_path = /obj/item/cartridge/hos
 	locked = 0
 
 /datum/design/cart_ce
@@ -143,7 +143,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/ce
+	build_path = /obj/item/cartridge/ce
 	locked = 0
 
 /datum/design/cart_cmo
@@ -153,7 +153,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/cmo
+	build_path = /obj/item/cartridge/cmo
 	locked = 0
 
 /datum/design/cart_rd
@@ -163,7 +163,7 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/rd
+	build_path = /obj/item/cartridge/rd
 	locked = 0
 
 /datum/design/cart_captain
@@ -173,5 +173,5 @@
 	req_tech = list("engineering" = 2, "powerstorage" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/cartridge/captain
+	build_path = /obj/item/cartridge/captain
 	locked = 0

@@ -72,7 +72,7 @@ var/starringlist = ""
 		C.buckle_mob(new_character)
 	new_character.key = M.key
 	new_character.mind.key = M.key
-	new_character.client.ChromieWinorLoose(new_character.client, 10)
+	new_character.client.ChromieWinorLoose(10)
 	new_character.mind.farwebcompletionantagonist = 1
 	new_character.mind.special_role = "Waker"
 	for(var/mob/ME in player_list)
@@ -117,7 +117,7 @@ var/starringlist = ""
 		if(!ticker.delay_end)
 			sleep(ticker.restart_timeout)
 			if(!ticker.delay_end)
-				to_chat(world, "The fortress has been abandoned.")
+				to_chat(world, "Your fortress has been abandoned.")
 				world.Reboot()
 			else
 				to_chat(world,"\blue <B>An admin has delayed the round end</B>")

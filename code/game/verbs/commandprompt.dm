@@ -1,50 +1,27 @@
-#define SECRET_GUARDIAN "ssix" //actual person responsible for handling donoses, bans and ranks/deranks. If you can read this, do not talk about this person anywhere outside #donos, not even #commissariat. It's secret for a reason
-// not so secret anymore ripperonis
 var/roundsinvite = 1
 
 client/verb/prompt_command()
 	set name = "Command Prompt"
 	set category = "OOC"
-	var/list/inputlist = list("showlads","togglenat","setspouse","invite","togglefuta","mycolor","retro","love","auth", "register", "add_donator", "ban", "unban", "add_role", "absencelabiosdeseda", "superretro","remove_role", "musica", "tremer","rsctoggle","fix64","togglesquire","togglesize")
-	var/list/debug = list("showgamemode", "setgamemode", "changeskill")
+	var/list/inputlist = list("showlads","togglenat","setspouse","invite","togglefuta","mycolor","retro","add_donator", "ban", "unban", "add_role", "absencelabiosdeseda", "superretro","remove_role", "musica", "tremer","rsctoggle","fix64","togglesquire","togglesize","setfontsize")
+	var/list/debug = list("showgamemode", "setgamemode", "changeskill", "showaspect")
 	var/chosenoption = input("Input a command.","[src.key]")
 	if(!chosenoption)
 		return
 	if(inputlist.Find(chosenoption))
 		to_chat(src, "Command Used : <b>[chosenoption]</b>")
 		switch(chosenoption)
-			if("register")
-				async_call(.proc/RegisterCallback, "HandleRegistrationDeferred", list(src.ckey), src)
-				return
 			if("showlads")
 				src.showlads()
 				return
 			if("setspouse")
 				src.set_spouse()
 				return
-			if("love")
-				src.sendlove()
-				return
 			if("invite")
-				if((ckey(usr.key) in comradelist) || usr.client.holder || usr.ckey == SECRET_GUARDIAN)
-				//if(ckey(usr.key) in villainlist || ckey(usr.key) in comradelist)
-					if(usr.client.prefs.roundsplayed < roundsinvite  && !usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
-						to_chat(src, "<span class='highlighttext'>You need [roundsinvite] rounds to invite other players. You have [usr.client.prefs.roundsplayed] rounds played.</span>")
-						return
-					else
-						invite_ckey()
-						return
-				else
-					if(ckey(usr.key) in villainlist)
-						if(usr.client.prefs.roundsplayed < roundsinvite && !usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
-							to_chat(src, "<span class='highlighttext'>You need [roundsinvite] rounds to invite other players. You have [usr.client.prefs.roundsplayed] rounds played.</span>")
-							return
-						else
-							invite_ckey()
-							return
-					else
-						to_chat(src, "<span class='highlighttext'>You are not allowed to do that.</span>")
-						return
+				if(!usr.client.holder && !(usr.ckey in access_comrade))
+					to_chat(usr, "<span class='highlighttext'>You are not allowed to do that.</span>")
+					return
+				invite_ckey()
 
 			if("superretro")
 				if(src.prefs.UI_type == "Luna")
@@ -55,7 +32,7 @@ client/verb/prompt_command()
 					if(mob.hud_used)	qdel(mob.hud_used)		//remove the hud objects
 					mob.hud_used = new /datum/hud(mob)
 					mob.add_filter_effects()
-					mob.updatePig()
+					mob.updateStatPanel()
 					mob?.hud_used?.add_inventory_overlay()
 					mob?.Do_OLDHUD()
 
@@ -68,7 +45,7 @@ client/verb/prompt_command()
 					if(mob.hud_used)	qdel(mob.hud_used)		//remove the hud objects
 					mob.hud_used = new /datum/hud(mob)
 					mob.add_filter_effects()
-					mob.updatePig()
+					mob.updateStatPanel()
 					mob?.hud_used?.add_inventory_overlay()
 				else
 					to_chat(src, "Retro UI disabled, Remember to Reconnect.")
@@ -78,7 +55,7 @@ client/verb/prompt_command()
 					if(mob.hud_used)	qdel(mob.hud_used)		//remove the hud objects
 					mob.hud_used = new /datum/hud(mob)
 					mob.add_filter_effects()
-					mob.updatePig()
+					mob.updateStatPanel()
 					mob?.hud_used?.add_inventory_overlay()
 					mob?.hud_used?.persistant_inventory_update()
 					mob?.hud_used?.hidden_inventory_update()
@@ -86,18 +63,15 @@ client/verb/prompt_command()
 			if("mycolor")
 				src.colorooc()
 				return
-			if("absencelabiosdeseda")
-				to_chat(src, "Ui, sedoso!")
-				return
 			if("togglefuta")
-				if(!futa.Find(src.ckey))
-					to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)]</span> <span class='combat'>[pick("I'm poor","I don't have it","My wallet is empty","I'm broke")]!</span>")
+				if(!donation_futa.Find(src.ckey))
+					to_chat(usr, "<span class='combatbold'>[pick(fnord)]</span> <span class='combat'>[pick("I'm poor","I don't have it","My wallet is empty","I'm broke")]!</span>")
 					return
 				if(src.mob.type != /mob/new_player)
 					to_chat(usr, "<span class='combatbold'>FAIL!</span><span class='combat'> It can only be changed in the lobby!</span>")
 					return
 
-				var/input = input(usr, "Are you sure you want to disable / enable futa?", "Farweb") in list("Yes", "No")
+				var/input = input(usr, "Are you sure you want to disable / enable futa?", "Nearweb") in list("Yes", "No")
 				switch(input)
 					if("No")
 						return
@@ -115,14 +89,14 @@ client/verb/prompt_command()
 						return
 				return
 			if("togglesize")
-				if(!thirtycm.Find(src.ckey))
-					to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)]</span> <span class='combat'>[pick("I'm poor","I don't have it","My wallet is empty","I'm broke")]!</span>")
+				if(!donation_30cm.Find(src.ckey))
+					to_chat(usr, "<span class='combatbold'>[pick(fnord)]</span> <span class='combat'>[pick("I'm poor","I don't have it","My wallet is empty","I'm broke")]!</span>")
 					return
 				if(src.mob.type != /mob/new_player)
 					to_chat(usr, "<span class='combatbold'>FAIL!</span><span class='combat'> It can only be changed in the lobby!</span>")
 					return
 
-				var/input = input(usr, "Are you sure you want to disable / enable 30cm?", "Farweb") in list("Yes", "No")
+				var/input = input(usr, "Are you sure you want to disable / enable 30cm?", "Nearweb") in list("Yes", "No")
 				switch(input)
 					if("No")
 						return
@@ -141,7 +115,7 @@ client/verb/prompt_command()
 				return
 
 			if("togglenat")
-				var/input = input(usr, "Are you sure you want to hide/show your country?", "Farweb") in list("Yes", "No")
+				var/input = input(usr, "Are you sure you want to hide/show your country?", "Nearweb") in list("Yes", "No")
 				switch(input)
 					if("No")
 						return
@@ -158,40 +132,35 @@ client/verb/prompt_command()
 							prefs.savefile_update()
 						return
 				return
-			if("auth")
-				var/auth = input("Input a password.","[src.key]")
-				if(!auth)
-					return
-				if(auth == privatepartypass)
-					privatepartyallow = TRUE
-					to_chat(world,"<b>Authorized!</b> <span class='highlighttext'>The overlord allowed the private party.</span>")
-					world << 'thanet.ogg'
-
 			if("add_donator")
-				if(!usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
+				if(!usr.client.holder && !(usr.ckey in puppeteers))
 					to_chat(src, "<span class='highlighttext'>You are not allowed to do that.</span>")
 					return
-				var/donateadd = input("What type of donation do you want to add?") in list ("Urchin","Mercenary","Seaspotter Merc", "Red Dawn Merc", "Lord", "Crusader", "Tophat", "Monk", "Futa", "Trap apoc", "Outlaw", "Water bottle", "Luxury donation", "Pjack", "Custom OOC Color","30cm","Tribunal Veteran","Adult Squire")
+				var/donateadd = input("What type of donation do you want to add?") in list ("Squire Tier","Tiamat Tier","Marduk Tier", "Crusader Tier", "Mercenary","Seaspotter Merc", "Red Dawn Merc", "Lord", "Crusader", "Monk", "Futa", "Trap", "Outlaw", "Water bottle", "Luxury donation", "Custom OOC Color","30cm",)
 				switch(donateadd)
+					if("Squire Tier")
+						add_tier_squire()
+					if("Tiamat Tier")
+						add_tier_tiamat()
+					if("Marduk Tier")
+						add_tier_marduk()
+					if("Crusader Tier")
+						add_tier_crusader()
 					if("Seaspotter Merc")
 						add_seaspotter()
 					if("Mercenary")
 						add_mercenary()
-					if("Urchin")
-						add_urchin()
 					if("Red Dawn Merc")
 						add_reddawn()
 					if("Lord")
 						add_lord()
 					if("Crusader")
 						add_crusader()
-					if("Tophat")
-						add_tophat()
 					if("Monk")
 						add_monk()
 					if("Futa")
 						add_futa()
-					if("Trap apoc")
+					if("Trap")
 						add_trapapoc()
 					if("Outlaw")
 						add_outlaw()
@@ -199,31 +168,25 @@ client/verb/prompt_command()
 						add_waterbottle()
 					if("Luxury donation")
 						add_luxurydonation()
-					if("Pjack")
-						add_pjack()
 					if("Custom OOC Color")
 						add_customooc()
 					if("30cm")
 						add_30cm()
-					if("Tribunal Veteran")
-						add_tribvet()
-					if("Adult Squire")
-						add_squirea()
 			if("ban")
-				if(!usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
+				if(!usr.client.holder && !(usr.ckey in puppeteers))
 					to_chat(usr, "<span class='highlighttext'>You are not allowed to do that.</span>")
 					return
 				remove_whitelist()
 			if("unban")
-				if(!usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
+				if(!usr.client.holder && !(usr.ckey in puppeteers))
 					to_chat(usr, "<span class='highlighttext'>You are not allowed to do that.</span>")
 					return
 				remove_ban()
 			if("add_role")
-				if(!usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
+				if(!usr.client.holder && !(usr.ckey in puppeteers))
 					to_chat(usr, "<span class='highlighttext'>You are not allowed to do that.</span>")
 					return
-				var/input = input(usr, "Which role do you want to add an user to?", "Farweb") in list("Villain", "Comrade","Pig+")
+				var/input = input(usr, "Which role do you want to add an user to?", "Nearweb") in list("Villain", "Comrade","Pig+")
 				switch(input)
 					if("Comrade")
 						add_comrade()
@@ -232,10 +195,10 @@ client/verb/prompt_command()
 					if("Pig+")
 						add_pigplus()
 			if("remove_role")
-				if(!usr.client.holder && !(usr.ckey == SECRET_GUARDIAN))
+				if(!usr.client.holder && !(usr.ckey in puppeteers))
 					to_chat(usr, "<span class='highlighttext'>You are not allowed to do that.</span>")
 					return
-				var/input = input(usr, "Which role do you want to remove an user from?", "Farweb") in list("Villain", "Comrade","Pig+")
+				var/input = input(usr, "Which role do you want to remove an user from?", "Nearweb") in list("Villain", "Comrade","Pig+")
 				switch(input)
 					if("Comrade")
 						remove_comrade()
@@ -244,7 +207,7 @@ client/verb/prompt_command()
 					if("Pig+")
 						remove_pigplus()
 			if("musica")
-				if(ishuman(src.mob) && ckey == "stimusz" || ckey == "mynameajeff" || ckey == "wolxy" || ckey == "bailol"  || ckey == "johnegbert3" || ckey == "comicao1" || ckey == "necbromancer")
+				if(ishuman(src.mob) && usr.ckey in tier_marduk)
 					var/mob/living/carbon/human/H = mob
 
 					if(H.combat_musicoverlay)
@@ -259,7 +222,7 @@ client/verb/prompt_command()
 						to_chat(H, "<span class='highlighttext'><b>MÚSICA CUSTOM ATIVADA</b></span>")
 					return
 			if("tremer")
-				if(ishuman(src.mob) && ckey == "stimusz" || ckey == "mynameajeff" || ckey == "wolxy" || ckey == "bailol" || ckey == "comicao1" || ckey == "necbromancer")
+				if(ishuman(src.mob) && usr.ckey in tier_marduk)
 					var/mob/living/carbon/human/H = mob
 
 					if(H.fakeDREAMER)
@@ -288,10 +251,7 @@ client/verb/prompt_command()
 				else
 					to_chat(src, "You have enabled stretch to fit. Remember to Reconnect.")
 			if("togglesquire")
-				if(!adultsquire.Find(src.ckey))
-					to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)]</span> <span class='combat'>[pick("I'm poor","I don't have it","My wallet is empty","I'm broke")]!</span>")
-					return
-				var/input = input(usr, "Are you sure you want to disable / enable adult squire?", "Farweb") in list("Yes", "No")
+				var/input = input(usr, "Are you sure you want to disable / enable adult squire?", "Nearweb") in list("Yes", "No")
 				switch(input)
 					if("No")
 						return
@@ -307,8 +267,16 @@ client/verb/prompt_command()
 							prefs.save_preferences()
 							prefs.savefile_update()
 						return
+			if("setfontsize")
+				var/input = input(usr, "CURRENT: [src.prefs.font_size / 10] \n Set your font size.", "Nearweb") as num
+				to_chat(src, "Font size is now: [input]")
+				input = round(input *= 10,10)
+				src.prefs.font_size = input
+				chat_resize()
+				prefs.save_preferences()
+				prefs.savefile_update()
 		return
-	else if(debug.Find(chosenoption) && (src.ckey in secret_devs))
+	else if(debug.Find(chosenoption) && (src.ckey in puppeteers))
 		to_chat(src, "Command Used : <b>[chosenoption]</b>")
 		switch(chosenoption)
 			if("showgamemode")
@@ -351,19 +319,22 @@ client/verb/prompt_command()
 						to_chat(src, "Too low!")
 						return
 					log_game("[src.ckey]/[H.real_name] changes his skill([name_skill]) to [num_skill]")
-					H.my_skills.CHANGE_SKILL(skills_list[name_skill], round(num_skill))
+					H.my_skills.change_skill(skills_list[name_skill], round(num_skill))
 					to_chat(src, "Skill Changed!")
 					return
+			if("showaspect")
+				to_chat(src, "mode: [ticker?.eof?.name]")
+				return
 	else
 		to_chat(src, "<span class='highlighttext'>Fail!: <span class='feedback'>[chosenoption]</span> <span class='highlighttext'>isn't a valid command.</span>")
 		return
 
-client/verb/ambi_volume()
+/client/verb/ambi_volume()
 	set name = "AmbiVolume"
 	set category = "OOC"
 	if(!prefs)
 		return
-	var/input = input(usr, "CURRENT: [src?.prefs?.ambi_volume] \n Set your Ambience Volume (0/255 Maximum)", "Farweb") as num
+	var/input = input(usr, "CURRENT: [src?.prefs?.ambi_volume] \n Set your Ambience Volume (0/255 Maximum)", "Nearweb") as num
 	if(input > 255 || input < 0)
 		return
 	to_chat(usr, "<spanclass='jogtowalk'>New Ambience volume is now [input]%</span>")
@@ -371,26 +342,15 @@ client/verb/ambi_volume()
 	prefs?.save_preferences()
 	prefs?.savefile_update()
 
-client/verb/music_volume()
+/client/verb/music_volume()
 	set name = "MusicVolume"
 	set category = "OOC"
 	if(!prefs)
 		return
-	var/input = input(usr, "CURRENT: [src?.prefs?.music_volume] \n Set your Music Volume (0/255 Maximum)", "Farweb") as num
+	var/input = input(usr, "CURRENT: [src?.prefs?.music_volume] \n Set your Music Volume (0/255 Maximum)", "Nearweb") as num
 	if(input > 255 || input < 0)
 		return
 	to_chat(usr, "<spanclass='jogtowalk'>New Music volume is now [input]%</span>")
 	prefs?.music_volume = input
 	prefs?.save_preferences()
 	prefs?.savefile_update()
-
-/client/proc/RegisterCallback(var/token)
-	if(token == "False")
-		to_chat(src, "You already received your token. Contact a Patriarch if it has been lost.")
-		return
-	if(token == "fail")
-		to_chat(src, "An error has occurred while attempting a database operation. Yell at Nopm.")
-		return
-	to_chat(src, "This is your key: [token] <br><b style='color: red'>DON'T FORGET IT!</b><br>")
-	to_chat(src, "Message Epic Machine#2884 on Discord with !register YOURKEYHERE")
-	return

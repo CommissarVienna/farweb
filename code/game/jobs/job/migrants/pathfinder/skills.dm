@@ -1,6 +1,8 @@
 /mob/living/carbon/human/proc/pathfinder_track()
 	set hidden = 0
 	set name = "TrackSomeonePathfinder"
+	set desc = "Track Someone"
+	set category = "gpc"
 
 	if(!check_perk(/datum/perk/pathfinder))
 		return
@@ -19,6 +21,8 @@
 /mob/living/carbon/human/proc/pathfinder_trackself()
 	set hidden = 0
 	set name = "TrackselfPathfinder"
+	set desc = "Track Yourself"
+	set category = "gpc"
 	if(!check_perk(/datum/perk/pathfinder))
 		return
 	var/area/area = loc

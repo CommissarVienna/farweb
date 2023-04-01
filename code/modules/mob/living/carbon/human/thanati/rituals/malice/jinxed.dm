@@ -9,7 +9,7 @@
         var/mob/living/carbon/human/H = usr
 
         for(var/obj/item/I in src)
-            if(I.sanctified || I == /obj/item/weapon/melee/classic_baton/crossofravenheart && H.jinxed)
+            if(I.sanctified || I == /obj/item/melee/classic_baton/crossofravenheart && H.jinxed)
                 var/list/sancList = list("They wield a holy weapon! It won't work!", "They're hold something holy to them!", "They are sanctified!")
                 to_chat(H, "<span class ='jogtowalk'>[pick(sancList)]</span>")
                 return

@@ -38,9 +38,9 @@
 	else
 		return 1
 
-/mob/living/carbon/human/var/obj/item/weapon/soccerball/football = null
+/mob/living/carbon/human/var/obj/item/soccerball/football = null
 
-/obj/item/weapon/soccerball
+/obj/item/soccerball
 	icon = 'icons/soccer.dmi'
 	icon_state = "football0"
 	name = "soccer ball"
@@ -64,7 +64,7 @@
 		update_movement() //reset icon
 		src.throw_at(target, throw_range, throw_speed, user)
 
-/obj/item/weapon/soccerball/proc/update_movement()
+/obj/item/soccerball/proc/update_movement()
 	if (owner)
 		src.dir = owner.dir
 		src.forceMove(owner.loc)
@@ -73,7 +73,7 @@
 		icon_state = normalstate
 	return
 
-/obj/item/weapon/soccerball/Crossed(mob/living/carbon/human/user)
+/obj/item/soccerball/Crossed(mob/living/carbon/human/user)
 	if(!ishuman(user))
 		return ..()
 	if (!owner && !user?.football)
@@ -83,7 +83,7 @@
 	else
 		..()
 
-/obj/item/weapon/soccerball/Bumped(mob/M)
+/obj/item/soccerball/Bumped(mob/M)
 	. = ..()
 	if(!ishuman(M))
 		return

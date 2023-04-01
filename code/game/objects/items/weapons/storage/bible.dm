@@ -1,4 +1,4 @@
-/obj/item/weapon/storage/bible
+/obj/item/storage/bible
 	name = "bible"
 	desc = "Apply to head repeatedly."
 	icon_state ="bible"
@@ -10,24 +10,24 @@
 	var/mob/affecting = null
 	var/deity_name = "Christ"
 
-/obj/item/weapon/storage/bible/booze
+/obj/item/storage/bible/booze
 	name = "bible"
 	desc = "To be applied to the head repeatedly."
 	icon_state ="bible"
 
-/obj/item/weapon/storage/bible/booze/New()
+/obj/item/storage/bible/booze/New()
 	..()
-	new /obj/item/weapon/reagent_containers/glass/bottle/beer(src)
-	new /obj/item/weapon/reagent_containers/glass/bottle/beer(src)
-	new /obj/item/weapon/spacecash(src)
-	new /obj/item/weapon/spacecash(src)
-	new /obj/item/weapon/spacecash(src)
+	new /obj/item/reagent_containers/glass/bottle/beer(src)
+	new /obj/item/reagent_containers/glass/bottle/beer(src)
+	new /obj/item/spacecash(src)
+	new /obj/item/spacecash(src)
+	new /obj/item/spacecash(src)
 
-/obj/item/weapon/storage/bible/attack(mob/living/M as mob, mob/living/user as mob)
+/obj/item/storage/bible/attack(mob/living/M as mob, mob/living/user as mob)
 	..()
 	if(user.mind && (user.mind.assigned_role == "Bishop" || user.mind.assigned_role == "Priest"))
 		user.show_message(text("\red <B>[user] blesses [M]!</B>"), 1)
-		playsound(src.loc, 'hallelujah.ogg', 40, 0, -1)
+		playsound(src.loc, 'sound/weapons/hallelujah.ogg', 40, 0, -1)
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 			if(H.religion == "Gray Church")
@@ -37,7 +37,7 @@
 
 //BS12 EDIT
 /* // All cult functionality moved to Null Rod
-/obj/item/weapon/storage/bible/proc/bless(mob/living/carbon/M as mob)
+/obj/item/storage/bible/proc/bless(mob/living/carbon/M as mob)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/heal_amt = 10
@@ -46,7 +46,7 @@
 				H.UpdateDamageIcon()
 	return
 
-/obj/item/weapon/storage/bible/attack(mob/living/M as mob, mob/living/user as mob)
+/obj/item/storage/bible/attack(mob/living/M as mob, mob/living/user as mob)
 
 	var/chaplain = 0
 	if(user.mind && (user.mind.assigned_role == "Chaplain"))
@@ -102,7 +102,7 @@
 		playsound(src.loc, "punch", 25, 1, -1)
 	return
 */
-/obj/item/weapon/storage/bible/afterattack(atom/A, mob/user as mob, proximity)
+/obj/item/storage/bible/afterattack(atom/A, mob/user as mob, proximity)
 	if(!proximity) return
 /*	if (istype(A, /turf/simulated/floor))
 		user << "\blue You hit the floor with the bible."
@@ -115,6 +115,6 @@
 			A.reagents.del_reagent("water")
 			A.reagents.add_reagent("holywater",water2holy)
 
-/obj/item/weapon/storage/bible/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/storage/bible/attackby(obj/item/W as obj, mob/user as mob)
 	playsound(src.loc, "rustle", 50, 1, -5)
 	..()

@@ -166,8 +166,8 @@
 		stat_buff *= alchemy_skill
 		duration *= alchemy_skill
 
-	M.my_stats.st += stat_buff * volume
 	duration *= volume
+	M.my_stats.add_mod("Berserker's Sweat", stat_list(IN = -4))
 
 	holder.remove_reagent(id, volume)
-	return M.add_stats(-1 * stat_buff,0, 0, 0)
+	return M.my_stats.add_mod("Berserker's Sweat", stat_list(ST = stat_buff * volume), time = duration, override_timer = FALSE)

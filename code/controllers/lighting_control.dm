@@ -24,26 +24,8 @@ var/datum/controller/lighting/lighting_controller = new ()
 
 /datum/controller/lighting/Initialize()
 
-	//world << "LOL"
-
-
 	create_lighting_overlays()
 	lighting_overlays_initialised = TRUE
-
-	// Pre-process lighting once before the round starts. Wait 30 seconds so the away mission has time to load.
-	spawn(15)
-		Processo(1)
-
-/datum/controller/lighting/proc/Processo()
-	//world << "CHUNGUS"
-	spawn(0)
-		while(1)
-			if(lighting_overlays_initialised)
-				//world << "TRIPLO CHUNGUS COM QUEIJO"
-				var/timer = world.timeofday
-				process()
-				lighting_ticks = (world.timeofday - timer) / 10
-				sleep(1)
 
 /datum/controller/lighting/proc/process(roundstart)
 	var/list/lighting_update_lights_old = lighting_update_lights //We use a different list so any additions to the update lists during a delay from scheck() don't cause things to be cut from the list without being updated.

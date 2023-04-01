@@ -8,5 +8,5 @@
 // Factor of how fast mob nutrition decreases
 #define HUNGER_FACTOR 0.18
 
-// Fator de sede no cara fodaseee
+// Factor of how fast mob thirst decreases
 #define THIRST_FACTOR 0.5

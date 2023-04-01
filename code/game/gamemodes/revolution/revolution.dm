@@ -42,7 +42,7 @@ var/plinioposters = 0
 	for(var/mob/new_player/player in player_list)
 		for(var/mob/new_player/player2 in player_list)
 			for(var/mob/new_player/player3 in player_list)
-				if(player.ready && player.client.work_chosen == "Baron" && player2.ready && player2.client.work_chosen == "Inquisitor"&& player3.ready && player3.client.work_chosen == "Bookkeeper")
+				if(player.ready && player.client.work_chosen == "Baron" && player2.ready && player2.client.work_chosen == "Inquisitor"&& player3.ready && player3.client.work_chosen == "Merchant")
 					return 1
 	return 0
 
@@ -54,7 +54,7 @@ var/plinioposters = 0
 	if(config.protect_roles_from_antagonist)
 		restricted_jobs += protected_jobs
 
-	var/list/datum/mind/possible_headrevs = get_players_for_role(BE_REV)
+	var/list/datum/mind/possible_headrevs = get_players_for_antag()
 
 	var/head_check = 0
 	for(var/mob/new_player/player in player_list)
@@ -94,7 +94,7 @@ var/plinioposters = 0
 	//	equip_traitor(rev_mind.current, 1) //changing how revs get assigned their uplink so they can get PDA uplinks. --NEO
 	//	Removing revolutionary uplinks.	-Pete
 		equip_revolutionary(rev_mind.current)
-		rev_mind.current.verbs += /mob/living/carbon/human/proc/RevConvert
+		rev_mind.current.add_verb(/mob/living/carbon/human/proc/RevConvert)
 		update_rev_icons_added(rev_mind)
 
 	for(var/datum/mind/rev_mind in head_revolutionaries)
@@ -102,7 +102,7 @@ var/plinioposters = 0
 	modePlayer += head_revolutionaries
 	spawn(15000)
 		for(var/obj/machinery/charon/C in world)
-			var/obj/item/weapon/paper/lord/NG = new (C.loc)
+			var/obj/item/paper/lord/NG = new (C.loc)
 			var/list/Names = list()
 			for(var/mob/living/carbon/human/H in mob_list)
 				if(H?.species?.name != "Human") continue
@@ -157,7 +157,7 @@ var/plinioposters = 0
 /datum/game_mode/proc/equip_revolutionary(mob/living/carbon/human/mob)
 	if(!istype(mob))
 		return
-	var/obj/item/weapon/spacecash/gold/c20/T = new(mob)
+	var/obj/item/spacecash/gold/c20/T = new(mob)
 
 	var/list/slots = list (
 		"backpack" = slot_in_backpack,
@@ -205,10 +205,10 @@ var/plinioposters = 0
 	if(rev_mind.assigned_role in command_positions)
 		return 0
 	var/mob/living/carbon/human/H = rev_mind.current//Check to see if the potential rev is implanted
-	for(var/obj/item/weapon/implant/loyalty/L in H)//Checking that there is a loyalty implant in the contents
+	for(var/obj/item/implant/loyalty/L in H)//Checking that there is a loyalty implant in the contents
 		if(L.imp_in == H)//Checking that it's actually implanted
 			return 0
-	for(var/obj/item/weapon/implant/mentor/L in H)//Checking that there is a mentor implant in the contents
+	for(var/obj/item/implant/mentor/L in H)//Checking that there is a mentor implant in the contents
 		if(L.imp_in == H)//Checking that it's actually implanted
 			return 0
 	if((rev_mind in revolutionaries) || (rev_mind in head_revolutionaries))
@@ -223,7 +223,8 @@ var/plinioposters = 0
 
 /mob/living/carbon/human/proc/RevConvert()
 	set name = "RevConvert"
-	set category = "IC"
+	set desc = "Convert a Citizen"
+	set category = "gpc"
 	var/list/Possible = list()
 	if(src.stat)
 		return
@@ -258,7 +259,7 @@ var/plinioposters = 0
 			if(choice == "Yes!")
 				ticker.mode:add_revolutionary(M.mind)
 				to_chat(M, "\blue You join the revolution!")
-				src?.client.ChromieWinorLoose(M?.client, 1)
+				src?.client.ChromieWinorLoose(1)
 				src.say("Anauê!")
 				src.say("*salutes extending his hand.")
 				M.say("Anauê")
@@ -512,7 +513,7 @@ var/plinioposters = 0
 /datum/game_mode/revolution/proc/NEGROSSALGAKA(){
 	for(var/mob/living/carbon/human/H in mob_list){
 		if(!H.client){continue}
-		sound_to(H, 'plotvictory.ogg')
+		sound_to(H, 'sound/music/plotvictory.ogg')
 		var/obj/structure/sign/signnew/web/plineosalgado/tela/P = new
 		H.client.screen.Add(P)
 		P.screen_loc = "CENTER"

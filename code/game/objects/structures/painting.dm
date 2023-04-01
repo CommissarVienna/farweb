@@ -127,5 +127,5 @@
 				pixel4.pixel_y = icon_y-1
 				pixel4.color = B.cor
 				overlays += pixel4
-		else
-			..()
+			return
+		..()

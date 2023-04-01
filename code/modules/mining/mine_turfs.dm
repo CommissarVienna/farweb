@@ -24,7 +24,7 @@ var/list/artifact_spawn = list() // Runtime fix for geometry loading before cont
 	var/next_rock = 0
 	var/archaeo_overlay = ""
 	var/excav_overlay = ""
-	var/obj/item/weapon/last_find
+	var/obj/item/last_find
 	var/datum/artifact_find/artifact_find
 
 
@@ -68,14 +68,14 @@ var/list/artifact_spawn = list() // Runtime fix for geometry loading before cont
 		. = ..()
 		if(istype(AM,/mob/living/carbon/human))
 			var/mob/living/carbon/human/H = AM
-			if((istype(H.l_hand,/obj/item/weapon/pickaxe)) && (!H.hand))
+			if((istype(H.l_hand,/obj/item/pickaxe)) && (!H.hand))
 				attackby(H.l_hand,H)
-			else if((istype(H.r_hand,/obj/item/weapon/pickaxe)) && H.hand)
+			else if((istype(H.r_hand,/obj/item/pickaxe)) && H.hand)
 				attackby(H.r_hand,H)
 
 		else if(istype(AM,/mob/living/silicon/robot))
 			var/mob/living/silicon/robot/R = AM
-			if(istype(R.module_active,/obj/item/weapon/pickaxe))
+			if(istype(R.module_active,/obj/item/pickaxe))
 				attackby(R.module_active,R)
 
 		else if(istype(AM,/obj/mecha))
@@ -203,9 +203,6 @@ var/list/artifact_spawn = list() // Runtime fix for geometry loading before cont
 		return
 
 	SpawnMonster(T)
-/*	var/turf/simulated/floor/t = new /turf/simulated/floor/plating/airless/asteroid(T)
-	spawn(2)
-		t.fullUpdateMineralOverlays()*/
 
 /turf/simulated/floor/plating/airless/asteroid/cave/proc/SpawnMonster(var/turf/T)
 	if(prob(30))
@@ -260,12 +257,12 @@ var/list/artifact_spawn = list() // Runtime fix for geometry loading before cont
 			gets_dug()
 	return
 
-/turf/simulated/floor/plating/airless/asteroid/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/turf/simulated/floor/plating/airless/asteroid/attackby(obj/item/W as obj, mob/user as mob)
 
 	if(!W || !user)
 		return 0
 
-	if ((istype(W, /obj/item/weapon/shovel)))
+	if ((istype(W, /obj/item/shovel)))
 		var/turf/T = user.loc
 		if (!( istype(T, /turf) ))
 			return
@@ -282,7 +279,7 @@ var/list/artifact_spawn = list() // Runtime fix for geometry loading before cont
 			user << "\blue You dug a hole."
 			gets_dug()
 
-	if ((istype(W,/obj/item/weapon/pickaxe/drill)))
+	if ((istype(W,/obj/item/pickaxe/drill)))
 		var/turf/T = user.loc
 		if (!( istype(T, /turf) ))
 			return
@@ -299,7 +296,7 @@ var/list/artifact_spawn = list() // Runtime fix for geometry loading before cont
 			user << "\blue You dug a hole."
 			gets_dug()
 
-	if ((istype(W,/obj/item/weapon/pickaxe/diamonddrill)) || (istype(W,/obj/item/weapon/pickaxe/borgdrill)))
+	if ((istype(W,/obj/item/pickaxe/diamonddrill)) || (istype(W,/obj/item/pickaxe/borgdrill)))
 		var/turf/T = user.loc
 		if (!( istype(T, /turf) ))
 			return
@@ -316,10 +313,10 @@ var/list/artifact_spawn = list() // Runtime fix for geometry loading before cont
 			user << "\blue You dug a hole."
 			gets_dug()
 
-	if(istype(W,/obj/item/weapon/storage/bag/ore))
-		var/obj/item/weapon/storage/bag/ore/S = W
+	if(istype(W,/obj/item/storage/bag/ore))
+		var/obj/item/storage/bag/ore/S = W
 		if(S.collection_mode)
-			for(var/obj/item/weapon/ore/O in contents)
+			for(var/obj/item/ore/O in contents)
 				O.attackby(W,user)
 				return
 
@@ -330,11 +327,11 @@ var/list/artifact_spawn = list() // Runtime fix for geometry loading before cont
 /turf/simulated/floor/plating/airless/asteroid/gets_dug()
 	if(dug)
 		return
-	new/obj/item/weapon/ore/glass(src)
-	new/obj/item/weapon/ore/glass(src)
-	new/obj/item/weapon/ore/glass(src)
-	new/obj/item/weapon/ore/glass(src)
-	new/obj/item/weapon/ore/glass(src)
+	new/obj/item/ore/glass(src)
+	new/obj/item/ore/glass(src)
+	new/obj/item/ore/glass(src)
+	new/obj/item/ore/glass(src)
+	new/obj/item/ore/glass(src)
 	dug = 1
 	icon_plating = "asteroid_dug"
 	icon_state = "asteroid_dug"
@@ -387,12 +384,12 @@ var/list/artifact_spawn = list() // Runtime fix for geometry loading before cont
 	..()
 	if(istype(M,/mob/living/silicon/robot))
 		var/mob/living/silicon/robot/R = M
-		if(istype(R.module, /obj/item/weapon/robot_module/miner))
-			if(istype(R.module_state_1,/obj/item/weapon/storage/bag/ore))
+		if(istype(R.module, /obj/item/robot_module/miner))
+			if(istype(R.module_state_1,/obj/item/storage/bag/ore))
 				attackby(R.module_state_1,R)
-			else if(istype(R.module_state_2,/obj/item/weapon/storage/bag/ore))
+			else if(istype(R.module_state_2,/obj/item/storage/bag/ore))
 				attackby(R.module_state_2,R)
-			else if(istype(R.module_state_3,/obj/item/weapon/storage/bag/ore))
+			else if(istype(R.module_state_3,/obj/item/storage/bag/ore))
 				attackby(R.module_state_3,R)
 			else
 				return

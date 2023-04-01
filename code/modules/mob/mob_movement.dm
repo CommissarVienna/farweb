@@ -211,10 +211,10 @@
 		mob.glide_size = glide // dumb hack: some Move() code needs glide_size to be set early in order to adjust "following" objects
 		mob.animate_movement = SLIDE_STEPS
 		if(mob.druggy || mob.lying)
-			glide = 4
+			mob.glide_size = 4
 		moving = 1
 
-		if(locate(/obj/item/weapon/grab, mob))
+		if(locate(/obj/item/grab, mob))
 			mob.next_movement = max(mob.next_movement, world.time + 3)
 			var/list/L = mob.ret_grab()
 			if(istype(L, /list))
@@ -259,7 +259,7 @@
 			if(isobj(mob.pulling))
 				var/obj/O = mob.pulling
 				if(O.heavy && !H.check_perk(/datum/perk/docker))
-					H.adjustStaminaLoss(15-H.my_stats.st, 25-H.my_stats.st)
+					H.adjustStaminaLoss(15-H.my_stats.get_stat(STAT_ST), 25-H.my_stats.get_stat(STAT_ST))
 			mob.dir = turn(mob.dir, 180)
 			mob.update_vision_cone()
 
@@ -269,7 +269,7 @@
 	if(isliving(mob))
 		var/mob/living/L = mob
 		if(L.grabbed_by.len)
-			for(var/obj/item/weapon/grab/G in L.grabbed_by)
+			for(var/obj/item/grab/G in L.grabbed_by)
 				if(G.affecting != G.assailant)
 					to_chat(mob, "You can't move!")
 					return 1

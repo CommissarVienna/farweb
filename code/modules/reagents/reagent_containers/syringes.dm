@@ -5,7 +5,7 @@
 #define SYRINGE_INJECT 1
 #define SYRINGE_BROKEN 2
 
-/obj/item/weapon/reagent_containers/syringe
+/obj/item/reagent_containers/syringe
 	name = "syringe"
 	desc = "A syringe."
 	icon = 'icons/obj/syringe.dmi'
@@ -61,7 +61,7 @@
 			user << "\red This syringe is broken!"
 			return
 
-		if (user.a_intent == "hurt" && ismob(target) && !istype(src, /obj/item/weapon/reagent_containers/syringe/blood_snatcher))
+		if (user.a_intent == "hurt" && ismob(target) && !istype(src, /obj/item/reagent_containers/syringe/blood_snatcher))
 			if((CLUMSY in user.mutations) && prob(50))
 				target = user
 			syringestab(target, user)
@@ -131,10 +131,10 @@
 				if(!reagents.total_volume)
 					user << "\red The Syringe is empty."
 					return
-				if(istype(target, /obj/item/weapon/implantcase/chem))
+				if(istype(target, /obj/item/implantcase/chem))
 					return
 
-				if(!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/weapon/reagent_containers/food) && !istype(target, /obj/item/clothing/mask/cigarette) && !istype(target, /obj/item/weapon/storage/fancy/cigarettes))
+				if(!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/reagent_containers/food) && !istype(target, /obj/item/clothing/mask/cigarette) && !istype(target, /obj/item/storage/fancy/cigarettes))
 					user << "\red You cannot directly fill this object."
 					return
 				if(target.reagents.total_volume >= target.reagents.maximum_volume)
@@ -218,7 +218,7 @@
 			overlays += filling
 
 
-/obj/item/weapon/reagent_containers/syringe/proc/syringestab(mob/living/carbon/target as mob, mob/living/carbon/user as mob)
+/obj/item/reagent_containers/syringe/proc/syringestab(mob/living/carbon/target as mob, mob/living/carbon/user as mob)
 	return
 	user.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [target.name] ([target.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>"
 	target.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [user.name] ([user.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>"
@@ -269,7 +269,7 @@
 	src.update_icon()
 
 
-/obj/item/weapon/reagent_containers/ld50_syringe
+/obj/item/reagent_containers/ld50_syringe
 	name = "Lethal Injection Syringe"
 	desc = "A syringe used for lethal injections."
 	icon = 'icons/obj/syringe.dmi'
@@ -340,9 +340,9 @@
 				if(!reagents.total_volume)
 					user << "\red The Syringe is empty."
 					return
-				if(istype(target, /obj/item/weapon/implantcase/chem))
+				if(istype(target, /obj/item/implantcase/chem))
 					return
-				if(!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/weapon/reagent_containers/food))
+				if(!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/reagent_containers/food))
 					user << "\red You cannot directly fill this object."
 					return
 				if(target.reagents.total_volume >= target.reagents.maximum_volume)
@@ -388,7 +388,7 @@
 
 
 
-/obj/item/weapon/reagent_containers/syringe/epinephrine
+/obj/item/reagent_containers/syringe/epinephrine
 	name = "Syringe (epinephrine)"
 	desc = "Contains epinephrine - used to stabilize patients."
 	New()
@@ -397,7 +397,7 @@
 		mode = SYRINGE_INJECT
 		update_icon()
 
-/obj/item/weapon/reagent_containers/syringe/antitoxin
+/obj/item/reagent_containers/syringe/antitoxin
 	name = "Syringe (charcoal)"
 	desc = "Contains liquid charcoal."
 	New()
@@ -406,7 +406,7 @@
 		mode = SYRINGE_INJECT
 		update_icon()
 
-/obj/item/weapon/reagent_containers/syringe/antiviral
+/obj/item/reagent_containers/syringe/antiviral
 	name = "Vaccine Syringe"
 	desc = "Contains antiviral agents."
 	New()
@@ -416,7 +416,7 @@
 		mode = SYRINGE_INJECT
 		update_icon()
 
-/obj/item/weapon/reagent_containers/ld50_syringe/choral
+/obj/item/reagent_containers/ld50_syringe/choral
 	New()
 		..()
 		reagents.add_reagent("chloralhydrate", 50)
@@ -426,7 +426,7 @@
 
 //Robot syringes
 //Not special in any way, code wise. They don't have added variables or procs.
-/obj/item/weapon/reagent_containers/syringe/robot/antitoxin
+/obj/item/reagent_containers/syringe/robot/antitoxin
 	name = "Syringe (anti-toxin)"
 	desc = "Contains anti-toxins."
 	New()
@@ -435,7 +435,7 @@
 		mode = SYRINGE_INJECT
 		update_icon()
 
-/obj/item/weapon/reagent_containers/syringe/robot/inoprovaline
+/obj/item/reagent_containers/syringe/robot/inoprovaline
 	name = "Syringe (epinephrine)"
 	desc = "Contains epinephrine - used to stabilize patients."
 	New()
@@ -444,7 +444,7 @@
 		mode = SYRINGE_INJECT
 		update_icon()
 
-/obj/item/weapon/reagent_containers/syringe/robot/mixed
+/obj/item/reagent_containers/syringe/robot/mixed
 	name = "Syringe (mixed)"
 	desc = "Contains epinephrine & charcoal."
 	New()
@@ -454,31 +454,31 @@
 		mode = SYRINGE_INJECT
 		update_icon()
 
-/obj/item/weapon/reagent_containers/syringe/antibiotic
+/obj/item/reagent_containers/syringe/antibiotic
 	name = "Syringe (Antibiotic)"
 	desc = "Contains antibiotic."
 
-/obj/item/weapon/reagent_containers/syringe/antibiotic/New()
+/obj/item/reagent_containers/syringe/antibiotic/New()
 	..()
 	reagents.add_reagent("antibiotic", 15)
 	mode = SYRINGE_INJECT
 	update_icon()
 
-/obj/item/weapon/reagent_containers/syringe/raque
+/obj/item/reagent_containers/syringe/raque
 	name = "Syringe (RAQUE)"
 	desc = "Contains RAQUE."
 
-/obj/item/weapon/reagent_containers/syringe/raque/New()
+/obj/item/reagent_containers/syringe/raque/New()
 	..()
 	reagents.add_reagent("raque", 15)
 	mode = SYRINGE_INJECT
 	update_icon()
 
-/obj/item/weapon/reagent_containers/syringe/heroin
+/obj/item/reagent_containers/syringe/heroin
 	name = "Syringe (???)"
 	desc = "Contains something."
 
-/obj/item/weapon/reagent_containers/syringe/heroin/New()
+/obj/item/reagent_containers/syringe/heroin/New()
 	..()
 	reagents.add_reagent("heroin", 15)
 	mode = SYRINGE_INJECT

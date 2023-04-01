@@ -1,5 +1,5 @@
 /proc/falseTarget(var/text = null, var/mob/usr, var/turf/C)
-    for(var/obj/item/weapon/photo/P in C.contents)
+    for(var/obj/item/photo/P in C.contents)
         for(var/mob/living/carbon/human/H in P.info)
             if(istype(H.amulet, /obj/item/clothing/head/amulet/holy/cross))
                 return

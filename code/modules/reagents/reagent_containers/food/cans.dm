@@ -1,4 +1,4 @@
-/obj/item/weapon/reagent_containers/food/drinks/cans
+/obj/item/reagent_containers/food/drinks/cans
 	var/canopened = 0
 
 	attack_self(mob/user as mob)
@@ -49,7 +49,7 @@
 				to_chat(M, "<span class='combat'>I can't use that, I must drink it with my mouth.</span>")
 				return 0
 
-			playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(50,60), 0)
+			playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(50,60), 0)
 			return 1
 		else if( istype(M, /mob/living/carbon/human) )
 			for(var/mob/O in viewers(world.view, user))
@@ -74,7 +74,7 @@
 				spawn(600)
 					R.add_reagent(refill, fillevel)
 
-			playsound(M.loc,pick('glass_drink1.ogg','glass_drink2.ogg','glass_drink3.ogg','glass_drink4.ogg','glass_drink5.ogg'), rand(50,60), 0)
+			playsound(M.loc,pick('sound/effects/glass_drink1.ogg','sound/effects/glass_drink2.ogg','sound/effects/glass_drink3.ogg','sound/effects/glass_drink4.ogg','sound/effects/glass_drink5.ogg'), rand(50,60), 0)
 			return 1
 
 		return 0
@@ -147,7 +147,7 @@
 
 //DRINKS
 
-/obj/item/weapon/reagent_containers/food/drinks/cans/cola
+/obj/item/reagent_containers/food/drinks/cans/cola
 	name = "Space Cola"
 	desc = "Cola. in space."
 	icon_state = "cola"
@@ -157,7 +157,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 
-/obj/item/weapon/reagent_containers/food/drinks/cans/space_mountain_wind
+/obj/item/reagent_containers/food/drinks/cans/space_mountain_wind
 	name = "Space Mountain Wind"
 	desc = "Blows right through you like a space wind."
 	icon_state = "space_mountain_wind"
@@ -167,7 +167,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 
-/obj/item/weapon/reagent_containers/food/drinks/cans/thirteenloko
+/obj/item/reagent_containers/food/drinks/cans/thirteenloko
 	name = "Thirteen Loko"
 	desc = "The CMO has advised crew members that consumption of Thirteen Loko may result in seizures, blindness, drunkeness, or even death. Please Drink Responsibly."
 	icon_state = "thirteen_loko"
@@ -177,7 +177,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 
-/obj/item/weapon/reagent_containers/food/drinks/cans/dr_gibb
+/obj/item/reagent_containers/food/drinks/cans/dr_gibb
 	name = "Dr. Gibb"
 	desc = "A delicious mixture of 42 different flavors."
 	icon_state = "dr_gibb"
@@ -187,7 +187,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 
-/obj/item/weapon/reagent_containers/food/drinks/cans/starkist
+/obj/item/reagent_containers/food/drinks/cans/starkist
 	name = "Star-kist"
 	desc = "The taste of a star in liquid form. And, a bit of tuna...?"
 	icon_state = "starkist"
@@ -198,7 +198,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 
-/obj/item/weapon/reagent_containers/food/drinks/cans/space_up
+/obj/item/reagent_containers/food/drinks/cans/space_up
 	name = "Space-Up"
 	desc = "Tastes like a hull breach in your mouth."
 	icon_state = "space-up"
@@ -208,7 +208,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 
-/obj/item/weapon/reagent_containers/food/drinks/cans/lemon_lime
+/obj/item/reagent_containers/food/drinks/cans/lemon_lime
 	name = "Lemon-Lime"
 	desc = "You wanted ORANGE. It gave you Lemon Lime."
 	icon_state = "lemon-lime"
@@ -218,7 +218,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 
-/obj/item/weapon/reagent_containers/food/drinks/cans/iced_tea
+/obj/item/reagent_containers/food/drinks/cans/iced_tea
 	name = "Vrisk Serket Iced Tea"
 	desc = "That sweet, refreshing southern earthy flavor. That's where it's from, right? South Earth?"
 	icon_state = "ice_tea_can"
@@ -228,7 +228,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 
-/obj/item/weapon/reagent_containers/food/drinks/cans/grape_juice
+/obj/item/reagent_containers/food/drinks/cans/grape_juice
 	name = "Grapel Juice"
 	desc = "500 pages of rules of how to appropriately enter into a combat with this juice!"
 	icon_state = "purple_can"
@@ -238,7 +238,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 
-/obj/item/weapon/reagent_containers/food/drinks/cans/tonic
+/obj/item/reagent_containers/food/drinks/cans/tonic
 	name = "T-Borg's Tonic Water"
 	desc = "Quinine tastes funny, but at least it'll keep that Space Malaria away."
 	icon_state = "tonic"
@@ -246,7 +246,7 @@
 		..()
 		reagents.add_reagent("tonic", 50)
 
-/obj/item/weapon/reagent_containers/food/drinks/cans/sodawater
+/obj/item/reagent_containers/food/drinks/cans/sodawater
 	name = "Soda Water"
 	desc = "A can of soda water. Still water's more refreshing cousin."
 	icon_state = "sodawater"

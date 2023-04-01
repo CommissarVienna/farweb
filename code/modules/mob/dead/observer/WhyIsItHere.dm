@@ -8,7 +8,7 @@
 	if(!war)
 		to_chat(world, "<br>")
 		to_chat(world, "<span class='ravenheartfortress'>Acampamento do Sul</span>")
-		to_chat(world, "<span class='excomm'>¤ Count [src.real_name] declars war to Firethorn. ¤</span>")
+		to_chat(world, "<span class='excomm'>ï¿½ Count [src.real_name] declars war to Firethorn. ï¿½</span>")
 		world << sound('sound/AI/siege_declared.ogg')
 		to_chat(world, "<br>")
 		to_chat(world, "<span class='alert'>New Count Decree!</span>")

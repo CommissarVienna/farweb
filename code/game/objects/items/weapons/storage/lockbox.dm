@@ -1,6 +1,6 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
 
-/obj/item/weapon/storage/lockbox
+/obj/item/storage/lockbox
 	name = "lockbox"
 	desc = "A locked box."
 	icon_state = "lockbox+l"
@@ -17,8 +17,8 @@
 	var/icon_broken = "lockbox+b"
 
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/weapon/card/id))
+	attackby(obj/item/W as obj, mob/user as mob)
+		if (istype(W, /obj/item/card/id))
 			if(src.broken)
 				user << "\red It appears to be broken."
 				return
@@ -34,12 +34,12 @@
 					return
 			else
 				user << "\red Access Denied"
-		else if((istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && !src.broken)
+		else if((istype(W, /obj/item/card/emag)||istype(W, /obj/item/melee/energy/blade)) && !src.broken)
 			broken = 1
 			locked = 0
 			desc = "It appears to be broken."
 			icon_state = src.icon_broken
-			if(istype(W, /obj/item/weapon/melee/energy/blade))
+			if(istype(W, /obj/item/melee/energy/blade))
 				var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 				spark_system.set_up(5, 0, src.loc)
 				spark_system.start()
@@ -66,23 +66,23 @@
 		return
 
 
-/obj/item/weapon/storage/lockbox/loyalty
+/obj/item/storage/lockbox/loyalty
 	name = "lockbox of loyalty implants"
 	req_access = list(access_security)
 
 	New()
 		..()
-		new /obj/item/weapon/implantcase/loyalty(src)
-		new /obj/item/weapon/implantcase/loyalty(src)
-		new /obj/item/weapon/implantcase/loyalty(src)
-		new /obj/item/weapon/implanter/loyalty(src)
+		new /obj/item/implantcase/loyalty(src)
+		new /obj/item/implantcase/loyalty(src)
+		new /obj/item/implantcase/loyalty(src)
+		new /obj/item/implanter/loyalty(src)
 
 
-/obj/item/weapon/storage/lockbox/clusterbang
+/obj/item/storage/lockbox/clusterbang
 	name = "lockbox of clusterbangs"
 	desc = "You have a bad feeling about opening this."
 	req_access = list(access_security)
 
 	New()
 		..()
-		new /obj/item/weapon/grenade/flashbang/clusterbang(src)
+		new /obj/item/grenade/flashbang/clusterbang(src)

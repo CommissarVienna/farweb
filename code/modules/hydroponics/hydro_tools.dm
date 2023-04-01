@@ -1,6 +1,6 @@
 //Analyzer, pestkillers, weedkillers, nutrients, hatchets, cutters.
 
-/obj/item/weapon/wirecutters/clippers
+/obj/item/wirecutters/clippers
 	name = "plant clippers"
 	desc = "A tool used to take samples from plants."
 
@@ -20,15 +20,15 @@
 	var/datum/reagents/grown_reagents
 	if(istype(target,/obj/structure/rack) || istype(target,/obj/structure/table))
 		return ..()
-	else if(istype(target,/obj/item/weapon/reagent_containers/food/snacks/grown))
+	else if(istype(target,/obj/item/reagent_containers/food/snacks/grown))
 
-		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = target
+		var/obj/item/reagent_containers/food/snacks/grown/G = target
 		grown_seed = seed_types[G.plantname]
 		grown_reagents = G.reagents
 
-	else if(istype(target,/obj/item/weapon/grown))
+	else if(istype(target,/obj/item/grown))
 
-		var/obj/item/weapon/grown/G = target
+		var/obj/item/grown/G = target
 		grown_seed = seed_types[G.plantname]
 		grown_reagents = G.reagents
 
@@ -165,7 +165,7 @@
 // Hydroponics Tools
 // *************************************
 
-/obj/item/weapon/plantspray
+/obj/item/plantspray
 	icon = 'icons/obj/hydroponics.dmi'
 	item_state = "spray"
 	flags = TABLEPASS | FPRINT | NOBLUDGEON
@@ -178,43 +178,43 @@
 	var/pest_kill_str = 0
 	var/weed_kill_str = 0
 
-/obj/item/weapon/plantspray/weeds // -- Skie
+/obj/item/plantspray/weeds // -- Skie
 
 	name = "weed-spray"
 	desc = "It's a toxic mixture, in spray form, to kill small weeds."
 	icon_state = "weedspray"
 	weed_kill_str = 6
 
-/obj/item/weapon/plantspray/pests
+/obj/item/plantspray/pests
 	name = "pest-spray"
 	desc = "It's some pest eliminator spray! <I>Do not inhale!</I>"
 	icon_state = "pestspray"
 	pest_kill_str = 6
 
-/obj/item/weapon/plantspray/pests/old
+/obj/item/plantspray/pests/old
 	name = "bottle of pestkiller"
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle16"
 
-/obj/item/weapon/plantspray/pests/old/carbaryl
+/obj/item/plantspray/pests/old/carbaryl
 	name = "bottle of carbaryl"
 	icon_state = "bottle16"
 	toxicity = 4
 	pest_kill_str = 2
 
-/obj/item/weapon/plantspray/pests/old/lindane
+/obj/item/plantspray/pests/old/lindane
 	name = "bottle of lindane"
 	icon_state = "bottle18"
 	toxicity = 6
 	pest_kill_str = 4
 
-/obj/item/weapon/plantspray/pests/old/phosmet
+/obj/item/plantspray/pests/old/phosmet
 	name = "bottle of phosmet"
 	icon_state = "bottle15"
 	toxicity = 8
 	pest_kill_str = 7
 
-/obj/item/weapon/minihoe // -- Numbers
+/obj/item/minihoe // -- Numbers
 	name = "pitchfork"
 	desc = "It's used for removing weeds or scratching your back."
 	icon = 'icons/obj/weapons.dmi'
@@ -232,7 +232,7 @@
 	attack_verb = list("stabs")
 	hitsound= "stab"
 
-/obj/item/weapon/minihoe/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/minihoe/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	playsound(loc, 'sound/weapons/bladeslice.ogg', 50, 1, -1)
 	return ..()
 
@@ -277,7 +277,7 @@
 // Nutrient defines for hydroponics
 // *************************************
 
-/obj/item/weapon/reagent_containers/glass/fertilizer
+/obj/item/reagent_containers/glass/fertilizer
 	name = "fertilizer bottle"
 	desc = "A small glass bottle. Can hold up to 10 units."
 	icon = 'icons/obj/chemical.dmi'
@@ -292,7 +292,7 @@
 	amount_per_transfer_from_this = 10
 	volume = 10
 
-/obj/item/weapon/reagent_containers/glass/fertilizer/New()
+/obj/item/reagent_containers/glass/fertilizer/New()
 	..()
 
 	src.pixel_x = rand(-5.0, 5)
@@ -301,30 +301,30 @@
 	if(fertilizer)
 		reagents.add_reagent(fertilizer,10)
 
-/obj/item/weapon/reagent_containers/glass/fertilizer/ez
+/obj/item/reagent_containers/glass/fertilizer/ez
 	name = "bottle of E-Z-Nutrient"
 	icon_state = "bottle16"
 	fertilizer = "eznutrient"
 
-/obj/item/weapon/reagent_containers/glass/fertilizer/l4z
+/obj/item/reagent_containers/glass/fertilizer/l4z
 	name = "bottle of Left 4 Zed"
 	icon_state = "bottle18"
 	fertilizer = "left4zed"
 
-/obj/item/weapon/reagent_containers/glass/fertilizer/rh
+/obj/item/reagent_containers/glass/fertilizer/rh
 	name = "bottle of Robust Harvest"
 	icon_state = "bottle15"
 	fertilizer = "robustharvest"
 
 //If it's a hatchet it goes here. I guess
-/obj/item/weapon/hatchet/unathiknife
+/obj/item/hatchet/unathiknife
 	name = "duelling knife"
 	desc = "A length of leather-bound wood studded with razor-sharp teeth. How crude."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "unathiknife"
 	attack_verb = list("ripped", "torn", "cut")
 
-/obj/item/weapon/scythe
+/obj/item/scythe
 	icon_state = "scythe0"
 	name = "scythe"
 	desc = "A sharp and curved blade on a long fibremetal handle, this tool makes it easy to reap what you sow."
@@ -338,7 +338,7 @@
 	origin_tech = "materials=2;combat=2"
 	attack_verb = list("chopped", "sliced", "cut", "reaped")
 
-/obj/item/weapon/scythe/afterattack(atom/A, mob/user as mob, proximity)
+/obj/item/scythe/afterattack(atom/A, mob/user as mob, proximity)
 	if(!proximity) return
 	if(istype(A, /obj/effect/plantsegment))
 		for(var/obj/effect/plantsegment/B in orange(A,1))

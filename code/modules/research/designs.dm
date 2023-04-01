@@ -78,7 +78,7 @@ other types of metals and chemistry for reagents).
 	req_tech = list("programming" = 1)
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 30, "$glass" = 10)
-	build_path = /obj/item/weapon/disk/design_disk
+	build_path = /obj/item/disk/design_disk
 
 /datum/design/tech_disk
 	name = "Technology Data Storage Disk"
@@ -87,10 +87,10 @@ other types of metals and chemistry for reagents).
 	req_tech = list("programming" = 1)
 	build_type = PROTOLATHE | AUTOLATHE
 	materials = list("$metal" = 30, "$glass" = 10)
-	build_path = /obj/item/weapon/disk/tech_disk
+	build_path = /obj/item/disk/tech_disk
 
 
-/obj/item/weapon/disk/design_disk
+/obj/item/disk/design_disk
 	name = "Component Design Disk"
 	desc = "A disk for storing device design data for construction in lathes."
 	icon = 'icons/obj/cloning.dmi'
@@ -101,7 +101,7 @@ other types of metals and chemistry for reagents).
 	g_amt = 10
 	var/datum/design/blueprint
 
-/obj/item/weapon/disk/design_disk/New()
+/obj/item/disk/design_disk/New()
 	src.pixel_x = rand(-5.0, 5)
 	src.pixel_y = rand(-5.0, 5)
 
@@ -118,4 +118,4 @@ other types of metals and chemistry for reagents).
 	build_type = PROTOLATHE
 	req_tech = list("materials" = 1)
 	materials = list("$gold" = 3000, "iron" = 15, "copper" = 10, "$silver" = 2500)
-	build_path = /obj/item/weapon/banhammer */
+	build_path = /obj/item/banhammer */

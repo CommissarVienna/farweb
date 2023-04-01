@@ -1,4 +1,4 @@
-/datum/organ/external/hand/l_hand
+/datum/organ/external/extrem/hand/l_hand
 	name = "l_hand"
 	display_name = "left hand"
 	display_namebr = "mão esquerda"
@@ -16,6 +16,7 @@
 	has_tendons = 1
 	has_finger = 1
 	mask_color = "#1187ce"
+	above_layer = LEFT
 	process()
 		..()
 		process_grasp(owner.l_hand, "left hand")

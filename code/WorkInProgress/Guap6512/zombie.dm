@@ -40,28 +40,21 @@ var/list/zombies = list()
 	becoming_zombie = 0
 	bodytemperature = 310.055
 	see_in_dark = 4
-	zombie = 1
+	zombie = TRUE
 	sight |= SEE_MOBS
-	update_icons()
-	update_body()
 	src.verbs += /mob/living/carbon/human/proc/supersuicide
 	to_chat(src, "<span class='dreamershitfuckcomicao1'>You have become a screamer!</span>")
 	src.consyte = FALSE
 	src.nutrition = 700
-	src.hidratacao = 700
+	src.hydration = 700
 	src.death_door = 0
 	var/datum/organ/internal/heart/HE = locate() in internal_organs
 	if(HE)
 		if(HE.stopped_working)
 			HE.stopped_working = 0
 	src.sleeping = 0
-	update_body()
-	src.updatePig()
-	if(!isChild(src))
-		set_species("Zombie")
-	else
-		set_species("Zombie Child")
-	update_all_zombie_icons()
+	update_body(1)
+	src.updateStatPanel()
 
 
 /mob/living/carbon/human/proc/handle_zombify()
@@ -89,9 +82,11 @@ var/list/zombies = list()
 	if(zombify >= 500)
 		zombify = 500
 		src.zombify()
-		src.client.color = null
+		src.client?.color = null //AI NPCs do not have clients you fucking morons.
 
 /mob/living/carbon/human/proc/update_all_zombie_icons()
+	return
+	/*
 	var/ZMB
 	var/is_zombie = TRUE
 	if(iszombie(src))
@@ -110,6 +105,7 @@ var/list/zombies = list()
 			var/I = image('icons/mob/mob.dmi', loc = HH, icon_state = "zombie2")
 			if(src.client)
 				src.client.images += I
+	*/
 
 /mob/living/carbon/human/proc/unzombify()
 	set_species("Human")
@@ -119,7 +115,7 @@ var/list/zombies = list()
 	zombies.Remove(src)
 	update_all_zombie_icons()
 	update_icons()
-	src << "\red<font size=3>You have been cured from being a screamer!"
+	to_chat(src,"<span class='dreamershitfuckcomicao1'><<font size=3>You have been cured from being a screamer!")
 /*
 /mob/living/carbon/human/proc/zombie_bit(var/mob/living/carbon/human/biter)
 	var/mob/living/carbon/human/biten = src

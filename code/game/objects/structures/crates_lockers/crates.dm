@@ -32,7 +32,7 @@
 				s.start()
 				return 2
 
-	playsound(src.loc, pick('drsc_treasure_open_01.ogg','drsc_treasure_open_02.ogg'), 40, 1, -3)
+	playsound(src.loc, pick('sound/effects/drsc_treasure_open_01.ogg','sound/effects/drsc_treasure_open_02.ogg'), 40, 1, -3)
 	for(var/obj/O in src)
 		O.loc = get_turf(src)
 	icon_state = icon_opened
@@ -45,7 +45,7 @@
 	if(!src.can_close())
 		return 0
 
-	playsound(src.loc, pick('drsc_treasure_close_01.ogg','drsc_treasure_close_02.ogg'), 40, 1, -3)
+	playsound(src.loc, pick('sound/effects/drsc_treasure_close_01.ogg','sound/effects/drsc_treasure_close_02.ogg'), 40, 1, -3)
 	var/itemcount = 0
 	for(var/obj/O in get_turf(src))
 		if(itemcount >= storage_capacity)
@@ -63,7 +63,7 @@
 	src.opened = 0
 	return 1
 
-/obj/structure/closet/crate/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/closet/crate/attackby(obj/item/W as obj, mob/user as mob)
 	if(opened)
 		if(isrobot(user))
 			return
@@ -87,7 +87,7 @@
 			user.drop_item()
 			W.loc = src
 			return
-	else if(istype(W, /obj/item/weapon/wirecutters))
+	else if(istype(W, /obj/item/wirecutters))
 		if(rigged)
 			user  << "<span class='notice'>You cut away the wiring.</span>"
 			playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
@@ -183,10 +183,10 @@
 	else
 		src.toggle(user)
 
-/obj/structure/closet/crate/secure/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(is_type_in_list(W, list(/obj/item/stack/packageWrap, /obj/item/stack/cable_coil, /obj/item/device/radio/electropack, /obj/item/weapon/wirecutters)))
+/obj/structure/closet/crate/secure/attackby(obj/item/W as obj, mob/user as mob)
+	if(is_type_in_list(W, list(/obj/item/stack/packageWrap, /obj/item/stack/cable_coil, /obj/item/device/radio/electropack, /obj/item/wirecutters)))
 		return ..()
-	if(locked && (istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)))
+	if(locked && (istype(W, /obj/item/card/emag)||istype(W, /obj/item/melee/energy/blade)))
 		overlays.Cut()
 		overlays += emag
 		overlays += sparks
@@ -294,13 +294,13 @@
 		..()
 		sleep(2)
 		new /obj/item/clothing/mask/gas(src)
-		new /obj/item/weapon/tank/air(src)
+		new /obj/item/tank/air(src)
 		new /obj/item/clothing/mask/gas(src)
-		new /obj/item/weapon/tank/air(src)
+		new /obj/item/tank/air(src)
 		new /obj/item/clothing/mask/gas(src)
-		new /obj/item/weapon/tank/air(src)
+		new /obj/item/tank/air(src)
 		new /obj/item/clothing/mask/gas(src)
-		new /obj/item/weapon/tank/air(src)
+		new /obj/item/tank/air(src)
 
 /obj/structure/closet/crate/trashcart
 	desc = "A heavy, metal trashcart with wheels."
@@ -341,10 +341,10 @@
 
 /obj/structure/closet/crate/rcd/New()
 	..()
-	new /obj/item/weapon/rcd_ammo(src)
-	new /obj/item/weapon/rcd_ammo(src)
-	new /obj/item/weapon/rcd_ammo(src)
-	new /obj/item/weapon/rcd(src)
+	new /obj/item/rcd_ammo(src)
+	new /obj/item/rcd_ammo(src)
+	new /obj/item/rcd_ammo(src)
+	new /obj/item/rcd(src)
 
 /obj/structure/closet/crate/freezer
 	desc = "A freezer."
@@ -464,27 +464,27 @@
 		loot = rand(1,6)
 	switch(loot)
 		if(1)
-			new/obj/item/weapon/reagent_containers/food/snacks/grown/apple/poisoned(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/grown/apple/poisoned(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/grown/apple/poisoned(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/grown/apple/poisoned(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/grown/apple/poisoned(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/grown/apple/poisoned(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/grown/apple/poisoned(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/grown/apple/poisoned(src)
+			new/obj/item/reagent_containers/food/snacks/grown/apple/poisoned(src)
+			new/obj/item/reagent_containers/food/snacks/grown/apple/poisoned(src)
+			new/obj/item/reagent_containers/food/snacks/grown/apple/poisoned(src)
+			new/obj/item/reagent_containers/food/snacks/grown/apple/poisoned(src)
+			new/obj/item/reagent_containers/food/snacks/grown/apple/poisoned(src)
+			new/obj/item/reagent_containers/food/snacks/grown/apple/poisoned(src)
+			new/obj/item/reagent_containers/food/snacks/grown/apple/poisoned(src)
+			new/obj/item/reagent_containers/food/snacks/grown/apple/poisoned(src)
 		if(2)
-			new/obj/item/weapon/reagent_containers/food/snacks/poo(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/poo(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/poo(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/poo(src)
+			new/obj/item/reagent_containers/food/snacks/poo(src)
+			new/obj/item/reagent_containers/food/snacks/poo(src)
+			new/obj/item/reagent_containers/food/snacks/poo(src)
+			new/obj/item/reagent_containers/food/snacks/poo(src)
 		if(3)
 			new/mob/living/simple_animal/hostile/retaliate/graga(src)
 		if(4)
 			new/obj/item/clothing/suit/armor/heavy(src)
 		if(5)
-			new/obj/item/weapon/shield/generator(src)
+			new/obj/item/shield/generator(src)
 		if(6)
-			new /obj/item/weapon/gun/projectile/automatic/carbine(src)
+			new /obj/item/gun/projectile/automatic/carbine(src)
 			new /obj/item/ammo_magazine/external/mag556(src)
 			new /obj/item/ammo_magazine/external/mag556(src)
 			new /obj/item/ammo_magazine/external/mag556(src)
@@ -516,10 +516,10 @@
 			mobtrap = 1
 			trapspawn = /mob/living/carbon/human/monster/graga
 		if(3)
-			new/obj/item/weapon/reagent_containers/food/snacks/poo(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/poo(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/poo(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/poo(src)
+			new/obj/item/reagent_containers/food/snacks/poo(src)
+			new/obj/item/reagent_containers/food/snacks/poo(src)
+			new/obj/item/reagent_containers/food/snacks/poo(src)
+			new/obj/item/reagent_containers/food/snacks/poo(src)
 		if(4)
 			mobtrap = 1
 			trapspawn = /mob/living/carbon/human/monster/strygh
@@ -529,9 +529,9 @@
 			trapspawn = /mob/living/carbon/human/monster/eelo
 			//new/mob/living/carbon/human/zombiebot(src)
 		if(6)
-			new/obj/item/weapon/skull(src)
-			new/obj/item/weapon/bone(src)
-			new/obj/item/weapon/bone(src)
+			new/obj/item/skull(src)
+			new/obj/item/bone(src)
+			new/obj/item/bone(src)
 		if(7)
 			mobtrap = 1
 			trapspawn = /mob/living/carbon/human/monster/eelo
@@ -544,23 +544,20 @@
 			mobtrap = 1
 			trapspawn = /mob/living/carbon/human/monster/loge
 		if(11)
-			new/obj/item/weapon/skull(src)
-			new/obj/item/weapon/bone(src)
-			new/obj/item/weapon/bone(src)
-		if(12)
-			new/obj/item/weapon/claymore/rusty(src)
-		if(13)
-			mobtrap = 1
-			trapspawn = /mob/living/carbon/human/monster/skeleton/ancestor
+			new/obj/item/skull(src)
+			new/obj/item/bone(src)
+			new/obj/item/bone(src)
+		if(12, 13)
+			new/obj/item/claymore/rusty(src)
 		if(14)
-			new/obj/item/weapon/gun/projectile/newRevolver/duelista(src)
+			new/obj/item/gun/projectile/newRevolver/duelista(src)
 			new/obj/item/stack/bullets/Newduelista(src)
 		if(15)
-			new/obj/item/weapon/gun/projectile/automatic/pistol/magnum66/mother(src)
+			new/obj/item/gun/projectile/automatic/pistol/magnum66/mother(src)
 		if(16)
-			new/obj/item/weapon/stone/unholy(src)
+			new/obj/item/stone/unholy(src)
 		if(17)
-			new/obj/item/weapon/hatchet/sun(src)
+			new/obj/item/hatchet/sun(src)
 
 /obj/structure/closet/crate/sarcophagus/proc/MobTrap()
 	if(previously_opened)
@@ -583,7 +580,7 @@
 		if(src.opened)
 			return 0
 		if(prob(45))
-			playsound(src.loc, pick('drsc_treasure_open_01.ogg','drsc_treasure_open_02.ogg'), 100, 1, -3)
+			playsound(src.loc, pick('sound/effects/drsc_treasure_open_01.ogg','sound/effects/drsc_treasure_open_02.ogg'), 100, 1, -3)
 			visible_message("<span class='bname'>[user]</span> <span class='combat'> opens \the [src]!")
 			for(var/obj/O in src)
 				O.loc = get_turf(src)
@@ -613,7 +610,7 @@
 	if(!src.can_close())
 		return 0
 
-	playsound(src.loc, pick('drsc_treasure_close_01.ogg','drsc_treasure_close_02.ogg'), 40, 1, -3)
+	playsound(src.loc, pick('sound/effects/drsc_treasure_close_01.ogg','sound/effects/drsc_treasure_close_02.ogg'), 40, 1, -3)
 	var/itemcount = 0
 	for(var/obj/O in get_turf(src))
 		if(itemcount >= storage_capacity)
@@ -722,11 +719,11 @@
 
 	New()
 		..()
-		new /obj/item/weapon/reagent_containers/spray/plantbgone(src)
-		new /obj/item/weapon/reagent_containers/spray/plantbgone(src)
-		new /obj/item/weapon/minihoe(src)
-//		new /obj/item/weapon/weedspray(src)
-//		new /obj/item/weapon/weedspray(src)
-//		new /obj/item/weapon/pestspray(src)
-//		new /obj/item/weapon/pestspray(src)
-//		new /obj/item/weapon/pestspray(src)
+		new /obj/item/reagent_containers/spray/plantbgone(src)
+		new /obj/item/reagent_containers/spray/plantbgone(src)
+		new /obj/item/minihoe(src)
+//		new /obj/item/weedspray(src)
+//		new /obj/item/weedspray(src)
+//		new /obj/item/pestspray(src)
+//		new /obj/item/pestspray(src)
+//		new /obj/item/pestspray(src)

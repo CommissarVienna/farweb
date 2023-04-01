@@ -3,6 +3,7 @@
 	desc = "It's an arrow hanging in mid-air. There may be a wizard about."
 	icon = 'icons/mob/screen1.dmi'
 	icon_state = "arrow"
+	plane = 22
 	layer = 16.0
 	anchored = 1
 

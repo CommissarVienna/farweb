@@ -2,10 +2,8 @@
 	..()
 	client.color = NOIRLIST
 	add_overlay_wraith()
-	src << sound(pick('ghosted1.ogg','geist.ogg','ghosted4.ogg','ghosted2.ogg'), repeat = 0, wait = 0, volume =  src?.client?.prefs?.music_volume, channel = 12)
-	heartporcao()
-	updatePig()
-	startPig()
+	src << sound(pick('sound/lfwbambi/ghosted1.ogg','sound/lfwbambimusic/geist.ogg','sound/lfwbambi/ghosted4.ogg','sound/lfwbambi/ghosted2.ogg'), repeat = 0, wait = 0, volume =  src?.client?.prefs?.music_volume, channel = 12)
+	updateStatPanel()
 	if(ticker && ticker.current_state == GAME_STATE_PLAYING && master_mode == "inspector")
 		to_chat(src, "\n<div class='firstdivmood'><div class='moodbox'><span class='graytext'>You may join as the Inspector or his bodyguard.</span>\n<span class='feedback'><a href='?src=\ref[src];acao=joininspectree'>1. I want to.</a></span>\n<span class='feedback'><a href='?src=\ref[src];acao=nao'>2. I'll pass.</a></span></div></div>")
 

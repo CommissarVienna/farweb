@@ -1,22 +1,22 @@
-/obj/item/weapon/gun/projectile/automatic/pistol/toggle_fire()
+/obj/item/gun/projectile/automatic/pistol/toggle_fire()
 	set hidden = 1
 	return
 
-/*obj/item/weapon/gun/projectile/automatic/pistol/glock
+/*obj/item/gun/projectile/automatic/pistol/glock
 	name = "glock"
 	desc = "A old Glock 17 pistol. Uses 9mm rounds"
 	icon_state = "glock"
 	force = 14.0
 	mag_type = /obj/item/ammo_magazine/external/mc9mm
 
-/obj/item/weapon/gun/projectile/automatic/pistol/glock/New()
+/obj/item/gun/projectile/automatic/pistol/glock/New()
 	..()
 	qdel(magazine)
 	magazine = new /obj/item/ammo_magazine/external/mc9mm/extended(src)*/
 
 
 
-/obj/item/weapon/gun/projectile/automatic/pistol
+/obj/item/gun/projectile/automatic/pistol
 	name = "\improper TSP-12 pistol"
 	desc = "A small, easily concealable gun. Uses 9mm rounds."
 	icon_state = "pistol"
@@ -25,7 +25,7 @@
 	origin_tech = "combat=3;materials=2"
 	mag_type = /obj/item/ammo_magazine/external/mc9mm
 
-/obj/item/weapon/gun/projectile/automatic/pistol/ml23
+/obj/item/gun/projectile/automatic/pistol/ml23
 	name = "\improper ML-23"
 	desc = "A small, easily concealable gun. Uses 9mm rounds."
 	icon_state = "pistol1"
@@ -38,7 +38,7 @@
 	jam_chance = 5
 
 
-/obj/item/weapon/gun/projectile/automatic/pistol/jester
+/obj/item/gun/projectile/automatic/pistol/jester
 	name = "BB Pistol"
 	desc = ""
 	icon = 'icons/obj/gun.dmi'
@@ -52,10 +52,10 @@
 	jam_chance = 8
 	force = 20
 
-/obj/item/weapon/gun/projectile/automatic/pistol/magnum66/old
+/obj/item/gun/projectile/automatic/pistol/magnum66/old
 	jam_chance = 15
 
-/obj/item/weapon/gun/projectile/automatic/pistol/magnum66
+/obj/item/gun/projectile/automatic/pistol/magnum66
 	name = "Magnum 66"
 	desc = ""
 	icon = 'icons/obj/gun.dmi'
@@ -72,7 +72,7 @@
 	force = 20
 
 
-/obj/item/weapon/gun/projectile/automatic/pistol/magnum66/screamer23
+/obj/item/gun/projectile/automatic/pistol/magnum66/screamer23
 	name = "Screamer 23"
 	desc = ""
 	icon = 'icons/obj/gun.dmi'
@@ -84,12 +84,12 @@
 	fire_sound = 'sound/weapons/Gunshot_m9.ogg'
 	jam_chance = 13
 
-/obj/item/weapon/gun/projectile/automatic/pistol/magnum66/screamer23/pusher
+/obj/item/gun/projectile/automatic/pistol/magnum66/screamer23/pusher
 	jam_chance = 15
 	durability = 70
 	mag_type = /obj/item/ammo_magazine/external/sm45/pusher
 
-/obj/item/weapon/gun/projectile/automatic/pistol/magnum66/mother
+/obj/item/gun/projectile/automatic/pistol/magnum66/mother
 	name = "W93 Mother"
 	desc = ""
 	icon = 'icons/obj/gun.dmi'
@@ -102,12 +102,12 @@
 	jam_chance = 5
 
 
-/obj/item/weapon/gun/projectile/automatic/pistol/ml23/gold
+/obj/item/gun/projectile/automatic/pistol/ml23/gold
 	name = "\improper Gold ML-23"
 	icon_state = "gpistol"
 	item_worth = 150
 
-/obj/item/weapon/gun/projectile/automatic/pistol/attack_hand(mob/user as mob)
+/obj/item/gun/projectile/automatic/pistol/attack_hand(mob/user as mob)
 	if(loc == user)
 		if(silenced)
 			if(user.l_hand != src && user.r_hand != src)
@@ -115,7 +115,7 @@
 				return
 			user << "<span class='notice'>You unscrew [silenced] from [src].</span>"
 			user.put_in_hands(silenced)
-			var/obj/item/weapon/silencer/S = silenced
+			var/obj/item/silencer/S = silenced
 			fire_sound = S.oldsound
 			silenced = 0
 			w_class = 2
@@ -123,15 +123,15 @@
 			return
 	..()
 
-/obj/item/weapon/gun/projectile/automatic/pistol/attackby(obj/item/I as obj, mob/user as mob)
-	if(istype(I, /obj/item/weapon/silencer))
+/obj/item/gun/projectile/automatic/pistol/attackby(obj/item/I as obj, mob/user as mob)
+	if(istype(I, /obj/item/silencer))
 		if(user.l_hand != src && user.r_hand != src)	//if we're not in his hands
 			user << "<span class='notice'>You'll need [src] in your hands to do that.</span>"
 			return
 		user.drop_item()
 		user << "<span class='notice'>You screw [I] onto [src].</span>"
 		silenced = I	//dodgy?
-		var/obj/item/weapon/silencer/S = I
+		var/obj/item/silencer/S = I
 		S.oldsound = fire_sound
 		fire_sound = 'sound/weapons/Gunshot_silenced.ogg'
 		w_class = 3
@@ -140,7 +140,7 @@
 		return
 	..()
 
-/obj/item/weapon/gun/projectile/automatic/pistol/update_icon()
+/obj/item/gun/projectile/automatic/pistol/update_icon()
 	..()
 	icon_state = "[initial(icon_state)][silenced ? "-silencer" : ""][chambered ? "" : "-e"][chambered && !safety ? "0" : "1"]"
 	if(silenced)
@@ -157,7 +157,7 @@
 	return
 
 
-/obj/item/weapon/silencer
+/obj/item/silencer
 	name = "silencer"
 	desc = "a silencer"
 	icon = 'icons/obj/gun.dmi'

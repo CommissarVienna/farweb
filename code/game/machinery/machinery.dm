@@ -112,7 +112,7 @@ Class Procs:
 	var/panel_open = 0
 	var/state_open = 0
 	var/mob/living/occupant = null
-	var/unsecuring_tool = /obj/item/weapon/wrench
+	var/unsecuring_tool = /obj/item/wrench
 	var/last_notice = 0
 
 /obj/machinery/New()
@@ -279,7 +279,7 @@ Class Procs:
 /obj/machinery/proc/is_operational()
 	return !(stat & (NOPOWER|BROKEN|MAINT))
 
-/obj/machinery/proc/default_pry_open(var/obj/item/weapon/crowbar/C)
+/obj/machinery/proc/default_pry_open(var/obj/item/crowbar/C)
 	. = !(state_open || panel_open || is_operational()) && istype(C)
 	if(.)
 		playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
@@ -287,7 +287,7 @@ Class Procs:
 		open_machine()
 		return 1
 
-/obj/machinery/proc/default_deconstruction_crowbar(var/obj/item/weapon/crowbar/C, var/ignore_panel = 0)
+/obj/machinery/proc/default_deconstruction_crowbar(var/obj/item/crowbar/C, var/ignore_panel = 0)
 	. = istype(C) && (panel_open || ignore_panel)
 	if(.)
 		playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
@@ -300,7 +300,7 @@ Class Procs:
 			I.loc = src.loc
 		qdel(src)
 
-/obj/machinery/proc/default_deconstruction_screwdriver(var/mob/user, var/icon_state_open, var/icon_state_closed, var/obj/item/weapon/screwdriver/S)
+/obj/machinery/proc/default_deconstruction_screwdriver(var/mob/user, var/icon_state_open, var/icon_state_closed, var/obj/item/screwdriver/S)
 	if(istype(S))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(!panel_open)
@@ -314,7 +314,7 @@ Class Procs:
 		return 1
 	return 0
 
-/obj/machinery/proc/default_change_direction_wrench(var/mob/user, var/obj/item/weapon/wrench/W)
+/obj/machinery/proc/default_change_direction_wrench(var/mob/user, var/obj/item/wrench/W)
 	if(panel_open && istype(W))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		dir = turn(dir,-90)
@@ -322,7 +322,7 @@ Class Procs:
 		return 1
 	return 0
 
-/obj/machinery/proc/default_unfasten_wrench(mob/user, obj/item/weapon/wrench/W, time = 20)
+/obj/machinery/proc/default_unfasten_wrench(mob/user, obj/item/wrench/W, time = 20)
 	if(istype(W))
 		user << "<span class='notice'>Now [anchored ? "un" : ""]securing [name].</span>"
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
@@ -333,18 +333,18 @@ Class Procs:
 		return 1
 	return 0
 
-/obj/machinery/proc/exchange_parts(mob/user, var/obj/item/weapon/storage/part_replacer/W)
+/obj/machinery/proc/exchange_parts(mob/user, var/obj/item/storage/part_replacer/W)
 	var/shouldplaysound = 0
 	if(istype(W) && component_parts)
 		if(panel_open)
-			var/obj/item/weapon/circuitboard/CB = locate(/obj/item/weapon/circuitboard) in component_parts
+			var/obj/item/circuitboard/CB = locate(/obj/item/circuitboard) in component_parts
 			var/P
-			for(var/obj/item/weapon/stock_parts/A in component_parts)
+			for(var/obj/item/stock_parts/A in component_parts)
 				for(var/D in CB.req_components)
 					if(ispath(A.type, D))
 						P = D
 						break
-				for(var/obj/item/weapon/stock_parts/B in W.contents)
+				for(var/obj/item/stock_parts/B in W.contents)
 					if(istype(B, P) && istype(A, P))
 						if(B.rating > A.rating)
 							W.remove_from_storage(B, src)

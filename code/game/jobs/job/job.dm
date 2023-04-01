@@ -7,9 +7,8 @@
 	//Job access. The use of minimal_access or access is determined by a config setting: config.jobs_have_minimal_access
 	var/list/minimal_access = list()		//Useful for servers which prefer to only have access given to the places a job absolutely needs (Larger server population)
 	var/list/access = list()				//Useful for servers which either have fewer players, so each person needs to fill more than one role, or servers which like to give more access, so players can't hide forever in their super secure departments (I'm looking at you, chemistry!)
-
-	//Determines who can demote this position
-	var/department_head = list()
+	var/list/stat_mods = list()
+	var/list/skill_mods = list() //list of lists. Insert skills with list(skill_num,lower_number,upper_number)
 
 	//Bitflags for the job
 	var/flag = 0
@@ -34,7 +33,7 @@
 	var/selection_color = "#ffffff"
 
 	//the type of the ID the player will have
-	var/idtype = /obj/item/weapon/card/id
+	var/idtype = /obj/item/card/id
 
 	//If you have use_age_restriction_for_jobs config option enabled and the database set up, this option will add a requirement for players to be at least minimal_player_age days old. (meaning they first signed in at least that many days before.)
 	var/minimal_player_age = 0
@@ -79,8 +78,8 @@
 	newarea.Entered(src)
 
 /datum/job/proc/equip(var/mob/living/carbon/human/H)
-	H.my_skills.job_stats(title)
-	H.my_stats.job_stats(title)
+	H.my_skills.job_skills(src)
+	H.my_stats.job_stats(src)
 	H.old_job = src.title
 	H.create_kg()
 	return 1

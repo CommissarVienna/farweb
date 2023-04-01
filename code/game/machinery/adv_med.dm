@@ -89,9 +89,9 @@
 	update_icon()
 	return
 
-/obj/machinery/bodyscanner/attackby(obj/item/weapon/grab/G as obj, user as mob)
+/obj/machinery/bodyscanner/attackby(obj/item/grab/G as obj, user as mob)
 	src.connected = locate(/obj/machinery/bodyscanner, get_step(src, EAST))
-	if ((!( istype(G, /obj/item/weapon/grab) ) || !( ismob(G.affecting) )))
+	if ((!( istype(G, /obj/item/grab) ) || !( ismob(G.affecting) )))
 		return
 	if (src.occupant)
 		user << "\blue <B>The scanner is already occupied!</B>"
@@ -179,7 +179,7 @@
 
 /obj/machinery/body_scanconsole
 	var/obj/machinery/bodyscanner/connected
-	var/known_implants = list(/obj/item/weapon/implant/chem, /obj/item/weapon/implant/death_alarm, /obj/item/weapon/implant/loyalty, /obj/item/weapon/implant/mentor, /obj/item/weapon/implant/tracking)
+	var/known_implants = list(/obj/item/implant/chem, /obj/item/implant/death_alarm, /obj/item/implant/loyalty, /obj/item/implant/mentor, /obj/item/implant/tracking)
 	var/delete
 	var/temphtml
 	name = "Body Scanner Console"
@@ -272,7 +272,7 @@
 		if (!istype(occupant,/mob/living/carbon/human))
 			usr << "\icon[src]<span class='warning'>The body scanner cannot scan that lifeform.</span>"
 			return
-		var/obj/item/weapon/paper/R = new(src.loc)
+		var/obj/item/paper/R = new(src.loc)
 		R.name = "Body scan report"
 		R.info = format_occupant_data(src.connected.get_occupant_data())
 
@@ -295,7 +295,6 @@
 		"brainloss" = H.getBrainLoss(),
 		"paralysis" = H.paralysis,
 		"bodytemp" = H.bodytemperature,
-		"borer_present" = H.has_brain_worms(),
 		"ephedrine_amount" = H.reagents.get_reagent_amount("ephedrine"),
 		"salbutamol_amount" = H.reagents.get_reagent_amount("salbutamol"),
 		"stoxin_amount" = H.reagents.get_reagent_amount("stoxin"),

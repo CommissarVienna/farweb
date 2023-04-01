@@ -13,6 +13,7 @@
 	artery_prob = 20
 	tendon_prob = 20
 	mask_color = "#0000ff"
+	above_layer = RIGHT
 	process()
 		..()
 		process_grasp(owner.r_hand, "right hand")

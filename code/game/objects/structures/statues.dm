@@ -52,9 +52,17 @@
 
 /obj/structure/statuespooky/creepy
 	icon_state = "creepy"
+	density = TRUE
 
 /obj/structure/statuespooky/cooldecal
 	icon_state = "cooldecal"
+	
+/obj/structure/statuespooky/cooldecal/split
+	density = TRUE
+/obj/structure/statuespooky/cooldecal/split/left
+	icon_state = "cooldecal1"
+/obj/structure/statuespooky/cooldecal/split/right
+	icon_state = "cooldecal2"
 
 /obj/structure/statuespooky/pilar1
 	icon_state = "pilar1"

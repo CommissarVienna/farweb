@@ -6,11 +6,11 @@
 	use_power = 1
 	idle_power_usage = 300
 	active_power_usage = 300
-	var/obj/item/weapon/circuitboard/circuit = null //if circuit==null, computer can't disassembly
+	var/obj/item/circuitboard/circuit = null //if circuit==null, computer can't disassembly
 	var/processing = 0
 	var/z_check = 1
 
-/obj/machinery/computer/New(location, var/obj/item/weapon/circuitboard/C)
+/obj/machinery/computer/New(location, var/obj/item/circuitboard/C)
 	..(location)
 	init_obj.Add(src)
 	if(C && istype(C))
@@ -111,7 +111,7 @@
 
 
 /obj/machinery/computer/attackby(I as obj, user as mob)
-	if(istype(I, /obj/item/weapon/screwdriver) && circuit)
+	if(istype(I, /obj/item/screwdriver) && circuit)
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		user << "<span class='notice'> You start to disconnect the monitor.</span>"
 		if(do_after(user, 20))
@@ -123,7 +123,7 @@
 				C.loc = src.loc
 			if (src.stat & BROKEN)
 				user << "<span class='notice'> The broken glass falls out.</span>"
-				new /obj/item/weapon/shard( src.loc )
+				new /obj/item/shard( src.loc )
 				A.state = 3
 				A.icon_state = "3"
 			else

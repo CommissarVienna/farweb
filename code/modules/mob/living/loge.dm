@@ -144,9 +144,9 @@
 /mob/living/carbon/human/monster/loge/New()
 	..()
 	set_species("Loge")
-	my_stats.st = rand(10, 12)
-	my_stats.ht = rand(14, 15)
-	my_stats.dx = rand(10, 12)
+	my_stats.change_stat(STAT_ST, 1)
+	my_stats.change_stat(STAT_HT, 4)
+	my_stats.change_stat(STAT_DX, 2)
 
 	src.zone_sel = new /obj/screen/zone_sel( null )
 	potenzia = rand(12, 15)

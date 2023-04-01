@@ -1,12 +1,12 @@
-/datum/special/var
-	name = "Special"
-	limitations = "Nenhuma"
-	description = "Descrição"
-	reward = "Nenhuma"
-	limitationsen = "None"
-	descriptionen = "Description"
-	rewarden = "None"
-	specialitem = null
+/datum/special
+	var/name = "Special"
+	var/limitations = "Nenhuma"
+	var/description = "Descrição"
+	var/reward = "Nenhuma"
+	var/limitationsen = "None"
+	var/descriptionen = "Description"
+	var/rewarden = ""
+	var/specialitem = null
 
 /datum/special/proc/pick_special()
 	var/specials = pick(subtypesof(/datum/special))
@@ -14,7 +14,7 @@
 		var/special = new specials
 		return special
 	else
-		warning("erro no vice de alguem ai")
+		warning("There is an error in someone's vice.")
 
 /datum/special/notafraid
 	name = "notafraid"
@@ -30,8 +30,8 @@
 	name = "squireheir"
 	limitations = "Heir."
 	limitationsen = "Heir."
-	description = "Você pretende ser o futuro Marduk."
-	descriptionen = "You pretend to become the future Marduk."
+	description = "Você pretende ser o futuro Censor."
+	descriptionen = "You pretend to become the future Censor."
 
 /datum/special/allah
 	name = "Allah"
@@ -85,7 +85,7 @@
 	name = "camodevice"
 	description = "Você escondeu um dispositivo de camuflagem."
 	descriptionen = "You've hidden a camouflage device."
-	specialitem = /obj/item/weapon/cloaking_device
+	specialitem = /obj/item/cloaking_device
 
 /datum/special/childworker
 	limitations = "Adultos"
@@ -117,7 +117,7 @@
 /datum/special/silverobols
 	name = "silverobol"
 	description = "Você escondeu obols de prata em algum lugar para as noites difíceis."
-	specialitem = /obj/item/weapon/spacecash/silver/c20
+	specialitem = /obj/item/spacecash/silver/c20
 	descriptionen = "You've hidden some silver obols in the safest place - just for rainy day."
 
 /datum/special/naturalgenius
@@ -144,17 +144,12 @@
 	name = "hiddengun"
 	description = "Você tem uma arma escondida em algum lugar."
 	descriptionen = "You've hidden a gun somewhere."
-	specialitem = /obj/item/weapon/gun/projectile/newRevolver/duelista/neoclassic
+	specialitem = /obj/item/gun/projectile/newRevolver/duelista/neoclassic
 
 /datum/special/weirdregurgi
 	name = "weirdregurgi"
 	description = "Você é obscecado por um sonho estranho em que você é engulido por um regurgitator."
 	descriptionen = "You are obsessed with a weird dream where you're caught by a regurgitator."
-
-/*/datum/special/missingrightarm
-	name = "missingrightarm"
-	description = "Você tinha perdido seu braço direito por uns anos, agora ambas suas mãos são igualmente ágeis."
-	descriptionen = "You were missing your right arm for a couple of years. Now both your hands are equally agile."*/
 
 /datum/special/deathweb
 	name = "deathweb"
@@ -278,27 +273,13 @@
 	description = "Quando o barão não está presente, você faz decretos por ele."
 	descriptionen = "When the baron is away, you make decrees for him."
 
-/*/datum/special/bloodchildcollect
-	name = "bloodchildcollect"
-	limitations = "Crianças."
-	limitationsen = "Children."
-	description = "Grown-ups always tell you that God is good and important, and you always should help Him. You've agreed to collect blood for the recently arrived Inquisition squad."
-	descriptionen = "Grown-ups always tell you that God is good and important, and you always should help Him. You've agreed to collect blood for the recently arrived Inquisition squad."*/
-
 /datum/special/censormagnum
 	name = "censormagnum"
-	limitations = "Marduk."
-	limitationsen = "Marduk."
+	limitations = "Censor."
+	limitationsen = "Censor."
 	description = "Até um homem forte como você precisa de um ajudante. Você está sendo assistido por uma pistola Magnum 66."
 	descriptionen = "Even a strongman like you require a helper. You are being assisted by a Magnum 66 pistol."
-/*
-/datum/special/succubus
-	name = "succubus"
-	limitations = "Grown Females."
-	limitationsen = "Grown Females."
-	description = "You're a succubus, able to enslave men through your bedroom tricks."
-	descriptionen = "You're a succubus, able to enslave men through your bedroom tricks."
-*/
+
 /datum/special/archmortus
 	name = "archmortus"
 	limitations = "Mortus."
@@ -399,8 +380,8 @@
 
 /datum/special/rich
 	name = "rich"
-	limitations = "Bookkeeper or Grayhound."
-	limitationsen = "Bookkeeper or Grayhound."
+	limitations = "Merchant or Docker."
+	limitationsen = "Merchant or Docker."
 	description = "You have a task this night, get 5000 obols on merchant's console, and make your dream come true!"
 	descriptionen = "You have a task this night, get 5000 obols on merchant's console, and make your dream come true!"
 	reward = "10 Cromossomos"
@@ -435,298 +416,242 @@
 	descriptionen = "You have something extra."
 
 /mob/living/carbon/human/proc/special_load()
+	var/mob/living/carbon/human/H = src
 	if(special)
 		switch(special)
-/*			if("succubus")
-				if(gender == FEMALE && age >= 18)
-					isSuccubus = TRUE
-					to_chat(src, "<span class='bname'>You're a succubus.</span>")
-					to_chat(src, " Able to enslave men through your bedroom tricks, check the Spider tab to check on your powers.")
-					src.verbs += /mob/living/carbon/human/proc/teleportSlaves
-					src.updatePig()*/
 			if("notafraid")
 				//code aqui
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
+				warning("Special: [special] for [ckey ? "CKEY: [ckey]" : "NO CKEY"] does not exist.")
 			if("Allah")
 				//code aqui
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.religion = "Allah"
+				H.religion = "Allah"
 			if("hygiene")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.hygiene = -400
-			if("silverobols")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
+				H.hygiene = -400
 			if("interestingperson")
-				src.my_stats.st += rand(-2,2)
-				src.my_stats.dx += rand(-2,2)
-				src.my_stats.pr += rand(-2,2)
-				src.my_stats.ht += rand(-2,2)
-				src.my_stats.im += rand(-2,2)
-				src.my_stats.it += rand(-2,2)
+				H.my_stats.change_stat(STAT_ST , rand(-2,2))
+				H.my_stats.change_stat(STAT_DX , rand(-2,2))
+				H.my_stats.change_stat(STAT_HT , rand(-2,2))
+				H.my_stats.change_stat(STAT_IN , rand(-2,2))
 			if("badshape")
-				src.my_stats.ht -= 2
-				src.my_stats.st -= 2
+				H.my_stats.change_stat(STAT_HT , -2)
+				H.my_stats.change_stat(STAT_ST , -2)
 			if("blueblood")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.add_event("nobleblood", /datum/happiness_event/noble_blood)
+				H.add_event("nobleblood", /datum/happiness_event/noble_blood)
 			if("naturalgenius")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.it = rand(14, 18)
+				H.my_stats.change_stat(STAT_IN , 5)
 				if(check_perk(/datum/perk/illiterate))
-					src.perks.Remove(locate(/datum/perk/illiterate) in src.perks)
-				add_perk(/datum/perk/ref/teaching)
+					H.perks.Remove(locate(/datum/perk/illiterate) in H.perks)
+				H.add_perk(/datum/perk/ref/teaching)
 			if("naturalwarrior")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.st += rand(1,1)
-				src.my_stats.ht += rand(2,2)
-				src.my_stats.dx += rand(2,2)
-				src.my_skills.ADD_SKILL(SKILL_MELEE, 5)
-				src.my_skills.ADD_SKILL(SKILL_RANGE, 5)
+				H.my_stats.change_stat(STAT_ST , 2)
+				H.my_stats.change_stat(STAT_HT , 2)
+				H.my_stats.change_stat(STAT_DX , 2)
+				H.my_skills.add_skill(SKILL_MELEE, 5)
+				H.my_skills.add_skill(SKILL_RANGE, 5)
 			if("screamerimmunity")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				add_perk(/datum/perk/screamerimmunity)
+				H.add_perk(/datum/perk/screamerimmunity)
 			if("comicsans")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.comic_sans = TRUE
+				H.comic_sans = TRUE
 			if("robustmeister")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				if(src.job == "Meister")
-					src.my_stats.st += 2
-					src.my_stats.ht += 3
-					src.my_stats.dx += 4
-					src.my_skills.ADD_SKILL(SKILL_MELEE, 6)
+				if(H.job == "Meister")
+					H.my_stats.change_stat(STAT_ST , 2)
+					H.my_stats.change_stat(STAT_HT , 3)
+					H.my_stats.change_stat(STAT_DX , 2)
+					H.my_skills.add_skill(SKILL_MELEE, 6)
 			if("squireheir")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				if(src.job == "Heir")
-					src.my_skills.ADD_SKILL(SKILL_MELEE, 4)
-					src.my_skills.ADD_SKILL(SKILL_RANGE, 4)
-					src.my_stats.st += rand(2,3)
-					equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/security/marduk_alt2(src), slot_wear_suit)
+				if(H.job == "Heir")
+					H.my_skills.add_skill(SKILL_MELEE, 4)
+					H.my_skills.add_skill(SKILL_RANGE, 4)
+					H.my_stats.change_stat(STAT_ST , 2)
+					H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/security/marduk_alt2(H), slot_wear_suit)
 			if("michaelshepard")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				if(src.job == "Bum")
-					real_name = "Michael Shepard"
-					my_skills.ADD_SKILL(SKILL_MELEE, 6)
-					my_stats.st += 6
-					my_stats.ht += 6
-					my_stats.dx += 6
-					name = "Michael Shepard"
-					gender = MALE
-					job = "Bum"
-					voice_name = "Michael Shepard"
-					equip_to_slot_or_del(new /obj/item/clothing/suit/chickensuit(src), slot_wear_suit)
-					equip_to_slot_or_del(new /obj/item/clothing/mask/chicken(src), slot_wear_mask)
+				if(H.job == "Bum")
+					H.real_name = "Michael Shepard"
+					H.my_skills.add_skill(SKILL_MELEE, 6)
+					H.my_stats.change_stat(STAT_ST , 6)
+					H.my_stats.change_stat(STAT_HT , 6)
+					H.my_stats.change_stat(STAT_DX , 6)
+					H.name = "Michael Shepard"
+					H.gender = MALE
+					H.job = "Bum"
+					H.voice_name = "Michael Shepard"
+					H.equip_to_slot_or_del(new /obj/item/clothing/suit/chickensuit(H), slot_wear_suit)
+					H.equip_to_slot_or_del(new /obj/item/clothing/mask/chicken(H), slot_wear_mask)
 					var/bumweapon = pick("knife","club","limb")
 					switch(bumweapon)
 						if("knife")
 							if(prob(50))
-								equip_to_slot_or_del(new /obj/item/weapon/kitchen/utensil/knife/dagger/copper(src), slot_r_hand)
+								H.equip_to_slot_or_del(new /obj/item/kitchen/utensil/knife/dagger/copper(H), slot_r_hand)
 							else
-								equip_to_slot_or_del(new /obj/item/weapon/kitchen/utensil/knife(src), slot_r_hand)
+								H.equip_to_slot_or_del(new /obj/item/kitchen/utensil/knife(H), slot_r_hand)
 						if("club")
-							equip_to_slot_or_del(new /obj/item/weapon/melee/classic_baton/woodenclub(src), slot_r_hand)
+							H.equip_to_slot_or_del(new /obj/item/melee/classic_baton/woodenclub(H), slot_r_hand)
 						if("limb")
-							equip_to_slot_or_del(new /obj/item/weapon/organ/l_leg(src), slot_r_hand)
+							H.equip_to_slot_or_del(new /obj/item/organ/l_leg(H), slot_r_hand)
 			if("perception")
-				src.my_stats.pr = rand(16,20)
+				H.my_stats.change_stat(STAT_PR, 5)
 			if("paingain")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.st += 3
-				src.my_stats.ht += 2
+				H.my_stats.change_stat(STAT_ST, 3)
+				H.my_stats.change_stat(STAT_HT, 2)
 			if("grandma")
-				src.my_skills.ADD_SKILL(SKILL_SURG, 12)
-				src.my_skills.ADD_SKILL(SKILL_MEDIC, 12)
+				H.my_skills.add_skill(SKILL_SURG, 12)
+				H.my_skills.add_skill(SKILL_MEDIC, 12)
 			if("hiddengun")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.special_item = pick(/obj/item/weapon/gun/projectile/newRevolver/duelista/neoclassic,/obj/item/weapon/gun/projectile/automatic/pistol/ml23,/obj/item/weapon/gun/projectile/automatic/pistol/ml23/gold, /obj/item/weapon/gun/projectile/automatic/pistol/magnum66, /obj/item/weapon/gun/projectile/automatic/pistol/magnum66/screamer23, /obj/item/weapon/gun/projectile/automatic/pistol/magnum66/mother)
-			if("weirdregurgi")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-			/*if("missingrightarm")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.dx += 3*/
+				H.special_item = pick(/obj/item/gun/projectile/newRevolver/duelista/neoclassic,/obj/item/gun/projectile/automatic/pistol/ml23,/obj/item/gun/projectile/automatic/pistol/ml23/gold, /obj/item/gun/projectile/automatic/pistol/magnum66, /obj/item/gun/projectile/automatic/pistol/magnum66/screamer23, /obj/item/gun/projectile/automatic/pistol/magnum66/mother)
 			if("bulletdodger")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.dx += 3
-				src.name = "[src.real_name] Bullet Dodger"
+				H.my_stats.change_stat(STAT_DX , 3)
+				H.name = "[H.real_name] Bullet Dodger"
 			if("gunnorth")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_skills.CHANGE_SKILL(SKILL_RANGE, 17)
+				H.my_skills.change_skill(SKILL_RANGE, 17)
 			if("goodheart")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.ht += rand(2,3)
-			if("merchunt")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
+				H.my_stats.change_stat(STAT_HT , 3)
 			if("alcoholicsober")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.vice = "Alcoholic"
+				H.vice = /datum/vice/chem_addict/alcoholic
 			if("oathsilence")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
+				warning("Special: [special] for [ckey ? "CKEY: [ckey]" : "NO CKEY"] does not exist.")
 			if("looksmart")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.it = rand(3,5)
+				H.my_stats.change_stat(STAT_IN , 3)
 			if("semiteblood")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				//src.jewish = TRUE
-				src.add_perk(/datum/perk/ref/value)
-			/*if("bloodchildcollect")
-				src.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet/eng(src), slot_wrist_r)
-				src.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/syringe/blood_snatcher, slot_r_hand)*/
+				H.add_perk(/datum/perk/ref/value)
 			if("dst")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				if(src.job == "Amuser")
-					src.contract_disease(new /datum/disease/aids,1,0)
+				if(H.job == "Amuser")
+					H.contract_disease(new /datum/disease/aids,1,0)
 			if("orphanbum")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				if(src.job == "Bum")
-					src.my_stats.st = rand(11,13)
-					src.my_stats.ht = rand(13,14)
-					src.my_stats.dx = rand(13,14)
-					src.my_skills.ADD_SKILL(SKILL_MELEE, rand(8,11))
-					src.my_skills.ADD_SKILL(SKILL_RANGE, rand(8,11))
+				if(H.job == "Bum")
+					H.my_stats.change_stat(STAT_ST , 2)
+					H.my_stats.change_stat(STAT_HT , 2)
+					H.my_stats.change_stat(STAT_DX , 2)
+					H.my_skills.add_skill(SKILL_MELEE, rand(8,11))
+					H.my_skills.add_skill(SKILL_RANGE, rand(8,11))
 			if("gloves")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.equip_to_slot_or_del(new /obj/item/clothing/gloves/black(src), slot_gloves)
+				H.equip_to_slot_or_del(new /obj/item/clothing/gloves/black(H), slot_gloves)
 			if("robusta")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				if(src.gender == FEMALE)
-					src.my_skills.ADD_SKILL(SKILL_MELEE, 2)
-					src.my_stats.st += 3
-					src.my_stats.ht += 1
-					src.virgin = 0
+				if(H.gender == FEMALE)
+					H.my_skills.add_skill(SKILL_MELEE, 2)
+					H.my_stats.change_stat(STAT_ST , 3)
+					H.my_stats.change_stat(STAT_HT , 2)
+					H.virgin = 0
 			if("fragile")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_stats.ht -= 4
+				H.my_stats.change_stat(STAT_HT , -4)
 			if("doublewp")
-				src.add_perk(/datum/perk/heroiceffort)
+				H.add_perk(/datum/perk/heroiceffort)
 			if("bouncer")
 				var/haspusher = FALSE
-				for(var/mob/living/carbon/human/H in mob_list)
-					if(H.job == "Pusher")
+				for(var/mob/living/carbon/human/P in mob_list)
+					if(P.job == "Pusher")
 						haspusher = TRUE
-				if(src.job == "Tiamat" && haspusher == TRUE)
-					if(src.wear_suit)
-						qdel(src.wear_suit)
-					if(src.wrist_r)
-						qdel(src.wrist_r)
-					if(src.belt)
-						qdel(src.belt)
-					if(src.r_hand)
-						qdel(src.r_hand)
-					src.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/redjacket(src), slot_wear_suit)
-					src.equip_to_slot_or_del(new /obj/item/weapon/melee/classic_baton/woodenclub(src), slot_belt)
-					src.equip_to_slot_or_del(new /obj/item/clothing/mask/cigarette/weed(src), slot_r_hand)
-					equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet(src), slot_wrist_r)
-					src.my_skills.CHANGE_SKILL(SKILL_SWING, rand(1,3))
-					src.my_skills.CHANGE_SKILL(SKILL_UNARM, rand(1,3))
-					src.assignment = "Bouncer"
+				if(H.job == "Tiamat" && haspusher == TRUE)
+					if(H.wear_suit)
+						qdel(H.wear_suit)
+					if(H.wrist_r)
+						qdel(H.wrist_r)
+					if(H.belt)
+						qdel(H.belt)
+					if(H.r_hand)
+						qdel(H.r_hand)
+					H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/redjacket(H), slot_wear_suit)
+					H.equip_to_slot_or_del(new /obj/item/melee/classic_baton/woodenclub(H), slot_belt)
+					H.equip_to_slot_or_del(new /obj/item/clothing/mask/cigarette/weed(H), slot_r_hand)
+					H.equip_to_slot_or_del(new /obj/item/device/radio/headset/bracelet(H), slot_wrist_r)
+					H.my_skills.change_skill(SKILL_SWING, rand(1,3))
+					H.my_skills.change_skill(SKILL_UNARM, rand(1,3))
+					H.assignment = "Bouncer"
 					if(wear_id)
-						var/obj/item/weapon/card/id/R = wear_id
+						var/obj/item/card/id/R = wear_id
 						R.registered_name = real_name
 						R.rank = job
-						R.assignment = src.assignment
+						R.assignment = H.assignment
 						R.name = "[R.registered_name]'s Ring"
 						R.access = list(brothel, amuser)
-						qdel(src.wear_id)
-						src.equip_to_slot_or_del(R, slot_wear_id)
+						qdel(H.wear_id)
+						H.equip_to_slot_or_del(R, slot_wear_id)
 					for(var/obj/effect/landmark/start/S in landmarks_list)
 						if(S.name == "Bouncer")
-							src.forceMove(S.loc)
+							H.forceMove(S.loc)
 							break
 			if("censormagnum")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				if(src.job == "Marduk")
-					src.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/pistol/magnum66(src), slot_l_hand)
+				
+				if(H.job == "Marduk")
+					H.equip_to_slot_or_del(new /obj/item/gun/projectile/automatic/pistol/magnum66(H), slot_l_hand)
 			if("novice")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.vice = ""
+				H.vice = null
 			if("childworker")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				src.my_skills.CHANGE_SKILL(SKILL_MASON, rand(12,14))
-				src.my_skills.CHANGE_SKILL(SKILL_ENGINE, rand(12,14))
+				H.my_skills.change_skill(SKILL_MASON, rand(12,14))
+				H.my_skills.change_skill(SKILL_ENGINE, rand(12,14))
 			if("succubus")
-				if(src.gender == "female")
-					src.make_succubi()
+				if(H.gender == "female")
+					H.make_succubi()
 			if("gigantism")
-				src.Altista()
+				H.Altista()
 			if("archmortus")
-				warning("Special de: [ckey ? "CKEY: [ckey]" : "SEM CKEY"] carregou.")
-				if(src.job == "Mortus")
-					src.assignment = "Archmortus"
-					src.equip_to_slot_or_del(new /obj/item/clothing/mask/plaguedoctor(src), slot_wear_mask)
-					src.my_skills.ADD_SKILL(SKILL_MELEE, 2)
-					src.my_stats.st += 2
-					src.my_stats.ht += 1
-					src.my_stats.dx += 1
-					src.my_stats.it += 1
-
-					src.my_stats.initst = src.my_stats.st
-					src.my_stats.initht = src.my_stats.ht
-					src.my_stats.initdx = src.my_stats.dx
-					src.my_stats.initit = src.my_stats.it
+				if(H.job == "Mortus")
+					H.assignment = "Archmortus"
+					H.equip_to_slot_or_del(new /obj/item/clothing/mask/plaguedoctor(H), slot_wear_mask)
+					H.my_skills.add_skill(SKILL_MELEE, 2)
+					H.my_stats.change_stat(STAT_ST , 2)
+					H.my_stats.change_stat(STAT_HT , 1)
+					H.my_stats.change_stat(STAT_DX , 1)
+					H.my_stats.change_stat(STAT_IN , 1)
 					for(var/obj/effect/landmark/start/S in landmarks_list)
 						if(S.name == "Archmortus")
-							src.forceMove(S.loc)
+							H.forceMove(S.loc)
 							break
 			if("squireadult")
 				return
 			if("maleamuser")
-				if(src.job == "Amuser")
-					src.set_species("Femboy")
+				if(H.job == "Amuser")
+					H.set_species("Femboy")
 			if("littlesheriff")
-				if(src.job == "Sheriff")
-					src.set_species("Child")
-					if(src.wear_suit)
-						qdel(src.wear_suit)
-					if(src.shoes)
-						qdel(src.shoes)
-					if(src.w_uniform)
-						qdel(src.w_uniform)
-					if(src.head)
-						qdel(src.head)
-					if(src.belt)
-						qdel(src.belt)
-					src.equip_to_slot_or_del(new /obj/item/clothing/under/child_jumpsuit(src), slot_w_uniform)
-					src.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/squire(src), slot_wear_suit)
-					src.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/child/shoes(src), slot_shoes)
-					src.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/newRevolver/duelista/neoclassic(src), slot_belt)
-					src.equip_to_slot_or_del(new /obj/item/ammo_magazine/box/c38(src), slot_r_store)
+				if(H.job == "Sheriff")
+					H.set_species("Child")
+					if(H.wear_suit)
+						qdel(H.wear_suit)
+					if(H.shoes)
+						qdel(H.shoes)
+					if(H.w_uniform)
+						qdel(H.w_uniform)
+					if(H.head)
+						qdel(H.head)
+					if(H.belt)
+						qdel(H.belt)
+					H.equip_to_slot_or_del(new /obj/item/clothing/under/child_jumpsuit(H), slot_w_uniform)
+					H.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/squire(H), slot_wear_suit)
+					H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/child/shoes(H), slot_shoes)
+					H.equip_to_slot_or_del(new /obj/item/gun/projectile/newRevolver/duelista/neoclassic(H), slot_belt)
+					H.equip_to_slot_or_del(new /obj/item/ammo_magazine/box/c38(H), slot_r_store)
 
-					src.my_stats.st = rand(8,9)
-					src.my_stats.ht = rand(8,9)
-					src.my_stats.dx = rand(12,13)
-					src.my_stats.it = rand(8,11)
-					src.my_stats.pr = rand(12,14)
+					H.my_stats.set_stat(STAT_ST, rand(8,9))
+					H.my_stats.set_stat(STAT_HT, rand(8,10))
+
 			if("rebelsuccessor")
-				if(src.job == "Successor" && src.age >= 18)
-					if(src.wear_suit)
-						qdel(src.wear_suit)
-					if(src.shoes)
-						qdel(src.shoes)
-					if(src.w_uniform)
-						qdel(src.w_uniform)
-					if(src.amulet)
-						qdel(src.amulet)
-					src.equip_to_slot_or_del(new /obj/item/clothing/under/rebelsuccessor(src), slot_w_uniform)
-					src.equip_to_slot_or_del(new /obj/item/clothing/head/amulet/collar(src), slot_amulet)
-					src.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/stiletto_shoes(src), slot_shoes)
-					src.equip_to_slot_or_del(new /obj/item/clothing/suit/rebelsuccessor(src), slot_wear_suit)
-					src.my_skills.ADD_SKILL(SKILL_PARTY, rand(12,15))
-					src.my_skills.ADD_SKILL(SKILL_MELEE, 6)
-					src.my_stats.st += 3
+				if(H.job == "Successor" && H.age >= 18)
+					if(H.wear_suit)
+						qdel(H.wear_suit)
+					if(H.shoes)
+						qdel(H.shoes)
+					if(H.w_uniform)
+						qdel(H.w_uniform)
+					if(H.amulet)
+						qdel(H.amulet)
+					H.equip_to_slot_or_del(new /obj/item/clothing/under/rebelsuccessor(H), slot_w_uniform)
+					H.equip_to_slot_or_del(new /obj/item/clothing/head/amulet/collar(H), slot_amulet)
+					H.equip_to_slot_or_del(new /obj/item/clothing/shoes/lw/stiletto_shoes(H), slot_shoes)
+					H.equip_to_slot_or_del(new /obj/item/clothing/suit/rebelsuccessor(H), slot_wear_suit)
+					H.my_skills.add_skill(SKILL_PARTY, rand(12,15))
+					H.my_skills.add_skill(SKILL_MELEE, 6)
+					H.my_stats.change_stat(STAT_ST , 3)
 			if("castrated")
-				if(src.age >= 18 && src.gender == MALE)
-					src.mutilated_genitals = 1
+				if(H.age >= 18 && H.gender == MALE)
+					H.mutilated_genitals = 1
 			if("circusfreak")
-				if(src.age >= 18)
-					src.my_skills.ADD_SKILL(SKILL_MUSIC, 13)
-					src.my_skills.ADD_SKILL(SKILL_CLIMB, 13)
-					src.my_skills.ADD_SKILL(SKILL_THROW, 15)
-					src.my_stats.dx += rand(3)
-					src.acrobat = 1
+				if(H.age >= 18)
+					H.my_skills.add_skill(SKILL_MUSIC, 13)
+					H.my_skills.add_skill(SKILL_CLIMB, 13)
+					H.my_skills.add_skill(SKILL_THROW, 15)
+					H.my_stats.change_stat(STAT_DX , 3)
+					H.acrobat = 1
 			if("doinked")
-				if(src.gender == FEMALE)
-					src.futa = TRUE
-
-
+				if(H.gender == FEMALE)
+					H.futa = TRUE
 	else
-		warning("Special de: [ckey ? "CKEY: [ckey]" : "ERROR"] não carregou.")
+		warning("Special for [ckey ? "CKEY: [ckey]" : "NO CKEY"] did not load.")

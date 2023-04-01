@@ -2,7 +2,7 @@
 /datum/organ/internal/brain
 	name = "brain"
 	parent_organ = "head"
-	removed_type = /obj/item/weapon/reagent_containers/food/snacks/organ/brain
+	removed_type = /obj/item/reagent_containers/food/snacks/organ/brain
 	min_bruised_damage = 15
 	min_broken_damage = 40			//30 was too little
 	vital = 1

@@ -33,49 +33,49 @@
 	var/jobbypass = FALSE
 	var/has_starring = FALSE
 	var/uplink_items = {"Highly Visible and Dangerous Weapons;
-/obj/item/weapon/gun/projectile:6:Revolver;
+/obj/item/gun/projectile:6:Revolver;
 /obj/item/ammo_magazine/box/a357:2:Ammo-357;
-/obj/item/weapon/gun/energy/crossbow:5:Energy Crossbow;
-/obj/item/weapon/melee/energy/sword:4:Energy Sword;
-/obj/item/weapon/storage/box/syndicate:10:Syndicate Bundle;
-/obj/item/weapon/storage/box/emps:3:5 EMP Grenades;
+/obj/item/gun/energy/crossbow:5:Energy Crossbow;
+/obj/item/melee/energy/sword:4:Energy Sword;
+/obj/item/storage/box/syndicate:10:Syndicate Bundle;
+/obj/item/storage/box/emps:3:5 EMP Grenades;
 Whitespace:Seperator;
 Stealthy and Inconspicuous Weapons;
-/obj/item/weapon/pen/paralysis:3:Paralysis Pen;
-/obj/item/weapon/soap/syndie:1:Syndicate Soap;
-/obj/item/weapon/cartridge/syndicate:3:Detomatix PDA Cartridge;
+/obj/item/pen/paralysis:3:Paralysis Pen;
+/obj/item/soap/syndie:1:Syndicate Soap;
+/obj/item/cartridge/syndicate:3:Detomatix PDA Cartridge;
 Whitespace:Seperator;
 Stealth and Camouflage Items;
 /obj/item/clothing/under/chameleon:3:Chameleon Jumpsuit;
 /obj/item/clothing/shoes/syndigaloshes:2:No-Slip Syndicate Shoes;
-/obj/item/weapon/card/id/syndicate:2:Agent ID card;
+/obj/item/card/id/syndicate:2:Agent ID card;
 /obj/item/clothing/mask/gas/voice:4:Voice Changer;
 /obj/item/device/chameleon:4:Chameleon-Projector;
 Whitespace:Seperator;
 Devices and Tools;
-/obj/item/weapon/card/emag:3:Cryptographic Sequencer;
-/obj/item/weapon/storage/toolbox/syndicate:1:Fully Loaded Toolbox;
-/obj/item/weapon/storage/box/syndie_kit/space:3:Space Suit;
+/obj/item/card/emag:3:Cryptographic Sequencer;
+/obj/item/storage/toolbox/syndicate:1:Fully Loaded Toolbox;
+/obj/item/storage/box/syndie_kit/space:3:Space Suit;
 /obj/item/clothing/glasses/thermal/syndi:3:Thermal Imaging Glasses;
 /obj/item/device/encryptionkey/binary:3:Binary Translator Key;
-/obj/item/weapon/aiModule/syndicate:7:Hacked AI Upload Module;
-/obj/item/weapon/plastique:2:C-4 (Destroys walls);
+/obj/item/aiModule/syndicate:7:Hacked AI Upload Module;
+/obj/item/plastique:2:C-4 (Destroys walls);
 /obj/item/device/powersink:5:Powersink (DANGER!);
 
-/obj/item/weapon/circuitboard/teleporter:20:Teleporter Circuit Board;
+/obj/item/circuitboard/teleporter:20:Teleporter Circuit Board;
 Whitespace:Seperator;
 Implants;
-/obj/item/weapon/storage/box/syndie_kit/imp_freedom:3:Freedom Implant;
-/obj/item/weapon/storage/box/syndie_kit/imp_uplink:10:Uplink Implant (Contains 5 Telecrystals);
-/obj/item/weapon/storage/box/syndie_kit/imp_explosive:6:Explosive Implant (DANGER!);
-/obj/item/weapon/storage/box/syndie_kit/imp_compress:4:Compressed Matter Implant;Whitespace:Seperator;
+/obj/item/storage/box/syndie_kit/imp_freedom:3:Freedom Implant;
+/obj/item/storage/box/syndie_kit/imp_uplink:10:Uplink Implant (Contains 5 Telecrystals);
+/obj/item/storage/box/syndie_kit/imp_explosive:6:Explosive Implant (DANGER!);
+/obj/item/storage/box/syndie_kit/imp_compress:4:Compressed Matter Implant;Whitespace:Seperator;
 (Pointless) Badassery;
 /obj/item/toy/syndicateballoon:10:For showing that You Are The BOSS (Useless Balloon);"}
 
 // Items removed from above:
 /*
 /obj/item/device/radio/beacon/syndicate:7:Singularity Beacon (DANGER!);
-/obj/item/weapon/cloaking_device:4:Cloaking Device;	//Replacing cloakers with thermals.	-Pete
+/obj/item/cloaking_device:4:Cloaking Device;	//Replacing cloakers with thermals.	-Pete
 */
 
 /datum/game_mode/proc/announce() //to be calles when round starts
@@ -135,7 +135,7 @@ Implants;
 			tiamatrait = H
 			var/list/all_items = H.get_contents()
 			for(var/obj/item/I in all_items)
-				if(istype(I, /obj/item/weapon/card/id/lord))
+				if(istype(I, /obj/item/card/id/lord))
 					amountswon += 1
 			for(var/mob/living/carbon/human/blowjob in mob_list)
 				if(blowjob.job == "Baron" && blowjob.stat == DEAD)
@@ -164,13 +164,13 @@ Implants;
 		if(amountswon <= 2)
 			to_chat(world, "<span class='dreamershitfuckcomicao1'>Starring: [capitalize(pick(tiamatrait.ckey))]</span>")
 			to_chat(world, "<span class='dreamershitfuckcomicao1'>The Traitor was unsuccessful!</span>")
-			tiamatrait?.client?.ChromieWinorLoose(tiamatrait.client, -1)
+			tiamatrait?.client?.ChromieWinorLoose(-1)
 			to_chat(tiamatrait, "\n<span class='dreamershitbutitsbigasfuckanditsboldtoo'>			     I WAS A FAILURE! THEY'RE GOING TO KILL ME!</span>\n\n\n")
 		else if(amountswon == 3)
 			to_chat(world, "<span class='dreamershitfuckcomicao1'>Starring: [capitalize(pick(tiamatrait.ckey))]</span>")
 			to_chat(world, "<span class='dreamershitfuckcomicao1'>The Traitor has been successful!</span>")
 			to_chat(tiamatrait, "\n<span class='dreamershitbutitsbigasfuckanditsboldtoo'>			     Feels good to be the Traitor.</span>\n\n\n")
-			tiamatrait.client.ChromieWinorLoose(tiamatrait.client, 7)
+			tiamatrait.client.ChromieWinorLoose(7)
 
 /*	var/clients = 0
 	var/surviving_humans = 0
@@ -263,7 +263,7 @@ Implants;
 
 	for (var/obj/machinery/computer/communications/comm in machines)
 		if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
-			var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
+			var/obj/item/paper/intercept = new /obj/item/paper( comm.loc )
 			intercept.name = "paper - 'Cent. Com. Status Summary'"
 			intercept.info = intercepttext
 
@@ -279,51 +279,33 @@ Implants;
 		set_security_level(SEC_LEVEL_BLUE)*/
 
 
-/datum/game_mode/proc/get_players_for_role(var/role, override_jobbans=0)
+/datum/game_mode/proc/get_players_for_antag(var/override_jobbans=0)
 	var/list/players = list()
 	var/list/candidates = list()
-	//var/list/drafted = list()
-	//var/datum/mind/applicant = null
-
-	var/roletext
-	switch(role)
-		if(BE_CHANGELING)	roletext="changeling"
-		if(BE_TRAITOR)		roletext="traitor"
-		if(BE_OPERATIVE)	roletext="operative"
-		if(BE_WIZARD)		roletext="wizard"
-		if(BE_REV)			roletext="revolutionary"
-		if(BE_CULTIST)		roletext="cultist"
-		if(BE_NINJA)		roletext="ninja"
-		if(BE_RAIDER)		roletext="raider"
-		if(BE_ALIEN)		roletext="borer"
-
-//		if(BE_MEME)			roletext="meme"
 
 	// Assemble a list of active players without jobbans.
 	for(var/mob/new_player/player in player_list)
-		if( player.client && player.ready )
-			if(!jobban_isbanned(player, "Syndicate") && !jobban_isbanned(player, roletext))
-				players += player
+		if(player.client && player.ready)
+			players += player
 
 	// Shuffle the players list so that it becomes ping-independent.
 	players = shuffle(players)
 
 	// Get a list of all the people who want to be the antagonist for this round
 	for(var/mob/new_player/player in players)
-		if(role)
-			log_debug("[player.key] had [roletext] enabled, so we are drafting them.")
+		if(player.client.prefs.be_antag == TRUE)
+			log_debug("[player.key] wants to be antag.")
 			candidates += player.mind
 			players -= player
 
-	// If we don't have enough antags, draft people who voted for the round.
+	// If we don't have enough antags, draft people.
 	if(candidates.len < recommended_enemies)
-		for(var/key in round_voters)
-			for(var/mob/new_player/player in players)
-				if(player.ckey == key)
-					log_debug("[player.key] voted for this round, so we are drafting them.")
-					candidates += player.mind
-					players -= player
-					break
+		for(var/mob/new_player/player in players)
+			log_debug("[player.key] forced to be antag.")
+			candidates += player.mind
+			players -= player
+			if(candidates.len >= recommended_enemies)
+				break
 
 	// Remove candidates who want to be antagonist but have a job that precludes it
 	if(restricted_jobs)
@@ -331,58 +313,6 @@ Implants;
 			for(var/job in restricted_jobs)
 				if(player.assigned_role == job)
 					candidates -= player
-
-	/*if(candidates.len < recommended_enemies)
-		for(var/mob/new_player/player in players)
-			if(player.client && player.ready)
-				if(!(player.client.prefs.be_special & role)) // We don't have enough people who want to be antagonist, make a seperate list of people who don't want to be one
-					if(!jobban_isbanned(player, "Syndicate") && !jobban_isbanned(player, roletext)) //Nodrak/Carn: Antag Job-bans
-						drafted += player.mind
-
-	if(restricted_jobs)
-		for(var/datum/mind/player in drafted)				// Remove people who can't be an antagonist
-			for(var/job in restricted_jobs)
-				if(player.assigned_role == job)
-					drafted -= player
-
-	drafted = shuffle(drafted) // Will hopefully increase randomness, Donkie
-
-	while(candidates.len < recommended_enemies)				// Pick randomlly just the number of people we need and add them to our list of candidates
-		if(drafted.len > 0)
-			applicant = pick(drafted)
-			if(applicant)
-				candidates += applicant
-				log_debug("[applicant.key] was force-drafted as [roletext], because there aren't enough candidates.")
-				drafted.Remove(applicant)
-
-		else												// Not enough scrubs, ABORT ABORT ABORT
-			break
-
-	if(candidates.len < recommended_enemies && override_jobbans) //If we still don't have enough people, we're going to start drafting banned people.
-		for(var/mob/new_player/player in players)
-			if (player.client && player.ready)
-				if(jobban_isbanned(player, "Syndicate") || jobban_isbanned(player, roletext)) //Nodrak/Carn: Antag Job-bans
-					drafted += player.mind
-
-	if(restricted_jobs)
-		for(var/datum/mind/player in drafted)				// Remove people who can't be an antagonist
-			for(var/job in restricted_jobs)
-				if(player.assigned_role == job)
-					drafted -= player
-
-	drafted = shuffle(drafted) // Will hopefully increase randomness, Donkie
-
-	while(candidates.len < recommended_enemies)				// Pick randomlly just the number of people we need and add them to our list of candidates
-		if(drafted.len > 0)
-			applicant = pick(drafted)
-			if(applicant)
-				candidates += applicant
-				drafted.Remove(applicant)
-				log_debug("[applicant.key] was force-drafted as [roletext], because there aren't enough candidates.")
-
-		else												// Not enough scrubs, ABORT ABORT ABORT
-			break
-	*/
 
 	return candidates		// Returns: The number of people who had the antagonist role set to yes, regardless of recomended_enemies, if that number is greater than recommended_enemies
 							//			recommended_enemies if the number of people with that role set to yes is less than recomended_enemies,

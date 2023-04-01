@@ -15,7 +15,7 @@
 	else
 		icon_state = "access_button_off"
 
-/obj/machinery/key_card/attackby(obj/item/weapon/card/id/I, mob/user)
+/obj/machinery/key_card/attackby(obj/item/card/id/I, mob/user)
 	add_fingerprint(usr)
 
 	if(!istype(I))
@@ -41,6 +41,7 @@
 	return 0
 
 /obj/machinery/key_card/g/attack_hand(mob/user)
+	user.setClickCooldown(DEFAULT_SLOW_COOLDOWN)
 	for(var/obj/machinery/door/airlock/orbital/B in range(12,src))
 		if(B.airlock_tag == src.airlock_tag)
 			if(B.density)
@@ -73,25 +74,23 @@
 	airlock_tag = "magma"
 
 /obj/machinery/key_card/g/magma/attack_hand(mob/user)
-	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	user.setClickCooldown(DEFAULT_SLOW_COOLDOWN)
 	for(var/obj/machinery/door/airlock/orbital/gates/magma/B in range(20, src))
 		if(B.airlock_tag == src.airlock_tag)
 			if(B.fechado)
 				icon_state = "lever1"
 				playsound(src.loc, 'sound/effects/lever.ogg', 25, 0)
-				spawn(1)
-					B.open()
+				B.open()
 			else if(!B.fechado)
 				icon_state = "lever0"
 				playsound(src.loc, 'sound/effects/lever.ogg', 25, 0)
-				spawn(1)
-					B.close()
+				B.close()
 
 /obj/machinery/key_card/g/magma/turret
 	icon_state = "tur_control0"
 
 /obj/machinery/key_card/g/magma/turret/attack_hand(mob/user)
-	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	user.setClickCooldown(DEFAULT_SLOW_COOLDOWN)
 	if(!mainTurret.on)
 		mainTurret.on = 1
 		icon_state = "tur_control1"

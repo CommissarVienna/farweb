@@ -1,6 +1,6 @@
 
 
-/obj/item/weapon/reagent_containers/glass/drinkingglass
+/obj/item/reagent_containers/glass/drinkingglass
 	name = "glass"
 	desc = "Your standard drinking glass."
 	icon = 'icons/obj/drinks.dmi'

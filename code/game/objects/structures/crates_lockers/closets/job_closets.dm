@@ -19,7 +19,6 @@
 	sleep(2)
 	new /obj/item/clothing/head/that(src)
 	new /obj/item/clothing/head/that(src)
-	new /obj/item/clothing/head/hairflower
 	new /obj/item/clothing/under/sl_suit(src)
 	new /obj/item/clothing/under/sl_suit(src)
 	new /obj/item/clothing/under/rank/bartender(src)
@@ -43,15 +42,15 @@
 	..()
 	sleep(2)
 	new /obj/item/clothing/under/rank/janitor(src)
-	new /obj/item/weapon/cartridge/janitor(src)
+	new /obj/item/cartridge/janitor(src)
 	new /obj/item/clothing/gloves/black(src)
 	new /obj/item/clothing/head/soft/purple(src)
 	new /obj/item/device/flashlight(src)
-	new /obj/item/weapon/holosign_creator(src)
+	new /obj/item/holosign_creator(src)
 	new /obj/item/device/lightreplacer(src)
-	new /obj/item/weapon/storage/bag/trash(src)
-	new /obj/item/weapon/watertank/janitor(src)
-	new /obj/item/weapon/storage/belt/janitor(src)
+	new /obj/item/storage/bag/trash(src)
+	new /obj/item/watertank/janitor(src)
+	new /obj/item/storage/belt/janitor(src)
 
 /*
  * Lawyer

@@ -24,11 +24,11 @@ var/global/list/SeenWonder = list()
 /obj/structure/wonder/fourth
 	icon_state = "creation4"
 
-/obj/structure/wonder/examine()
+/obj/structure/wonder/examine(mob/user)
 	..()
-	if(!is_dreamer(usr))
-		usr << 'sound/lfwbsounds/seen_wonder.ogg'
-		to_chat(usr, "<span class='passiveglow'><big>Who could have done something like this?!!?</big></b>")
+	if(!is_dreamer(user))
+		user << 'sound/lfwbsounds/seen_wonder.ogg'
+		to_chat(user, "<span class='passiveglow'><big>Who could have done something like this?!!?</big></b>")
 /obj/structure/wonder/process()
 	for(var/mob/living/carbon/human/H in view(src, world.view))
 		if(ismonster(H)) continue

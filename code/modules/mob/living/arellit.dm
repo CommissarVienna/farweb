@@ -51,25 +51,19 @@
 	..()
 	set_species("arellit")
 	src.zone_sel = new /obj/screen/zone_sel( null )
-	my_stats.initst = rand(5,6)
-	my_stats.initht = rand(9,13)
-	my_stats.initdx = rand(10,13)
-	my_stats.st = my_stats.initst
-	my_stats.ht = my_stats.initht
-	my_stats.dx = my_stats.initdx
-	my_skills.CHANGE_SKILL(SKILL_MELEE, rand(1,3))
+	my_stats.set_stat(STAT_ST, rand(5,6))
+	my_stats.set_stat(STAT_HT, rand(9,13))
+	my_stats.set_stat(STAT_DX, rand(10,13))
+	my_skills.change_skill(SKILL_MELEE, rand(1,3))
 
 /mob/living/carbon/human/monster/arellit/baby/New()
 	..()
 	set_species("arellitbaby")
 
-	my_stats.initst = rand(1,4)
-	my_stats.initht = rand(1,4)
-	my_stats.initdx = rand(1,4)
-	my_stats.st = my_stats.initst
-	my_stats.ht = my_stats.initht
-	my_stats.dx = my_stats.initdx
-	my_skills.CHANGE_SKILL(SKILL_MELEE, rand(1,3))
+	my_stats.set_stat(STAT_ST, rand(1,4))
+	my_stats.set_stat(STAT_HT, rand(1,4))
+	my_stats.set_stat(STAT_DX, rand(1,4))
+	my_skills.change_skill(SKILL_MELEE, rand(1,3))
 
 	spawn(3 MINUTES)
 		var/mob/living/carbon/human/monster/arellit/adult/A = new(loc)
@@ -172,7 +166,7 @@
 
 	combat_mode = 0
 
-	if(stat == 2)
+	if(stat)
 		return 0
 	if(weakened || paralysis || handcuffed || !canmove)
 		return 0
@@ -185,7 +179,7 @@
 		var/chosenDir = pick(possibleDirs)
 		step(src, chosenDir);
 	if(prob(60))
-		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in orange(1, loc))
+		for(var/obj/item/reagent_containers/food/snacks/grown/G in orange(1, loc))
 			if(prob(50)) continue;
 			qdel(G)
 			visible_message("<span class='passivebold'><b>[name]</b> eats <b>[G.name]!</b></span>")
@@ -254,7 +248,8 @@
 	if(isChild() || isMidget())
 		pixel_y = -4
 	else
-		pixel_y = initial(pixel_y)
+		if(!dancing)
+			pixel_y = initial(pixel_y)
 	pixel_x = initial(pixel_x)
 	plane = initial(plane)
 	isLeaning = 0
@@ -320,7 +315,7 @@
 		if(isChild(A))
 			neededST = 7
 
-		if(neededST > src?.my_stats?.st && !istype(src, /mob/living/carbon/human/monster/arellit/adult))
+		if(neededST > src?.my_stats?.get_stat(STAT_ST) && !istype(src, /mob/living/carbon/human/monster/arellit/adult))
 			unbuckle()
 			playsound(A.loc, 'sound/effects/fallsmash.ogg', 50, 0)//Splat
 			A.apply_damage(10/2 + rand(-5,12), BRUTE, "l_leg")
@@ -402,7 +397,7 @@
 	real_name = message
 
 /mob/living/carbon/human/monster/arellit/attackby(obj/item/C,mob/user)
-	if(istype(C,/obj/item/weapon/reagent_containers/food/snacks/grown))
+	if(istype(C,/obj/item/reagent_containers/food/snacks/grown))
 		visible_message("<span class='passive'><b>[src]</b> eats \the <b>[C.name]!</b></span>")
 		playsound(src.loc, pick('sound/webbers/flesh_eat_01.ogg', 'sound/webbers/flesh_eat_02.ogg', 'sound/webbers/flesh_eat_03.ogg', 'sound/webbers/flesh_eat_04.ogg', 'sound/webbers/flesh_eat_05.ogg', 'sound/webbers/flesh_eat_06.ogg'), rand(40,50), 0)//Splat
 		fome++
@@ -412,20 +407,20 @@
 
 	return ..()
 
-/mob/living/carbon/human/monster/arellit/proc/get_snack_effect(obj/item/weapon/reagent_containers/food/snacks/grown/G)
+/mob/living/carbon/human/monster/arellit/proc/get_snack_effect(obj/item/reagent_containers/food/snacks/grown/G)
 	if(istype(src, /mob/living/carbon/human/monster/arellit/adult))
 		return
 
 	switch(G.type)
-		if(/obj/item/weapon/reagent_containers/food/snacks/grown/carrot)
+		if(/obj/item/reagent_containers/food/snacks/grown/carrot)
 			if(arestats.speedmax <= arestats.speed)
 				return
 			arestats.speed++
-		if(/obj/item/weapon/reagent_containers/food/snacks/grown/apple)
+		if(/obj/item/reagent_containers/food/snacks/grown/apple)
 			if(arestats.toughnessmax <= arestats.toughness)
 				return
 			arestats.toughness++
-		if(/obj/item/weapon/reagent_containers/food/snacks/grown/lemon)
+		if(/obj/item/reagent_containers/food/snacks/grown/lemon)
 			if(arestats.damagenessmax <= arestats.damageness)
 				return
 			arestats.damageness++
@@ -454,7 +449,7 @@
 
 /datum/unarmed_attack/arelbite
 	attack_verb = list("hits","slash")
-	attack_sound = 'bite.ogg'
+	attack_sound = 'sound/weapons/bite.ogg'
 	miss_sound = 'sound/weapons/slashmiss.ogg'
 	damage = 10
 	sharp = 1

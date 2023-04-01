@@ -267,15 +267,15 @@
 
 /obj/item/clothing/under/ordinator
 	name = "tribunal enlisted uniform"
-	icon_state = "ordinator"
-	item_state = "ordinator"
-	item_color = "ordinator"
+	icon_state = "opscam"
+	item_state = "opscam"
+	item_color = "opscam"
 
 /obj/item/clothing/under/ordinatorLT
 	name = "tribunal officer uniform"
-	icon_state = "ordinatorLT"
-	item_state = "ordinatorLT"
-	item_color = "ordinatorLT"
+	icon_state = "general"
+	item_state = "general"
+	item_color = "general"
 
 /obj/item/clothing/under/ordinator/old
 	name = "old tribunal ordinator uniform"
@@ -307,6 +307,7 @@
 /obj/item/clothing/under/butler
 	name = "butler uniform"
 	desc = "Includes shoes and plaid"
+	icon = 'icons/mob/uniform.dmi'
 	icon_state = "butler"
 	item_state = "butler"
 	item_color = "butler"

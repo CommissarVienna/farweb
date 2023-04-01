@@ -2,7 +2,6 @@
     title = "German"
     titlebr = "Alemao"
     flag = SMUGGLER
-    department_head = null
     department_flag = CIVILIAN
     faction = "Station"
     total_positions = 1
@@ -11,7 +10,7 @@
     selection_color = "#ae00ff"
     access = list(brothel)
     minimal_access = list(brothel)
-    idtype = /obj/item/weapon/card/id/ltgrey
+    idtype = /obj/item/card/id/ltgrey
     money = 450
     thanati_chance = 75
     jobdesc = "Firethorn is one of the few places on the planet where even heavy drugs and prostitution are legal. You've had to struggle to get into this sweet place, leaving your dead competitors behind you, and ended up deep in debt. Isn't that a beginning of something beautiful?"

@@ -55,13 +55,13 @@ var/const/BLOOD_VOLUME_SURVIVE = 50
 						if(D.data["donor"] == src)
 							B = D
 							break
-				if(nutrition > 399 && hidratacao > 449)
+				if(nutrition > 399 && hydration > 449)
 					B.volume += 1.8
 
-				if(nutrition > 250 && hidratacao > 300)
+				if(nutrition > 250 && hydration > 300)
 					B.volume += 0.5
 
-				if(nutrition > 150 && hidratacao > 200)
+				if(nutrition > 150 && hydration > 200)
 					B.volume += 0.1
 
 				B.volume += 0.1 // regenerate blood VERY slowly
@@ -100,10 +100,10 @@ var/const/BLOOD_VOLUME_SURVIVE = 50
 						pale = 1
 						update_body()
 						var/word = pick("dizzy","woosey","faint")
-						to_chat(src, "\red You feel [word]")
+						to_chat(src, "<span class='redtext'>You feel [word]</span>")
 					if(prob(1))
 						var/word = pick("dizzy","woosey","faint")
-						to_chat(src,"\red You feel [word]")
+						to_chat(src,"<span class='redtext'>You feel [word]</span>")
 					if(oxyloss < 20)
 						oxyloss += 3
 			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
@@ -118,27 +118,12 @@ var/const/BLOOD_VOLUME_SURVIVE = 50
 					if(prob(15))
 						Paralyse(rand(1,2))
 						var/word = pick("dizzy","woosey","faint")
-						to_chat(src,"\red You feel extremely [word]")
+						to_chat(src,"<span class='redtext'>You feel extremely [word]</span>")
 			if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
 				if(isVampire)
 					if(!pale)
 						pale = 1
 						update_body()
-					/*if(prob(3) && !sleeping){
-						sleeping = rand(1, 3)
-					}
-					if(prob(6))
-						var/word = pick("dizzy","woosey","faint")
-						to_chat(src,"\red You feel extremely [word]")
-				else
-					oxyloss += 5
-					toxloss += 3
-					if(prob(15) && !sleeping){
-						sleeping = rand(10, 15)
-					}
-					if(prob(15))
-						var/word = pick("dizzy","woosey","faint")
-						to_chat(src,"\red You feel extremely [word]")*/
 
 		// Without enough blood you slowly go hungry.
 		if(blood_volume < BLOOD_VOLUME_SAFE)
@@ -205,7 +190,7 @@ var/const/BLOOD_VOLUME_SURVIVE = 50
 ****************************************************/
 
 //Gets blood from mob to the container, preserving all data in it.
-/mob/living/carbon/proc/take_blood(obj/item/weapon/reagent_containers/container, var/amount)
+/mob/living/carbon/proc/take_blood(obj/item/reagent_containers/container, var/amount)
 
 	var/datum/reagent/B = get_blood(container.reagents)
 	if(!B) B = new /datum/reagent/blood
@@ -240,7 +225,7 @@ var/const/BLOOD_VOLUME_SURVIVE = 50
 	return B
 
 //For humans, blood does not appear from blue, it comes from vessels.
-/mob/living/carbon/human/take_blood(obj/item/weapon/reagent_containers/container, var/amount)
+/mob/living/carbon/human/take_blood(obj/item/reagent_containers/container, var/amount)
 
 	if(species && species.flags & NO_BLOOD)
 		return null
@@ -252,7 +237,7 @@ var/const/BLOOD_VOLUME_SURVIVE = 50
 	vessel.remove_reagent("blood",amount) // Removes blood if human
 
 //Transfers blood from container ot vessels
-/mob/living/carbon/proc/inject_blood(obj/item/weapon/reagent_containers/container, var/amount)
+/mob/living/carbon/proc/inject_blood(obj/item/reagent_containers/container, var/amount)
 	var/datum/reagent/blood/injected = get_blood(container.reagents)
 	if (!injected)
 		return
@@ -271,7 +256,7 @@ var/const/BLOOD_VOLUME_SURVIVE = 50
 	container.reagents.remove_reagent("blood", amount)
 
 //Transfers blood from container ot vessels, respecting blood types compatability.
-/mob/living/carbon/human/inject_blood(obj/item/weapon/reagent_containers/container, var/amount)
+/mob/living/carbon/human/inject_blood(obj/item/reagent_containers/container, var/amount)
 
 	var/datum/reagent/blood/injected = get_blood(container.reagents)
 
@@ -366,7 +351,7 @@ proc/blood_splatter(var/target,var/datum/reagent/blood/source,var/large)
 	B = locate(decal_type) in T
 	var/obj/effect/decal/cleanable/bloodpool/pool
 	pool = locate(/obj/effect/decal/cleanable/bloodpool) in T
-	var/obj/item/weapon/reagent_containers/glass/G = locate() in T
+	var/obj/item/reagent_containers/glass/G = locate() in T
 	if(!B && !pool)
 		if(G && !G.reagents.total_volume != G.reagents.maximum_volume && ishuman(source))
 			var/datum/reagent/blood/BB

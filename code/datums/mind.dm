@@ -240,9 +240,6 @@ datum/mind
 			text = "<i><b>[text]</b></i>: "
 			if (istype(current, /mob/living/carbon/monkey) || H.is_loyalty_implanted(H)|| H.is_mentor_implanted(H))
 				text += "<B>LOYAL EMPLOYEE</B>|cultist"
-			else if (src in ticker.mode.cult)
-				text += "<a href='?src=\ref[src];cult=clear'>employee</a>|<b>CULTIST</b>"
-				text += "<br>Give <a href='?src=\ref[src];cult=tome'>tome</a>|<a href='?src=\ref[src];cult=amulet'>amulet</a>."
 /*
 				if (objectives.len==0)
 					text += "<br>Objectives are empty! Set to sacrifice and <a href='?src=\ref[src];cult=escape'>escape</a> or <a href='?src=\ref[src];cult=summon'>summon</a>."
@@ -441,12 +438,6 @@ datum/mind
 						return
 
 					switch(new_obj_type)
-						if("download")
-							new_objective = new /datum/objective/download
-							new_objective.explanation_text = "Download [target_number] research levels."
-						if("capture")
-							new_objective = new /datum/objective/capture
-							new_objective.explanation_text = "Accumulate [target_number] capture points."
 						if("absorb")
 							new_objective = new /datum/objective/absorb
 							new_objective.explanation_text = "Absorb [target_number] compatible genomes."
@@ -482,14 +473,14 @@ datum/mind
 			var/mob/living/carbon/human/H = current
 			switch(href_list["implant"])
 				if("remove")
-					for(var/obj/item/weapon/implant/loyalty/I in H.contents)
+					for(var/obj/item/implant/loyalty/I in H.contents)
 						for(var/datum/organ/external/organs in H.organs)
 							if(I in organs.implants)
 								I.Destroy()
 								break
 					H << "\blue <Font size =3><B>Your loyalty implant has been deactivated.</B></FONT>"
 				if("add")
-					var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
+					var/obj/item/implant/loyalty/L = new/obj/item/implant/loyalty(H)
 					L.imp_in = H
 					L.implanted = 1
 					var/datum/organ/external/affected = H.organs_by_name["head"]
@@ -513,12 +504,13 @@ datum/mind
 					H.combat_music = 'sound/lfwbsounds/bloodlust1.ogg'
 					var/datum/antagonist/dreamer/D = new()
 					H.mind.antag_datums = D
-					H.my_skills.CHANGE_SKILL(SKILL_MELEE, 7)
-					H.my_skills.CHANGE_SKILL(SKILL_RANGE, 7)
-					H.my_stats.st = rand(19,24)
-					H.my_stats.dx = rand(18,25)
-					H.my_stats.ht = rand(22,30)
+					H.my_skills.change_skill(SKILL_MELEE, 7)
+					H.my_skills.change_skill(SKILL_RANGE, 7)
+					H.my_stats.change_stat(STAT_ST , 10)
+					H.my_stats.change_stat(STAT_DX , 8)
+					H.my_stats.change_stat(STAT_HT , 15)
 					H.verbs += /mob/living/carbon/human/proc/dreamer
+					H.verbs += /mob/living/carbon/human/proc/dreamerArchetypes
 
 		else if (href_list["soulbreaker"])
 			switch(href_list["soulbreaker"])
@@ -535,14 +527,14 @@ datum/mind
 					to_chat(new_character, "<span class='dreamershitfuckcomicao1'>Você escraviza pessoas vivas para que possam restaurar planetas perdidos. Você tem muitas ferramentas para fazer isso, então deve ser fácil capturar o migrante comum.</span>")
 					log_admin("[key_name_admin(usr)] has soulbreaker'ed [new_character.key].")
 					new_character << sound('sound/music/soulbreaker.ogg', repeat = 0, wait = 0, volume = 80, channel = 3)
-					new_character.my_skills.CHANGE_SKILL(SKILL_MELEE, rand(3,6))
-					new_character.my_skills.CHANGE_SKILL(SKILL_RANGE, rand(3,6))
+					new_character.my_skills.change_skill(SKILL_MELEE, rand(3,6))
+					new_character.my_skills.change_skill(SKILL_RANGE, rand(3,6))
 					new_character.name = pick(pick_the_name)
 					new_character.age = rand(24,45)
 					new_character.voicetype = "strong"
-					new_character.my_stats.st = rand(10,16)
-					new_character.my_stats.dx = rand(10,15)
-					new_character.my_stats.ht = rand(10,16)
+					new_character.my_stats.change_stat(STAT_ST , 5)
+					new_character.my_stats.change_stat(STAT_DX , 4)
+					new_character.my_stats.change_stat(STAT_HT , 5)
 					new_character.religion = "Allah"
 					spawnpoint = pick(1,2,3,4)
 					if(spawnpoint == 1)
@@ -662,8 +654,8 @@ datum/mind
 								sleep(0) //because deleting of virus is doing throught spawn(0)
 						log_admin("[key_name(usr)] attempting to humanize [key_name(current)]")
 						message_admins("\blue [key_name_admin(usr)] attempting to humanize [key_name_admin(current)]")
-						var/obj/item/weapon/dnainjector/m2h/m2h = new
-						var/obj/item/weapon/implant/mobfinder = new(M) //hack because humanizing deletes mind --rastaf0
+						var/obj/item/dnainjector/m2h/m2h = new
+						var/obj/item/implant/mobfinder = new(M) //hack because humanizing deletes mind --rastaf0
 						src = null
 						m2h.inject(M)
 						src = mobfinder.loc:mind
@@ -777,7 +769,7 @@ datum/mind
 				if (t:traitorradio) del(t:traitorradio)
 				t:traitorradio = null
 				t:traitor_frequency = 0.0
-			else if (istype(t, /obj/item/weapon/SWF_uplink) || istype(t, /obj/item/weapon/syndicate_uplink))
+			else if (istype(t, /obj/item/SWF_uplink) || istype(t, /obj/item/syndicate_uplink))
 				if (t:origradio)
 					var/obj/item/device/radio/R = t:origradio
 					R.loc = current.loc
@@ -842,10 +834,10 @@ datum/mind
 					T.usable = FALSE
 					T.icon_state = "floater2"
 					T.density = 0
-
+/*
 		var/mob/living/carbon/human/H = current
 		if (istype(H))
-			var/obj/item/weapon/tome/T = new(H)
+			var/obj/item/tome/T = new(H)
 
 			var/list/slots = list (
 				"backpack" = slot_in_backpack,
@@ -861,7 +853,7 @@ datum/mind
 
 		if (!ticker.mode.equip_cultist(current))
 			H << "Spawning an amulet from your Master failed."
-
+*/
 	proc/make_Rev()
 		if (ticker.mode.head_revolutionaries.len>0)
 			// copy targets
@@ -889,11 +881,7 @@ datum/mind
 	//	fail |= !ticker.mode.equip_traitor(current, 1)
 		fail |= !ticker.mode.equip_revolutionary(current)
 
-	proc/make_Borer()
-		if(!(src in ticker.mode.borers))
-			ticker.mode.borers += src
-			special_role = "borer"
-			ticker.mode.forge_borer_objectives(src)
+
 	// check whether this mind's mob has been brigged for the given duration
 	// have to call this periodically for the duration to work properly
 	proc/is_brigged(duration)
@@ -906,7 +894,7 @@ datum/mind
 
 		if(istype(T.loc,/area/security/brig))
 			is_currently_brigged = 1
-			for(var/obj/item/weapon/card/id/card in current)
+			for(var/obj/item/card/id/card in current)
 				is_currently_brigged = 0
 				break // if they still have ID they're not brigged
 			for(var/obj/item/device/pda/P in current)

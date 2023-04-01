@@ -1,11 +1,11 @@
 //TORCH
-/obj/item/weapon/flame/torch
+/obj/item/flame/torch
 	name = "torch"
 	desc = "A hand-made torch."
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "torch"
 	item_state = "torch0"
-	drop_sound = 'wooden_drop.ogg'
+	drop_sound = 'sound/items/wooden_drop.ogg'
 
 	hand_on = "torch1"
 	hand_off = "torch0"
@@ -21,21 +21,29 @@
 	w_class = 4
 	flags = FPRINT | TABLEPASS | CONDUCT
 	slot_flags = SLOT_BELT
-	can_be_smelted_to = null
+	smelted_return = null
 
-/obj/item/weapon/flame/torch/New()
-	..()
-	processing_objects.Add(src)
+/obj/item/flame/torch/migger
+	state_on = "mtorch-on"
+	state_off = "mtorch"
 
-/obj/item/weapon/flame/torch/Destroy()
-	..()
-	processing_objects.Remove(src)
-
-/obj/item/weapon/flame/torch/on/New()
+/obj/item/flame/torch/migger/on/New()
 	..()
 	turn_on()
 
-/obj/item/weapon/flame/torch/lantern
+/obj/item/flame/torch/New()
+	..()
+	processing_objects.Add(src)
+
+/obj/item/flame/torch/Destroy()
+	..()
+	processing_objects.Remove(src)
+
+/obj/item/flame/torch/on/New()
+	..()
+	turn_on()
+
+/obj/item/flame/torch/lantern
 	name = "lantern"
 	desc = "May god protect us from darkness."
 	icon_state = "lantern"
@@ -47,12 +55,12 @@
 	state_on = "lantern-on"
 	state_off = "lantern"
 
-/obj/item/weapon/flame/torch/lantern/on/New()
+/obj/item/flame/torch/lantern/on/New()
 	..()
 	canfade = 0
 	turn_on()
 
-/obj/item/weapon/flame/torch/process()
+/obj/item/flame/torch/process()
 
 	if(!lit)
 		return
@@ -70,16 +78,16 @@
 	playsound(src, 'sound/effects/torch_small.ogg', 15, channel=26, wait=1, repeat=0)
 
 
-/obj/item/weapon/flame/torch/turn_off()
-	playsound(src.loc, 'torch_snuff.ogg', 50, 0)
+/obj/item/flame/torch/turn_off()
+	playsound(src.loc, 'sound/effects/torch_snuff.ogg', 50, 0)
 	playsound(src, null, 0, channel=26, wait=0, repeat=0)
 	..()
 
-/obj/item/weapon/flame/torch/turn_on()
-	playsound(src.loc, 'torch_light.ogg', 50, 0)
+/obj/item/flame/torch/turn_on()
+	playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
 	..()
 
-/obj/item/weapon/flame/torch/dropped(var/mob/user)
+/obj/item/flame/torch/dropped(var/mob/user)
 	if(!lit) return
 	if(!canfade) return
 
@@ -91,9 +99,9 @@
 			if(!A.flammable) continue
 			new /obj/structure/fire(loc)
 
-/obj/item/weapon/flame/torch/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/flame))
-		var/obj/item/weapon/flame/F = W
+/obj/item/flame/torch/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/flame))
+		var/obj/item/flame/F = W
 		if(F.lit && !src.lit)
 			src.turn_on()
 			user.visible_message("<span class='goodlight'>[user] enlights [src].")
@@ -113,15 +121,18 @@
 	breakable = 1
 
 	var/lit = 0
-	var/f_force = 3
+	var/f_force = 7
 	var/r_range = 6
-	var/c_color = "#ff7a7a"
+	var/c_color = "#bf915c"
 	var/on_state = "fireplace1"
 	var/off_state = "fireplace0"
 	var/fire_left = null //tempo até apagar
+	var/obj/particleMain = null
+	var/particlePath = /obj/particles/fireplace
+	var/loop = 1 //1 = max / -1 = min
 
 /obj/structure/fireplace/New()
-	..()
+	. = ..()
 	fire_left = rand(20 MINUTES, 48 MINUTES)
 	processing_objects.Add(src)
 	turn_on()
@@ -138,23 +149,76 @@
 	fire_left = max(0, fire_left-2 SECONDS)
 	if(fire_left == 0 && lit)
 		turn_off()
+	/* //BEWARE OF THE MADMAN
+	spawn(6)
+		normalLoop()
+		spawn(6)
+			normalLoop()
+			spawn(6)
+				normalLoop()
+
+/obj/structure/fireplace/proc/normalLoop()
+	if(fire_left && lit)
+		if(loop == 1)
+			set_light(r_range, max(2, f_force-2), c_color)
+			loop = -1
+			return
+		if(loop == -1)
+			loop = 1
+			set_light(r_range, f_force, c_color)
+			return
+	*/
+
+/obj/particles
+	var/mainParticle = null
+	vis_flags = VIS_INHERIT_PLANE
+	anchored = 1
+
+/obj/particles/fireplace/New()
+	..()
+	mouse_opacity = 0
+	var/particles/fireplace/F = new
+	src.pixel_y = 4
+	src.plane = 22
+	src.filters += list(filter(type = "outline", size = 0.1, color = "#FF3300"), filter(type = "bloom", threshold = rgb(255, 128, 255), size = 3, offset = 2, alpha = 255))
+	particles += F
+	mainParticle = F
+
+
+/obj/particles/fireplace2/New()
+	..()
+	mouse_opacity = 0
+	var/particles/fireplace2/F = new
+	src.pixel_y = 4
+	src.plane = 22
+	src.filters += list(filter(type = "outline", size = 0.1, color = "#FF3300"), filter(type = "bloom", threshold = rgb(255, 128, 255), size = 3, offset = 2, alpha = 255))
+	particles += F
+	mainParticle = F
 
 /obj/structure/fireplace/proc/turn_on()
-	playsound(src.loc, 'torch_light.ogg', 50, 1)
+	playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 1)
 	icon_state = on_state
 	set_light(r_range, f_force, c_color)
 	fire_left = rand(38 MINUTES, 48 MINUTES)
 	lit = 1
+	if(!particleMain && ispath(particlePath))
+		particleMain = new particlePath(src.loc)
+	var/obj/particles/fireplace/P = particleMain
+	if(P)
+		P.mainParticle:spawning = 1
 
 /obj/structure/fireplace/proc/turn_off()
-	playsound(src.loc, 'torch_snuff.ogg', 75, 1)
+	playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 1)
 	icon_state = off_state
 	set_light(0)
 	lit = 0
+	var/obj/particles/fireplace/P = particleMain
+	if(P)
+		P.mainParticle:spawning = 0
 
 /obj/structure/fireplace/attackby(var/obj/item/I, var/mob/user)
-	if(istype(I, /obj/item/weapon/flame))
-		var/obj/item/weapon/flame/F = I
+	if(istype(I, /obj/item/flame))
+		var/obj/item/flame/F = I
 		if(src.lit && !F.lit)
 			F.turn_on()
 			user.visible_message("<span class='goodlight'>[user] enlights [F].")
@@ -175,6 +239,11 @@
 	icon_state = "fireplace20"
 	on_state =  "fireplace21"
 	off_state = "fireplace20"
+	particlePath = /obj/particles/fireplace2
+
+/obj/structure/fireplace/alt/New()
+	..()
+	particleMain.pixel_x = 3
 
 /obj/structure/fireplace/alt2
 	icon = 'icons/obj/weapons.dmi'
@@ -182,8 +251,13 @@
 	on_state =  "pyreplace1"
 	off_state = "pyreplace0"
 	c_color = "#ff7a7a"
-	f_force = 2
-	r_range = 4
+	f_force = 7
+	r_range = 6
+	particlePath = /obj/particles/fireplace2
+
+/obj/structure/fireplace/alt2/New()
+	..()
+	particleMain.pixel_x = 1
 
 /obj/structure/fireplace/wallplace
 	on_state = "wfireplace1"
@@ -191,6 +265,7 @@
 	icon_state = "wfireplace0"
 	density = 0
 	plane = 21
+	particlePath = null
 
 /obj/structure/fireplace/wallplace/north
 	pixel_y = 22
@@ -207,7 +282,7 @@
 
 /obj/structure/fireplace/alt/Old
 	c_color = "#ff4f4f"
-	f_force = 3
+	f_force = 7
 	r_range = 6
 
 /obj/structure/torchwall
@@ -255,10 +330,10 @@
 	checkfire()
 	..()
 
-/obj/structure/torchwall/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/torchwall/attackby(obj/item/W as obj, mob/user as mob)
 	if(src.on)
-		if(istype(W, /obj/item/weapon/flame/torch))
-			var/obj/item/weapon/flame/torch/T = W
+		if(istype(W, /obj/item/flame/torch))
+			var/obj/item/flame/torch/T = W
 			if(!isempty)
 				if(T.lit)
 					user.visible_message("<span class='notice'>[user] tries to light [T]</span>", \
@@ -276,13 +351,13 @@
 				user.update_inv_l_hand()
 				playsound(src, 'sound/items/torch_fixture1.ogg', 50, 0, -1)
 	else
-		if(istype(W, /obj/item/weapon/flame/torch))
-			var/obj/item/weapon/flame/torch/T = W
+		if(istype(W, /obj/item/flame/torch))
+			var/obj/item/flame/torch/T = W
 			if(!isempty)
 				if(T.lit)
 					user.visible_message("<span class='notice'>[user] lights [src]</span>", \
 					"<span class='notice'>You light [src]</span>")
-					playsound(src.loc, 'torch_light.ogg', 50, 0)
+					playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
 					src.on = TRUE
 					src.checkfire()
 					user.update_inv_r_hand()
@@ -305,7 +380,7 @@
 
 /obj/structure/torchwall/attack_hand(mob/M as mob)
 	if(!isempty)
-		var/obj/item/weapon/flame/torch/T = new (M.loc)
+		var/obj/item/flame/torch/T = new (M.loc)
 		M.put_in_active_hand(T)
 		T.turn_on()
 
@@ -316,7 +391,7 @@
 		M.update_inv_l_hand()
 		playsound(src, 'sound/items/torch_fixture0.ogg', 50, 0, -1)
 	else
-		M << "It has no torch."
+		to_chat(M, "It has no torch.")
 
 /obj/structure/campfire
 	name = "campfire"
@@ -340,7 +415,7 @@
 		on = FALSE
 		spent = TRUE
 		checkfire()
-		playsound(src.loc, 'torch_snuff.ogg', 75, 0)
+		playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 0)
 
 /obj/structure/campfire/proc/checkfire(var/come_off=0)//COME_OFF PRA TALVEZ JA VIR DESLIGADA
 	if(spent) return
@@ -386,7 +461,7 @@
 	if(!fire_left)
 		on = FALSE
 		checkfire()
-		playsound(src.loc, 'torch_snuff.ogg', 75, 0)
+		playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 0)
 
 /obj/structure/campfire/firepool/New()
 	fire_left = rand(50, 80)
@@ -394,10 +469,10 @@
 	processing_objects.Add(src)
 	..()
 
-/obj/structure/campfire/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/campfire/attackby(obj/item/W as obj, mob/user as mob)
 	if(src.on)
-		if(istype(W, /obj/item/weapon/flame/torch))
-			var/obj/item/weapon/flame/torch/T = W
+		if(istype(W, /obj/item/flame/torch))
+			var/obj/item/flame/torch/T = W
 			if(T.lit)
 				user.visible_message("<span class='notice'>[user] tries to light [T]</span>", \
 				"<span class='notice'>You try to light [src]</span>")
@@ -405,13 +480,13 @@
 				T.lit = TRUE
 				user.visible_message("<span class='notice'>[user] lights [T]</span>", \
 				"<span class='notice'>You light [T]</span>")
-				playsound(src.loc, 'torch_light.ogg', 50, 0)
+				playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
 
 				user.update_inv_r_hand()
 				user.update_inv_l_hand()
 
-		else if(istype(W, /obj/item/weapon/flame/candle))
-			var/obj/item/weapon/flame/candle/C = W
+		else if(istype(W, /obj/item/flame/candle))
+			var/obj/item/flame/candle/C = W
 			if(C.lit)
 				user.visible_message("<span class='notice'>[user] tries to light [C]</span>", \
 				"<span class='notice'>You try to light [src]</span>")
@@ -419,12 +494,12 @@
 
 				user.visible_message("<span class='notice'>[user] lights [C]</span>", \
 				"<span class='notice'>You light [C]</span>")
-				playsound(src.loc, 'torch_light.ogg', 50, 0)
+				playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
 				user.update_inv_r_hand()
 				user.update_inv_l_hand()
 
-		else if(istype(W, /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom))
-			var/obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/F = W
+		else if(istype(W, /obj/item/reagent_containers/food/snacks/grown/mushroom))
+			var/obj/item/reagent_containers/food/snacks/grown/mushroom/F = W
 			if(!F.cooked)
 				user.visible_message("<span class='notice'>[user] cooks the [F]</span>", \
 				"<span class='notice'>You cook the [F]</span>")
@@ -440,12 +515,12 @@
 			var/obj/item/clothing/mask/cigarette/C = W
 			C.light("<span class='notice'>[user] manages to light their [name] with [W].</span>")
 	else
-		if(istype(W, /obj/item/weapon/flame/torch))
-			var/obj/item/weapon/flame/torch/T = W
+		if(istype(W, /obj/item/flame/torch))
+			var/obj/item/flame/torch/T = W
 			if(T.lit)
 				user.visible_message("<span class='notice'>[user] lights [src]</span>", \
 				"<span class='notice'>You light [src]</span>")
-				playsound(src.loc, 'torch_light.ogg', 50, 0)
+				playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
 				src.on = TRUE
 				src.checkfire()
 				user.update_inv_r_hand()
@@ -454,12 +529,12 @@
 				user.visible_message("<span class='notice'>[user] tries to light [src]</span>", \
 				"<span class='notice'>You try to light [src]</span>")
 
-		else if(istype(W, /obj/item/weapon/flame/candle))
-			var/obj/item/weapon/flame/candle/C = W
+		else if(istype(W, /obj/item/flame/candle))
+			var/obj/item/flame/candle/C = W
 			if(C.lit)
 				user.visible_message("<span class='notice'>[user] lights [src]</span>", \
 				"<span class='notice'>You light [src]</span>")
-				playsound(src.loc, 'torch_light.ogg', 50, 0)
+				playsound(src.loc, 'sound/effects/torch_light.ogg', 50, 0)
 				src.on = TRUE
 				src.checkfire()
 				user.update_inv_r_hand()
@@ -472,4 +547,4 @@
 	if(src.on)
 		src.on = FALSE
 		src.checkfire()
-		playsound(src.loc, 'torch_snuff.ogg', 75, 0)
+		playsound(src.loc, 'sound/effects/torch_snuff.ogg', 75, 0)

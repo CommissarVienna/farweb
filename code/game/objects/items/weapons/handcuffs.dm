@@ -1,4 +1,4 @@
-/obj/item/weapon/handcuffs
+/obj/item/handcuffs
 	name = "handcuffs"
 	desc = "Use this to keep prisoners in line."
 	gender = PLURAL
@@ -19,11 +19,11 @@
 	pickupsound = 'sound/effects/chainpick.ogg'
 	dropsound = 'sound/effects/chaindrop.ogg'
 
-/obj/item/weapon/handcuffs/attack(mob/living/carbon/C as mob, mob/user as mob)
+/obj/item/handcuffs/attack(mob/living/carbon/C as mob, mob/user as mob)
 	if(!istype(C))
 		return
 
-	if(istype(src, /obj/item/weapon/handcuffs/cyborg) && isrobot(user))
+	if(istype(src, /obj/item/handcuffs/cyborg) && isrobot(user))
 		if(!C.handcuffed)
 			var/turf/p_loc = user.loc
 			var/turf/p_loc_m = C.loc
@@ -33,7 +33,7 @@
 			spawn(20)
 				if(!C)	return
 				if(p_loc == user.loc && p_loc_m == C.loc)
-					C.handcuffed = new /obj/item/weapon/handcuffs(C)
+					C.handcuffed = new /obj/item/handcuffs(C)
 					C.update_inv_handcuffed()
 	else
 		if ((CLUMSY in usr.mutations) && prob(5))
@@ -53,7 +53,7 @@
 				return
 			return
 		if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
-			to_chat(usr, "<span class='combatbold'>[pick(nao_consigoen)] I don't have the dexterity to do this!</span>")
+			to_chat(usr, "<span class='combatbold'>[pick(fnord)] I don't have the dexterity to do this!</span>")
 			return
 		if (istype(C, /mob/living/carbon/human))
 			if(!C.handcuffed)
@@ -71,7 +71,7 @@
 				O.place = "handcuff"
 				C.requests += O
 				spawn( 0 )
-					if(istype(src, /obj/item/weapon/handcuffs/fiber))
+					if(istype(src, /obj/item/handcuffs/fiber))
 						playsound(src.loc, 'sound/weapons/cablecuff.ogg', 30, 1, -2)
 					else
 						playsound(src.loc, 'sound/weapons/handcuffs.ogg', 30, 1, -2)
@@ -88,7 +88,7 @@
 				O.place = "handcuff"
 				C.requests += O
 				spawn( 0 )
-					if(istype(src, /obj/item/weapon/handcuffs/fiber))
+					if(istype(src, /obj/item/handcuffs/fiber))
 						playsound(src.loc, 'sound/weapons/cablecuff.ogg', 30, 1, -2)
 					else
 						playsound(src.loc, 'sound/weapons/handcuffs.ogg', 30, 1, -2)
@@ -96,41 +96,41 @@
 			return
 	return
 
-/obj/item/weapon/handcuffs/fiber
+/obj/item/handcuffs/fiber
 	name = "fibers"
 	icon_state = "fibers"
 	item_state = "rope"
 	breakouttime = 450
 
-/obj/item/weapon/handcuffs/cable
+/obj/item/handcuffs/cable
 	name = "cable restraints"
 	desc = "Looks like some cables tied together. Could be used to tie something up."
 	icon_state = "cuff_white"
 	breakouttime = 300 //Deciseconds = 30s
 
-/obj/item/weapon/handcuffs/cable/red
+/obj/item/handcuffs/cable/red
 	color = "#DD0000"
 
-/obj/item/weapon/handcuffs/cable/yellow
+/obj/item/handcuffs/cable/yellow
 	color = "#DDDD00"
 
-/obj/item/weapon/handcuffs/cable/blue
+/obj/item/handcuffs/cable/blue
 	color = "#0000DD"
 
-/obj/item/weapon/handcuffs/cable/green
+/obj/item/handcuffs/cable/green
 	color = "#00DD00"
 
-/obj/item/weapon/handcuffs/cable/pink
+/obj/item/handcuffs/cable/pink
 	color = "#DD00DD"
 
-/obj/item/weapon/handcuffs/cable/orange
+/obj/item/handcuffs/cable/orange
 	color = "#DD8800"
 
-/obj/item/weapon/handcuffs/cable/cyan
+/obj/item/handcuffs/cable/cyan
 	color = "#00DDDD"
 
-/obj/item/weapon/handcuffs/cable/white
+/obj/item/handcuffs/cable/white
 	color = "#FFFFFF"
 
-/obj/item/weapon/handcuffs/cyborg
+/obj/item/handcuffs/cyborg
 	dispenser = 1

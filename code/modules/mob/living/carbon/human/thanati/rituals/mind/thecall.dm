@@ -1,5 +1,5 @@
 /proc/thecall(var/text = null, var/mob/usr, var/turf/C)
-    for(var/obj/item/weapon/photo/P in C.contents)
+    for(var/obj/item/photo/P in C.contents)
         for(var/mob/living/carbon/human/H in P.info)
             if(H.pulledThanati)
                 return

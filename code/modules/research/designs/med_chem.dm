@@ -32,7 +32,7 @@
 	req_tech = list("materials" = 2, "biotech" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 7000, "$glass" = 7000)
-	build_path = /obj/item/weapon/implant/loyalty
+	build_path = /obj/item/implant/loyalty
 
 /datum/design/implant_chem
 	name = "chemical implant"
@@ -41,7 +41,7 @@
 	req_tech = list("materials" = 2, "biotech" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/implant/chem
+	build_path = /obj/item/implant/chem
 
 /datum/design/implant_free
 	name = "freedom implant"
@@ -50,7 +50,7 @@
 	req_tech = list("syndicate" = 2, "biotech" = 3)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 50, "$glass" = 50)
-	build_path = /obj/item/weapon/implant/freedom
+	build_path = /obj/item/implant/freedom
 
 
 /////////////////////////////////////////
@@ -88,7 +88,7 @@
 	build_type = PROTOLATHE
 	materials = list("$metal" = 3000, "$plasma" = 3000, "$diamond" = 500)
 	reliability_base = 76
-	build_path = /obj/item/weapon/reagent_containers/glass/beaker/bluespace
+	build_path = /obj/item/reagent_containers/glass/beaker/bluespace
 
 /datum/design/noreactbeaker
 	name = "cryostasis beaker"
@@ -98,7 +98,7 @@
 	build_type = PROTOLATHE
 	materials = list("$metal" = 3000)
 	reliability_base = 76
-	build_path = /obj/item/weapon/reagent_containers/glass/beaker/noreact
+	build_path = /obj/item/reagent_containers/glass/beaker/noreact
 	category = "Misc"
 
 
@@ -112,7 +112,7 @@
 	build_type = PROTOLATHE
 	materials = list("$metal" = 5000, "$glass" = 1000)
 	reliability_base = 100
-	build_path = /obj/item/weapon/reagent_containers/spray/chemsprayer
+	build_path = /obj/item/reagent_containers/spray/chemsprayer
 
 /datum/design/rapidsyringe
 	name = "Rapid Syringe Gun"
@@ -121,4 +121,4 @@
 	req_tech = list("combat" = 3, "materials" = 3, "engineering" = 3, "biotech" = 2)
 	build_type = PROTOLATHE
 	materials = list("$metal" = 5000, "$glass" = 1000)
-	build_path = /obj/item/weapon/gun/syringe/rapidsyringe
+	build_path = /obj/item/gun/syringe/rapidsyringe

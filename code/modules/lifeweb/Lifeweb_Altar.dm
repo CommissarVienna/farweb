@@ -24,7 +24,7 @@ var/obj/structure/stool/bed/chair/altar/lifewebChair
 	if (!ticker)
 		return
 
-	if(M.species.name == "Skeleton")
+	if(isskeleton(M))
 		return
 
 	if ( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.restrained() || M.buckled || istype(user, /mob/living/silicon/pai) )
@@ -34,16 +34,16 @@ var/obj/structure/stool/bed/chair/altar/lifewebChair
 		return
 
 	for(var/obj/O in M.contents)
-		if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/organ))
+		if(istype(O, /obj/item/reagent_containers/food/snacks/organ))
 			continue
-		else if(istype(O, /obj/item/weapon/storage/touchable/organ))
+		else if(istype(O, /obj/item/storage/touchable/organ))
 			continue
 		else
 			to_chat(user, "The victim needs to be fully naked.")
 			return
 
 	if (M.isChild())
-		to_chat(user, "How dumb am i?")
+		to_chat(user, "Children do not make good power sources.")
 		return
 
 	if (M == usr)
@@ -58,7 +58,7 @@ var/obj/structure/stool/bed/chair/altar/lifewebChair
 /obj/structure/stool/bed/chair/altar/buckle_mob(mob/living/carbon/human/M as mob, mob/user as mob)
 	if(LifewebChecks(M, user))
 		M.visible_message("<B>[M.name]</B> is locked on the [src]!")
-		playsound(src.loc, pick('lw_sacrificed1.ogg','lw_sacrificed2.ogg','lw_sacrificed3.ogg','lw_sacrificed4.ogg'), 60, 0, -1)
+		playsound(src.loc, pick('sound/LW2/lw_sacrificed1.ogg','sound/LW2/lw_sacrificed2.ogg','sound/LW2/lw_sacrificed3.ogg','sound/LW2/lw_sacrificed4.ogg'), 60, 0, -1)
 	else
 		return
 

@@ -4,7 +4,7 @@
 CONTAINS:
 RCD
 */
-/obj/item/weapon/rcd
+/obj/item/rcd
 	name = "rapid-construction-device (RCD)"
 	desc = "A device used to rapidly build walls/floor."
 	icon = 'icons/obj/items.dmi'
@@ -36,9 +36,9 @@ RCD
 		return
 
 
-	attackby(obj/item/weapon/W, mob/user)
+	attackby(obj/item/W, mob/user)
 		..()
-		if(istype(W, /obj/item/weapon/rcd_ammo))
+		if(istype(W, /obj/item/rcd_ammo))
 			if((matter + 10) > 30)
 				user << "<span class='notice'>The RCD cant hold any more matter-units.</span>"
 				return
@@ -162,31 +162,31 @@ RCD
 				user << "ERROR: RCD in MODE: [mode] attempted use by [user]. Send this text #coderbus or an admin."
 				return 0
 
-/obj/item/weapon/rcd/proc/useResource(var/amount, var/mob/user)
+/obj/item/rcd/proc/useResource(var/amount, var/mob/user)
 	if(matter < amount)
 		return 0
 	matter -= amount
 	desc = "A RCD. It currently holds [matter]/30 matter-units."
 	return 1
 
-/obj/item/weapon/rcd/proc/checkResource(var/amount, var/mob/user)
+/obj/item/rcd/proc/checkResource(var/amount, var/mob/user)
 	return matter >= amount
-/obj/item/weapon/rcd/borg/useResource(var/amount, var/mob/user)
+/obj/item/rcd/borg/useResource(var/amount, var/mob/user)
 	if(!isrobot(user))
 		return 0
 	return user:cell:use(amount * 30)
 
-/obj/item/weapon/rcd/borg/checkResource(var/amount, var/mob/user)
+/obj/item/rcd/borg/checkResource(var/amount, var/mob/user)
 	if(!isrobot(user))
 		return 0
 	return user:cell:charge >= (amount * 30)
 
-/obj/item/weapon/rcd/borg/New()
+/obj/item/rcd/borg/New()
 	..()
 	desc = "A device used to rapidly build walls/floor."
 	canRwall = 1
 
-/obj/item/weapon/rcd_ammo
+/obj/item/rcd_ammo
 	name = "compressed matter cartridge"
 	desc = "Highly compressed matter for the RCD."
 	icon = 'icons/obj/ammo.dmi'

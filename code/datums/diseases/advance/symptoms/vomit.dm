@@ -45,7 +45,7 @@ Bonus
 	M.visible_message("<B>[M]</B> vomits on the floor!")
 
 	M.nutrition -= 20
-	M.hidratacao -= 40
+	M.hydration -= 40
 	M.adjustToxLoss(-3)
 
 	var/turf/pos = get_turf(M)

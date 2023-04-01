@@ -1,12 +1,12 @@
 /obj/item/clothing/suit/storage
-	var/obj/item/weapon/storage/internal/pockets
+	var/obj/item/storage/internal/pockets
 	storage_slots = 2
 	max_w_class = 2
 	max_combined_w_class = 4
 
 /obj/item/clothing/suit/storage/New()
 	..()
-	pockets = new/obj/item/weapon/storage/internal(src)
+	pockets = new/obj/item/storage/internal(src)
 	pockets.storage_slots = src.storage_slots	//two slots
 	pockets.max_w_class = src.max_w_class		//fit only pocket sized items
 	pockets.max_combined_w_class = src.max_combined_w_class

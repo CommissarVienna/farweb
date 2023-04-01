@@ -36,7 +36,6 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	var/const/WIRE_TRANSMIT = 4
 	var/const/TRANSMISSION_DELAY = 5 // only 2/second/radio
 	var/const/FREQ_LISTENING = 1
-	//FREQ_BROADCASTING = 2
 
 /obj/item/device/radio
 	var/datum/radio_frequency/radio_connection
@@ -177,7 +176,7 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 				channels[chan_name] |= FREQ_LISTENING
 	else if (href_list["wires"])
 		var/t1 = text2num(href_list["wires"])
-		if (!( istype(usr.get_active_hand(), /obj/item/weapon/wirecutters) ))
+		if (!( istype(usr.get_active_hand(), /obj/item/wirecutters) ))
 			return
 		if (wires & t1)
 			wires &= ~t1
@@ -236,6 +235,10 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	if(!on) return // the device has to be on
 	//  Fix for permacell radios, but kinda eh about actually fixing them.
 	if(!M || !message) return
+
+	message = M.do_message_checks(message)
+	if(!message)
+		return
 
 	//  Uncommenting this. To the above comment:
 	// 	The permacell radios aren't suppose to be able to transmit, this isn't a bug and this "fix" is just making radio wires useless. -Giacom
@@ -431,6 +434,8 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 		//THIS IS TEMPORARY.
 		if(!connection)	return	//~Carn
 
+		message = sanitize(message)
+
 		Broadcast_Message(connection, M, voicemask, pick(M.speak_emote),
 						  src, "<span class='comms'>[message]</span>", displayname, jobname, real_name, M.voice_name,
 						  d_filter_type, signal.data["compression"], list(position.z), connection.frequency,verb,speaking)
@@ -615,17 +620,6 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 	if (broadcasting)
 		if(get_dist(src, M) <= canhear_range)
 			talk_into(M, msg,null,verb,speaking)
-/*
-/obj/item/device/radio/proc/accept_rad(obj/item/device/radio/R as obj, message)
-
-	if ((R.frequency == frequency && message))
-		return 1
-	else if
-
-	else
-		return null
-	return
-*/
 
 
 /obj/item/device/radio/proc/receive_range(freq, level)
@@ -679,10 +673,10 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 			return
 	return
 
-/obj/item/device/radio/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/radio/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 	user.set_machine(src)
-	if (!( istype(W, /obj/item/weapon/screwdriver) ))
+	if (!( istype(W, /obj/item/screwdriver) ))
 		return
 	b_stat = !( b_stat )
 	if(!istype(src, /obj/item/device/radio/beacon))
@@ -711,13 +705,13 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 /obj/item/device/radio/borg
 	var/obj/item/device/encryptionkey/keyslot = null//Borg radios can handle a single encryption key
 
-/obj/item/device/radio/borg/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/radio/borg/attackby(obj/item/W as obj, mob/user as mob)
 //	..()
 	user.set_machine(src)
-	if (!( istype(W, /obj/item/weapon/screwdriver) || (istype(W, /obj/item/device/encryptionkey/ ))))
+	if (!( istype(W, /obj/item/screwdriver) || (istype(W, /obj/item/device/encryptionkey/ ))))
 		return
 
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/screwdriver))
 		if(keyslot)
 
 
@@ -831,5 +825,5 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 
 /obj/item/device/radio/banana // So that it shows up as a banana in the chat log.
 	name = "Banana Phone"
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "banana" //needs a new icon.

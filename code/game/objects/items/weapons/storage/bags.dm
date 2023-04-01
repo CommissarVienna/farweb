@@ -15,7 +15,7 @@
  */
 
 //  Generic non-item
-/obj/item/weapon/storage/bag
+/obj/item/storage/bag
 	allow_quick_gather = 1
 	allow_quick_empty = 1
 	display_contents_with_number = 0 // UNStABLE AS FuCK, turn on when it stops crashing clients
@@ -26,7 +26,7 @@
 // -----------------------------
 //          Trash bag
 // -----------------------------
-/obj/item/weapon/storage/bag/trash
+/obj/item/storage/bag/trash
 	name = "miser's sack"
 	icon = 'icons/obj/janitor.dmi'
 	icon_state = "cbag"
@@ -37,9 +37,9 @@
 	max_w_class = 2
 	storage_slots = 20
 	can_hold = list() // any
-	cant_hold = list("/obj/item/weapon/disk/nuclear")
+	cant_hold = list("/obj/item/disk/nuclear")
 
-/obj/item/weapon/storage/bag/trash/update_icon()
+/obj/item/storage/bag/trash/update_icon()
 	if(contents.len >= 1)
 		icon_state = "fbag"
 	else
@@ -48,7 +48,7 @@
 // -----------------------------
 //       Cloth/Leather Bag
 // -----------------------------
-/obj/item/weapon/storage/bag/leather
+/obj/item/storage/bag/leather
 	name = "bag"
 	icon = 'icons/obj/cooking.dmi'
 	icon_state = "cbag"
@@ -56,22 +56,38 @@
 
 	w_class = 4 //might need to readjust if it's full
 	max_w_class = 2
-	storage_slots = 20
+	storage_slots = 7
 	can_hold = list() // any
-	cant_hold = list("/obj/item/weapon/disk/nuclear")
+	cant_hold = list("/obj/item/disk/nuclear")
 
-/obj/item/weapon/storage/bag/leather/update_icon()
+/obj/item/storage/bag/leather/update_icon()
 	if(contents.len >= 1)
 		icon_state = "fbag"
 	else
 		icon_state = "cbag"
 
+/obj/item/storage/bag/leather/afterattack(atom/A, mob/user as mob, proximity)
+	if(!proximity) return
+	if(istype(A, /obj/item))
+		var/obj/item/I = A
+		if(isturf(I.loc) && !src.contents.len >= storage_slots)
+			I.loc = src
+			playsound(src.loc, "rustle", 50, 1, -5)
+			update_icon()
+	if(istype(A, /turf/simulated/floor))
+		var/turf/simulated/floor/T = A
+		for(var/obj/item/I in T)
+			if(src.contents.len >= storage_slots)
+				break;
+			I.loc = src
+			playsound(src.loc, "rustle", 50, 1, -5)
+			update_icon()
 
 // -----------------------------
 //        Plastic Bag
 // -----------------------------
 
-/obj/item/weapon/storage/bag/plasticbag
+/obj/item/storage/bag/plasticbag
 	name = "plastic bag"
 	desc = "It's a very flimsy, very noisy alternative to a bag."
 	icon = 'icons/obj/trash.dmi'
@@ -82,13 +98,13 @@
 	max_w_class = 2
 	storage_slots = 21
 	can_hold = list() // any
-	cant_hold = list("/obj/item/weapon/disk/nuclear")
+	cant_hold = list("/obj/item/disk/nuclear")
 
 // -----------------------------
 //        Mining Satchel
 // -----------------------------
 
-/obj/item/weapon/storage/bag/ore
+/obj/item/storage/bag/ore
 	name = "Mining Satchel"
 	desc = "This little bugger can be used to store and transport ores."
 	icon = 'icons/obj/mining.dmi'
@@ -98,14 +114,14 @@
 	storage_slots = 50
 	max_combined_w_class = 200 //Doesn't matter what this is, so long as it's more or equal to storage_slots * ore.w_class
 	max_w_class = 3
-	can_hold = list("/obj/item/weapon/ore")
+	can_hold = list("/obj/item/ore")
 
 
 // -----------------------------
 //          Plant bag
 // -----------------------------
 
-/obj/item/weapon/storage/bag/plants
+/obj/item/storage/bag/plants
 	icon = 'icons/obj/hydroponics.dmi'
 	icon_state = "plantbag"
 	name = "Plant Bag"
@@ -113,7 +129,7 @@
 	max_combined_w_class = 200 //Doesn't matter what this is, so long as it's more or equal to storage_slots * plants.w_class
 	max_w_class = 3
 	w_class = 1
-	can_hold = list("/obj/item/weapon/reagent_containers/food/snacks/grown","/obj/item/seeds","/obj/item/weapon/grown")
+	can_hold = list("/obj/item/reagent_containers/food/snacks/grown","/obj/item/seeds","/obj/item/grown")
 
 
 // -----------------------------
@@ -122,7 +138,7 @@
 // Because it stacks stacks, this doesn't operate normally.
 // However, making it a storage/bag allows us to reuse existing code in some places. -Sayu
 
-/obj/item/weapon/storage/bag/sheetsnatcher
+/obj/item/storage/bag/sheetsnatcher
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "sheetsnatcher"
 	name = "Sheet Snatcher"
@@ -134,8 +150,8 @@
 	allow_quick_empty = 1 // this function is superceded
 	New()
 		..()
-		//verbs -= /obj/item/weapon/storage/verb/quick_empty
-		//verbs += /obj/item/weapon/storage/bag/sheetsnatcher/quick_empty
+		//verbs -= /obj/item/storage/verb/quick_empty
+		//verbs += /obj/item/storage/bag/sheetsnatcher/quick_empty
 
 	can_be_inserted(obj/item/W as obj, stop_messages = 0)
 		if(!istype(W,/obj/item/stack/sheet) || istype(W,/obj/item/stack/sheet/mineral/sandstone) || istype(W,/obj/item/stack/sheet/wood))
@@ -253,7 +269,7 @@
 //    Sheet Snatcher (Cyborg)
 // -----------------------------
 
-/obj/item/weapon/storage/bag/sheetsnatcher/borg
+/obj/item/storage/bag/sheetsnatcher/borg
 	name = "Sheet Snatcher 9000"
 	desc = ""
 	capacity = 500//Borgs get more because >specialization
@@ -262,7 +278,7 @@
 //           Cash Bag
 // -----------------------------
 
-/obj/item/weapon/storage/bag/cash
+/obj/item/storage/bag/cash
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "cashbag"
 	name = "Cash bag"
@@ -271,4 +287,4 @@
 	max_combined_w_class = 200 //Doesn't matter what this is, so long as it's more or equal to storage_slots * cash.w_class
 	max_w_class = 3
 	w_class = 1
-	can_hold = list("/obj/item/weapon/coin","/obj/item/weapon/spacecash")
+	can_hold = list("/obj/item/coin","/obj/item/spacecash")

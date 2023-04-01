@@ -17,22 +17,22 @@
 	var/loot = rand(1,30)
 	switch(loot)
 		if(1)
-			new/obj/item/weapon/reagent_containers/glass/bottle/rum(src)
-			new/obj/item/weapon/reagent_containers/food/snacks/grown/ambrosiadeus(src)
-			new/obj/item/weapon/reagent_containers/glass/bottle/whiskey(src)
-			new/obj/item/weapon/flame/lighter/zippo(src)
+			new/obj/item/reagent_containers/glass/bottle/rum(src)
+			new/obj/item/reagent_containers/food/snacks/grown/ambrosiadeus(src)
+			new/obj/item/reagent_containers/glass/bottle/whiskey(src)
+			new/obj/item/flame/lighter/zippo(src)
 		if(2)
-			new/obj/item/weapon/pickaxe/drill(src)
+			new/obj/item/pickaxe/drill(src)
 			new/obj/item/device/taperecorder(src)
 			new/obj/item/clothing/suit/space(src)
 			new/obj/item/clothing/head/helmet/space(src)
 		if(3)
 			return
 		if(4)
-			new/obj/item/weapon/reagent_containers/glass/beaker/bluespace(src)
+			new/obj/item/reagent_containers/glass/beaker/bluespace(src)
 		if(5 to 6)
 			for(var/i = 0, i < 10, i++)
-				new/obj/item/weapon/ore/diamond(src)
+				new/obj/item/ore/diamond(src)
 		if(7)
 			return
 		if(8)
@@ -42,13 +42,13 @@
 				new/obj/machinery/portable_atmospherics/hydroponics(src)
 		if(10)
 			for(var/i = 0, i < 3, i++)
-				new/obj/item/weapon/reagent_containers/glass/beaker/noreact(src)
+				new/obj/item/reagent_containers/glass/beaker/noreact(src)
 		if(11 to 12)
 			for(var/i = 0, i < 9, i++)
-				new/obj/item/weapon/stock_parts/bluespace_crystal(src)
+				new/obj/item/stock_parts/bluespace_crystal(src)
 			new/obj/item/clothing/glasses/sunglasses/gar(src)
 		if(13)
-			new/obj/item/weapon/melee/classic_baton/tonfa(src)
+			new/obj/item/melee/classic_baton/tonfa(src)
 		if(14)
 			return
 		if(15)
@@ -64,7 +64,7 @@
 			return
 		//Dummy crates end here.
 		if(30)
-			new/obj/item/weapon/melee/baton(src)
+			new/obj/item/melee/baton(src)
 
 /obj/structure/closet/crate/secure/loot/attack_hand(mob/user as mob)
 	if(locked)
@@ -93,9 +93,9 @@
 	else
 		return ..()
 
-/obj/structure/closet/crate/secure/loot/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/closet/crate/secure/loot/attackby(obj/item/W as obj, mob/user as mob)
 	if(locked)
-		if (istype(W, /obj/item/weapon/card/emag))
+		if (istype(W, /obj/item/card/emag))
 			user << "<span class='notice'>The crate unlocks!</span>"
 			locked = 0
 		if (istype(W, /obj/item/device/multitool))

@@ -42,7 +42,7 @@
 				/obj/item/trash/chips,
 				/obj/item/trash/syndi_cakes,
 				/obj/item/trash/sosjerky,
-				/obj/item/weapon/cigbutt)
+				/obj/item/cigbutt)
 	if(prob(66))	//fastest possible exit 2/3 of the time
 		return
 
@@ -139,7 +139,7 @@
 		else
 			if(prob(30))
 				if(istype(A, /area/medical/morgue))
-					new /obj/item/weapon/ectoplasm(src)
+					new /obj/item/ectoplasm(src)
 				else
 					new /obj/effect/decal/cleanable/vomit/old(src)
 		return

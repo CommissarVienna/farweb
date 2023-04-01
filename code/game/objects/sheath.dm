@@ -6,7 +6,7 @@
 	item_state = "dagger"
 	wrist_use = TRUE
 
-/obj/item/combatsheath/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/combatsheath/attackby(obj/item/W as obj, mob/user as mob)
 	if(W.sheathiconknife && src.contents.len == 0)
 		user.drop_item(sound = 0)
 		src.contents += W
@@ -26,7 +26,7 @@
 
 /obj/item/combatsheath/attack_hand(mob/user as mob)
 	if(src.contents && src.loc == user)
-		var/obj/item/weapon/W = safepick(src.contents)
+		var/obj/item/W = safepick(src.contents)
 		src.icon_state = "combat_sh0"
 		if(W)
 			playsound(src, W.drawsound, 50, 1)
@@ -36,7 +36,7 @@
 	..()
 
 /obj/item/combatsheath/Censor/New()
-	src.contents += new/obj/item/weapon/kitchen/utensil/knife/combatrue
+	src.contents += new/obj/item/kitchen/utensil/knife/combatrue
 	src.icon_state = "combat_sh1"
 
 
@@ -49,10 +49,10 @@
 	wrist_use = TRUE
 
 /obj/item/daggerssheath/iron/New()
-	src.contents += new/obj/item/weapon/kitchen/utensil/knife/dagger
+	src.contents += new/obj/item/kitchen/utensil/knife/dagger
 	src.icon_state = "dagger_sheath1"
 
-/obj/item/daggerssheath/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/daggerssheath/attackby(obj/item/W as obj, mob/user as mob)
 	if(W.sheathicondagger && src.contents.len == 0)
 		user.drop_item(sound = 0)
 		src.contents += W
@@ -72,7 +72,7 @@
 
 /obj/item/daggerssheath/attack_hand(mob/user as mob)
 	if(src.contents && src.loc == user)
-		var/obj/item/weapon/W = safepick(src.contents)
+		var/obj/item/W = safepick(src.contents)
 		src.icon_state = "dagger_sheath0"
 		if(W)
 			playsound(src, W.drawsound, 50, 1)
@@ -91,16 +91,16 @@
 	slot_flags = SLOT_BACK | SLOT_BELT
 
 /obj/item/sheath/sabre/New()
-	src.contents += new/obj/item/weapon/claymore/sabre
+	src.contents += new/obj/item/claymore/sabre
 	src.icon_state = "sword_sh3"
 	src.item_state = "sheath1"
 
 /obj/item/sheath/claymore/New()
-	src.contents += new/obj/item/weapon/claymore
+	src.contents += new/obj/item/claymore
 	src.icon_state = "sword_sh1"
 	src.item_state = "sheath1"
 
-/obj/item/sheath/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/sheath/attackby(obj/item/W as obj, mob/user as mob)
 	if(W.sheathicon && src.contents.len == 0)
 		user.drop_item(sound = 0)
 		src.contents += W
@@ -120,7 +120,7 @@
 
 /obj/item/sheath/attack_hand(mob/user as mob)
 	if(src.contents && src.loc == user)
-		var/obj/item/weapon/W = safepick(src.contents)
+		var/obj/item/W = safepick(src.contents)
 		src.icon_state = "sword_sh0"
 		src.item_state = "sheath0"
 		if(W)

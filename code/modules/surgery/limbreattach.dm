@@ -2,10 +2,10 @@
 
 /datum/surgery_step/limb_reattach
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/suture = 100,			\
+	/obj/item/surgery_tool/suture = 100,			\
 	/obj/item/clothing/mask/cigarette = 75,	\
-	/obj/item/weapon/flame/lighter = 50,	\
-	/obj/item/weapon/weldingtool = 25
+	/obj/item/flame/lighter = 50,	\
+	/obj/item/weldingtool = 25
 	)
 
 	difficulty = 2
@@ -24,9 +24,9 @@
 			if (affected.parent.status & ORGAN_DESTROYED)
 				return 0
 		var/obj/item/I = user.get_inactive_hand()
-		if(!(istype(I, /obj/item/weapon/organ)))
+		if(!(istype(I, /obj/item/organ)))
 			return 0
-		var/obj/item/weapon/organ/L = I
+		var/obj/item/organ/L = I
 		return affected.body_part == L.body_part
 
 	begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -37,9 +37,9 @@
 
 	end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/obj/item/I = user.get_inactive_hand()
-		if(!(istype(I, /obj/item/weapon/organ)))
+		if(!(istype(I, /obj/item/organ)))
 			return 0
-		var/obj/item/weapon/organ/L = I
+		var/obj/item/organ/L = I
 		var/datum/organ/external/affected = target.get_organ(target_zone)
 		user.visible_message("<span class='passive'>[user] sews back the [target]'s [affected.display_name] with \he [tool].</span>",	\
 		"<span class='passive'>You sews back the [target]'s [affected.display_name] using \the [tool].</span>")
@@ -55,8 +55,8 @@
 		target.update_body()
 		target.updatehealth()
 		target.UpdateDamageIcon()
-		if(istype(L, /obj/item/weapon/organ/head))
-			var/obj/item/weapon/organ/head/B = L
+		if(istype(L, /obj/item/organ/head))
+			var/obj/item/organ/head/B = L
 			if (B.brainmob.mind)
 				B.brainmob.mind.transfer_to(target)
 		qdel(L)
@@ -73,7 +73,7 @@
 
 /datum/surgery_step/vessels
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/retractor = 100,	\
+	/obj/item/surgery_tool/retractor = 100,	\
 	/obj/item/stack/cable_coil = 75, 	\
 	/obj/item/device/assembly/mousetrap = 20
 	)
@@ -123,10 +123,10 @@
 
 /datum/surgery_step/penis_reattach
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/suture = 100,			\
+	/obj/item/surgery_tool/suture = 100,			\
 	/obj/item/clothing/mask/cigarette = 75,	\
-	/obj/item/weapon/flame/lighter = 50,	\
-	/obj/item/weapon/weldingtool = 25
+	/obj/item/flame/lighter = 50,	\
+	/obj/item/weldingtool = 25
 	)
 
 	difficulty = 2
@@ -147,7 +147,7 @@
 		if(target.has_penis())
 			return 0
 		var/obj/item/I = user.get_inactive_hand()
-		if(!(istype(I, /obj/item/weapon/reagent_containers/food/snacks/organ/internal/penis)))
+		if(!(istype(I, /obj/item/reagent_containers/food/snacks/organ/internal/penis)))
 			return 0
 		return target_zone ==  "groin"
 
@@ -158,11 +158,11 @@
 
 	end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/obj/item/I = user.get_inactive_hand()
-		if(!(istype(I, /obj/item/weapon/reagent_containers/food/snacks/organ/internal/penis)))
+		if(!(istype(I, /obj/item/reagent_containers/food/snacks/organ/internal/penis)))
 			return 0
 		user.visible_message("<span class='passive'>[user] sews back the [target]'s penis with \he [tool].</span>",	\
 		"<span class='passive'>You sews back the [target]'s penis using \the [tool].</span>")
-		var/obj/item/weapon/reagent_containers/food/snacks/organ/internal/penis/P = I
+		var/obj/item/reagent_containers/food/snacks/organ/internal/penis/P = I
 		target.update_body()
 		target.updatehealth()
 		target.UpdateDamageIcon()

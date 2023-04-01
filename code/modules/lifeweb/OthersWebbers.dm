@@ -19,7 +19,7 @@
 	if (!ticker)
 		return
 
-	if(M.species.name == "Skeleton")
+	if(isskeleton(M))
 		return
 	if(istype(M.species, /datum/species/human/alien))
 		return
@@ -28,10 +28,10 @@
 		return
 
 	for(var/obj/O in M.contents)
-		if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/organ))
+		if(istype(O, /obj/item/reagent_containers/food/snacks/organ))
 			continue
 
-		else if(istype(O, /obj/item/weapon/storage/touchable/organ))
+		else if(istype(O, /obj/item/storage/touchable/organ))
 			continue
 		else
 			to_chat(user, "The victim needs to be fully naked.")
@@ -52,9 +52,9 @@
 	return
 
 
-/obj/structure/stool/bed/chair/cross/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/weapon/grab))
-		var/obj/item/weapon/grab/G = W
+/obj/structure/stool/bed/chair/cross/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/grab))
+		var/obj/item/grab/G = W
 		var/mob/living/carbon/human/H = G.affecting
 		if(istype(H.species, /datum/species/human/alien))
 			return
@@ -65,7 +65,7 @@
 /obj/structure/stool/bed/chair/cross/buckle_mob(mob/living/carbon/human/M as mob, mob/user as mob)
 	if(LifewebChecks(M, user))
 		M.visible_message("<B>[M.name]</B> is locked on the [src]!")
-		playsound(src.loc, pick('lw_sacrificed1.ogg','lw_sacrificed2.ogg','lw_sacrificed3.ogg','lw_sacrificed4.ogg'), 100, 0, -1)
+		playsound(src.loc, pick('sound/LW2/lw_sacrificed1.ogg','sound/LW2/lw_sacrificed2.ogg','sound/LW2/lw_sacrificed3.ogg','sound/LW2/lw_sacrificed4.ogg'), 100, 0, -1)
 	else
 		return
 
@@ -142,6 +142,7 @@
 	if(open)
 		if(!closeact())
 			return
+		playsound(loc, 'sound/lfwbsounds/cage_close.ogg', 85, 0, -1)
 		open = 0
 		density = 1
 		layer = 5
@@ -151,6 +152,7 @@
 
 	if(!openact())
 		return
+	playsound(loc, 'sound/lfwbsounds/cage_open.ogg', 85, 0, -1)
 	open = 1
 	density = 0
 	layer = 4
@@ -189,7 +191,6 @@
 		return
 
 	var/mob/living/carbon/human/victim = tobebuckled[1]
-	playsound(loc, 'cage_close.ogg', 85, 0, -1)
 	buckled_mob = victim
 	victim.buckled = src
 	victim.loc = src.loc
@@ -242,7 +243,7 @@
 			pixel_x = 0
 			pixel_y = 0
 
-		if(my_stats.st >= 15 || istype(species, /datum/species/human/alien))
+		if(my_stats.get_stat(STAT_ST) >= 15 || istype(species, /datum/species/human/alien))
 			if(prob(10))
 				to_chat("<span class='combatbold'>[name] breaks out of the cage!</span>")
 				C.locked = 0

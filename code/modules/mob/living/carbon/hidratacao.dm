@@ -1,4 +1,4 @@
-//hidratacao
+//hydration
 /datum/happiness_event/nutrition/lotofwater
 	description = "<span class='badmood'>• I DRANK TOO MUCH WATER!</span>\n" //isso nao faz sentido so roubei mesmo lol??
 	happiness = -4
@@ -11,7 +11,6 @@
 
 /datum/happiness_event/nutrition/bitthirsty
 	description = "<span class='badmood'>• I'm getting a bit thirsty.</span>\n"
-	happiness = -2
 
 /datum/happiness_event/nutrition/thirsty
 	description = "<span class='badmood'>• I'm thirsty.</span>\n"

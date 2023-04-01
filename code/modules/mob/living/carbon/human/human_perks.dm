@@ -1,4 +1,4 @@
-/datum/perk/
+/datum/perk
 	var/name = "Perk"
 	var/description = "Description"
 	var/reflectmessage = "Nothing!"
@@ -13,7 +13,7 @@
 		var/perk = new perks
 		return perk
 	else
-		warning("erro na perk de alguem ai")
+		warning("error, no perk")
 
 /datum/perk/proc/pick_perk_ref(var/list/current_perks)
 	var/perks
@@ -25,7 +25,7 @@
 		var/perk = new perks
 		return perk
 	else
-		warning("erro na perk de alguem ai")
+		warning("error, no perk")
 
 /mob/living/carbon/human/proc/add_perk(var/datum/perk/perkpath)
 	var/datum/perk/perkpaths = new perkpath(src.perks)
@@ -157,6 +157,8 @@
 
 /mob/living/carbon/human/proc/reflectexperience()
 	set name = "ReflectExperience"
+	set desc = "Reflect your Experience!"
+	set category = "gpc"
 	if(reflectneed < 700)
 		return
 	if(stat == DEAD)
@@ -166,7 +168,7 @@
 		to_chat(src, "<span class='combat'>I need to find a bed.</span>")
 		return
 	if(!buckled)
-		to_chat(src, "<span class='combat'>[pick(nao_consigoen)] I need to sleep on a bed.</span>")
+		to_chat(src, "<span class='combat'>[pick(fnord)] I need to sleep on a bed.</span>")
 		return
 	if(stat == 1 && reflectneed >= 740 && istype(buckled, /obj/structure/stool/bed))
 		src.gainWP(1,1)
@@ -191,6 +193,7 @@
 
 			to_chat(src, "<span class='malfunction'><b>[P.reflectmessage]</b></span>")
 			src.perks.Add(P)
+		src.remove_verb(/mob/living/carbon/human/proc/reflectexperience)
 		return
 
 /mob/living/carbon/human/proc/add_random_stat()
@@ -198,25 +201,19 @@
 	switch(random_stat)
 		if(STAT_ST)
 			to_chat(src, "<span class='malfunction'><b>As time went on, you got stronger.</b></span>")
-			my_stats.initst += 1
-			my_stats.st += 1
+			src.my_stats.change_stat(STAT_ST, 1)
 		if(STAT_DX)
 			to_chat(src, "<span class='malfunction'><b>You've become more agile over time.</b></span>")
-			my_stats.initdx += 1
-			my_stats.dx += 1
+			src.my_stats.change_stat(STAT_DX, 1)
 		if(STAT_HT)
 			to_chat(src, "<span class='malfunction'><b>As time goes by, you've grown tougher.</b></span>")
-			my_stats.initht += 1
-			my_stats.ht += 1
+			src.my_stats.change_stat(STAT_HT, 1)
 		if(STAT_PR)
 			to_chat(src, "<span class='malfunction'><b>Over time you have become more attentive.</b></span>")
-			my_stats.initpr += 1
-			my_stats.pr += 1
+			src.my_stats.change_stat(STAT_PR, 1)
 		if(STAT_IN)
 			to_chat(src, "<span class='malfunction'><b>You've gotten smarter over time.</b></span>")
-			my_stats.initit += 1
-			my_stats.it += 1
+			src.my_stats.change_stat(STAT_IN, 1)
 		if(STAT_IM)
 			to_chat(src, "<span class='malfunction'><b>Over time, your immune system has improved.</b></span>")
-			my_stats.initim += 1
-			my_stats.im += 1
+			src.my_stats.change_stat(STAT_IM, 1)

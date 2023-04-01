@@ -1,6 +1,6 @@
 //objetos de orgao
 //por enquanto a gente ainda usa os datums pra processar as merda de verdade entao fica tudo solto aqui mesmo uma bosta
-/obj/item/weapon/reagent_containers/food/snacks/organ
+/obj/item/reagent_containers/food/snacks/organ
 	name = "severed organ"
 	desc = "It looks like it probably just plopped out."
 	icon = 'icons/obj/surgery.dmi'
@@ -26,16 +26,16 @@
 	var/bumorgan = FALSE
 	organ = 1
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/attack_self(mob/user as mob)
+/obj/item/reagent_containers/food/snacks/organ/attack_self(mob/user as mob)
 	return
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/New()
+/obj/item/reagent_containers/food/snacks/organ/New()
 	..()
 	reagents.add_reagent("nutriment", 5)
 	if(toxic && !(ticker?.eof?.id == "organs"))
 		reagents.add_reagent("????", 1)
-	if(istype(loc, /obj/item/weapon/storage/touchable/organ))
-		var/obj/item/weapon/storage/touchable/organ/O = loc
+	if(istype(loc, /obj/item/storage/touchable/organ))
+		var/obj/item/storage/touchable/organ/O = loc
 		owner = O.owner
 		connected = TRUE
 	organ_data = new organ_data
@@ -45,24 +45,24 @@
 	spawn(1)
 		update()
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/On_Consume()
+/obj/item/reagent_containers/food/snacks/organ/On_Consume()
 	..()
 	if(ishuman(usr) && (ticker.eof.id == "organs"))
 		var/mob/living/carbon/human/H = usr
 		H.add_event("goodfood", /datum/happiness_event/nutrition/goodfood)
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/Del()
+/obj/item/reagent_containers/food/snacks/organ/Del()
 	if(!robotic) processing_objects -= src
 	..()
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/process()
+/obj/item/reagent_containers/food/snacks/organ/process()
 
 	if(robotic)
 		processing_objects -= src
 		return
 
 	// Don't process if we're in a freezer, an MMI or a stasis bag. //TODO: ambient temperature?
-	if(istype(loc,/obj/item/device/mmi) || istype(loc,/obj/item/bodybag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/weapon/storage/touchable/organ))
+	if(istype(loc,/obj/item/device/mmi) || istype(loc,/obj/item/bodybag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/storage/touchable/organ))
 		return
 
 	if(owner)
@@ -77,14 +77,14 @@
 	if(health <= 0)
 		die()
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/proc/die()
+/obj/item/reagent_containers/food/snacks/organ/proc/die()
 	health = 0
 	processing_objects -= src
 	if(organ_data)
 		organ_data.damage = organ_data.min_broken_damage
 	update_icon()
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/update_icon()
+/obj/item/reagent_containers/food/snacks/organ/update_icon()
 	if(health <= 0 && dead_icon)
 		icon_state = dead_icon
 	else
@@ -92,7 +92,7 @@
 	//TODO: Grey out the icon state.
 	//TODO: Inject an organ with peridaxon to make it alive again.
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/proc/roboticize()
+/obj/item/reagent_containers/food/snacks/organ/proc/roboticize()
 
 	robotic = (organ_data && organ_data.robotic) ? organ_data.robotic : 1
 
@@ -104,7 +104,7 @@
 	else
 		//TODO: convert to greyscale.
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/proc/update()
+/obj/item/reagent_containers/food/snacks/organ/proc/update()
 
 	if(!organ_data)
 		organ_data = new /datum/organ/internal()
@@ -116,7 +116,7 @@
 		roboticize()
 
 // Brain is defined in brain_item.dm.
-/obj/item/weapon/reagent_containers/food/snacks/organ/heart
+/obj/item/reagent_containers/food/snacks/organ/heart
 	name = "heart"
 	icon_state = "heart-on"
 	prosthetic_name = "circulatory pump"
@@ -128,7 +128,7 @@
 	var/datum/antagonist/dreamer/dream
 	item_worth = 60
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/heart/examine()
+/obj/item/reagent_containers/food/snacks/organ/heart/examine()
 	..()
 	if(is_dreamer(usr))
 		var/mob/living/carbon/human/H = usr
@@ -146,13 +146,13 @@
 		if(H.seenwonders.len >= 4)
 			H.mind.antag_datums.agony(H)
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/proc/bumorgans()
-	if(!istype(src, /obj/item/weapon/reagent_containers/food/snacks/organ/eyes) || !istype(src, /obj/item/weapon/organ/jaw))
-		icon = 'severed_bum.dmi'
+/obj/item/reagent_containers/food/snacks/organ/proc/bumorgans()
+	if(!istype(src, /obj/item/reagent_containers/food/snacks/organ/eyes) || !istype(src, /obj/item/organ/jaw))
+		icon = 'icons/mob/severed_bum.dmi'
 		bumorgan = TRUE
 		item_worth = 1
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/lungs
+/obj/item/reagent_containers/food/snacks/organ/lungs
 	name = "lungs"
 	icon_state = "lungs"
 	gender = PLURAL
@@ -161,7 +161,7 @@
 	organ_tag = "lungs"
 	organ_data = /datum/organ/internal/lungs
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/kidneys
+/obj/item/reagent_containers/food/snacks/organ/kidneys
 	name = "kidneys"
 	icon_state = "kidneys"
 	gender = PLURAL
@@ -170,7 +170,7 @@
 	organ_tag = "kidneys"
 	organ_data = /datum/organ/internal/kidney
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/stomach
+/obj/item/reagent_containers/food/snacks/organ/stomach
 	name = "stomach"
 	icon_state = "stomach"
 	gender = PLURAL
@@ -179,7 +179,7 @@
 	organ_tag = "stomach"
 	organ_data = /datum/organ/internal/stomach
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/guts
+/obj/item/reagent_containers/food/snacks/organ/guts
 	name = "guts"
 	icon_state = "guts"
 	gender = PLURAL
@@ -188,15 +188,15 @@
 	organ_tag = "guts"
 	organ_data = /datum/organ/internal/guts
 
-/obj/item/weapon/organ/jaw
+/obj/item/organ/jaw
 	name = "jaw"
 	icon_state = "jaw"
 	gender = PLURAL
 	item_worth = 0
 	body_part = MOUTH
-	icon = 'surgery.dmi'
+	icon = 'icons/obj/surgery.dmi'
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/eyes
+/obj/item/reagent_containers/food/snacks/organ/eyes
 	name = "eyeballs"
 	icon_state = "eyes"
 	gender = PLURAL
@@ -208,7 +208,7 @@
 	toxic = FALSE
 	var/eye_colour
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/liver
+/obj/item/reagent_containers/food/snacks/organ/liver
 	name = "liver"
 	icon_state = "liver"
 	prosthetic_name = "toxin d_filter"
@@ -216,45 +216,45 @@
 	organ_tag = "liver"
 	organ_data = /datum/organ/internal/liver
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/appendix
+/obj/item/reagent_containers/food/snacks/organ/appendix
 	name = "appendix"
 	icon_state = "appendix"
 	organ_tag = "appendix"
 	organ_data = /datum/organ/internal/appendix
 
 //These are here so they can be printed out via the fabricator.
-/obj/item/weapon/reagent_containers/food/snacks/organ/heart/prosthetic
+/obj/item/reagent_containers/food/snacks/organ/heart/prosthetic
 	name = "circulatory pump"
 	icon_state = "heart-prosthetic"
 	organ_data = /datum/organ/internal/heart/robotic
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/lungs/prosthetic
+/obj/item/reagent_containers/food/snacks/organ/lungs/prosthetic
 	name = "gas exchange system"
 	icon_state = "lungs-prosthetic"
 	organ_data = /datum/organ/internal/lungs/robotic
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/kidneys/prosthetic
+/obj/item/reagent_containers/food/snacks/organ/kidneys/prosthetic
 	name = "prosthetic kidneys"
 	icon_state = "kidneys-prosthetic"
 	organ_data = /datum/organ/internal/lungs/robotic
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/eyes/prosthetic
+/obj/item/reagent_containers/food/snacks/organ/eyes/prosthetic
 	name = "visual prosthesis"
 	icon_state = "eyes-prosthetic"
 	organ_data = /datum/organ/internal/lungs/robotic
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/liver/prosthetic
+/obj/item/reagent_containers/food/snacks/organ/liver/prosthetic
 	name = "toxin d_filter"
 	icon_state = "liver-prosthetic"
 	organ_data = /datum/organ/internal/lungs/robotic
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/brain/prosthetic
+/obj/item/reagent_containers/food/snacks/organ/brain/prosthetic
 	organ_data = /datum/organ/internal/brain
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/appendix
+/obj/item/reagent_containers/food/snacks/organ/appendix
 	name = "appendix"
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/examine()
+/obj/item/reagent_containers/food/snacks/organ/examine()
 	..()
 	if(src.organ_data.damage == 0)
 		to_chat(usr, "<span class='passive'>it's in perfect state.</span>")
@@ -263,12 +263,12 @@
 	if(src.bumorgan)
 		to_chat(usr, "<span class='combat'>This organ has seen better nights.</span>")
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/attackby(obj/item/weapon/W as obj, mob/living/carbon/human/user as mob)
+/obj/item/reagent_containers/food/snacks/organ/attackby(obj/item/W as obj, mob/living/carbon/human/user as mob)
 	..()
-	if(istype(W, /obj/item/weapon/surgery_tool/suture))
-		var/obj/item/weapon/surgery_tool/suture/S = W
-		if(!connected && istype(src.loc, /obj/item/weapon/storage/touchable/organ))
-			var/obj/item/weapon/storage/touchable/organ/O = src.loc
+	if(istype(W, /obj/item/surgery_tool/suture))
+		var/obj/item/surgery_tool/suture/S = W
+		if(!connected && istype(src.loc, /obj/item/storage/touchable/organ))
+			var/obj/item/storage/touchable/organ/O = src.loc
 			var/mob/living/carbon/human/H = O.owner
 			user.visible_message("<span class='passive'>[user] begins sewing [src.name] inside [H.name].</span>")
 			if(do_after(user, 20))
@@ -279,7 +279,7 @@
 						connected = TRUE
 						coisa(src, owner, 1)
 						playsound(src, 'sound/lfwbsounds/suture.ogg', 70, 1)
-					if(GP_FAILED, GP_CRITFAIL)
+					if(GP_FAIL, GP_CRITFAIL)
 						user.visible_message("<span class='combat'>[user] damaging the [src]</span>")
 						var/damage_organs = rand(1,3)
 						health -= damage_organs
@@ -298,7 +298,7 @@
 						health = max_health
 						src.organ_data.damage = 0
 						playsound(src, 'sound/lfwbsounds/suture.ogg', 70, 1)
-					if(GP_FAILED, GP_CRITFAIL)
+					if(GP_FAIL, GP_CRITFAIL)
 						user.visible_message("<span class='combat'>[user] damaging the [src]</span>")
 						var/damage_organs = rand(1,3)
 						health -= damage_organs
@@ -307,7 +307,7 @@
 				S.amountcheck()
 			return
 
-	if(istype(W, /obj/item/weapon/surgery_tool/scalpel) && connected)
+	if(istype(W, /obj/item/surgery_tool/scalpel) && connected)
 		if(do_after(user, 20))
 			var/list/roll_result = roll3d6(user, SKILL_SURG, -2, FALSE)
 			switch(roll_result[GP_RESULT])
@@ -317,15 +317,15 @@
 					coisa(src, owner, 0)
 					if(organ_data.vital)
 						owner.death()
-				if(GP_FAILED, GP_CRITFAIL)
+				if(GP_FAIL, GP_CRITFAIL)
 					user.visible_message("<span class='combat'>[user] damaging [owner.name]'s [src.name]!</span>")
 					var/damage_organs = rand(1,3)
 					health -= damage_organs
 					organ_data.damage += damage_organs
 
 		return
-	if(istype(W, /obj/item/weapon/surgery_tool/retractor) && istype(src.loc, /obj/item/weapon/storage/touchable/organ))
-		var/obj/item/weapon/storage/touchable/organ/S = src.loc
+	if(istype(W, /obj/item/surgery_tool/retractor) && istype(src.loc, /obj/item/storage/touchable/organ))
+		var/obj/item/storage/touchable/organ/S = src.loc
 		if(connected)
 			to_chat(user, "<span class='combat'>You need to unconnect organ before removing it!</span>")
 			return
@@ -339,15 +339,15 @@
 			S.remove_from_storage(src, T)
 			return
 
-/obj/item/weapon/organ/attackby(obj/item/weapon/W as obj, mob/living/carbon/human/user as mob)
+/obj/item/organ/attackby(obj/item/W as obj, mob/living/carbon/human/user as mob)
 	if(W.sharp)
-		if(statcheck(user.my_stats.st, 9, 0))
+		if(statcheck(user.my_stats.get_stat(STAT_ST), 9, 0))
 			if(do_after(user, 20))
-				new/obj/item/weapon/bone(src.loc)
-				new/obj/item/weapon/reagent_containers/food/snacks/meat(src.loc)
+				new/obj/item/bone(src.loc)
+				new/obj/item/reagent_containers/food/snacks/meat(src.loc)
 				qdel(src)
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/proc/removed(var/mob/living/target,var/mob/living/user)
+/obj/item/reagent_containers/food/snacks/organ/proc/removed(var/mob/living/target,var/mob/living/user)
 
 	if(!target || !user)
 		return
@@ -358,7 +358,7 @@
 		msg_admin_attack("[user.name] ([user.ckey]) removed a vital organ ([src]) from [target.name] ([target.ckey]) (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 		target.death()
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/appendix/removed(var/mob/living/target,var/mob/living/user)
+/obj/item/reagent_containers/food/snacks/organ/appendix/removed(var/mob/living/target,var/mob/living/user)
 
 	..()
 
@@ -372,7 +372,7 @@
 		icon_state = "appendixinflamed"
 		name = "inflamed appendix"
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/eyes/removed(var/mob/living/target,var/mob/living/user)
+/obj/item/reagent_containers/food/snacks/organ/eyes/removed(var/mob/living/target,var/mob/living/user)
 
 	if(!eye_colour)
 		eye_colour = list(0,0,0)
@@ -392,10 +392,10 @@
 		H.b_eyes = 0
 		H.update_body()
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/proc/replaced(var/mob/living/target)
+/obj/item/reagent_containers/food/snacks/organ/proc/replaced(var/mob/living/target)
 	return
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/eyes/replaced(var/mob/living/target)
+/obj/item/reagent_containers/food/snacks/organ/eyes/replaced(var/mob/living/target)
 
 	// Apply our eye colour to the target.
 	var/mob/living/carbon/human/H = target
@@ -405,7 +405,7 @@
 		H.b_eyes = eye_colour[3]
 		H.update_body()
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/proc/bitten(mob/user)
+/obj/item/reagent_containers/food/snacks/organ/proc/bitten(mob/user)
 
 	if(robotic)
 		return
@@ -416,7 +416,7 @@
 
 
 	user.drop_from_inventory(src)
-	var/obj/item/weapon/reagent_containers/food/snacks/organ/O = new(get_turf(src))
+	var/obj/item/reagent_containers/food/snacks/organ/O = new(get_turf(src))
 	O.name = name
 	O.icon_state = dead_icon ? dead_icon : icon_state
 
@@ -430,12 +430,12 @@
 	user.put_in_active_hand(O)
 	qdel(src)
 
-/obj/item/weapon/reagent_containers/food/snacks/organ/on_exit_storage(obj/item/weapon/storage/S as obj, var/new_location)
-	if(ismob(new_location) && istype(S, /obj/item/weapon/storage/touchable/organ))
+/obj/item/reagent_containers/food/snacks/organ/on_exit_storage(obj/item/storage/S as obj, var/new_location)
+	if(ismob(new_location) && istype(S, /obj/item/storage/touchable/organ))
 		var/mob/M = new_location
 		var/datum/organ/internal/heart/Heart = src.owner.internal_organs_by_name[pick("heart")]
 		if(Heart && Heart.escritura)
-			if(istype(src, /obj/item/weapon/reagent_containers/food/snacks/organ/heart))
+			if(istype(src, /obj/item/reagent_containers/food/snacks/organ/heart))
 				src.escritura = Heart.escritura
 		if(connected)
 			coisa(src, src.owner, 0)
@@ -450,10 +450,10 @@
 		playsound(M.loc, pick('sound/lfwbsounds/itm_ingredient_heart_01.ogg', 'sound/lfwbsounds/itm_ingredient_heart_02.ogg'), 100)
 		processing_objects.Add(src)
 		return 1
-	else if(istype(S, /obj/item/weapon/storage/touchable/organ))
+	else if(istype(S, /obj/item/storage/touchable/organ))
 		var/datum/organ/internal/heart/Heart = src.owner.internal_organs_by_name[pick("heart")]
 		if(Heart && Heart.escritura)
-			if(istype(src, /obj/item/weapon/reagent_containers/food/snacks/organ/heart))
+			if(istype(src, /obj/item/reagent_containers/food/snacks/organ/heart))
 				src.escritura = Heart.escritura
 		if(connected)
 			coisa(src, src.owner, 0)

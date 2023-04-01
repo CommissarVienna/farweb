@@ -1,6 +1,6 @@
 #define MALFUNCTION_TEMPORARY 1
 #define MALFUNCTION_PERMANENT 2
-/obj/item/weapon/implant
+/obj/item/implant
 	name = "implant"
 	icon = 'icons/obj/device.dmi'
 	icon_state = "implant"
@@ -49,7 +49,7 @@
 			part.implants.Remove(src)
 		..()
 
-/obj/item/weapon/implant/tracking
+/obj/item/implant/tracking
 	name = "tracking implant"
 	desc = "Track with this."
 	var/id = 1.0
@@ -89,7 +89,7 @@ Implant Specifics:<BR>"}
 			malfunction--
 
 
-/obj/item/weapon/implant/dexplosive
+/obj/item/implant/dexplosive
 	name = "explosive"
 	desc = "And boom goes the weasel."
 	icon_state = "implant_evil"
@@ -124,7 +124,7 @@ Implant Specifics:<BR>"}
 		return 0
 
 //BS12 Explosive
-/obj/item/weapon/implant/explosive
+/obj/item/implant/explosive
 	name = "explosive implant"
 	desc = "A military grade micro bio-explosive. Highly dangerous."
 	var/elevel = "Localized Limb"
@@ -249,7 +249,7 @@ Implant Specifics:<BR>"}
 				explosion(get_turf(imp_in), -1, -1, 2, 3)
 				qdel(src)
 
-/obj/item/weapon/implant/chem
+/obj/item/implant/chem
 	name = "chemical implant"
 	desc = "Injects things."
 	allow_reagents = 1
@@ -313,7 +313,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 		spawn(20)
 			malfunction--
 
-/obj/item/weapon/implant/loyalty
+/obj/item/implant/loyalty
 	name = "loyalty implant"
 	desc = "Makes you loyal or such."
 
@@ -334,7 +334,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 	implanted(mob/M)
 		if(!istype(M, /mob/living/carbon/human))	return 0
 		var/mob/living/carbon/human/H = M
-		for(var/obj/item/weapon/implant/mentor/I in H.contents)
+		for(var/obj/item/implant/mentor/I in H.contents)
 			for(var/datum/organ/external/organs in H.organs)
 				if(I in organs.implants)
 					I.Destroy()
@@ -349,7 +349,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 		return 1
 
 
-/obj/item/weapon/implant/mentor
+/obj/item/implant/mentor
 	name = "mentor protection implant"
 	desc = "Protects you from bad thoughts."
 
@@ -370,7 +370,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 	implanted(mob/M)
 		if(!istype(M, /mob/living/carbon/human))	return 0
 		var/mob/living/carbon/human/H = M
-		for(var/obj/item/weapon/implant/loyalty/I in H.contents)
+		for(var/obj/item/implant/loyalty/I in H.contents)
 			for(var/datum/organ/external/organs in H.organs)
 				if(I in organs.implants)
 					I.Destroy()
@@ -385,7 +385,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 		return 1
 
 
-/obj/item/weapon/implant/adrenalin
+/obj/item/implant/adrenalin
 	name = "adrenalin"
 	desc = "Removes all stuns and knockdowns."
 	var/uses
@@ -422,7 +422,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 		return 1
 
 
-/obj/item/weapon/implant/death_alarm
+/obj/item/implant/death_alarm
 	name = "death alarm implant"
 	desc = "An alarm which monitors host vital signs and transmits a radio message upon death."
 	var/mobname = "Will Robinson"
@@ -494,7 +494,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 		processing_objects.Add(src)
 		return 1
 
-/obj/item/weapon/implant/compressed
+/obj/item/implant/compressed
 	name = "compressed matter implant"
 	desc = "Based on compressed matter technology, can store a single item."
 	icon_state = "implant_evil"
@@ -540,7 +540,7 @@ the implant may become unstable and either pre-maturely inject the subject or si
 	islegal()
 		return 0
 
-/obj/item/weapon/implant/cortical
+/obj/item/implant/cortical
 	name = "cortical stack"
 	desc = "A fist-sized mass of biocircuits and chips."
 	icon_state = "implant_evil"

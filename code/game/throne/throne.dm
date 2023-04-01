@@ -116,7 +116,7 @@ var/list/riot_essential = list("Baron", "Baroness Bodyguard", "Incarn", "Squire"
 						to_chat(world, "<br>")
 						to_chat(world, "<span class='decree'>New [H.job]'s decree!</span>")
 						to_chat(world, "<br>")
-						world << sound('RiotAlarm.ogg', repeat = 1, wait = 0, volume = 100, channel = 6)
+						world << sound('sound/RiotAlarm.ogg', repeat = 1, wait = 0, volume = 100, channel = 6)
 						riotreal = 1
 						for(var/obj/machinery/door/poddoor/shutters/B in world)
 							if(B.alert == "baronriot")
@@ -130,13 +130,13 @@ var/list/riot_essential = list("Baron", "Baroness Bodyguard", "Incarn", "Squire"
 							to_chat(world, "<br>")
 							to_chat(world, "<span class='decree'>New [H.job]'s decree!</span>")
 							to_chat(world, "<br>")
-							world << sound('RiotAlarm.ogg', repeat = 0, wait = 0, volume = 0, channel = 6)
+							world << sound('sound/RiotAlarm.ogg', repeat = 0, wait = 0, volume = 0, channel = 6)
 							riotreal = 0
 							for(var/obj/machinery/door/poddoor/shutters/B in world)
 								if(B.alert == "baronriot")
 									B.close()
 						if(riot == 1)
-							to_chat(usr, "<span class='combat'>[pick(nao_consigoen)] I need to turn off the Battle Alarm first!</span>")
+							to_chat(usr, "<span class='combat'>[pick(fnord)] I need to turn off the Battle Alarm first!</span>")
 
 		if(allowedjobs.Find(H.job) && H.head && istype(H.head, /obj/item/clothing/head/caphat))
 			switch(href_list["usecrown"])
@@ -152,7 +152,7 @@ var/list/riot_essential = list("Baron", "Baroness Bodyguard", "Incarn", "Squire"
 							if(!E.activearea.alarm_toggled)
 								E.icon_state = E.active_state
 								E.activearea.alarm_toggled = TRUE
-								playsound(E.loc, 'danger_alarm.ogg',80,0, 30, 30)
+								playsound(E.loc, 'sound/effects/danger_alarm.ogg',80,0, 30, 30)
 								E.active = TRUE
 								spawn(20)
 									processing_objects.Add(E)
@@ -280,7 +280,7 @@ var/list/riot_essential = list("Baron", "Baroness Bodyguard", "Incarn", "Squire"
 						to_chat(world, "<br>")
 						to_chat(world, "<span class='decree'>New [H.job]'s decree!</span>")
 						to_chat(world, "<br>")
-						world << sound('mantrap.ogg', repeat = 1, wait = 0, volume = 50, channel = 6)
+						world << sound('sound/music/mantrap.ogg', repeat = 1, wait = 0, volume = 50, channel = 6)
 						riot = 1
 						for(var/obj/machinery/door/poddoor/shutters/B in world)
 							if(B.alert == "baronalert")
@@ -294,13 +294,13 @@ var/list/riot_essential = list("Baron", "Baroness Bodyguard", "Incarn", "Squire"
 							to_chat(world, "<br>")
 							to_chat(world, "<span class='decree'>New [H.job]'s decree!</span>")
 							to_chat(world, "<br>")
-							world << sound('mantrap.ogg', repeat = 0, wait = 0, volume = 0, channel = 6)
+							world << sound('sound/music/mantrap.ogg', repeat = 0, wait = 0, volume = 0, channel = 6)
 							riot = 0
 							for(var/obj/machinery/door/poddoor/shutters/B in world)
 								if(B.alert == "baronalert")
 									B.close()
 						if(riotreal == 1)
-							to_chat(usr, "<span class='combat'>[pick(nao_consigoen)] I need to turn off the Riot Alarm first!</span>")
+							to_chat(usr, "<span class='combat'>[pick(fnord)] I need to turn off the Riot Alarm first!</span>")
 
 				if("riotreal")
 					if(riotreal == 0 && riot != 1)
@@ -311,7 +311,7 @@ var/list/riot_essential = list("Baron", "Baroness Bodyguard", "Incarn", "Squire"
 						to_chat(world, "<br>")
 						to_chat(world, "<span class='decree'>New [H.job]'s decree!</span>")
 						to_chat(world, "<br>")
-						world << sound('RiotAlarm.ogg', repeat = 1, wait = 0, volume = 100, channel = 6)
+						world << sound('sound/RiotAlarm.ogg', repeat = 1, wait = 0, volume = 100, channel = 6)
 						riotreal = 1
 						for(var/obj/machinery/door/poddoor/shutters/B in world)
 							if(B.alert == "baronriot")
@@ -325,13 +325,13 @@ var/list/riot_essential = list("Baron", "Baroness Bodyguard", "Incarn", "Squire"
 							to_chat(world, "<br>")
 							to_chat(world, "<span class='decree'>New [H.job]'s decree!</span>")
 							to_chat(world, "<br>")
-							world << sound('RiotAlarm.ogg', repeat = 0, wait = 0, volume = 0, channel = 6)
+							world << sound('sound/RiotAlarm.ogg', repeat = 0, wait = 0, volume = 0, channel = 6)
 							riotreal = 0
 							for(var/obj/machinery/door/poddoor/shutters/B in world)
 								if(B.alert == "baronriot")
 									B.close()
 						if(riot == 1)
-							to_chat(usr, "<span class='combat'>[pick(nao_consigoen)] I need to turn off the Battle Alarm first!</span>")
+							to_chat(usr, "<span class='combat'>[pick(fnord)] I need to turn off the Battle Alarm first!</span>")
 
 				if("firearmlaw")
 					world << sound('sound/AI/bell_toll.ogg')
@@ -376,7 +376,7 @@ var/list/riot_essential = list("Baron", "Baroness Bodyguard", "Incarn", "Squire"
 								for(var/mob/living/carbon/human/ChurchMen in mob_list)
 									if(ChurchMen.wear_id)
 										if(ChurchMen.job == "Inquisitor" || ChurchMen.job == "Practicus" || ChurchMen.job == "Bishop" || ChurchMen.job == "Sniffer")
-											var/obj/item/weapon/card/id/R = ChurchMen.wear_id
+											var/obj/item/card/id/R = ChurchMen.wear_id
 											R.access = list(church, access_morgue, access_chapel_office, access_maint_tunnels, meistery,smith,treasury,esculap,sanctuary,innkeep,merchant,garrison,keep,baronquarter,hump,courtroom,soilery,lifeweb,geschef, marduk, hand_access)
 
 							else
@@ -387,11 +387,11 @@ var/list/riot_essential = list("Baron", "Baroness Bodyguard", "Incarn", "Squire"
 					"Butler", "Sitzfrau", "Maid", "Servant", "Marduk", "Tiamat", "Incarn", "Squire", "Sheriff", "Baroness Bodyguard",\
 					"Esculap", "Serpent", "Metalsmith", "Weaponsmith", "Armorsmith", "Pusher",\
 					"Amuser", "Book Making Agent", "Homeless", "Hump", "Mortician", "Misero",\
-					"Grayhound", "Soiler", "Treasurer", "Innkeeper", "Innkeeper Wife")
+					"Docker", "Soiler", "Treasurer", "Madam")
 					for(var/mob/living/carbon/human/M in T)
 						M.job = job
 						if(M.wear_id)
-							var/obj/item/weapon/card/id/R = M.wear_id
+							var/obj/item/card/id/R = M.wear_id
 							R.registered_name = M.real_name
 							R.rank = job
 							R.assignment = job
@@ -425,11 +425,10 @@ var/list/riot_essential = list("Baron", "Baroness Bodyguard", "Incarn", "Squire"
 								if("Hump") R.access = list(keep,hump)
 								if("Mortician") R.access = list(lifeweb)
 								if("Misero") R.access = list(lifeweb)
-								if("Grayhound") R.access = list(merchant)
+								if("Docker") R.access = list(merchant)
 								if("Soiler") R.access = list(soilery)
 								if("Treasurer") R.access = list(keep,meistery,treasury)
-								if("Innkeeper") R.access = list(innkeep)
-								if("Innkeeper Wife") R.access = list(innkeep)
+								if("Madam") R.access = list(innkeep)
 						to_chat(world, "<br>")
 						to_chat(world, "<span class='ravenheartfortress'>Firethorn Fortress</span>")
 						to_chat(world,"<span class='excomm'>¤[M.real_name] is now a [job]!¤</span>")
@@ -573,11 +572,11 @@ var/roundendready = FALSE
 
 	if(H.job == "Jester" && H.special == "jesterdecree")
 		H.verbs += /mob/living/carbon/human/verb/BaronAnnounce
-	M.updatePig()
+	M.updateStatPanel()
 
 	if(H.job == "Marduk")
 		H.verbs += /mob/living/carbon/human/verb/BaronRiotReal
-	M.updatePig()
+	M.updateStatPanel()
 
 /obj/structure/stool/bed/chair/ThroneMid/unbuckle(mob/M as mob, mob/user as mob)
 	if(buckled_mob)
@@ -602,11 +601,11 @@ var/roundendready = FALSE
 	H.verbs -= /mob/living/carbon/human/verb/SetHand
 	if(H.job == "Jester" && H.special == "jesterdecree")
 		H.verbs -= /mob/living/carbon/human/verb/BaronAnnounce
-	H.updatePig()
+	H.updateStatPanel()
 
 	if(H.job == "Marduk")
 		H.verbs -= /mob/living/carbon/human/verb/BaronRiotReal
-	H.updatePig()
+	H.updateStatPanel()
 
 /mob/living/carbon/human/New()
 	. = ..()
@@ -708,7 +707,7 @@ var/roundendready = FALSE
 		to_chat(world, "<br>")
 		to_chat(world, "<span class='decree'>New [src.job]'s decree!</span>")
 		to_chat(world, "<br>")
-		world << sound('mantrap.ogg', repeat = 1, wait = 0, volume = 50, channel = 6)
+		world << sound('sound/music/mantrap.ogg', repeat = 1, wait = 0, volume = 50, channel = 6)
 		riot = 1
 		for(var/obj/machinery/door/poddoor/shutters/B in world)
 			if(B.alert == "baronalert")
@@ -722,13 +721,13 @@ var/roundendready = FALSE
 			to_chat(world, "<br>")
 			to_chat(world, "<span class='decree'>New [src.job]'s decree!</span>")
 			to_chat(world, "<br>")
-			world << sound('mantrap.ogg', repeat = 0, wait = 0, volume = 0, channel = 6)
+			world << sound('sound/music/mantrap.ogg', repeat = 0, wait = 0, volume = 0, channel = 6)
 			riot = 0
 			for(var/obj/machinery/door/poddoor/shutters/B in world)
 				if(B.alert == "baronalert")
 					B.close()
 		if(riotreal == 1)
-			to_chat(usr, "<span class='combat'>[pick(nao_consigoen)] I need to turn off the Riot Alarm first!</span>")
+			to_chat(usr, "<span class='combat'>[pick(fnord)] I need to turn off the Riot Alarm first!</span>")
 
 		log_admin("[key_name(src)] has turned on the battle alarm")
 		message_admins("[key_name_admin(src)] has turned on the battle alarm", 1)
@@ -746,7 +745,7 @@ var/roundendready = FALSE
 		to_chat(world, "<br>")
 		to_chat(world, "<span class='decree'>New [src.job]'s decree!</span>")
 		to_chat(world, "<br>")
-		world << sound('RiotAlarm.ogg', repeat = 1, wait = 0, volume = 100, channel = 6)
+		world << sound('sound/RiotAlarm.ogg', repeat = 1, wait = 0, volume = 100, channel = 6)
 		riotreal = 1
 		for(var/obj/machinery/door/poddoor/shutters/B in world)
 			if(B.alert == "baronriot")
@@ -760,18 +759,18 @@ var/roundendready = FALSE
 			to_chat(world, "<br>")
 			to_chat(world, "<span class='decree'>New [src.job]'s decree!</span>")
 			to_chat(world, "<br>")
-			world << sound('RiotAlarm.ogg', repeat = 0, wait = 0, volume = 0, channel = 6)
+			world << sound('sound/RiotAlarm.ogg', repeat = 0, wait = 0, volume = 0, channel = 6)
 			riotreal = 0
 			for(var/obj/machinery/door/poddoor/shutters/B in world)
 				if(B.alert == "baronriot")
 					B.close()
 		if(riot == 1)
-			to_chat(usr, "<span class='combat'>[pick(nao_consigoen)] I need to turn off the Battle Alarm first!</span>")
+			to_chat(usr, "<span class='combat'>[pick(fnord)] I need to turn off the Battle Alarm first!</span>")
 
 			log_admin("[key_name(src)] has declared riot")
 			message_admins("[key_name_admin(src)] has declared riot", 1)
 		if(riot == 1)
-			to_chat(usr, "<span class='combat'>[pick(nao_consigoen)] I need to turn off the Battle Alarm first!</span>")
+			to_chat(usr, "<span class='combat'>[pick(fnord)] I need to turn off the Battle Alarm first!</span>")
 
 /mob/living/carbon/human/verb/DrugBan()
 	set hidden = 0
@@ -853,8 +852,8 @@ var/roundendready = FALSE
 /obj/structure/stool/bed/chair/ThroneSides
 	name = "Baron's Throne"
 	desc = "A magnificent throne."
-	icon = 'icons/obj/throne.dmi'
-	icon_state = "thronecenter"
+	icon = 'icons/obj/throne_new.dmi'
+	icon_state = "top"
 	anchored = 1
 	flammable = 0
 
@@ -870,16 +869,19 @@ var/roundendready = FALSE
 	icon = 'icons/obj/throne_new.dmi'
 	icon_state = "wingright"
 	plane = 21
+	mouse_opacity = FALSE
 
 /obj/structure/stool/bed/chair/ThroneSides/wingleft
 	icon = 'icons/obj/throne_new.dmi'
 	icon_state = "wingleft"
 	plane = 21
+	mouse_opacity = FALSE
 
 /obj/structure/stool/bed/chair/ThroneSides/top
 	icon = 'icons/obj/throne_new.dmi'
 	icon_state = "top"
 	plane = 21
+	mouse_opacity = FALSE
 
 /obj/structure/stool/bed/chair/ThroneSides/buckle_mob()
 	return 0

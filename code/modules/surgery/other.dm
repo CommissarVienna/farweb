@@ -7,8 +7,8 @@
 /datum/surgery_step/fix_vein
 	priority = 2
 	allowed_tools = list(
-	/obj/item/weapon/surgery_tool/FixOVein = 100, \
-	/obj/item/weapon/surgery_tool/suture = 100, \
+	/obj/item/surgery_tool/FixOVein = 100, \
+	/obj/item/surgery_tool/suture = 100, \
 	/obj/item/stack/cable_coil = 75
 	)
 	can_infect = 0
@@ -41,7 +41,7 @@
 		var/datum/organ/external/affected = target.get_organ(target_zone)
 		user.visible_message("\blue [user] has patched the damaged vein in [target]'s [affected.display_name] with \the [tool].", \
 			"\blue You have patched the damaged vein in [target]'s [affected.display_name] with \the [tool].")
-		playsound(user.loc, 'sewing.ogg', 50, 1, -3)
+		playsound(user.loc, 'sound/effects/sewing.ogg', 50, 1, -3)
 		for(var/datum/wound/W in affected.wounds) if(W.internal)
 			affected.wounds -= W
 			affected.update_damages()
@@ -58,9 +58,9 @@
 /datum/surgery_step/fix_dead_tissue		//Debridement
 	priority = 2
 	allowed_tools = list(
-		/obj/item/weapon/surgery_tool/scalpel = 100,		\
-		/obj/item/weapon/kitchenknife = 75,	\
-		/obj/item/weapon/shard = 50, 		\
+		/obj/item/surgery_tool/scalpel = 100,		\
+		/obj/item/kitchenknife = 75,	\
+		/obj/item/shard = 50, 		\
 	)
 
 	can_infect = 0
@@ -104,11 +104,11 @@
 /datum/surgery_step/treat_necrosis
 	priority = 2
 	allowed_tools = list(
-		/obj/item/weapon/reagent_containers/dropper = 100,
-		/obj/item/weapon/reagent_containers/glass/bottle = 75,
-		/obj/item/weapon/reagent_containers/glass/beaker = 75,
-		/obj/item/weapon/reagent_containers/spray = 50,
-		/obj/item/weapon/reagent_containers/glass/bucket = 50,
+		/obj/item/reagent_containers/dropper = 100,
+		/obj/item/reagent_containers/glass/bottle = 75,
+		/obj/item/reagent_containers/glass/beaker = 75,
+		/obj/item/reagent_containers/spray = 50,
+		/obj/item/reagent_containers/glass/bucket = 50,
 	)
 
 	can_infect = 0
@@ -118,10 +118,10 @@
 	max_duration = 20
 
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		if (!istype(tool, /obj/item/weapon/reagent_containers))
+		if (!istype(tool, /obj/item/reagent_containers))
 			return 0
 
-		var/obj/item/weapon/reagent_containers/container = tool
+		var/obj/item/reagent_containers/container = tool
 		if(!container.reagents.has_reagent("peridaxon"))
 			return 0
 
@@ -144,10 +144,10 @@
 	end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/datum/organ/external/affected = target.get_organ(target_zone)
 
-		if (!istype(tool, /obj/item/weapon/reagent_containers))
+		if (!istype(tool, /obj/item/reagent_containers))
 			return
 
-		var/obj/item/weapon/reagent_containers/container = tool
+		var/obj/item/reagent_containers/container = tool
 
 		var/trans = container.reagents.trans_to(target, container.amount_per_transfer_from_this)
 		if (trans > 0)
@@ -163,10 +163,10 @@
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/datum/organ/external/affected = target.get_organ(target_zone)
 
-		if (!istype(tool, /obj/item/weapon/reagent_containers))
+		if (!istype(tool, /obj/item/reagent_containers))
 			return
 
-		var/obj/item/weapon/reagent_containers/container = tool
+		var/obj/item/reagent_containers/container = tool
 
 		var/trans = container.reagents.trans_to(target, container.amount_per_transfer_from_this)
 		container.reagents.reaction(target, INGEST)	//technically it's contact, but the reagents are being applied to internal tissue

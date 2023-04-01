@@ -2,11 +2,13 @@
 	name = "bullet casing"
 	desc = "A bullet casing."
 	icon = 'icons/obj/ammo.dmi'
-	icon_state = "s-casing"
+	icon_state = "s-casing-live"
 	flags = FPRINT | CONDUCT
 	slot_flags = SLOT_BELT
 	throwforce = 1
 	w_class = 1.0
+	var/obj/item/stack/bullets/stack_type = null
+	var/spent_icon = "s-casing"
 	var/caliber = ""					//Which kind of guns it can be loaded into
 	var/projectile_type					//The bullet type to create when New() is called
 	var/obj/item/projectile/BB = null 	//The loaded bullet
@@ -17,15 +19,31 @@
 			BB = new projectile_type(src)
 		update_icon()
 
-	update_icon()
-		pixel_x = rand(-10, 10)
-		pixel_y = rand(-10, 10)
-		dir = pick(alldirs)
-		icon_state = "[initial(icon_state)][BB ? "-live" : ""]"
-		desc = "[initial(desc)][BB ? "" : " This one is spent"]"
+/obj/item/ammo_casing/update_icon()
+	pixel_x = rand(-10, 10)
+	pixel_y = rand(-10, 10)
+	if(!BB)
+		var/matrix/M = matrix()
+		M.Turn(rand(180))
+		src.transform = M //spin spent casings
+		desc = "[desc] This one is spent."
+	if(spent_icon && !BB)
+		icon_state = spent_icon
 
-	proc/on_fired()
-		return
+/obj/item/ammo_casing/proc/on_fired()
+	return
+
+/obj/item/ammo_casing/attackby(obj/item/W, mob/user)
+	. = ..()
+	if(stack_type)//Can we stack them?
+		if(istype(W, src))//Are they they right type?
+			if(BB)//Has the round already been fired? You can't use this to clone new unfired rounds.
+				var/obj/item/stack/bullets/B = new stack_type.type(src.loc)
+				B.amount = 2 //We've made a new stack
+				B.update_icon()
+				qdel(W)
+				qdel(src)
+
 
 //Boxes of ammo
 /obj/item/ammo_magazine

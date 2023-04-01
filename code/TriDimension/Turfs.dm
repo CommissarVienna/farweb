@@ -24,13 +24,16 @@ var/turf/global_openspace = list()
 	dynamic_lighting = 0
 	var/flooded = 0
 
+/turf/simulated/floor/open/AddTracks(typepath, bloodDNA, comingdir, goingdir, bloodcolor)//You cannot add tracks to open spaces.
+	return
+
 /turf/simulated/floor/open/New()
 	..()
 	if(!darkover)
 		darkover = new()
 		darkover.icon = 'icons/turf/walls.dmi'
 		darkover.icon_state = "dark_over"
-		darkover.plane = 15
+		darkover.plane = src.plane
 		darkover.mouse_opacity = 0
 	for(var/direction in cardinal)
 		var/turf/turf_to_check = get_step(src,direction)
@@ -38,7 +41,7 @@ var/turf/global_openspace = list()
 			continue
 		else if(istype(turf_to_check, /turf/simulated))
 			var/image/dark_side = image('icons/turf/walls.dmi', "dark_side", dir = direction)//turn(direction, 180))
-			dark_side.plane = 15
+			dark_side.plane = src.plane
 			dark_side.layer = 6
 			overlays += dark_side
 	src.vis_contents += darkover
@@ -58,8 +61,8 @@ var/turf/global_openspace = list()
 	if(istype(M, /mob/dead)) return
 	if(istype(M, /obj/effect/effect/light)) return
 	if(isobj(M))
-		if(istype(M, /obj/item/weapon/flame/torch))
-			var/obj/item/weapon/flame/torch/F = M
+		if(istype(M, /obj/item/flame/torch))
+			var/obj/item/flame/torch/F = M
 			if(!F.throwing && F.lit)
 				F.turn_off()
 		return
@@ -69,12 +72,9 @@ var/turf/global_openspace = list()
 		H.bodytemperature = 200
 		if(H?.special == "sailor")
 			H.rotate_plane()
-		if(H.lying)
-			for(var/obj/item/weapon/flame/torch/F in H.contents)
-				F.turn_off()
-		H.visible_message("<span class='bname'>[M.name]</span> floundes in water!")
-		H.adjustStaminaLoss(rand(1,2))
-		playsound(H.loc, 'sound/effects/fst_water_jump_down_01.ogg', 80, 1, -1)
+		for(var/obj/item/flame/torch/F in H.contents)
+			F.turn_off()
+		H.flounder()
 
 
 /turf/simulated/floor/open/attack_hand(mob/living/carbon/human/H as mob)
@@ -84,24 +84,24 @@ var/turf/global_openspace = list()
 		return
 	if(!canFall(H)) return
 	H.visible_message("<span class='passiveboldsmaller'>[H.name]</span> <span class='passivesmaller'>starts to climb down.</span>")
-	if(do_after(H, 42-H.my_skills.GET_SKILL(SKILL_CLIMB)))
+	if(do_after(H, 42-H.my_skills.get_skill(SKILL_CLIMB)))
 		var/list/rolled = roll3d6(H,SKILL_CLIMB,null)
 		switch(rolled[GP_RESULT])
 			if(GP_SUCCESS, GP_CRITSUCCESS)
-				var/turf/T = locate(src.x, src.y, src.z-1)
+				var/turf/T = get_turf_below()
 				if(T.density)
 					to_chat(H, "<span class='hitbold'>  I cannot climb there!</span>")
 					return
-				H.forceMove(locate(src.x, src.y, src.z-1))
+				H.forceMove(T)
 				playsound(H.loc, 'sound/effects/climb.ogg', 40, 1)
 				H.visible_message("<span class='baronboldoutlined'>[H]</span> climbs down.")
 
-			if(GP_FAILED)
-				var/turf/T = locate(src.x, src.y, src.z-1)
+			if(GP_FAIL)
+				var/turf/T = get_turf_below()
 				if(T.density)
 					to_chat(H, "<span class='hitbold'>  I cannot climb there!</span>")
 					return
-				H.Move(locate(src.x, src.y, src.z-1))
+				H.forceMove(T)
 				to_chat(H, "<span class='hitbold'>  You failed to climb \the [src]!</span>")
 				if(H.special == "notafraid")
 					to_chat(H, "You land softly.")
@@ -124,11 +124,11 @@ var/turf/global_openspace = list()
 					H:updatehealth()
 
 			if(GP_CRITFAIL)
-				H.Move(locate(src.x, src.y, src.z-1))
-				var/turf/T = locate(src.x, src.y, src.z-1)
+				var/turf/T = locate(get_turf_below())
 				if(T.density)
-					to_chat(H, "<span class='hitbold'>  I cannot climb there!</span>")
+					to_chat(H, "<span class='hitbold'> I cannot climb there!</span>")
 					return
+				H.forceMove(T)
 				to_chat(H, "<span class='crithit'>CRITICAL FAILURE!</span> <span class='hitbold'>You failed to climb \the [src]!</span>")
 				if(H.special == "notafraid")
 					to_chat(H, "You land softly.")
@@ -174,7 +174,7 @@ var/turf/global_openspace = list()
 		src.visible_message("<span class='bname'>[src.name]</span> lands softly!")
 		return
 	var/damage = 10
-	var/list/roll_result = roll3d6(src, src.my_stats.dx, -1, FALSE, TRUE)
+	var/list/roll_result = roll3d6(src, src.my_stats.get_stat(STAT_DX), -1, FALSE, TRUE)
 	switch(roll_result[GP_RESULT])
 		if(GP_CRITSUCCESS)
 			src.visible_message("<span class='bname'>[src.name]</span> lands softly!")
@@ -192,8 +192,8 @@ var/turf/global_openspace = list()
 			continue
 		var/organ = pick("chest", "head")
 		victim.emote("scream")
-		victim.apply_damage(src.my_stats.ht + src.my_stats.st * 1.5, BRUTE, organ)
-		victim.Stun(src.my_stats.ht)
+		victim.apply_damage(src.my_stats.get_stat(STAT_HT) + src.my_stats.get_stat(STAT_ST) * 1.5, BRUTE, organ)
+		victim.Stun(src.my_stats.get_stat(STAT_HT))
 		victim.updatehealth()
 		victim.update_canmove()
 	apply_damage(damage/2 + rand(-5,12), BRUTE, "l_leg")
@@ -220,6 +220,8 @@ var/turf/global_openspace = list()
 	for(var/atom/A in src)
 		if(istype(A, /obj/structure/elevador))
 			canfall = FALSE
+		if(istype(A, /obj/structure/lattice))
+			canfall = FALSE
 		if(A == M) continue
 		if(A.blocksOpenFalling)
 			canfall = FALSE
@@ -241,3 +243,7 @@ var/turf/global_openspace = list()
 /turf/simulated/floor/open/proc/getbelow()
 	var/turf/below = locate(src.x, src.y, src.z-1)
 	floorbelow = below
+
+/atom/proc/get_turf_below()
+	var/turf/below = locate(src.x, src.y, src.z-1)
+	return below

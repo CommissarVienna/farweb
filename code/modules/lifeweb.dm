@@ -64,7 +64,7 @@ var/list/area/dunwell_areas = list()
 		return
 
 	for(var/obj/O in M.contents)
-		if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/organ) || istype(O, /obj/item/weapon/storage/touchable/organ))
+		if(istype(O, /obj/item/reagent_containers/food/snacks/organ) || istype(O, /obj/item/storage/touchable/organ))
 			continue
 		else
 			to_chat(user, "The victim needs to be fully naked.")
@@ -218,6 +218,7 @@ ecross2
 					var/blood_volume = round(H:vessel.get_reagent_amount("blood"))
 					var/blood_percent =  blood_volume / 560
 					blood_percent *= 100
+					blood_percent = round(blood_percent)
 					if(blood_volume <= 500)
 						user.show_message("\red <b>Warning: Blood Level LOW: [blood_percent]% [blood_volume]cl")
 					else if(blood_volume <= 336)
@@ -248,18 +249,18 @@ obj/machinery/web_recharger
 	density = 1
 	var/active_area
 	var/blood_usage = 0
-	var/obj/item/weapon/charging = null
+	var/obj/item/charging = null
 	var/powered = TRUE
 
 obj/machinery/web_recharger/examine()
 	set src in view(1)
 	if(usr /*&& !usr.stat*/)
 		if(charging)
-			var/obj/item/weapon/cell/web/C = charging
+			var/obj/item/cell/web/C = charging
 			usr << "[desc]\n The charge meter reads [round(C.percent() )]%."
 
-obj/machinery/web_recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
-	if(istype(G, /obj/item/weapon/cell/web))
+obj/machinery/web_recharger/attackby(obj/item/G as obj, mob/user as mob)
+	if(istype(G, /obj/item/cell/web))
 		if(charging)
 			return
 
@@ -274,7 +275,7 @@ obj/machinery/web_recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
 
 obj/machinery/web_recharger/attack_hand(mob/user as mob)
 	add_fingerprint(user)
-	var/obj/item/weapon/cell/web/C = charging
+	var/obj/item/cell/web/C = charging
 
 	if(charging)
 		charging.update_icon()
@@ -291,7 +292,7 @@ obj/machinery/web_recharger/attack_paw(mob/user)
 	return attack_hand(user)
 
 obj/machinery/web_recharger/attack_tk(mob/user)
-	var/obj/item/weapon/cell/web/C = charging
+	var/obj/item/cell/web/C = charging
 
 	if(charging)
 		charging.update_icon()
@@ -309,7 +310,7 @@ var/global/list/lifeweb_objects = list()
 	processing_objects.Add(src)
 	lifeweb_objects.Add(src)
 
-/obj/item/weapon/cell/web/proc/update_price()
+/obj/item/cell/web/proc/update_price()
 	var/item_total
 	item_total = item_worth + charge
 	item_worth = item_total
@@ -317,7 +318,7 @@ var/global/list/lifeweb_objects = list()
 /obj/machinery/web_recharger/proc/area_powercheck()
 	for(var/area/dunwell/station/A in dunwell_areas)
 		if(charging)
-			var/obj/item/weapon/cell/web/C = charging
+			var/obj/item/cell/web/C = charging
 			if(C.charge <= 0)
 				powered = FALSE
 				if(!powered)
@@ -341,8 +342,8 @@ obj/machinery/web_recharger/process()
 	var/area/AffectedArea = get_area(src)
 	for(var/obj/machinery/lifeweb/control/CONTROL in lifeweb_objects)
 		if(charging && CONTROL.draining)
-			if(istype(charging, /obj/item/weapon/cell/web))
-				var/obj/item/weapon/cell/web/C = charging
+			if(istype(charging, /obj/item/cell/web))
+				var/obj/item/cell/web/C = charging
 				if(C.charge < C.maxcharge)
 					for(var/mob/living/carbon/human/H in AffectedArea)
 						if(H.lifeweb_locked)
@@ -354,8 +355,8 @@ obj/machinery/web_recharger/process()
 				else
 					icon_state = "ob100"
 		else if(charging && !CONTROL.draining)
-			if(istype(charging, /obj/item/weapon/cell/web))
-				var/obj/item/weapon/cell/web/C = charging
+			if(istype(charging, /obj/item/cell/web))
+				var/obj/item/cell/web/C = charging
 				if(C.charge >= 1)
 					use_power(C.give(-0.5))
 					C.update_price()

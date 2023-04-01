@@ -14,7 +14,7 @@
 			var/perpname = "wot"
 			holder = perp.hud_list[ID_HUD]
 			if(perp.wear_id)
-				var/obj/item/weapon/card/id/I = perp.wear_id.GetID()
+				var/obj/item/card/id/I = perp.wear_id.GetID()
 				if(I)
 					perpname = I.registered_name
 					holder.icon_state = "hud[ckey(perp:wear_id:GetJobName())]"
@@ -80,12 +80,6 @@
 				holder.icon_state = "hudxeno"
 			else if(foundVirus)
 				holder.icon_state = "hudill"
-			else if(patient.has_brain_worms())
-				var/mob/living/simple_animal/borer/B = patient.has_brain_worms()
-				if(B.controlling)
-					holder.icon_state = "hudbrainworm"
-				else
-					holder.icon_state = "hudhealthy"
 			else
 				holder.icon_state = "hudhealthy"
 			client.images += holder

@@ -3,7 +3,7 @@
 	var/statDependent = TRUE
 	var/ignoreArmor = FALSE
 
-/obj/item/weapon/melee/energy/sword
+/obj/item/melee/energy/sword
 	statDependent = FALSE
 	ignoreArmor = TRUE
 
@@ -40,7 +40,7 @@
 
 	if(!target_zone)
 		playsound(loc, I.swing_sound, 100, 1)
-		visible_message("<span class='hitbold'>[attacker]</span> <span class='hit'>misses trying to [I.attack_verb.len ? pick(I.attack_verb) : "attack"] [src]'s [display_name] with the [I]!</span>")
+		visible_message("<span class='hitbold'>[attacker]</span> <span class='hit'>misses trying to attack [src]'s [display_name] with the [I]!</span>")
 		return
 
 	if(is_it_high(attacker))
@@ -51,7 +51,7 @@
 
 	if(attempt_dodge(src, attacker))
 		playsound(loc, I.swing_sound, 100, 1)
-		visible_message("<span class='hitbold'>[attacker]</span> <span class='hit'>misses trying to [I.attack_verb.len ? pick(I.attack_verb) : "attack"] [src]'s [display_name] with his [capitalize(I.name)]!</span>")
+		visible_message("<span class='hitbold'>[attacker]</span> <span class='hit'>misses trying to attack [src]'s [display_name] with his [capitalize(I.name)]!</span>")
 		src.do_dodge()
 		return
 
@@ -84,7 +84,7 @@
 		I.damageSharp("MEDIUM")
 		return
 
-	var/damage = I.statDependent ? I.getNewWeaponForce(attacker.my_stats.st, victim.my_stats.ht) : I.force
+	var/damage = I.statDependent ? I.getNewWeaponForce(attacker.my_stats.get_stat(STAT_ST), victim.my_stats.get_stat(STAT_HT)) : I.force
 
 	if(armor == ARMOR_SOFTEN)
 		dmgTXT += "<span class='hit'>Armor softens the damage.</span> "
@@ -157,11 +157,11 @@
 			bloody_body(src)
 
 	if(src.gender == MALE && attacker.gender == FEMALE || src.gender == FEMALE && attacker.gender == MALE)
-		if(src.vice == "Masochist")
+		if(src.has_vice("Masochist"))
 			src.viceneed = 0
 
 
-	if(attacker.my_stats.st >= my_stats.ht+4 && !lying && isBlunt && damage > 8)
+	if(attacker.my_stats.get_stat(STAT_ST) >= my_stats.get_stat(STAT_HT)+4 && !lying && isBlunt && damage > 8)
 		Weaken(1)
 		var/turf/target = get_turf(src.loc)
 		var/range = src.throw_range
@@ -190,6 +190,25 @@
 
 	attacker.visible_message(dmgTXT)
 
+	if(victim?.isVampire && I.silver)
+		if(armor == ARMOR_SOFTEN)
+			return
+		else
+			victim.Weaken(4)
+			victim.apply_damage(damage*1.5, BRUTE, affecting)
+			flash_pain()
+			victim.rotate_plane(1)
+			if(prob(40))
+				victim.vessel.remove_reagent("blood",25)
+			if(prob(50))
+				victim.emote("SCREECHES in pain!")
+				playsound(victim.loc, pick('sound/effects/vamphit1.ogg', 'sound/effects/vamphit2.ogg', 'sound/effects/vamphit3.ogg'), 75, 0, -1)
+				if(!victim.ExposedFang)
+					playsound(victim.loc, ('sound/effects/fangs1.ogg'), 50, 0, -1)
+					victim.visible_message("<span class='combatbold'>[victim]</span> <span class='combat'>exposes fangs!</span>")
+					victim.ExposedFang = TRUE
+					victim.update_body()
+
 	return 1
 
 
@@ -209,23 +228,23 @@
 /mob/living/carbon/human/kick_act(var/mob/living/carbon/human/user)
 	if(!..()) return
 	if(user == src) return
-	for(var/obj/item/weapon/grab/G in usr.grabbed_by)
+	for(var/obj/item/grab/G in usr.grabbed_by)
 		if (G.state >= 2) return
 
 	if(istype(user?.species, /datum/species/human/alien))
-		var/obj/item/weapon/claymore/rapier/xeno/X = new
+		var/obj/item/claymore/rapier/xeno/X = new
 		user.contents += X
 		src.attacked_by(X, user, user.zone_sel.selecting)
 		user.contents -= X
 		qdel(X)
 		return
 
-	if(istype(user.buckled,/obj/structure/stool/bed/chair/comfy/torture)) return to_chat(usr,"<span class='combat'>[pick(nao_consigoen)] I can't move my legs!</span>")
+	if(istype(user.buckled,/obj/structure/stool/bed/chair/comfy/torture)) return to_chat(usr,"<span class='combat'>[pick(fnord)] I can't move my legs!</span>")
 	if(user.grabbed_by.len)
 		for(var/x = 1; x <= user.grabbed_by.len; x++)
 			if(user.grabbed_by[x])
-				if(istype(user.grabbed_by[x], /obj/item/weapon/grab))
-					var/obj/item/weapon/grab/G = user.grabbed_by[x]
+				if(istype(user.grabbed_by[x], /obj/item/grab))
+					var/obj/item/grab/G = user.grabbed_by[x]
 
 					if(G.aforgan.display_name == "r_leg" || G.aforgan.display_name == "l_leg" || G.aforgan.display_name == "r_foot" || G.aforgan.display_name == "l_foot")
 						to_chat(user, "<span class='combatbold'>Something is holding your leg!</span>")
@@ -259,7 +278,7 @@
 		src.do_dodge()
 		return
 
-	if(attempt_parry(src, user, strToDamageModifier(user.my_stats.st, src.my_stats.ht)))
+	if(attempt_parry(src, user, strToDamageModifier(user.my_stats.get_stat(STAT_ST), src.my_stats.get_stat(STAT_HT))))
 		playsound(loc, 'sound/weapons/punchmiss.ogg', 100, 1)//play a sound
 		visible_message("<span class='hitbold'>[user]</span> <span class='hit'>kicks [src]'s [display_name] with his foot!</span>")
 		do_parry(src, user)
@@ -268,7 +287,7 @@
 	var/list/kickRoll = roll3d6(user,SKILL_UNARM,null)
 
 	var/kickdam = rand(0,4)
-	kickdam += strToDamageModifier(user.my_stats.st, my_stats.ht)
+	kickdam += strToDamageModifier(user.my_stats.get_stat(STAT_ST), my_stats.get_stat(STAT_HT))
 	if(user.special == "proficientkicker")
 		kickdam += rand(15,30)
 		user.adjustStaminaLoss(rand(5,10))
@@ -276,11 +295,11 @@
 		user.adjustStaminaLoss(rand(8,12))
 
 	switch(kickRoll[GP_RESULT])
-		if(GP_FAILED)
+		if(GP_FAIL)
 			if(src.handcuffed)
 				var/list/kickRollCuff = roll3d6(user,SKILL_UNARM,null)
 				switch(kickRollCuff[GP_RESULT])
-					if(GP_FAILED || GP_CRITFAIL)
+					if(GP_FAIL || GP_CRITFAIL)
 						playsound(loc, 'sound/weapons/punchmiss.ogg', 50, 1)
 						visible_message("<span class='crithit'>CRITICAL FAILURE!</span> <span class='hitbold'>[user]</span> <span class='hit'>loses their balance!</span>")
 						user.resting = 1
@@ -297,12 +316,12 @@
 			user.Weaken(6)
 			return
 		if(GP_SUCCESS)
-			kickdam += strToDamageModifier(user.my_stats.st, my_stats.ht)/2
+			kickdam += strToDamageModifier(user.my_stats.get_stat(STAT_ST), my_stats.get_stat(STAT_HT))/2
 		if(GP_CRITSUCCESS)
-			kickdam += strToDamageModifier(user.my_stats.st, my_stats.ht)
+			kickdam += strToDamageModifier(user.my_stats.get_stat(STAT_ST), my_stats.get_stat(STAT_HT))
 
-	if(user.my_stats.st >= src.my_stats.ht+4)
-		var/difference = user.my_stats.st - src.my_stats.ht+4
+	if(user.my_stats.get_stat(STAT_ST) >= src.my_stats.get_stat(STAT_HT)+4)
+		var/difference = user.my_stats.get_stat(STAT_ST) - src.my_stats.get_stat(STAT_HT)+4
 		var/turf/target = get_turf(src.loc)
 		var/range = src.throw_range
 		var/throw_dir = get_dir(user, src)
@@ -349,7 +368,7 @@
 	if(istype(user?.species, /datum/species/human/alien))
 		var/hit_zone = user.zone_sel.selecting
 		var/datum/organ/external/affecting = get_organ(ran_zone(hit_zone))
-		var/obj/item/weapon/claymore/rapier/xeno/X = new
+		var/obj/item/claymore/rapier/xeno/X = new
 		user.contents += X
 		var/armor = run_armor_check(affecting.name, "melee", X)
 		user.contents -= X
@@ -357,9 +376,9 @@
 		if(armor == ARMOR_BLOCKED) return
 		src.apply_damage(45, BRUTE, affecting)
 		user.visible_message("<span class='hitbold'>[user.name]</span> <span class='hit'>bites [src] in the [affecting.display_name] with its extended mouth!</span> ")
-		playsound(user.loc, pick('alien_harm.ogg', 'alien_harm2.ogg', 'alien_harm3.ogg'), 50, 1)
+		playsound(user.loc, pick('sound/webbers/alien_harm.ogg', 'sound/webbers/alien_harm2.ogg', 'sound/webbers/alien_harm3.ogg'), 50, 1)
 		if(affecting.name == "vitals" && src.resting)
-			var/obj/item/weapon/reagent_containers/food/snacks/organ/O = pick(organ_storage.contents)
+			var/obj/item/reagent_containers/food/snacks/organ/O = pick(organ_storage.contents)
 			O.connected = FALSE
 			coisa(O, O.owner, 0)
 			if(O.organ_data.vital)
@@ -370,14 +389,14 @@
 			src.update_surgery(1)
 			user.visible_message("<span class='hitbold'>[user.name]</span> <span class='hit'>consumes [src]'s [O.name]!</span> ")
 			src.emote("agonydeath")
-			playsound(user.loc, 'fangs_flesh.ogg', 50, 1)
+			playsound(user.loc, 'sound/webbers/fangs_flesh.ogg', 50, 1)
 			return
 
 	if(user.grabbed_by.len)
 		for(var/x = 1; x <= user.grabbed_by.len; x++)
 			if(user.grabbed_by[x])
-				if(istype(user.grabbed_by[x], /obj/item/weapon/grab))
-					var/obj/item/weapon/grab/G = user.grabbed_by[x]
+				if(istype(user.grabbed_by[x], /obj/item/grab))
+					var/obj/item/grab/G = user.grabbed_by[x]
 					if(G.aforgan.display_name == "mouth")
 						to_chat(user, "<span class='combatbold'>Something is holding your mouth!</span>")
 						return
@@ -409,19 +428,19 @@
 		src.do_dodge()
 		return
 
-	if(attempt_parry(src, user, strToDamageModifier(user.my_stats.st, src.my_stats.ht)))
+	if(attempt_parry(src, user, strToDamageModifier(user.my_stats.get_stat(STAT_ST), src.my_stats.get_stat(STAT_HT))))
 		playsound(loc, 'sound/weapons/punchmiss.ogg', 100, 1)//play a sound
 		visible_message("<span class='hitbold'>[user]</span> <span class='hit'>kicks [src]'s [display_name] with his foot!</span>")
 		do_parry(src, user)
 		return
 
 	var/bitedam = rand(0,2)
-	bitedam += strToDamageModifier(user.my_stats.st, src.my_stats.ht)
+	bitedam += strToDamageModifier(user.my_stats.get_stat(STAT_ST), src.my_stats.get_stat(STAT_HT))
 	user.adjustStaminaLoss(rand(2,4))
 
 	var/list/failRoll = roll3d6(user,SKILL_UNARM,null)
 	switch(failRoll[GP_RESULT])
-		if(GP_FAILED)
+		if(GP_FAIL)
 			user.visible_message("<span class=hitbold>[user]</span> <span class='hit'>tries to bite [src] in the [display_name], but misses!</span> ")
 			playsound(loc, 'sound/weapons/punchmiss.ogg', 50, 1)
 			return
@@ -436,9 +455,9 @@
 			zombie_infect()
 
 	if(user.isVampire && user.ExposedFang && armor != ARMOR_BLOCKED)
-		playsound(user.loc, 'fangs_flesh.ogg', 50, 1)
+		playsound(user.loc, 'sound/webbers/fangs_flesh.ogg', 50, 1)
 	else
-		playsound(user.loc, 'bite.ogg', 50, 1)
+		playsound(user.loc, 'sound/weapons/bite.ogg', 50, 1)
 		src.emote("agonymoan")
 		apply_damage(rand(4,12), BRUTE, target_zone, armor, sharp=TRUE)
 
@@ -447,7 +466,7 @@
 			visible_message("<span class='hitbold'>[user]</span><span class='hit'> drinks [src]'s blood.</span> " )
 			src.vessel.remove_reagent("blood", 40)
 			user.vessel.add_reagent("blood",40)
-			playsound(user.loc, 'bloodsuck.ogg', 20, 1)
+			playsound(user.loc, 'sound/effects/bloodsuck.ogg', 20, 1)
 			src.druggy += 200
 			src.add_event("sin", /datum/happiness_event/misc/better)
 			src.emote("agonymoan")
@@ -466,9 +485,9 @@
 
 	apply_damage(bitedam, BRUTE, target_zone, armor)
 	if(user.ExposedFang)
-		playsound(user.loc, 'fangs_flesh.ogg', 35, 1)
+		playsound(user.loc, 'sound/webbers/fangs_flesh.ogg', 35, 1)
 	else
-		playsound(user.loc, 'bite.ogg', 50, 1)
+		playsound(user.loc, 'sound/weapons/bite.ogg', 50, 1)
 	if(affecting.name == "head" && affecting.brute_dam > affecting.min_broken_damage && iszombie(user))
 		var/datum/organ/external/head/O = affecting
 		O.breakskull()

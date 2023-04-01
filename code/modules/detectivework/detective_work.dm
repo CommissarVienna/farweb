@@ -70,7 +70,7 @@ obj/machinery/computer/forensic_scanning
 	var/list/files
 //This holds objects (1) without prints, and their fibers(2) and blood(3).
 	var/list/misc
-	var/obj/item/weapon/f_card/card
+	var/obj/item/f_card/card
 
 	var/scan_data = ""
 	var/scan_name = ""
@@ -79,7 +79,7 @@ obj/machinery/computer/forensic_scanning
 
 	New()
 		..()
-		new /obj/item/weapon/book/manual/detective(get_turf(src))
+		new /obj/item/book/manual/detective(get_turf(src))
 		return
 
 
@@ -148,7 +148,7 @@ obj/machinery/computer/forensic_scanning
 				var/mob/M = usr
 				var/obj/item/I = M.get_active_hand()
 				if(I && istype(I))
-					if(istype(I, /obj/item/weapon/evidencebag))
+					if(istype(I, /obj/item/evidencebag))
 						scanning = I.contents[1]
 						scanning.loc = src
 						I.overlays -= scanning
@@ -162,9 +162,9 @@ obj/machinery/computer/forensic_scanning
 			if("card")  //Processing a fingerprint card.
 				var/mob/M = usr
 				var/obj/item/I = M.get_active_hand()
-				if(!(I && istype(I,/obj/item/weapon/f_card)))
+				if(!(I && istype(I,/obj/item/f_card)))
 					I = card
-				if(I && istype(I,/obj/item/weapon/f_card))
+				if(I && istype(I,/obj/item/f_card))
 					card = I
 					if(!card.fingerprints)
 						card.fingerprints = list()
@@ -255,7 +255,7 @@ obj/machinery/computer/forensic_scanning
 				temp += "<br><a href='?src=\ref[src];operation=database'>{Return}</a>"
 			if("databaseprint") //Printing from the "files" database.
 				if(files)
-					var/obj/item/weapon/paper/P = new(loc)
+					var/obj/item/paper/P = new(loc)
 					var/list/dossier = files[href_list["identifier"]]
 					P.name = "\improper Database File ([dossier[2]])"
 					P.overlays += "paper_words"
@@ -331,7 +331,7 @@ obj/machinery/computer/forensic_scanning
 				temp += "<br><a href='?src=\ref[src];operation=database'>{Return}</a>"
 			if("auxiliaryprint") //Printing from the "misc" database.
 				if(misc)
-					var/obj/item/weapon/paper/P = new(loc)
+					var/obj/item/paper/P = new(loc)
 					var/list/outputs = misc[href_list["identifier"]]
 					P.name = "\improper Auxiliary Database File ([outputs[3]])"
 					P.overlays += "paper_words"
@@ -363,7 +363,7 @@ obj/machinery/computer/forensic_scanning
 				else
 					usr << "ERROR.  Database not found!<br>"
 			if("scan")
-				if(istype(scanning,/obj/item/weapon/f_card))
+				if(istype(scanning,/obj/item/f_card))
 					card = scanning
 					scanning = initial(scanning)
 					process_card()
@@ -426,7 +426,7 @@ obj/machinery/computer/forensic_scanning
 			if("print") //Printing scan data
 				if(scan_data)
 					temp = "Scan Data Printed."
-					var/obj/item/weapon/paper/P = new(loc)
+					var/obj/item/paper/P = new(loc)
 					P.name = "\improper Scan Data ([scan_name])"
 					P.info = "<tt>[scan_data]</tt>"
 					P.overlays += "paper_words"

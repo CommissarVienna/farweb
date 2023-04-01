@@ -83,11 +83,16 @@ datum/reagent/proc/reaction_turf(var/turf/T, var/volume, var/shouldNull = 1)
 /datum/reagent/proc/on_remove(var/data)
 	return
 
-datum/reagent/proc/on_mob_life(var/mob/living/M as mob, var/alien)
+/datum/reagent/proc/on_mob_life(var/mob/living/M as mob, var/alien)
 	if(!istype(M, /mob/living))
 		return //Noticed runtime errors from pacid trying to damage ghosts, this should fix. --NEO
 	holder.remove_reagent(src.id, metabolization_rate) //By default it slowly disappears.
 	first_life = FALSE
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(istype(H.vice, /datum/vice/chem_addict))
+			if(H.vice:vice_chems.Find(src.type))
+				H.viceneed  = 0
 	return
 
 datum/reagent/proc/on_move(var/mob/M)
@@ -247,7 +252,7 @@ datum/reagent/semen
 datum/reagent/semen/on_mob_life(var/mob/living/M as mob)
 	//M.bladder += nutriment_factor
 	if(ticker.eof.id == "freshmalemilk")
-		M.hidratacao += 30
+		M.hydration += 30
 		M.nutrition += 5
 	..()
 	return
@@ -265,7 +270,7 @@ datum/reagent/water
 
 	on_mob_life(var/mob/living/carbon/human/M as mob)
 		//M.bladder += nutriment_factor
-		M.hidratacao += 30
+		M.hydration += 30
 		M.bowels += nutriment_factor * REM
 		var/datum/reagent/blood/B = locate() in M.vessel.reagent_list //Grab some blood
 		if(B)
@@ -275,7 +280,8 @@ datum/reagent/water
 
 	reaction_turf(var/turf/simulated/T, var/volume)
 		if (!istype(T)) return
-		if(volume >= 3)
+		//if(volume >= 3)
+			/*
 			if(T.wet >= 1) return
 			T.wet = 1
 			if(T.wet_overlay)
@@ -291,7 +297,7 @@ datum/reagent/water
 				if(T.wet_overlay)
 					T.overlays -= T.wet_overlay
 					T.wet_overlay = null
-
+*/
 		var/hotspot = (locate(/obj/fire) in T)
 		if(hotspot && !istype(T, /turf/space))
 			var/datum/gas_mixture/lowertemp = T.remove_air( T:air:total_moles )
@@ -311,8 +317,8 @@ datum/reagent/water
 			lowertemp.react()
 			T.assume_air(lowertemp)
 			qdel(hotspot)
-		if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/monkeycube))
-			var/obj/item/weapon/reagent_containers/food/snacks/monkeycube/cube = O
+		if(istype(O,/obj/item/reagent_containers/food/snacks/monkeycube))
+			var/obj/item/reagent_containers/food/snacks/monkeycube/cube = O
 			if(!cube.wrapped)
 				cube.Expand()
 		return
@@ -325,7 +331,7 @@ datum/reagent/water
 			if(M.fire_stacks <= 0)
 				M.ExtinguishMob()
 			return
-
+/*
 datum/reagent/water/holywater
 	name = "Holy Water"
 	id = "holywater"
@@ -344,7 +350,7 @@ datum/reagent/water/holywater
 			HH.death()
 		holder.remove_reagent(src.id, 10 * REAGENTS_METABOLISM) //high metabolism to prevent extended uncult rolls.
 		return
-
+*/
 datum/reagent/lube
 	name = "Space Lube"
 	id = "lube"
@@ -2136,7 +2142,7 @@ datum/reagent/drink
 	on_mob_life(var/mob/living/M as mob)
 		if(!M) M = holder.my_atom
 		M.nutrition += nutriment_factor
-		M.hidratacao += nutriment_factor+4
+		M.hydration += nutriment_factor+4
 		//M.bladder += nutriment_factor
 		holder.remove_reagent(src.id, FOOD_METABOLISM)
 		// Drinks should be used up faster than other reagents.
@@ -2686,8 +2692,6 @@ datum/reagent/ethanol
 		M:nutrition += nutriment_factor
 		M.bowels += nutriment_factor * REM
 		holder.remove_reagent(src.id, FOOD_METABOLISM)
-		if(M.vice == "Alcoholic")
-			M.viceneed = 0
 		M.add_event("alcoholgood", /datum/happiness_event/booze)
 		if (adj_drowsy)	M.drowsyness = max(0,M.drowsyness + adj_drowsy)
 		if (adj_sleepy) M.sleeping = max(0,M.sleeping + adj_sleepy)
@@ -2724,13 +2728,13 @@ datum/reagent/ethanol
 		return
 
 	reaction_obj(var/obj/O, var/volume)
-		if(istype(O,/obj/item/weapon/paper))
-			var/obj/item/weapon/paper/paperaffected = O
+		if(istype(O,/obj/item/paper))
+			var/obj/item/paper/paperaffected = O
 			paperaffected.clearpaper()
 			usr << "The solution dissolves the ink on the paper."
-		if(istype(O,/obj/item/weapon/book))
+		if(istype(O,/obj/item/book))
 			if(volume >= 5)
-				var/obj/item/weapon/book/affectedbook = O
+				var/obj/item/book/affectedbook = O
 				affectedbook.dat = null
 				usr << "The solution dissolves the ink on the book."
 			else
@@ -2753,8 +2757,6 @@ datum/reagent/ethanol/beer
 
 	on_mob_life(var/mob/living/carbon/human/M as mob)
 		M:jitteriness = max(M:jitteriness-3,0)
-		if(M.vice == "Alcoholic")
-			M.viceneed = 0
 		..()
 		return
 
@@ -2815,8 +2817,6 @@ datum/reagent/ethanol/vodka
 
 	on_mob_life(var/mob/living/carbon/human/M as mob)
 		M.radiation = max(M.radiation-1,0)
-		if(M.vice == "Alcoholic")
-			M.viceneed = 0
 		..()
 		return
 

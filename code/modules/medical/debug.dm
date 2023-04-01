@@ -1,4 +1,4 @@
-/obj/item/weapon/reagent_containers/food/snacks/organ/verb/attach_me()
+/obj/item/reagent_containers/food/snacks/organ/verb/attach_me()
 	set name = "Attachself"
 	set category = "Object"
 

@@ -18,7 +18,7 @@
 
 /proc/loneliness(var/text = null, var/mob/usr, var/turf/C)
     to_chat(usr, "<b><i>You feel your heart beating stronger!</b></i>")
-    for(var/obj/item/weapon/photo/P in C.contents)
+    for(var/obj/item/photo/P in C.contents)
         for(var/mob/living/carbon/human/H in P.info)
             if(!H.client)
                 return

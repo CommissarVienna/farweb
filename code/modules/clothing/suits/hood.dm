@@ -19,7 +19,7 @@
 	icon_state = "monk"
 	item_state = "monk"
 	hood_state = "monk-hooded"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|LEGS_TOGETHER
 
 /obj/item/clothing/suit/hood/thief
 	name = "Grave robber cloak"
@@ -42,7 +42,7 @@
 	desc = "The cloak of silence."
 	icon_state = "sailorcoat"
 	item_state = "sailorcoat"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|LEGS_TOGETHER
 
 /obj/item/clothing/under/sailorshirt
 	name = "sailor shirt"

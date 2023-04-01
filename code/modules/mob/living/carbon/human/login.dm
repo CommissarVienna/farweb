@@ -11,8 +11,12 @@
 	matchmaker.update_family_icons(src)
 	if(outsider && !migclass)
 		if(ticker?.mode.config_tag == "siege")
-			src.verbs += /mob/living/carbon/human/proc/siegequip
+			src.add_verb(/mob/living/carbon/human/proc/siegequip)
 		else
-			src.verbs += /mob/living/carbon/human/proc/migequip
-	updatePig()
+			src.add_verb(/mob/living/carbon/human/proc/migequip)
+	updateStatPanel()
+	if(province == "Ravenheart") //thought it'd be a nice touch.
+		src << output(list2params(list(1)), "outputwindow.browser:ChangeTheme")
+	else
+		src << output(list2params(list(0)), "outputwindow.browser:ChangeTheme")
 	return

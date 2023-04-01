@@ -1,7 +1,3 @@
-#define I_DODGE		"dodge"
-#define I_PARRY		"parry"
-#define LEGAL_RELIGION	"Gray Church"
-#define ILLEGAL_RELIGION	"Thanati"
 /mob
 	density = 1
 	layer = 4.0
@@ -120,6 +116,7 @@
 	var/list/languages = list()         // For speaking/listening.
 	var/list/habilities = list()         // For species-derived or admin-given powers.
 	var/list/speak_emote = list("says") // Verbs used when speaking. Defaults to 'say' if speak_emote is null.
+	var/list/CuckedBy = list ()
 	var/emote_type = 1		// Define emote default type, 1 for seen emotes, 2 for heard emotes
 	var/tentaclesexposed = FALSE // chang shit
 	//CHURCH SHIT
@@ -141,7 +138,7 @@
 	var/jitteriness = 0//Carbon
 	var/charges = 0
 	var/nutrition = 400//Carbon
-	var/hidratacao = THIRST_LEVEL_FILLED
+	var/hydration = THIRST_LEVEL_FILLED
 
 	var/paralysis = 0
 	var/stunned = 0
@@ -160,9 +157,9 @@
 	var/obj/structure/stool/bed/buckled = null//Living
 	var/obj/item/l_hand = null//Living
 	var/obj/item/r_hand = null//Living
-	var/obj/item/weapon/back = null//Human/Monkey
-	var/obj/item/weapon/tank/internal = null//Human/Monkey
-	var/obj/item/weapon/storage/s_active = null//Carbon
+	var/obj/item/back = null//Human/Monkey
+	var/obj/item/tank/internal = null//Human/Monkey
+	var/obj/item/storage/s_active = null//Carbon
 	var/obj/item/clothing/mask/wear_mask = null//Carbon
 	var/moving_delay = 0
 
@@ -275,3 +272,10 @@
 	var/pain_dropped = FALSE
 	var/altista = FALSE
 	var/follow_mouse = FALSE // Makes the humans direction turn towards the mouse
+	var/left_hand_intent = I_HELP
+	var/right_hand_intent = I_HELP
+	
+	var/left_hand_zone = "chest" 
+	var/right_hand_zone = "chest"
+	var/wrong_hand_used = FALSE	
+	var/list/default_buttons = list()
