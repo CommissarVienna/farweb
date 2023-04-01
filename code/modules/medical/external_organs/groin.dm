@@ -38,8 +38,7 @@
 		if(owner.age >= 60)
 			race_icon = 'icons/mob/flesh/old/human_old.dmi'
 
-	var/ls = lying ? "_l" : "_s"
-	return new /icon(race_icon, "[icon_name][gender ? "_[gender]" : ""][ls]")
+	return new /icon(race_icon, "[icon_name][gender ? "_[gender]" : ""]")
 
 
 /datum/organ/external/groin/do_actions(brute, burn, sharp, edge, var/used_weapon = null, list/forbidden_limbs = list(), var/delimbexplosion = 0, var/armor)
