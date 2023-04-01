@@ -23,7 +23,6 @@
 	 return ..()
 	var/g = gender ? gender : "m"
 	if(owner.gender == FEMALE)	g = "f"
-	var/ls = lying ? "_l" : "_s"
 	if(fat)
 		race_icon = 'icons/mob/flesh/old/human_fat_old.dmi'
 	var/icon_draw = icon_name
@@ -42,9 +41,9 @@
 
 	var/icon/head_icon = null
 	if (status & ORGAN_MUTATED)
-		head_icon = new /icon(deform_icon, "[icon_draw]_[g][ls]")
+		head_icon = new /icon(deform_icon, "[icon_draw]_[g]")
 	else
-		head_icon = new /icon(race_icon, "[icon_draw]_[g][ls]")
+		head_icon = new /icon(race_icon, "[icon_draw]_[g]")
 	if(headwrenched)
 		if(!lying)
 			var/list/dirs = list(NORTH,SOUTH,EAST,WEST)

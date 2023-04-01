@@ -1235,17 +1235,16 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(owner.age >= 60)
 			race_icon = 'icons/mob/flesh/old/human_old.dmi'
 
-	var/ls = lying ? "_l" : "_s"
 	if (status & ORGAN_ROBOT && !(owner.species && owner.species.flags & IS_SYNTHETIC))
-		return new /icon('icons/mob/human_races/robotic.dmi', "[icon_name][gender ? "_[gender]" : ""][ls]")
+		return new /icon('icons/mob/human_races/robotic.dmi', "[icon_name][gender ? "_[gender]" : ""]")
 
 	if (status & ORGAN_MUTATED)
-		return new /icon(deform_icon, "[icon_name][gender ? "_[gender]" : ""][ls]")
+		return new /icon(deform_icon, "[icon_name][gender ? "_[gender]" : ""]")
 
 	if (lfwblocked)
 		return new /icon(race_icon, "[icon_name][gender ? "_[gender]" : ""][lfwblockedicon ? "_c" : ""]")
 
-	return new /icon(race_icon, "[icon_name][gender ? "_[gender]" : ""][ls]")
+	return new /icon(race_icon, "[icon_name][gender ? "_[gender]" : ""]")
 
 
 

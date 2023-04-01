@@ -28,8 +28,7 @@
 //			race_icon = 'icons/mob/flesh/old/human_old.dmi'
 //		gender = "p"
 
-	var/ls = lying ? "_l" : "_s"
 	if (lfwblocked)
 		return new /icon(race_icon, "[prefix][icon_name][gender ? "_[gender]" : ""][lfwblockedicon ? "_c" : ""]")
 
-	return new /icon(race_icon, "[prefix][icon_name][gender ? "_[gender]" : ""][ls]")
+	return new /icon(race_icon, "[prefix][icon_name][gender ? "_[gender]" : ""]")
