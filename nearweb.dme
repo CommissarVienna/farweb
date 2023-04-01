@@ -1640,7 +1640,7 @@
 #include "code\ZAS\Turf.dm"
 #include "code\ZAS\Variable Settings.dm"
 #include "code\ZAS\Zone.dm"
-#include "config\whitelist.dm"
+#include "code\whitelist.dm"
 #include "interface\interface.dm"
 #include "interface\skin.dmf"
 #include "maps\nearweb\goldenriver-low.dmm"
