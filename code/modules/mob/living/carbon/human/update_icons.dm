@@ -1168,7 +1168,7 @@ If you draw the arms, sleeves and suit arms at once, there are clipping issues.
 		w_uniform.screen_loc = get_slot_loc("iclothing")
 		var/t_color = w_uniform.item_color
 		if(!t_color)		t_color = icon_state
-		var/image/standing	= image("icon_state" = "[t_color]_s")
+		var/image/standing	= image("icon_state" = "[t_color]")
 
 		if(istype(w_uniform,/obj/item/clothing/under/rank/migrant))
 			standing = image("icon" = w_uniform:mob)

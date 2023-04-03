@@ -39,11 +39,12 @@
 	//		race_icon = 'icons/mob/flesh/old/human_old.dmi'
 	//		icon_draw = "0"+icon_draw
 
+	var/ls = lying ? "_l" : "_s"
 	var/icon/head_icon = null
 	if (status & ORGAN_MUTATED)
-		head_icon = new /icon(deform_icon, "[icon_draw]_[g]")
+		head_icon = new /icon(deform_icon, "[icon_draw]_[g][ls]")
 	else
-		head_icon = new /icon(race_icon, "[icon_draw]_[g]")
+		head_icon = new /icon(race_icon, "[icon_draw]_[g][ls]")
 	if(headwrenched)
 		if(!lying)
 			var/list/dirs = list(NORTH,SOUTH,EAST,WEST)

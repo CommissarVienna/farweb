@@ -62,13 +62,13 @@ var/global/list/bans = list()
 	var/story_number = 1 //So when you boot it up you aren't on 0
 
 var/datum/storyholder/story_holder = new
-	
+
 /proc/get_story_id()
 	set waitfor = FALSE
 	var/savefile/S = new /savefile("data/game_version.sav")
 	story_holder.Read(S)
 	story_id = story_holder.story_number
-	
+
 
 /proc/add_story_id()
 	set waitfor = FALSE
@@ -154,9 +154,9 @@ client/proc/load_registered_by()
 
 		for(var/i=2, i<=List.len, i++)
 			switch(ckey(List[i]))
-				if("pigplus")	current_fate.job_whitelisted |= PIGPLUS
-				if("comrade")	current_fate.job_whitelisted |= COMRADE
-				if("villain") 	current_fate.job_whitelisted |= VILLAIN
+				if("pigplus")	current_fate.job_whitelisted |= 1
+				if("comrade")	current_fate.job_whitelisted |= 2
+				if("villain") 	current_fate.job_whitelisted |= 3
 
 #undef CKEYWHITELIST
 
