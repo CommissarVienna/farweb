@@ -42,6 +42,7 @@ var/rtlog_path
 	if(!fexists("data/game_version.sav"))//This should only have to be run once.
 		add_story_id()
 	get_story_id()
+	load_ckey_whitelist()
 #ifdef NEARWEB_LIVE
 	load_db_whitelist()
 	load_db_bans()
