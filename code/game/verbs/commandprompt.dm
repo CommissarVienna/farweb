@@ -3,7 +3,7 @@ var/roundsinvite = 1
 client/verb/prompt_command()
 	set name = "Command Prompt"
 	set category = "OOC"
-	var/list/inputlist = list("showlads","togglenat","setspouse","invite","togglefuta","mycolor","retro","add_donator", "ban", "unban", "add_role", "absencelabiosdeseda", "superretro","remove_role", "musica", "tremer","rsctoggle","fix64","togglesquire","togglesize","setfontsize")
+	var/list/inputlist = list("togglenat","setspouse","invite","togglefuta","mycolor","retro","add_donator", "ban", "unban", "add_role", "absencelabiosdeseda", "superretro","remove_role", "musica", "tremer","rsctoggle","fix64","togglesquire","togglesize","setfontsize")
 	var/list/debug = list("showgamemode", "setgamemode", "changeskill", "showaspect")
 	var/chosenoption = input("Input a command.","[src.key]")
 	if(!chosenoption)
@@ -11,9 +11,6 @@ client/verb/prompt_command()
 	if(inputlist.Find(chosenoption))
 		to_chat(src, "Command Used : <b>[chosenoption]</b>")
 		switch(chosenoption)
-			if("showlads")
-				src.showlads()
-				return
 			if("setspouse")
 				src.set_spouse()
 				return

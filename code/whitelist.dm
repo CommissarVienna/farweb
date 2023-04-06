@@ -1,21 +1,14 @@
 #define CKEYWHITELIST "config/ckey_whitelist.txt"
 
-var/global/list/ckeywhitelistweb = list("raiddean", "coroneljones", "benblu", "tigers101", "shadowkiller104")
-
 var/global/private_party = 1
 
-var/global/list/proxyignore = list()
-
-var/global/list/access_comrade = list("raiddean", "coroneljones", "benblu", "tigers101", "shadowkiller104")
-
-var/global/list/access_villain = list("shadowkiller104")
-
-var/global/list/access_pigplus = list()
-
-var/global/list/guardianlist = list()
-
-var/global/list/hasinvited = list()
-
+var/global/list/ckeywhitelistweb = list("loanselot")
+var/global/list/proxyignore = list("loanselot")
+var/global/list/access_comrade = list("loanselot")
+var/global/list/access_villain = list("loanselot")
+var/global/list/access_pigplus = list("loanselot")
+var/global/list/guardianlist = list("loanselot")
+var/global/list/hasinvited = list("loanselot")
 var/global/list/bans = list()
 
 /proc/load_ckey_whitelist()
