@@ -421,8 +421,8 @@
 /obj/item/clothing/suit/armor/vest/security/mardukwow
 	name = "ornate armor"
 	desc = "A set of ornate plate armor, the signature wargear of Firethorn`s Champion."
-	icon_state = "WoW"
-	item_state = "WoW"
+	icon_state = "censor"
+	item_state = "armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS|LEGS_TOGETHER
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|GROIN|LEGS
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
