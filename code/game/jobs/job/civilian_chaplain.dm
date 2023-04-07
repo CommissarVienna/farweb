@@ -436,7 +436,7 @@ var/rewarded = 0
 	minimal_access = list(church, access_morgue, access_chapel_office)
 	sex_lock = MALE
 	latejoin_locked = TRUE
-	no_trapoc = TRUE
+	no_trapoc = FALSE
 	skill_mods = list(
 	list(SKILL_MELEE,4,4),
 	list(SKILL_RANGE,6,6),
