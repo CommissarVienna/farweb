@@ -8,8 +8,6 @@
 //this ensures that shadowcasting overlays are updated whenever a turf is destroyed (AKA, a new one is created)
 /turf/New()
 	. = ..()
-	if(!shadowcasting_controller.initialized)
-		return
 	for(var/turf/fellow_turf in oview(7))
 		fellow_turf.update_shadowcasting_overlays()
 	update_shadowcasting_overlays()
