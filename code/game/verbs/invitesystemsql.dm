@@ -51,7 +51,6 @@ client/proc/invite_ckey()
 			to_chat(usr, "<span class='highlighttext'>[invitee] has been invited.</span>")
 			usr << 'sound/effects/thanet.ogg'
 			var/inviteez = "`[invitee] has been invited by [usr.ckey]` [reason]"
-			HttpPost("https://discord.com/api/webhooks/1067999904141693018/3nDmJqZeGd6HcYfomOfyNgzdQ12BowT5VivQXjkVhZSQcmj4si66T7fU47j0qJI2CzcI",list(content = inviteez,username = usr.ckey))
 			return
 	else
 		var/confirmation = input("You will invite [invitee]. Are you sure?","Confirmation") in list ("Yes","No")
@@ -72,7 +71,6 @@ client/proc/invite_ckey()
 			to_chat(usr, "<span class='highlighttext'>[invitee] has been invited.</span>")
 			usr << 'sound/effects/thanet.ogg'
 			var/inviteez = "`[invitee] has been invited by [usr.ckey]` [reason]"
-			HttpPost("https://discord.com/api/webhooks/1067999904141693018/3nDmJqZeGd6HcYfomOfyNgzdQ12BowT5VivQXjkVhZSQcmj4si66T7fU47j0qJI2CzcI",list(content = inviteez,username = usr.ckey))
 			return
 
 
@@ -91,7 +89,6 @@ client/proc/remove_whitelist()
 	if(do_discord_ban(ckeyy) == "False")
 		to_chat(usr, "<span class='highlighttext'>Unable to remove Discord role for user. Perhaps they never joined.</span>")
 	var/banz = "`[ckeyy] has been banned by [usr.ckey]` [reason]"
-	HttpPost("https://discord.com/api/webhooks/1067999904141693018/3nDmJqZeGd6HcYfomOfyNgzdQ12BowT5VivQXjkVhZSQcmj4si66T7fU47j0qJI2CzcI",list(content = banz,username = usr.ckey))
 	return
 
 client/proc/game_remove_whitelist(var/reason = "", var/stickyban = TRUE) // Used for setting bans in the code
@@ -103,7 +100,6 @@ client/proc/game_remove_whitelist(var/reason = "", var/stickyban = TRUE) // Used
 	if(stickyban)
 		stickyban(ckey)
 	var/banz = "`[ckey] has been banned by the server` [reason]"
-	HttpPost("https://discord.com/api/webhooks/1067999904141693018/3nDmJqZeGd6HcYfomOfyNgzdQ12BowT5VivQXjkVhZSQcmj4si66T7fU47j0qJI2CzcI",list(content = banz,username = "Automated tyranny"))
 	return
 
 /proc/remove_ban()
