@@ -22,7 +22,7 @@ var/static/list/tgsAdmins = list("347047448985862144", "233272073928179722", "73
 			roundstatus = "Your fortress has been abandoned."
 		else
 			roundstatus = "Story has started."
-	return "<byond://193.223.107.13:34673> [n] players online - Round Duration: [round(hours)]h [round(mins)]m - [roundstatus] - Game Mode: [ticker.mode.config_tag]"
+	return "<byond://193.223.107.13:34673> [n] players online - Round Duration: [round(hours)]h [round(mins)]m - [roundstatus] - Game Mode: [ticker?.mode?.config_tag]"
 
 /datum/tgs_chat_command/hr
 	name = "hr"
@@ -65,7 +65,7 @@ var/static/list/tgsAdmins = list("347047448985862144", "233272073928179722", "73
 	help_text = "Available game modes: kingwill, changeling, revolution, dreamer, succubus, inspector, siege, quietday, alien"
 	admin_only = FALSE
 
-/datum/tgs_chat_command/gamemode/Run(datum/tgs_chat_user/sender, params)
+/datum/tgs_chat_command/setgamemode/Run(datum/tgs_chat_user/sender, params)
 	if (!tgsAdmins.Find(sender.id))
 		return "You are not an admin"
 
@@ -78,5 +78,5 @@ var/static/list/tgsAdmins = list("347047448985862144", "233272073928179722", "73
 	if (!available_modes.Find(mode))
 		return "Not a valid game mode"
 
-	ticker.forcemod = mode
+	ticker?.forcemod = mode
 	return "Game mode set"
