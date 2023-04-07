@@ -1,4 +1,4 @@
-var/static/list/tgsAdmins = list("347047448985862144", "233272073928179722", "735861400085200957")
+var/static/list/tgsAdmins = list("347047448985862144", "233272073928179722")
 
 /datum/tgs_chat_command/status
 	name = "status"
