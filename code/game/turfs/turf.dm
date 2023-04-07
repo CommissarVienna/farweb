@@ -336,9 +336,7 @@ var/list/turfs = list()
 					return W
 ///// Z-Level Stuff
 
-//	var/old_lumcount = lighting_lumcount - initial(lighting_lumcount)
-
-//	var/old_lumcount = lighting_lumcount - initial(lighting_lumcount)
+	var/old_lumcount = lighting_lumcount - initial(lighting_lumcount)
 	var/obj/fire/old_fire = fire
 
 	//world << "Replacing [src.type] with [N]"
@@ -367,7 +365,6 @@ var/list/turfs = list()
 		W.lighting_lumcount += old_lumcount
 		if(old_lumcount != W.lighting_lumcount)
 			W.lighting_changed = 1
-			lighting_controller.changed_turfs += W
 
 		if(old_fire)
 			fire = old_fire
@@ -392,7 +389,6 @@ var/list/turfs = list()
 		W.lighting_lumcount += old_lumcount
 		if(old_lumcount != W.lighting_lumcount)
 			W.lighting_changed = 1
-			lighting_controller.changed_turfs += W
 
 		if(old_fire)
 			old_fire.RemoveFire()

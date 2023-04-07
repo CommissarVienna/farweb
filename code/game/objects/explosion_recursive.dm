@@ -63,6 +63,8 @@ proc/explosion_rec(turf/epicenter, power)
 
 /turf
 	var/explosion_resistance
+	var/lighting_lumcount = 0
+	var/lighting_changed = FALSE
 
 /turf/space
 	explosion_resistance = 10

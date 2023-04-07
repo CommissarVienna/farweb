@@ -114,6 +114,7 @@ datum/controller/game_controller/proc/setup_objects()
 			T.broadcast_status()
 
 	to_chat(world, "<span class = 'messages'>4. Letting there be light...</span>")
+	shadowcasting_controller.initialized = TRUE
 
 	to_chat(world, "<span class = 'messages'>5. Dirtying the fortress...")
 

@@ -83,12 +83,12 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 
 		sleep(8)
 
-	if(!lighting_controller.processing)	
-		lighting_controller.processing = lighting_controller_was_processing
-		
-	if(!powernet_rebuild_was_deferred_already)
-		if(defer_powernet_rebuild != 2)
-			defer_powernet_rebuild = 0
+		if(!lighting_controller.processing)	
+			lighting_controller.processing = lighting_controller_was_processing
+			
+		if(!powernet_rebuild_was_deferred_already)
+			if(defer_powernet_rebuild != 2)
+				defer_powernet_rebuild = 0
 
 	return 1
 

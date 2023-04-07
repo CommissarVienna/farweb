@@ -75,9 +75,9 @@ var/rtlog_path
 	thanatiGlobal = new
 	master_controller = new /datum/controller/game_controller()
 	spawn(1)
-		processScheduler.setup()
-		master_controller.setup()
-		thanatiGlobal.setup()
+	processScheduler.setup()
+	master_controller.setup()
+	thanatiGlobal.setup()
 	TgsInitializationComplete()
 
 	spawn(3000)		//so we aren't adding to the round-start lag

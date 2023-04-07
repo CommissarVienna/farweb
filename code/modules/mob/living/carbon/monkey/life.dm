@@ -436,8 +436,8 @@
 	proc/handle_chemicals_in_body()
 
 		if(alien) //Diona nymphs are the only alien monkey currently.
-//			var/light_amount = 0 //how much light there is in the place, affects receiving nutrition and healing
-/*			if(isturf(loc)) //else, there's considered to be no light
+			var/light_amount = 0 //how much light there is in the place, affects receiving nutrition and healing
+			if(isturf(loc)) //else, there's considered to be no light
 				var/turf/T = loc
 				var/area/A = T.loc
 				if(A)
@@ -445,15 +445,15 @@
 					else						light_amount =  5
 
 			nutrition += light_amount
-			traumatic_shock -= light_amount*/
+			// traumatic_shock -= light_amount
 
 			if(nutrition > 500)
 				nutrition = 500
 			nutrition = 500
-/*			if(light_amount > 2) //if there's enough light, heal
+			if(light_amount > 2) //if there's enough light, heal
 				adjustBruteLoss(-1)
 				adjustToxLoss(-1)
-				adjustOxyLoss(-1)*/
+				adjustOxyLoss(-1)
 
 		if(reagents) reagents.metabolize(src,alien)
 

@@ -16,6 +16,7 @@
 	var/playingambi = FALSE
 	var/coldbreathing = FALSE
 	var/list/webItems = list()
+	var/ul_Lighting = 1
 	var/sound_env = STANDARD_STATION
 	plane = 300
 

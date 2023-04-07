@@ -2,14 +2,5 @@
 NÃO RETIRAR O COMENTÁRIO SE VOCÊ NÃO SABE OS RESULTADOS DISSO! */
 #define NEARWEB_LIVE
 
-
 // Define se o servidor vai estar listado na hub do SS13 ou do Farweb. Só funcionará se o define acima estiver ativado também.
 //#define SS13_HUB
-
-#ifdef NEARWEB_LIVE
-#warn NEARWEB_LIVE IS DEFINED
-#endif
-
-#ifdef SS13_HUB
-#warn SS13_HUB IS DEFINED
-#endif

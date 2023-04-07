@@ -1867,10 +1867,10 @@
 			src.rotate_plane()
 
 		//0.1% chance of playing a scary sound to someone who's in complete darkness
-//		if(isturf(loc) && rand(1,1000) == 1)
-//			var/turf/currentTurf = loc
-//			if(!currentTurf.lighting_lumcount)
-//				playsound_local(src,pick(scarySounds),50, 1, -1)
+		if(isturf(loc) && rand(1,1000) == 1)
+			var/turf/currentTurf = loc
+			if(!currentTurf.lighting_lumcount)
+				playsound_local(src,pick(scarySounds),50, 1, -1)
 
 	proc/handle_virus_updates()
 		if(status_flags & GODMODE)	return 0	//godmode
