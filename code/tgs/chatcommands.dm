@@ -30,7 +30,7 @@ var/static/list/tgsAdmins = list("347047448985862144", "233272073928179722", "73
 	admin_only = FALSE
 
 /datum/tgs_chat_command/hr/Run(datum/tgs_chat_user/sender, params)
-	if (!tgsAdmins.Find(sender))
+	if (!tgsAdmins.Find(sender.id))
 		return "You are not an admin"
 	
 	world.Reboot("Discord hard restart")
