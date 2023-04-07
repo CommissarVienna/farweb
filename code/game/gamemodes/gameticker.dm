@@ -289,7 +289,7 @@ var/turf/MiniSpawn
 	lightlumosoviks()
 //	update_the_treasury()
 	update_the_graceperiods()
-//	lighting_controller.process()	//Start processing DynamicAreaLighting updates
+	lighting_controller.process()	//Start processing DynamicAreaLighting updates
 	update_thanati_aspect()
 	var/list/possibletiamathi = list()
 	var/mob/living/carbon/human/TheChosenOneIsHere

@@ -364,10 +364,10 @@ var/list/turfs = list()
 		var/turf/simulated/W = new N( locate(src.x, src.y, src.z) )
 		//W.Assimilate_Air()
 
-/*		W.lighting_lumcount += old_lumcount
+		W.lighting_lumcount += old_lumcount
 		if(old_lumcount != W.lighting_lumcount)
 			W.lighting_changed = 1
-			lighting_controller.changed_turfs += W*/
+			lighting_controller.changed_turfs += W
 
 		if(old_fire)
 			fire = old_fire
@@ -389,10 +389,10 @@ var/list/turfs = list()
 		//		zone.SetStatus(ZONE_ACTIVE)
 
 		var/turf/W = new N( locate(src.x, src.y, src.z) )
-/*		W.lighting_lumcount += old_lumcount
+		W.lighting_lumcount += old_lumcount
 		if(old_lumcount != W.lighting_lumcount)
 			W.lighting_changed = 1
-			lighting_controller.changed_turfs += W*/
+			lighting_controller.changed_turfs += W
 
 		if(old_fire)
 			old_fire.RemoveFire()
