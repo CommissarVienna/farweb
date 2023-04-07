@@ -22,7 +22,7 @@ var/static/list/tgsAdmins = list("347047448985862144", "233272073928179722")
 			roundstatus = "Your fortress has been abandoned."
 		else
 			roundstatus = "Story has started."
-	return "<byond://193.223.107.13:34673> [n] players online - Round Duration: [round(hours)]h [round(mins)]m - [roundstatus] - Game Mode: [master_mode]"
+	return "<byond://193.223.107.13:34673> [n] players online - Round Duration: [round(hours)]h [round(mins)]m - [roundstatus]"
 
 /datum/tgs_chat_command/hr
 	name = "hr"
@@ -62,7 +62,7 @@ var/static/list/tgsAdmins = list("347047448985862144", "233272073928179722")
 
 /datum/tgs_chat_command/setgamemode
 	name = "setgamemode"
-	help_text = "Available game modes: kingwill, changeling, revolution, dreamer, succubus, inspector, siege, quietday, alien, extended"
+	help_text = "Available game modes: kingwill, changeling, revolution, dreamer, succubus, inspector, siege, quietday, alien, extended, random"
 	admin_only = FALSE
 
 /datum/tgs_chat_command/setgamemode/Run(datum/tgs_chat_user/sender, params)
@@ -74,7 +74,7 @@ var/static/list/tgsAdmins = list("347047448985862144", "233272073928179722")
 		return "Insufficient parameters"
 
 	var/mode = params
-	var/static/list/available_modes = list("kingwill", "changeling", "revolution", "dreamer", "succubus", "inspector", "siege", "quietday", "alien", "extended")
+	var/static/list/available_modes = list("kingwill", "changeling", "revolution", "dreamer", "succubus", "inspector", "siege", "quietday", "alien", "extended", "random")
 	if (!available_modes.Find(mode))
 		return "Not a valid game mode"
 
