@@ -46,7 +46,7 @@ var/global/list/singer = list()
 
 var/global/list/weeDonator = list()
 var/global/list/baliset = list()
-var/global/list/black_cloak = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws", "Casteilan")
+var/global/list/black_cloak = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws", "casteilan")
 var/global/list/bee_queen = list("ltkoepple")
 
 var/global/list/patreons = list("deathws", "ooglepunk", "enzoman", "toastertime")
