@@ -10,46 +10,46 @@ var/global/list/tier_marduk = list()
 var/global/list/tier_crusader = list()
 
 //** SEASPOTTER MERC **//
-var/global/list/donation_seaspotter = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+var/global/list/donation_seaspotter = list()
 //** RED DAWN MERC **//
-var/global/list/donation_reddawn = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+var/global/list/donation_reddawn = list()
 //** MERCENARY **//
-var/global/list/donation_mercenary = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+var/global/list/donation_mercenary = list()
 //** CRUSADER **//
-var/global/list/donation_crusader = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+var/global/list/donation_crusader = list()
 //** MONK **//
-var/global/list/donation_monk = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+var/global/list/donation_monk = list()
 //** FUTA **//
 var/global/list/donation_futa = list()
 //** MOBILE PHONE **//
 var/global/list/donation_mobilephone = list()
 //** REMIGRATION **//
-var/global/list/donation_remigrator = list("raiddean", "coroneljones", "benblu", "tigers101")
+var/global/list/donation_remigrator = list()
 //** 30CM **//
-var/global/list/donation_30cm = list("raiddean", "coroneljones", "benblu", "tigers101")
+var/global/list/donation_30cm = list()
 //** TRAP **//
-var/global/list/donation_trap = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+var/global/list/donation_trap = list()
 //** OUTLAW **//
-var/global/list/donation_outlaw = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+var/global/list/donation_outlaw = list()
 //** ITEMS **//
-var/global/list/donation_waterbottle = list("raiddean")
-var/global/list/donation_lecheryamulet = list("raiddean")
+var/global/list/donation_waterbottle = list()
+var/global/list/donation_lecheryamulet = list()
 //** OOC COLOR **//
-var/global/list/donation_mycolor = list("raiddean", "coroneljones", "benblu", "tigers101")
+var/global/list/donation_mycolor = list()
 
 //** LORD **//
-var/global/list/lord = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws")
+var/global/list/lord = list()
 
-var/global/list/coolboombox = list("raiddean", "coroneljones", "benblu", "tigers101")
+var/global/list/coolboombox = list()
 
 var/global/list/singer = list()
 
 var/global/list/weeDonator = list()
-var/global/list/baliset = list()
-var/global/list/black_cloak = list("raiddean", "coroneljones", "benblu", "tigers101", "deathws", "casteilan")
-var/global/list/bee_queen = list("ltkoepple")
+var/global/list/baliset = list("casteilan")
+var/global/list/black_cloak = list("casteilan")
+var/global/list/bee_queen = list()
 
-var/global/list/patreons = list("deathws", "ooglepunk", "enzoman", "toastertime")
+var/global/list/patreons = list()
 #define PIGPLUS 1
 #define COMRADE 2
 #define VILLAIN 3
