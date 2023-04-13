@@ -615,7 +615,7 @@
 /obj/item/clothing/suit/armor/leather/seaspotter
 	name = "Seaspotter Armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|GROIN
-	icon_state = "bmerc"
+	icon_state = "nsea"
 	armor = list(melee = 20, bullet = 0, laser = 0, energy = 10, bomb = 10, bio = 0, rad = 0)
 	item_worth = 31
 	weight = 40
@@ -623,7 +623,7 @@
 /obj/item/clothing/suit/armor/leather/reddawn
 	name = "Red Dawn Armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|GROIN|THROAT
-	icon_state = "rmerc"
+	icon_state = "ndawn"
 	armor = list(melee = 20, bullet = 0, laser = 0, energy = 10, bomb = 10, bio = 0, rad = 0)
 	item_worth = 31
 	weight = 40
